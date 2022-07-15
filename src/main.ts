@@ -1,12 +1,15 @@
-import { createApp } from "vue";
-import { createPinia } from "pinia";
-import App from "./App.vue";
-import vuetify from "./plugins/vuetify";
-import { loadFonts } from "./plugins/webfontloader";
+import { createApp } from "vue"
+import { createPinia } from "pinia"
+import App from "./App.vue"
+import vuetify from "./plugins/vuetify"
+import { loadFonts } from "./plugins/webfontloader"
+import { PixiApp } from "./app/PixiApp"
 
-loadFonts();
+loadFonts()
 
-createApp(App).use(vuetify).use(createPinia()).mount("#app");
+createApp(App).use(vuetify).use(createPinia()).mount("#app")
+
+PixiApp.initialize()
 
 /*
 BEFORE vuetify... 
