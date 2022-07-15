@@ -1,4 +1,4 @@
-import { Application } from 'pixi.js'
+import { Application } from "pixi.js"
 
 export class PixiApp {
   private constructor() {
@@ -9,7 +9,7 @@ export class PixiApp {
 
   public static initialize() {
     PixiApp._app = new Application({
-      view: document.getElementById('pixi-canvas') as HTMLCanvasElement,
+      view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
       //resolution: window.devicePixelRatio || 1, // This distorts/wrong on mobile
       autoDensity: true,
       backgroundColor: 0x6495ed,
