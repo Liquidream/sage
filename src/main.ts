@@ -10,9 +10,10 @@ loadFonts()
 
 const pinia = createPinia().use(piniaPluginPersistedstate)
 
+PixiApp.initialize()
+
 createApp(App).use(vuetify).use(pinia).mount("#app")
 
-PixiApp.initialize()
 
 /*
 BEFORE vuetify... 

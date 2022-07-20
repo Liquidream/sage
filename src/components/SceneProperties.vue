@@ -49,8 +49,15 @@
   import { ref } from "vue"
   import { PropModel } from "../models/PropModel"
   import { useSceneStore } from "../stores/SceneStore"
+  import { SceneModel } from "../models/SceneModel"
 
   const sceneStore = useSceneStore()
+  const sceneModel = new SceneModel()
+
+  // sceneStore.$subscribe((mutation, state) => {
+  //   console.log("state updated - so refresh scene model (pixi)")
+  //   sceneModel.teardown()
+  // }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const model: Ref<any> = ref(null)
