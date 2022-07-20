@@ -12,14 +12,27 @@
 
     <v-text-field label="ID"></v-text-field>
     <v-text-field label="Name"></v-text-field>
-    <v-text-field label="Sound"></v-text-field>
+    <v-file-input
+      accept="image/png, image/jpeg, image/bmp"
+      placeholder="Pick a backdrop image"
+      prepend-icon="mdi-camera"
+      label="Image"
+    ></v-file-input>
+    <v-file-input
+      accept="audio/mpeg, audio/ogg, audio/vnd.wav"
+      placeholder="Pick a backdrop sound"
+      prepend-icon="mdi-volume-high"
+      label="Sound"
+    ></v-file-input>
 
     <v-divider />
     <v-list-subheader>Props</v-list-subheader>
+    <!-- on click, replace panel with properties of Prop + select it in scene -->
     <v-list :items="modelProps"></v-list>
 
     <v-divider />
     <v-list-subheader>Doors</v-list-subheader>
+    <!-- on click, replace panel with properties of Door + select it in scene -->
     <v-list :items="modelDoors"></v-list>
 
     <v-divider />
@@ -27,7 +40,7 @@
     <v-textarea name="on_enter" label="On Enter" auto-grow></v-textarea>
     <v-textarea name="on_exit" label="On Exit" auto-grow></v-textarea>
 
-    <v-btn @click="closeDrawer" color="info" class="mt-2">Save</v-btn>
+    <!-- <v-btn @click="closeDrawer" color="info" class="mt-2">Save</v-btn> -->
   </v-form>
 </template>
 
