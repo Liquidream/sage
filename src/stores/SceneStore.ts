@@ -16,4 +16,6 @@ export const useSceneStore = defineStore({
   // getters: {
   //   doubleCount: (state) => state.counter * 2,
   // },
+
+  persist: true,
 })
