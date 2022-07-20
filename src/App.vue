@@ -36,8 +36,12 @@
   // import { ref } from "vue"
   // import { PropModel } from "./models/PropModel"
   import SceneProperties from "./components/SceneProperties.vue"
+  //import { useSceneStore } from "./stores/SceneStore"
+
   const drawer = true
   //const model = new PropModel()
+
+  //const sceneStore = useSceneStore()
 </script>
 
 <style>

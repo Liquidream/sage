@@ -11,7 +11,7 @@
     <v-list-subheader>General</v-list-subheader>
 
     <v-text-field label="ID"></v-text-field>
-    <v-text-field label="Name"></v-text-field>
+    <v-text-field label="Name" v-model="sceneStore.name"></v-text-field>
     <v-file-input
       accept="image/png, image/jpeg, image/bmp"
       placeholder="Pick a backdrop image"
@@ -40,7 +40,7 @@
     <v-textarea name="on_enter" label="On Enter" auto-grow></v-textarea>
     <v-textarea name="on_exit" label="On Exit" auto-grow></v-textarea>
 
-    <!-- <v-btn @click="closeDrawer" color="info" class="mt-2">Save</v-btn> -->
+    <v-btn @click="sceneStore.load" color="info" class="mt-2">Load</v-btn>
   </v-form>
 </template>
 
@@ -48,6 +48,9 @@
   import type { Ref } from "vue"
   import { ref } from "vue"
   import { PropModel } from "../models/PropModel"
+  import { useSceneStore } from "../stores/SceneStore"
+
+  const sceneStore = useSceneStore()
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const model: Ref<any> = ref(null)
