@@ -17,6 +17,7 @@
     "pinia-plugin-persistedstate": "^1.6.3",
     "pixi.js": "^6.4.2",
     "roboto-fontface": "*",
+    "tweedle.js": "^2.0.0",
     "vue": "^3.2.37",
     "vuetify": "^3.0.0-beta.0",
     "webfontloader": "^1.0.0"

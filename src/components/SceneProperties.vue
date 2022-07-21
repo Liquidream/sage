@@ -40,7 +40,7 @@
     <v-textarea name="on_enter" label="On Enter" auto-grow></v-textarea>
     <v-textarea name="on_exit" label="On Exit" auto-grow></v-textarea>
 
-    <v-btn @click="sceneStore.load" color="info" class="mt-2">Load</v-btn>
+    <v-btn @click="loadBtnClicked" color="info" class="mt-2">Load</v-btn>
   </v-form>
 </template>
 
@@ -93,6 +93,13 @@
       value: 3,
     },
   ]
+
+  const loadBtnClicked = () => {
+    sceneStore.load()
+
+    model.value = new PropModel()
+    model.value.createCircle()
+  }
 
   const createBtnClicked = () => {
     //model = new PropModel()

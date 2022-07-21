@@ -1,6 +1,7 @@
 import { Text, TextStyle } from "pixi.js"
-import { PixiApp } from "@/app/PixiApp"
+//import { PixiApp } from "@/app/PixiApp"
 import { useSceneStore } from "@/stores/SceneStore"
+import { SAGE } from "@/SAGE"
 
 export class SceneModel {
   private _X = 500
@@ -39,7 +40,7 @@ export class SceneModel {
     this.dialogText.y = 300
     this.dialogText.anchor.set(0.5)
     // .text = "This is expensive to change, please do not abuse";
-    PixiApp.app.stage.addChild(this.dialogText)
+    SAGE.app.stage.addChild(this.dialogText)
 
     // Subscribe to state changes
   }
@@ -47,7 +48,7 @@ export class SceneModel {
   teardown() {
     //
     if (this.dialogText) {
-      PixiApp.app.stage.removeChild(this.dialogText)
+      SAGE.app.stage.removeChild(this.dialogText)
       this.dialogText = null
     }
   }
