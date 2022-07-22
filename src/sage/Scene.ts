@@ -1,4 +1,4 @@
-import { SAGE } from "../Manager";
+import { SAGE } from "@/SAGE";
 import { SceneScreen } from "../screens/SceneScreen";
 import { Serialization } from "../utils/Serialization";
 import { IPropData, PropData } from "./PropData";
@@ -25,7 +25,7 @@ export class Scene implements ISceneData, Serialization<Scene> {
   public doors: Array<DoorData> = [];
 
 
-  screen!: SceneScreen;
+  //screen!: SceneScreen;
 
   // public initialize(): void {
   //     // Anything?

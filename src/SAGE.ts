@@ -1,12 +1,15 @@
 import { Application, Container } from "pixi.js"
-import type { SceneScreen } from "./screens/SceneScreen"
+import { SceneData } from "./sage/SceneData"
+import { Events } from "./sage/Events"
+import { SceneScreen } from "./screens/SceneScreen"
+import { Dialog } from "./sage/Dialog"
 
 export class SAGE {
   private constructor() {
     /*this class is purely static. No constructor to see here*/
   }
 
-  public static debugMode = false
+  public static debugMode = true
   public static enableFullscreen = false
 
   private static _app: Application
@@ -19,10 +22,10 @@ export class SAGE {
   private static currentScreen: SceneScreen
 
   // public static World: World;
-  // public static Dialog: Dialog;
+  public static Dialog: Dialog
   // public static Actions: Actions;
   // public static Script: Script;
-  // public static Events: Events;
+  public static Events: Events
   // public static Sound: Sound;
   // public static UI_Overlay: UI_Overlay;
 
@@ -95,39 +98,34 @@ export class SAGE {
     SAGE.topLayer.removeChildren()
   }
 
-  // public static loadWorld(): void {
+  public static loadWorld(): void {
+    const scene = new SceneData()
+    scene.name = "Test"
+    SAGE.currentScreen = new SceneScreen(scene)
 
-  //   //const gamedata = require("./gamedata.json");
-  //   //import * as gamedata from "./gamedata.json";
-  //   //let gamedata = JSON.parse(fs.readFileSync("./gamedata.json", "utf-8"));
-
-  //   // Initialise UI
-  //   SAGE.UI_Overlay = new UI_Overlay(SAGE.topLayer);
-
-  //   // Create and initialise game world
-  //   SAGE.World = new World();
-  //   SAGE.World.initialize(gamedata);
-  //   //Manager.World = new World().fromJSON(gamedata);
-
-  //   // ...and events
-  //   SAGE.Events = new Events();
-
-  //   // ...and inventory (UI)
-  //   SAGE.invScreen = new InventoryScreen(SAGE.topLayer);
-
-  //   // ...and game actions
-  //   SAGE.Actions = new Actions();
-
-  //   // ...and dialog
-  //   SAGE.Dialog = new Dialog();
-
-  //   // ...and script
-  //   SAGE.Script = new Script();
-  //   SAGE.Script.initialize();
-
-  //   // ...and sounds
-  //   SAGE.Sound = new Sound();
-  // }
+    //   //const gamedata = require("./gamedata.json");
+    //   //import * as gamedata from "./gamedata.json";
+    //   //let gamedata = JSON.parse(fs.readFileSync("./gamedata.json", "utf-8"));
+    //   // Initialise UI
+    //   SAGE.UI_Overlay = new UI_Overlay(SAGE.topLayer);
+    //   // Create and initialise game world
+    //   SAGE.World = new World();
+    //   SAGE.World.initialize(gamedata);
+    //   //Manager.World = new World().fromJSON(gamedata);
+    // ...and events
+    SAGE.Events = new Events()
+    //   // ...and inventory (UI)
+    //   SAGE.invScreen = new InventoryScreen(SAGE.topLayer);
+    //   // ...and game actions
+    //   SAGE.Actions = new Actions();
+    // ...and dialog
+    SAGE.Dialog = new Dialog()
+    //   // ...and script
+    //   SAGE.Script = new Script();
+    //   SAGE.Script.initialize();
+    //   // ...and sounds
+    //   SAGE.Sound = new Sound();
+  }
 
   public static resize() {
     // current screen size
@@ -167,7 +165,8 @@ export class SAGE {
   }
 
   // This update will be called by a pixi ticker and tell the scene that a tick happened
-  private static update(framesPassed: number) {
+  private static update() {
+    //framesPassed: number) {
     // Let the current scene know that we updated it...
     // Just for funzies, sanity check that it exists first.
     if (SAGE.currentScreen) {

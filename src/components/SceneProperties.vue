@@ -16,13 +16,13 @@
       accept="image/png, image/jpeg, image/bmp"
       placeholder="Pick a backdrop image"
       prepend-icon="mdi-camera"
-      label="Image"
+      label="Backdrop Image"
     ></v-file-input>
     <v-file-input
       accept="audio/mpeg, audio/ogg, audio/vnd.wav"
       placeholder="Pick a backdrop sound"
       prepend-icon="mdi-volume-high"
-      label="Sound"
+      label="Background Sound"
     ></v-file-input>
 
     <v-divider />
@@ -49,10 +49,10 @@
   import { ref } from "vue"
   import { PropModel } from "../models/PropModel"
   import { useSceneStore } from "../stores/SceneStore"
-  import { SceneModel } from "../models/SceneModel"
+  // import { SceneModel } from "../models/SceneModel"
 
   const sceneStore = useSceneStore()
-  const sceneModel = new SceneModel()
+  // const sceneModel = new SceneModel()
 
   // sceneStore.$subscribe((mutation, state) => {
   //   console.log("state updated - so refresh scene model (pixi)")
