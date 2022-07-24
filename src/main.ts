@@ -4,7 +4,7 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
 import App from "./App.vue"
 import vuetify from "./plugins/vuetify"
 import { loadFonts } from "./plugins/webfontloader"
-import { SAGE } from "./SAGE"
+import { SAGEdit } from "@/SAGEdit"
 //import { PixiApp } from "./app/PixiApp"
 
 // current screen size
@@ -16,7 +16,7 @@ loadFonts()
 const pinia = createPinia().use(piniaPluginPersistedstate)
 
 // Initialise Pixi (with a "black" default bg color)
-SAGE.initialize(gameWidth, gameHeight, 0x6495ed) //0x0)
+SAGEdit.initialize(gameWidth, gameHeight, 0x6495ed) //0x0)
 //PixiApp.initialize()
 
 createApp(App).use(vuetify).use(pinia).mount("#app")
