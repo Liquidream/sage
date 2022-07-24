@@ -1,10 +1,10 @@
 import { Application, Container } from "pixi.js"
-import { SceneData } from "./sage/SceneData"
-import { Events } from "./sage/Events"
+import { SceneData } from "./sagedit/SceneData"
+import { Events } from "./sagedit/Events"
 import { SceneScreen } from "./screens/SceneScreen"
-import { Dialog } from "./sage/Dialog"
+import { Dialog } from "./sagedit/Dialog"
 
-export class SAGE {
+export class SAGEdit {
   private constructor() {
     /*this class is purely static. No constructor to see here*/
   }
@@ -31,16 +31,16 @@ export class SAGE {
 
   // public static invScreen: InventoryScreen;
   public static get width(): number {
-    return SAGE._width
+    return SAGEdit._width
   }
   public static get height(): number {
-    return SAGE._height
+    return SAGEdit._height
   }
 
   // PN: Expose the Application object (for now)
   // TODO: Prob come up with a better structure so top "sage" class creates it, then nested classes uses it (e.g. sage.dialog)
   public static get app(): Application {
-    return SAGE._app
+    return SAGEdit._app
   }
 
   public static initialize(
@@ -48,10 +48,10 @@ export class SAGE {
     height: number,
     background: number
   ): void {
-    SAGE._width = width
-    SAGE._height = height
+    SAGEdit._width = width
+    SAGEdit._height = height
 
-    SAGE._app = new Application({
+    SAGEdit._app = new Application({
       view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
       //resolution: window.devicePixelRatio || 1, // This distorts/wrong on mobile
       autoDensity: true,
@@ -60,7 +60,7 @@ export class SAGE {
       height: height,
     })
 
-    SAGE._app.ticker.add(SAGE.update)
+    SAGEdit._app.ticker.add(SAGEdit.update)
 
     // Lock to 30fps (for cinematic effect)
     // ## REMOVED as made inventory jerky (+no longer CAGE/Cinematic engine anyway)
@@ -68,40 +68,51 @@ export class SAGE {
     // SAGE._app.ticker.maxFPS = SAGE._fps;
 
     // listen for the browser telling us that the screen size changed
-    window.addEventListener("resize", SAGE.resize)
+    window.addEventListener("resize", SAGEdit.resize)
 
     // call it manually once so we are sure we are the correct size after starting
-    SAGE.resize()
+    SAGEdit.resize()
 
     // initialise stage "layers"
-    SAGE.createLayers()
+    SAGEdit.createLayers()
   }
 
   static createLayers() {
     // Background layer
-    SAGE.backLayer = new Container()
-    SAGE._app.stage.addChild(SAGE.backLayer)
+    SAGEdit.backLayer = new Container()
+    SAGEdit._app.stage.addChild(SAGEdit.backLayer)
     // Mid-ground layer
-    SAGE.midLayer = new Container()
-    SAGE._app.stage.addChild(SAGE.midLayer)
+    SAGEdit.midLayer = new Container()
+    SAGEdit._app.stage.addChild(SAGEdit.midLayer)
     // Foreground/UI layer
-    SAGE.topLayer = new Container()
-    SAGE._app.stage.addChild(SAGE.topLayer)
+    SAGEdit.topLayer = new Container()
+    SAGEdit._app.stage.addChild(SAGEdit.topLayer)
   }
 
   static emptyLayers() {
     // Background layer
-    SAGE.backLayer.removeChildren()
+    SAGEdit.backLayer.removeChildren()
     // Mid-ground layer
-    SAGE.midLayer.removeChildren()
+    SAGEdit.midLayer.removeChildren()
     // Foreground/UI layer
-    SAGE.topLayer.removeChildren()
+    SAGEdit.topLayer.removeChildren()
   }
 
   public static loadWorld(): void {
     const scene = new SceneData()
-    scene.name = "Test"
-    SAGE.currentScreen = new SceneScreen(scene)
+    //scene.name = "Test"
+    SAGEdit.currentScreen = new SceneScreen(scene)
+
+    /* Thought
+    - Split store to many files (they are basically composables)
+    - Split them logcally - think we'll have:
+       > SceneStore
+       > PropStore
+       > PlayerStore
+       > etc.
+    - (Means that Prop will have to have a ref (id?) to Scene it's located in)
+    - 
+*/
 
     //   //const gamedata = require("./gamedata.json");
     //   //import * as gamedata from "./gamedata.json";
@@ -113,13 +124,13 @@ export class SAGE {
     //   SAGE.World.initialize(gamedata);
     //   //Manager.World = new World().fromJSON(gamedata);
     // ...and events
-    SAGE.Events = new Events()
+    SAGEdit.Events = new Events()
     //   // ...and inventory (UI)
     //   SAGE.invScreen = new InventoryScreen(SAGE.topLayer);
     //   // ...and game actions
     //   SAGE.Actions = new Actions();
     // ...and dialog
-    SAGE.Dialog = new Dialog()
+    SAGEdit.Dialog = new Dialog()
     //   // ...and script
     //   SAGE.Script = new Script();
     //   SAGE.Script.initialize();
@@ -139,29 +150,32 @@ export class SAGE {
     )
 
     // uniform scale for our game
-    const scale = Math.min(screenWidth / SAGE.width, screenHeight / SAGE.height)
+    const scale = Math.min(
+      screenWidth / SAGEdit.width,
+      screenHeight / SAGEdit.height
+    )
 
     // the "uniformly englarged" size for our game
-    const enlargedWidth = Math.floor(scale * SAGE.width)
-    const enlargedHeight = Math.floor(scale * SAGE.height)
+    const enlargedWidth = Math.floor(scale * SAGEdit.width)
+    const enlargedHeight = Math.floor(scale * SAGEdit.height)
 
     // margins for centering our game
     const horizontalMargin = (screenWidth - enlargedWidth) / 2
     const verticalMargin = (screenHeight - enlargedHeight) / 2
 
     // now we use css trickery to set the sizes and margins
-    SAGE._app.view.style.width = `${enlargedWidth}px`
-    SAGE._app.view.style.height = `${enlargedHeight}px`
-    SAGE._app.view.style.marginLeft =
-      SAGE._app.view.style.marginRight = `${horizontalMargin}px`
-    SAGE._app.view.style.marginTop =
-      SAGE._app.view.style.marginBottom = `${verticalMargin}px`
+    SAGEdit._app.view.style.width = `${enlargedWidth}px`
+    SAGEdit._app.view.style.height = `${enlargedHeight}px`
+    SAGEdit._app.view.style.marginLeft =
+      SAGEdit._app.view.style.marginRight = `${horizontalMargin}px`
+    SAGEdit._app.view.style.marginTop =
+      SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
   }
 
   // Conditional console.log (if debugMode is true)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static debugLog(message: any) {
-    if (SAGE.debugMode) console.debug(message)
+    if (SAGEdit.debugMode) console.debug(message)
   }
 
   // This update will be called by a pixi ticker and tell the scene that a tick happened
@@ -169,8 +183,8 @@ export class SAGE {
     //framesPassed: number) {
     // Let the current scene know that we updated it...
     // Just for funzies, sanity check that it exists first.
-    if (SAGE.currentScreen) {
-      SAGE.currentScreen.update() //framesPassed)
+    if (SAGEdit.currentScreen) {
+      SAGEdit.currentScreen.update() //framesPassed)
     }
 
     // as I said before, I HATE the "frame passed" approach. I would rather use `Manager.app.ticker.deltaMS`

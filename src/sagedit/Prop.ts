@@ -3,7 +3,7 @@ import { Sprite, Texture } from "pixi.js"
 // import { DialogType } from "./Dialog"
 import { InputEventEmitter } from "./ui/InputEventEmitter"
 import type { IPropData } from "./PropData"
-import { SAGE } from "@/SAGE"
+import { SAGEdit } from "@/SAGEdit"
 
 export class Prop {
   // "constants"

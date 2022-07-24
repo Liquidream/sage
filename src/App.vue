@@ -36,13 +36,13 @@
   // import { ref } from "vue"
   // import { PropModel } from "./models/PropModel"
   import SceneProperties from "./components/SceneProperties.vue"
-  import { SAGE } from "./SAGE"
+  import { SAGEdit } from "@/SAGEdit"
   //import { useSceneStore } from "./stores/SceneStore"
 
   const drawer = true
   //const model = new PropModel()
 
-  SAGE.loadWorld()
+  SAGEdit.loadWorld()
   //const sceneStore = useSceneStore()
 </script>
 

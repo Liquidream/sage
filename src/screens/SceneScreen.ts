@@ -12,12 +12,12 @@ import {
 
 import { useSceneStore } from "@/stores/SceneStore"
 
-import { SAGE } from "@/SAGE"
+import { SAGEdit } from "@/SAGEdit"
 //import type { ISceneData } from "../sage/Scene"
-import { Prop } from "../sage/Prop"
-import { Door } from "@/sage/Door"
-import type { SceneData } from "@/sage/SceneData"
-import type { PropData } from "@/sage/PropData"
+import { Prop } from "@/sagedit/Prop"
+import { Door } from "@/sagedit/Door"
+import type { SceneData } from "@/sagedit/SceneData"
+import type { PropData } from "@/sagedit/PropData"
 
 export class SceneScreen extends Container {
   private _X = 500
@@ -46,7 +46,7 @@ export class SceneScreen extends Container {
   }
 
   setup() {
-    SAGE.debugLog("SceneScreen : setup()...")
+    SAGEdit.debugLog("SceneScreen : setup()...")
     const sceneStore = useSceneStore()
     // Subscribe to state changes so that we refresh/recreate Pixi.js content
     sceneStore.$subscribe((mutation, state) => {
@@ -70,7 +70,7 @@ export class SceneScreen extends Container {
     this.dialogText.y = 300
     this.dialogText.anchor.set(0.5)
     // .text = "This is expensive to change, please do not abuse";
-    SAGE.app.stage.addChild(this.dialogText)
+    SAGEdit.app.stage.addChild(this.dialogText)
 
     // Construct scene from data
     this.buildBackdrop()
@@ -78,16 +78,16 @@ export class SceneScreen extends Container {
     this.buildProps()
 
     // Drag+Drop support
-    SAGE.app.stage.interactive = true
-    SAGE.app.stage.on("pointermove", this.onPointerMove, this)
-    SAGE.app.stage.on("pointerup", this.onPointerUp, this)
-    SAGE.app.stage.on("touchmove", this.onTouchMove, this)
+    SAGEdit.app.stage.interactive = true
+    SAGEdit.app.stage.on("pointermove", this.onPointerMove, this)
+    SAGEdit.app.stage.on("pointerup", this.onPointerUp, this)
+    SAGEdit.app.stage.on("touchmove", this.onTouchMove, this)
   }
 
   teardown() {
-    SAGE.debugLog(`>> SceneScreen teardown()`)
+    SAGEdit.debugLog(`>> SceneScreen teardown()`)
     if (this.dialogText) {
-      SAGE.app.stage.removeChild(this.dialogText)
+      SAGEdit.app.stage.removeChild(this.dialogText)
       this.dialogText = null
     }
     // Unsubscribe from events, etc.
@@ -97,9 +97,9 @@ export class SceneScreen extends Container {
     for (const door of this.doors) {
       door.tidyUp()
     }
-    SAGE.app.stage.off("pointermove", this.onPointerMove, this)
-    SAGE.app.stage.off("pointerup", this.onPointerUp, this)
-    SAGE.app.stage.off("touchmove", this.onTouchMove, this)
+    SAGEdit.app.stage.off("pointermove", this.onPointerMove, this)
+    SAGEdit.app.stage.off("pointerup", this.onPointerUp, this)
+    SAGEdit.app.stage.off("touchmove", this.onTouchMove, this)
 
     // Fade out scene music
     // if (this.scene.sound) {
@@ -116,8 +116,8 @@ export class SceneScreen extends Container {
       sprite = new Sprite(Texture.EMPTY)
     }
     sprite.anchor.set(0.5)
-    sprite.x = SAGE.width / 2
-    sprite.y = SAGE.height / 2
+    sprite.x = SAGEdit.width / 2
+    sprite.y = SAGEdit.height / 2
     this.addChild(sprite)
     this.backdrop = sprite
 
@@ -153,7 +153,7 @@ export class SceneScreen extends Container {
     }
 
     // DEBUG?
-    if (SAGE.debugMode) {
+    if (SAGEdit.debugMode) {
       const graphics = new Graphics()
       graphics.beginFill(0xe74c3c, 125) // Red
       graphics.lineStyle(10, 0xff0000)
@@ -201,7 +201,7 @@ export class SceneScreen extends Container {
           if (index !== -1) this.props.splice(index, 1)
           prop.tidyUp()
           // remove from game data
-          this.scene.removePropDataById(prop.data.id)
+          //          this.scene.removePropDataById(prop.data.id)
         })
     }
     if (scaleAnim) {
@@ -244,12 +244,12 @@ export class SceneScreen extends Container {
 
   private onPointerUp() {
     //_e: InteractionEvent) {
-    SAGE.debugLog(`${this.name}::onPointerUp()`)
+    SAGEdit.debugLog(`${this.name}::onPointerUp()`)
     if (this.draggedProp) {
       // We were dragging something - did we drop it on something?
       if (this.dragTarget) {
         // Was it a valid object?
-        this.draggedProp.use(this.dragTarget)
+        //        this.draggedProp.use(this.dragTarget)
       } else {
         // Didn't drop on object, so... do nothing? (+put back to orig pos)
         this.draggedProp.sprite.x = this.draggedProp.data.x
@@ -267,7 +267,7 @@ export class SceneScreen extends Container {
   }
 
   private onTouchMove(_e: InteractionEvent) {
-    SAGE.debugLog(`${this.name}::onTouchMove()`)
+    SAGEdit.debugLog(`${this.name}::onTouchMove()`)
     // Get touch position
     const touchPoint: Point = new Point()
     _e.data.getLocalPosition(this, touchPoint, _e.data.global)

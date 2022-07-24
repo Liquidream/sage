@@ -1,4 +1,4 @@
-import { SAGE } from "@/SAGE"
+import { SAGEdit } from "@/SAGEdit"
 import { Container, Graphics, Text, TextStyle } from "pixi.js"
 
 export class DialogChoice {
@@ -96,13 +96,13 @@ export class Dialog {
       // (only do this once, per dialog choice menu init)
       this.blocker = new Graphics()
       this.blocker.beginFill(0xccc, 0.00000000000001) // "Invisible"
-      this.blocker.drawRect(0, 0, SAGE.width, SAGE.height)
+      this.blocker.drawRect(0, 0, SAGEdit.width, SAGEdit.height)
       this.blocker.interactive = true
       this.blocker.on("pointertap", () => {
-        SAGE.debugLog("Blocker was clicked/tapped")
-        SAGE.Events.emit("sceneinteract")
+        SAGEdit.debugLog("Blocker was clicked/tapped")
+        SAGEdit.Events.emit("sceneinteract")
       })
-      SAGE.app.stage.addChild(this.blocker)
+      SAGEdit.app.stage.addChild(this.blocker)
     }
 
     // Create interactive Pixi Text objects + handle events!
@@ -110,7 +110,7 @@ export class Dialog {
     // Text style
     this.dialogCol = options?.col || this.dialogCol || "#fff"
     this.dialogContainer = new Container()
-    SAGE.app.stage.addChild(this.dialogContainer)
+    SAGEdit.app.stage.addChild(this.dialogContainer)
 
     let yOffset = 0
     for (const choice of this._dialogChoices) {
@@ -130,7 +130,7 @@ export class Dialog {
         strokeThickness: 6,
         lineJoin: "round",
         wordWrap: true,
-        wordWrapWidth: SAGE.width / 2,
+        wordWrapWidth: SAGEdit.width / 2,
       })
       // Bullet
       // ================================================================================
@@ -152,13 +152,13 @@ export class Dialog {
       // >> On Selected...
       const funcSelect = async () => {
         if (!this.suppressChoiceSelectRepeat)
-          await SAGE.Dialog.showMessage(choice.message)
+          await SAGEdit.Dialog.showMessage(choice.message)
         // Run the choice's function
         try {
           await choice.func()
         } catch (e: unknown) {
           if (e instanceof Error) {
-            SAGE.Dialog.showErrorMessage(
+            SAGEdit.Dialog.showErrorMessage(
               `Error: Func for choice threw the following: ${e.message}`
             )
           }
@@ -169,7 +169,7 @@ export class Dialog {
         )
         if (index && index !== -1) this.dialogChoices?.splice(index, 1)
         // Re-show choices
-        SAGE.Dialog.reshowChoices()
+        SAGEdit.Dialog.reshowChoices()
       }
 
       bullet.on("pointertap", funcSelect)
@@ -192,8 +192,9 @@ export class Dialog {
       this.dialogContainer.width / 2,
       this.dialogContainer.height / 2
     )
-    this.dialogContainer.x = SAGE.width / 2
-    this.dialogContainer.y = SAGE.height - this.dialogContainer.height / 2 - 80
+    this.dialogContainer.x = SAGEdit.width / 2
+    this.dialogContainer.y =
+      SAGEdit.height - this.dialogContainer.height / 2 - 80
 
     // Background for all dialog
     this.dialogBackground = new Graphics()
@@ -216,7 +217,7 @@ export class Dialog {
     // Tidy up any dialog choice related content
     if (this.blocker) {
       this.blocker.interactive = false
-      SAGE.app.stage.removeChild(this.blocker)
+      SAGEdit.app.stage.removeChild(this.blocker)
       this.blocker.destroy()
       this.blocker = null
     }
@@ -265,7 +266,7 @@ export class Dialog {
 
   public clearMessage(): void {
     if (this.dialogContainer) {
-      SAGE.app.stage.removeChild(this.dialogContainer)
+      SAGEdit.app.stage.removeChild(this.dialogContainer)
     }
     this.dialogText = null
     this.dialogBackground = null
@@ -332,15 +333,15 @@ export class Dialog {
       strokeThickness: 6,
       lineJoin: "round",
       wordWrap: true,
-      wordWrapWidth: SAGE.width / 2,
+      wordWrapWidth: SAGEdit.width / 2,
     })
     // Spoken by..?
     if (options.speaker) {
       options.message = `[${options.speaker.toUpperCase()}]\n${options.message}`
     }
     const newDialogText = new Text(options.message, styly) // Text supports unicode!
-    newDialogText.x = SAGE.width / 2
-    newDialogText.y = SAGE.height - newDialogText.height / 2 - 80
+    newDialogText.x = SAGEdit.width / 2
+    newDialogText.y = SAGEdit.height - newDialogText.height / 2 - 80
     newDialogText.anchor.set(0.5)
     // .text = "This is expensive to change, please do not abuse";
     this.dialogText = newDialogText
@@ -366,7 +367,7 @@ export class Dialog {
     this.dialogContainer = new Container()
     this.dialogContainer.addChild(this.dialogBackground)
     this.dialogContainer.addChild(this.dialogText)
-    SAGE.app.stage.addChild(this.dialogContainer)
+    SAGEdit.app.stage.addChild(this.dialogContainer)
 
     // Set here, so if another dialog comes before this expires, it'll be removed
     this.currentDialogType = options.type ?? DialogType.DialogInt
@@ -401,21 +402,18 @@ export class Dialog {
     // ...or leave on display (e.g. if duration = -1)
     if (waitDuration > 0) {
       // wait for calc'd duration
-// await SAGE.Script.waitSkippable(waitDuration)
-
-// // Remove message now duration over
-// // - (Unlike counter method, this could create a bug where msg changed mid-show & thread clash?)
-// // Only clear dialog if we're the last message
-// // (could have been an overlap)
-// if (newDialogText === this.dialogText) {
-//   this.clearMessage()
-
-//   const sound = SAGE.Sound.soundLibrary.find(this.dialogSoundName)
-//   if (sound?.isPlaying) sound.stop()
-// }
-
-// // Add a gap at end (so dialog not too close together)
-// await SAGE.Script.wait(0.5)
+      // await SAGE.Script.waitSkippable(waitDuration)
+      // // Remove message now duration over
+      // // - (Unlike counter method, this could create a bug where msg changed mid-show & thread clash?)
+      // // Only clear dialog if we're the last message
+      // // (could have been an overlap)
+      // if (newDialogText === this.dialogText) {
+      //   this.clearMessage()
+      //   const sound = SAGE.Sound.soundLibrary.find(this.dialogSoundName)
+      //   if (sound?.isPlaying) sound.stop()
+      // }
+      // // Add a gap at end (so dialog not too close together)
+      // await SAGE.Script.wait(0.5)
     }
   }
 }

@@ -1,5 +1,5 @@
 //import { EventEmitter } from '@pixi/utils';
-import { SAGE } from "@/SAGE"
+//import { SAGE } from "@/SAGE"
 import type { DisplayObject } from "pixi.js"
 
 export class InputEventEmitter {
@@ -43,7 +43,7 @@ export class InputEventEmitter {
 
   private onTouchStart() {
     //_e: InteractionEvent
-    SAGE.debugLog("onTouchStart...")
+    //SAGE.debugLog("onTouchStart...")
     this.touchStartTime = new Date()
     this.touchTimer = setTimeout(() => {
       // if (!SAGE.World.currentScene.screen.draggedProp) {
@@ -57,7 +57,7 @@ export class InputEventEmitter {
 
   // https://stackoverflow.com/questions/6139225/how-to-detect-a-long-touch-pressure-with-javascript-for-android-and-iphone
   private onTouchEnd() {
-    SAGE.debugLog("onTouchEnd...")
+    //SAGE.debugLog("onTouchEnd...")
     if (this.touchStartTime) {
       const touchEndTime = new Date()
       const timeDiffSecs =

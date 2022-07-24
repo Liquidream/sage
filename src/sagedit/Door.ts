@@ -1,4 +1,4 @@
-import { SAGE } from "@/SAGE"
+import { SAGEdit } from "@/SAGEdit"
 import { Graphics, Sprite } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"
 //import { DialogType } from "./Dialog"
@@ -21,7 +21,7 @@ export class Door {
     this.data = doorData
     const graphics = new Graphics()
     // Make doors visible in debug
-    if (SAGE.debugMode) {
+    if (SAGEdit.debugMode) {
       // Set the fill color
       graphics.beginFill(0xe74c3c, 125) // Red
       // Line/stroke style
@@ -95,7 +95,7 @@ export class Door {
   }
 
   private onPointerOver() {
-    if (SAGE.debugMode) console.log(`${this.data.name}::onPointerOver()`)
+    if (SAGEdit.debugMode) console.log(`${this.data.name}::onPointerOver()`)
     //SAGE.Dialog.showMessage(this.data.name, DialogType.Caption, -1)
   }
 

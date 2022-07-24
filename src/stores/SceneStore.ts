@@ -4,7 +4,15 @@ export const useSceneStore = defineStore({
   id: "SceneStore",
 
   state: () => ({
-    name: "<unset>",
+    scenes: [],
+    // Fields
+    id: "",
+    image: "",
+    name: "",
+    soundFile: "",
+    // Events
+    onEnter: "",
+    onExit: "",
   }),
 
   actions: {
@@ -17,5 +25,5 @@ export const useSceneStore = defineStore({
   //   doubleCount: (state) => state.counter * 2,
   // },
 
-  persist: true,
+  persist: true, // Save to localStorage
 })

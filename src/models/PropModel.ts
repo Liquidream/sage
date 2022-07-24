@@ -1,5 +1,5 @@
 import { Graphics } from "pixi.js"
-import { SAGE } from "@/SAGE"
+import { SAGEdit } from "@/SAGEdit"
 //import { PixiApp } from "@/app/PixiApp"
 //import { Prop } from "./Prop";
 
@@ -21,7 +21,7 @@ export class PropModel {
     this.graphy.lineStyle(10, 0x00ff00)
     this.graphy.drawCircle(0, 0, 50) // See how I set the drawing at 0,0? NOT AT 100, 100!
     this.graphy.endFill()
-    SAGE.app.stage.addChild(this.graphy) //I can add it before setting position, nothing bad will happen.
+    SAGEdit.app.stage.addChild(this.graphy) //I can add it before setting position, nothing bad will happen.
     // Here we set it at 100,100
     this.graphy.x = 500
     this.graphy.y = 100
