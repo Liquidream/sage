@@ -25,7 +25,8 @@
 
       <div class="pa-2">
         <!-- Nav bar content area -->
-        <SceneProperties />
+        <!-- <SceneProperties /> -->
+        <WorldProperties />
       </div>
     </v-navigation-drawer>
   </v-app>
@@ -35,6 +36,7 @@
   // import type { Ref } from "vue"
   // import { ref } from "vue"
   // import { PropModel } from "./models/PropModel"
+  import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"
   import { SAGEdit } from "@/SAGEdit"
   //import { useSceneStore } from "./stores/SceneStore"
