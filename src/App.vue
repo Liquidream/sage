@@ -25,8 +25,8 @@
 
       <div class="pa-2">
         <!-- Nav bar content area -->
-        <!-- <SceneProperties /> -->
-        <WorldProperties />
+        <WorldProperties v-if="worldStore.currSceneId == ''" />
+        <SceneProperties v-if="worldStore.currSceneId != ''" />
       </div>
     </v-navigation-drawer>
   </v-app>
@@ -39,13 +39,15 @@
   import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"
   import { SAGEdit } from "@/SAGEdit"
+  
+  import { useWorldStore } from "@/stores/index"
   //import { useSceneStore } from "./stores/SceneStore"
 
-  const drawer = true
-  //const model = new PropModel()
+  const worldStore = useWorldStore()
 
   SAGEdit.loadWorld()
-  //const sceneStore = useSceneStore()
+  
+  const drawer = true  
 </script>
 
 <style>

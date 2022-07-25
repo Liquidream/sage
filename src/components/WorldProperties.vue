@@ -11,8 +11,16 @@
 
     <v-divider />
     <v-list-subheader>Scenes</v-list-subheader>
-    <!-- on click, replace panel with properties of Prop + select it in scene -->
-    <v-list :items="modelScenes"></v-list>
+    <!-- on click, replace panel with properties of Scene -->
+    <v-list>
+      <v-list-item
+        @click="onClickScene(scene)"
+        v-for="scene in modelScenes"
+        :key="scene"
+      >
+        {{ scene.name }}
+      </v-list-item>
+    </v-list>
 
     <v-divider />
     <v-list-subheader>Events</v-list-subheader>
@@ -23,26 +31,35 @@
 </template>
 
 <script setup lang="ts">
+  import type { SceneModel } from "@/models/SceneModel"
+  import { SAGEdit } from "@/SAGEdit"
   import type { Ref } from "vue"
   import { ref } from "vue"
   import { useWorldStore } from "../stores/index"
 
   const worldStore = useWorldStore()
 
-  const modelScenes = [
+  const modelScenes: SceneModel[] = [
     {
-      title: "Bridge",
-      value: 1,
+      id: "scnBridge",
+      name: "Bridge",
     },
     {
-      title: "Cave Entrance",
-      value: 3,
+      id: "scnCave",
+      name: "Cave Entrance...",
     },
     {
-      title: "Fortress",
-      value: 3,
+      id: "scnFort",
+      name: "Fortress",
     },
   ]
+
+  const onClickScene = (scene: SceneModel) => {
+    SAGEdit.debugLog("onClickScene()...")
+    SAGEdit.debugLog(scene.name)
+
+    worldStore.currSceneId = scene.id
+  }
 
   const loadBtnClicked = () => {
     //worldStore.load()

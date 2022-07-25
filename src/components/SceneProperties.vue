@@ -1,5 +1,6 @@
 <template>
   <v-form>
+    <v-btn @click="backBtnClicked" color="info" class="mt-2">Back</v-btn>
     <div class="header pa-3">
       <div class="mt-2 text-h5">
         Scene Name
@@ -49,9 +50,10 @@
   import { ref } from "vue"
   import { PropModel } from "../models/PropModel"
   import { useSceneStore } from "../stores/SceneStore"
-  // import { SceneModel } from "../models/SceneModel"
+  import { useWorldStore } from "../stores/index"
 
   const sceneStore = useSceneStore()
+  const worldStore = useWorldStore()
   // const sceneModel = new SceneModel()
 
   // sceneStore.$subscribe((mutation, state) => {
@@ -109,11 +111,8 @@
     model.value.createCircle()
   }
 
-  const closeDrawer = () => {
-    console.log("close drawer...")
-    // doesn't work, currently
-    // (missing something - would be nice to have this optional for mobile, etc.)
-    //drawer = false
+  const backBtnClicked = () => {
+    worldStore.currSceneId = ""
   }
 
   let motionExpand: false

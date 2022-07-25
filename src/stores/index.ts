@@ -5,7 +5,7 @@ export type RootState = {
   title: string
   scenes: SceneModel[]
   on_start: string
-  currScene: SceneModel | null
+  currSceneId: string
 }
 
 export const useWorldStore = defineStore({
@@ -16,7 +16,7 @@ export const useWorldStore = defineStore({
     title: "",
     scenes: [],
     on_start: "",
-    currScene: null,
+    currSceneId: "",
   }),
 
   actions: {
