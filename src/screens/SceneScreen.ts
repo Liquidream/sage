@@ -18,6 +18,8 @@ import { Prop } from "@/sagedit/Prop"
 import { Door } from "@/sagedit/Door"
 import type { SceneData } from "@/sagedit/SceneData"
 import type { PropData } from "@/sagedit/PropData"
+import { useWorldStore } from "@/stores"
+import type { SceneModel } from "@/models/SceneModel"
 
 export class SceneScreen extends Container {
   private _X = 500
@@ -25,7 +27,7 @@ export class SceneScreen extends Container {
 
   private dialogText!: Text | null
 
-  private scene: SceneData
+  private scene: SceneModel | undefined
   private backdrop!: Sprite
   private props: Array<Prop> = []
   private doors: Array<Door> = []
@@ -47,12 +49,23 @@ export class SceneScreen extends Container {
 
   setup() {
     SAGEdit.debugLog("SceneScreen : setup()...")
-    const sceneStore = useSceneStore()
+
     // Subscribe to state changes so that we refresh/recreate Pixi.js content
+    const sceneStore = useSceneStore()
     sceneStore.$subscribe((mutation, state) => {
       //console.log("state updated - so refresh scene model (pixi)")
       this.teardown()
       this.setup()
+    })
+    const worldStore = useWorldStore()
+    this.scene = worldStore.getCurrentScene
+    worldStore.$subscribe((mutation, state) => {
+      // Scene changed
+      if (this.scene?.id !== worldStore.currSceneId) {
+        console.log("Scene changed - so refresh scene model (pixi)")
+        this.teardown()
+        this.setup()
+      }
     })
 
     // Create text
@@ -65,7 +78,7 @@ export class SceneScreen extends Container {
       wordWrap: true,
       wordWrapWidth: 1280 / 2,
     })
-    this.dialogText = new Text(sceneStore.name, styly) // Text supports unicode!
+    this.dialogText = new Text(this.scene?.name, styly) // Text supports unicode!
     this.dialogText.x = 800
     this.dialogText.y = 300
     this.dialogText.anchor.set(0.5)
@@ -73,9 +86,9 @@ export class SceneScreen extends Container {
     SAGEdit.app.stage.addChild(this.dialogText)
 
     // Construct scene from data
-    this.buildBackdrop()
-    this.buildDoorways()
-    this.buildProps()
+    // this.buildBackdrop()
+    // this.buildDoorways()
+    // this.buildProps()
 
     // Drag+Drop support
     SAGEdit.app.stage.interactive = true

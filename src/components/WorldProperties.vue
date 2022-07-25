@@ -15,8 +15,8 @@
     <v-list>
       <v-list-item
         @click="onClickScene(scene)"
-        v-for="scene in modelScenes"
-        :key="scene"
+        v-for="scene in worldStore.scenes"
+        :key="scene.id"
       >
         {{ scene.name }}
       </v-list-item>
@@ -26,7 +26,9 @@
     <v-list-subheader>Events</v-list-subheader>
     <v-textarea name="on_start" label="On Start" auto-grow></v-textarea>
 
-    <v-btn @click="loadBtnClicked" color="info" class="mt-2">Load</v-btn>
+    <v-btn @click="worldStore.resetToDemoData" color="info" class="mt-2"
+      >Reset Data</v-btn
+    >
   </v-form>
 </template>
 
@@ -39,20 +41,20 @@
 
   const worldStore = useWorldStore()
 
-  const modelScenes: SceneModel[] = [
-    {
-      id: "scnBridge",
-      name: "Bridge",
-    },
-    {
-      id: "scnCave",
-      name: "Cave Entrance...",
-    },
-    {
-      id: "scnFort",
-      name: "Fortress",
-    },
-  ]
+  // const modelScenes: SceneModel[] = [
+  //   {
+  //     id: "scnBridge",
+  //     name: "Bridge",
+  //   },
+  //   {
+  //     id: "scnCave",
+  //     name: "Cave Entrance...",
+  //   },
+  //   {
+  //     id: "scnFort",
+  //     name: "Fortress",
+  //   },
+  // ]
 
   const onClickScene = (scene: SceneModel) => {
     SAGEdit.debugLog("onClickScene()...")

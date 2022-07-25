@@ -19,6 +19,12 @@ export const useWorldStore = defineStore({
     currSceneId: "",
   }),
 
+  getters: {
+    getCurrentScene(state) {
+      return state.scenes.find((item) => item.id === state.currSceneId)
+    },
+  },
+
   actions: {
     createScene(scene: SceneModel) {
       this.scenes.push(scene)
@@ -44,6 +50,23 @@ export const useWorldStore = defineStore({
 
     findIndexById(id: string) {
       return this.scenes.findIndex((item) => item.id === id)
+    },
+
+    resetToDemoData() {
+      this.scenes = [
+        {
+          id: "scnBridge",
+          name: "Bridge",
+        },
+        {
+          id: "scnCave",
+          name: "Cave Entrance...",
+        },
+        {
+          id: "scnFort",
+          name: "Fortress",
+        },
+      ]
     },
   },
 

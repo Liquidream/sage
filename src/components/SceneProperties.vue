@@ -12,7 +12,7 @@
     <v-list-subheader>General</v-list-subheader>
 
     <v-text-field label="ID"></v-text-field>
-    <v-text-field label="Name" v-model="sceneStore.name"></v-text-field>
+    <v-text-field label="Name" v-model="model.name"></v-text-field>
     <v-file-input
       accept="image/png, image/jpeg, image/bmp"
       placeholder="Pick a backdrop image"
@@ -51,6 +51,7 @@
   import { PropModel } from "../models/PropModel"
   import { useSceneStore } from "../stores/SceneStore"
   import { useWorldStore } from "../stores/index"
+  import type { SceneModel } from "@/models/SceneModel"
 
   const sceneStore = useSceneStore()
   const worldStore = useWorldStore()
@@ -60,10 +61,11 @@
   //   console.log("state updated - so refresh scene model (pixi)")
   //   sceneModel.teardown()
   // }
-
+  console.log(worldStore.getCurrentScene)
+  const model = worldStore.getCurrentScene || ({} as SceneModel)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const model: Ref<any> = ref(null)
-  model.value = new PropModel()
+  // const model: Ref<any> = ref(null)
+  // model.value = new PropModel()
   //let drawer = true
 
   const modelProps = [
@@ -97,18 +99,14 @@
   ]
 
   const loadBtnClicked = () => {
-    sceneStore.load()
-
-    model.value = new PropModel()
-    model.value.createCircle()
+    // sceneStore.load()
+    // model.value = new PropModel()
+    // model.value.createCircle()
   }
 
   const createBtnClicked = () => {
-    //model = new PropModel()
-    //model.createCircle();
-
-    model.value = new PropModel()
-    model.value.createCircle()
+    // model.value = new PropModel()
+    // model.value.createCircle()
   }
 
   const backBtnClicked = () => {

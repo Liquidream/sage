@@ -39,15 +39,15 @@
   import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"
   import { SAGEdit } from "@/SAGEdit"
-  
+
   import { useWorldStore } from "@/stores/index"
   //import { useSceneStore } from "./stores/SceneStore"
 
   const worldStore = useWorldStore()
 
   SAGEdit.loadWorld()
-  
-  const drawer = true  
+
+  const drawer = true
 </script>
 
 <style>
