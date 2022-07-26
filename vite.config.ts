@@ -7,15 +7,19 @@ import vue from "@vitejs/plugin-vue"
 import vuetify from "vite-plugin-vuetify"
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [vue(), vuetify({ autoImport: true })],
-  resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
+export default defineConfig(({ command, mode, ssrBuild }) => {
+  return {
+    plugins: [vue(), vuetify({ autoImport: true })],
+    // (This is now explicitly specified in separate npm build script)
+    //base: command === "build" ? "/sage/" : "/",
+    resolve: {
+      alias: {
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
+      },
     },
-  },
-  // PN added to expose dev server to network ######
-  server: {
-    host: "0.0.0.0",
-  },
+    // PN added to expose dev server to network ######
+    server: {
+      host: "0.0.0.0",
+    },
+  }
 })

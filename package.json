@@ -6,7 +6,8 @@
     "test:unit": "vitest --environment jsdom",
     "serve": "vite preview",
     "build": "vite build",
-    "deploy": "gh-pages -d dist",
+    "build github": "vite build --base=/sage/",
+    "deploy github": "gh-pages -d dist",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
   },
