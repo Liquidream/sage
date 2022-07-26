@@ -60,7 +60,7 @@ export const useWorldStore = defineStore({
         },
         {
           id: "scnCave",
-          name: "Cave Entrance...",
+          name: "Cave Entrance",
         },
         {
           id: "scnFort",
