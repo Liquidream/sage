@@ -8,6 +8,7 @@ import {
   TextStyle,
   Texture,
   Text,
+  BaseTexture,
 } from "pixi.js"
 
 import { useSceneStore } from "@/stores/SceneStore"
@@ -22,9 +23,6 @@ import { useWorldStore } from "@/stores"
 import type { SceneModel } from "@/models/SceneModel"
 
 export class SceneScreen extends Container {
-  private _X = 500
-  private _Y = 100
-
   private dialogText!: Text | null
 
   private scene: SceneModel | undefined
@@ -51,21 +49,22 @@ export class SceneScreen extends Container {
     SAGEdit.debugLog("SceneScreen : setup()...")
 
     // Subscribe to state changes so that we refresh/recreate Pixi.js content
-    const sceneStore = useSceneStore()
-    sceneStore.$subscribe((mutation, state) => {
-      //console.log("state updated - so refresh scene model (pixi)")
-      this.teardown()
-      this.setup()
-    })
+    // const sceneStore = useSceneStore()
+    // sceneStore.$subscribe((mutation, state) => {
+    //   SAGEdit.debugLog("Scene state changed - so refresh scene model (pixi)")
+    //   this.teardown()
+    //   this.setup()
+    // })
     const worldStore = useWorldStore()
     this.scene = worldStore.getCurrentScene
     worldStore.$subscribe((mutation, state) => {
       // Scene changed
-      if (this.scene?.id !== worldStore.currSceneId) {
-        console.log("Scene changed - so refresh scene model (pixi)")
-        this.teardown()
-        this.setup()
-      }
+      //if (this.scene?.id !== worldStore.currSceneId) {
+      SAGEdit.debugLog("World/scene changed - so refresh scene model (pixi)")
+      // this.scene = worldStore.getCurrentScene
+      this.teardown()
+      this.setup()
+      //}
     })
 
     // Create text
@@ -83,10 +82,11 @@ export class SceneScreen extends Container {
     this.dialogText.y = 300
     this.dialogText.anchor.set(0.5)
     // .text = "This is expensive to change, please do not abuse";
-    SAGEdit.app.stage.addChild(this.dialogText)
+    this.addChild(this.dialogText)
+    //SAGEdit.app.stage.addChild(this.dialogText)
 
     // Construct scene from data
-    // this.buildBackdrop()
+    this.buildBackdrop()
     // this.buildDoorways()
     // this.buildProps()
 
@@ -101,7 +101,12 @@ export class SceneScreen extends Container {
     SAGEdit.debugLog(`>> SceneScreen teardown()`)
     if (this.dialogText) {
       SAGEdit.app.stage.removeChild(this.dialogText)
-      this.dialogText = null
+      this.dialogText.destroy()
+      //this.dialogText = null
+    }
+    if (this.backdrop) {
+      SAGEdit.app.stage.removeChild(this.backdrop)
+      this.backdrop.destroy()
     }
     // Unsubscribe from events, etc.
     for (const prop of this.props) {
@@ -123,8 +128,17 @@ export class SceneScreen extends Container {
   private buildBackdrop() {
     // Backdrop
     let sprite = undefined
-    if (this.scene.image) {
-      sprite = Sprite.from(this.scene.image)
+    if (this.scene?.image) {
+      //console.log(this.scene.image)
+
+      //sprite = Sprite.from("/clampy.png")
+
+      const base = new BaseTexture(this.scene.image)
+      const texture = new Texture(base)
+      sprite = Sprite.from(texture)
+
+      //sprite = new Sprite(Texture.EMPTY)
+      //sprite = Sprite.from(this.scene.image)
     } else {
       sprite = new Sprite(Texture.EMPTY)
     }
@@ -132,6 +146,7 @@ export class SceneScreen extends Container {
     sprite.x = SAGEdit.width / 2
     sprite.y = SAGEdit.height / 2
     this.addChild(sprite)
+    //SAGEdit.app.stage.addChild(sprite)
     this.backdrop = sprite
 
     // Events

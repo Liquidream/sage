@@ -35,7 +35,7 @@
 <script setup lang="ts">
   // import type { Ref } from "vue"
   // import { ref } from "vue"
-  // import { PropModel } from "./models/PropModel"
+  // import { PropModel } from "./models/PropModel" 
   import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"
   import { SAGEdit } from "@/SAGEdit"

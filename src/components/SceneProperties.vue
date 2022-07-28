@@ -3,8 +3,8 @@
     <v-btn @click="backBtnClicked" color="info" class="mt-2">Back</v-btn>
     <div class="header pa-3">
       <div class="mt-2 text-h5">
-        Scene Name
-        <!-- {{ sceneName }} -->
+        <!-- Scene Name -->
+        {{ model.name }}
       </div>
     </div>
 
@@ -14,11 +14,15 @@
     <v-text-field label="ID"></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
     <v-file-input
+      v-model="chosenFile"
+      type="file"
+      @change="onFileChange"
+      label="Backdrop Image"
       accept="image/png, image/jpeg, image/bmp"
       placeholder="Pick a backdrop image"
       prepend-icon="mdi-camera"
-      label="Backdrop Image"
     ></v-file-input>
+    <v-img :src="imageData" alt="test" />
     <v-file-input
       accept="audio/mpeg, audio/ogg, audio/vnd.wav"
       placeholder="Pick a backdrop sound"
@@ -63,10 +67,26 @@
   // }
   console.log(worldStore.getCurrentScene)
   const model = worldStore.getCurrentScene || ({} as SceneModel)
+  let chosenFile: any = undefined
+    //let imageData: any = ""
+  const imageData: Ref<string | ArrayBuffer | null> = ref("")
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // const model: Ref<any> = ref(null)
   // model.value = new PropModel()
   //let drawer = true
+
+  const onFileChange = (e: any) => {
+    //debugger
+
+    const reader = new FileReader()
+    // Use the javascript reader object to load the contents
+    // of the file in the v-model prop
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = () => {
+      imageData.value = reader.result
+      model.image = reader.result
+    }
+  }
 
   const modelProps = [
     {

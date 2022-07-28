@@ -102,6 +102,7 @@ export class SAGEdit {
     const scene = new SceneData()
     //scene.name = "Test"
     SAGEdit.currentScreen = new SceneScreen(scene)
+    SAGEdit.midLayer.addChild(SAGEdit.currentScreen)
 
     /* Thought
     - Split store to many files (they are basically composables)
