@@ -22,8 +22,10 @@
       placeholder="Pick a backdrop image"
       prepend-icon="mdi-camera"
     ></v-file-input>
-    <v-img :src="imageData" alt="test" />
+    <v-img :src="model.image" />
+
     <v-file-input
+      class="mt-8"
       accept="audio/mpeg, audio/ogg, audio/vnd.wav"
       placeholder="Pick a backdrop sound"
       prepend-icon="mdi-volume-high"
@@ -68,7 +70,7 @@
   //console.log(worldStore.getCurrentScene)
   const model = worldStore.getCurrentScene || ({} as SceneModel)
   let chosenFile: any
-    //let imageData: any = ""
+  //let imageData: any = ""
   const imageData: Ref<string | ArrayBuffer | null> = ref("")
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // const model: Ref<any> = ref(null)

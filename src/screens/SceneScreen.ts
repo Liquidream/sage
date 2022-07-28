@@ -36,7 +36,8 @@ export class SceneScreen extends Container {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public touchTarget!: any // Could be Prop or Door
 
-  constructor() {//scene: SceneData) {
+  constructor() {
+    //scene: SceneData) {
     super()
 
     // Ref to scene data
@@ -44,7 +45,8 @@ export class SceneScreen extends Container {
 
     const worldStore = useWorldStore()
     this.scene = worldStore.getCurrentScene
-    
+
+    // Subscribe to state changes so that we refresh/recreate Pixi.js content
     worldStore.$subscribe((mutation, state) => {
       // Scene changed
       //if (this.scene?.id !== worldStore.currSceneId) {
@@ -62,20 +64,10 @@ export class SceneScreen extends Container {
   setup() {
     SAGEdit.debugLog("SceneScreen : setup()...")
 
-    // Subscribe to state changes so that we refresh/recreate Pixi.js content
-    // const sceneStore = useSceneStore()
-    // sceneStore.$subscribe((mutation, state) => {
-    //   SAGEdit.debugLog("Scene state changed - so refresh scene model (pixi)")
-    //   this.teardown()
-    //   this.setup()
-    // })
-    
     // Construct scene from data
     this.buildBackdrop()
     // this.buildDoorways()
     // this.buildProps()
-
-    
 
     // Create text
     const styly: TextStyle = new TextStyle({
@@ -95,7 +87,6 @@ export class SceneScreen extends Container {
     this.addChild(this.dialogText)
     //SAGEdit.app.stage.addChild(this.dialogText)
 
-
     // Drag+Drop support
     SAGEdit.app.stage.interactive = true
     SAGEdit.app.stage.on("pointermove", this.onPointerMove, this)
@@ -105,7 +96,7 @@ export class SceneScreen extends Container {
 
   teardown() {
     SAGEdit.debugLog(`>> SceneScreen teardown()`)
-    
+
     const worldStore = useWorldStore()
 
     if (this.dialogText) {
