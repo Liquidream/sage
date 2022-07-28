@@ -36,11 +36,25 @@ export class SceneScreen extends Container {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public touchTarget!: any // Could be Prop or Door
 
-  constructor(scene: SceneData) {
+  constructor() {//scene: SceneData) {
     super()
 
     // Ref to scene data
-    this.scene = scene
+    //this.scene = scene
+
+    const worldStore = useWorldStore()
+    this.scene = worldStore.getCurrentScene
+    
+    worldStore.$subscribe((mutation, state) => {
+      // Scene changed
+      //if (this.scene?.id !== worldStore.currSceneId) {
+      SAGEdit.debugLog("World/scene changed - so refresh scene model (pixi)")
+      //console.log(mutation)
+      this.scene = worldStore.getCurrentScene
+      this.teardown()
+      this.setup()
+      //}
+    })
 
     this.setup()
   }
@@ -55,17 +69,13 @@ export class SceneScreen extends Container {
     //   this.teardown()
     //   this.setup()
     // })
-    const worldStore = useWorldStore()
-    this.scene = worldStore.getCurrentScene
-    worldStore.$subscribe((mutation, state) => {
-      // Scene changed
-      //if (this.scene?.id !== worldStore.currSceneId) {
-      SAGEdit.debugLog("World/scene changed - so refresh scene model (pixi)")
-      // this.scene = worldStore.getCurrentScene
-      this.teardown()
-      this.setup()
-      //}
-    })
+    
+    // Construct scene from data
+    this.buildBackdrop()
+    // this.buildDoorways()
+    // this.buildProps()
+
+    
 
     // Create text
     const styly: TextStyle = new TextStyle({
@@ -85,10 +95,6 @@ export class SceneScreen extends Container {
     this.addChild(this.dialogText)
     //SAGEdit.app.stage.addChild(this.dialogText)
 
-    // Construct scene from data
-    this.buildBackdrop()
-    // this.buildDoorways()
-    // this.buildProps()
 
     // Drag+Drop support
     SAGEdit.app.stage.interactive = true
@@ -99,6 +105,9 @@ export class SceneScreen extends Container {
 
   teardown() {
     SAGEdit.debugLog(`>> SceneScreen teardown()`)
+    
+    const worldStore = useWorldStore()
+
     if (this.dialogText) {
       SAGEdit.app.stage.removeChild(this.dialogText)
       this.dialogText.destroy()

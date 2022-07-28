@@ -99,9 +99,8 @@ export class SAGEdit {
   }
 
   public static loadWorld(): void {
-    const scene = new SceneData()
     //scene.name = "Test"
-    SAGEdit.currentScreen = new SceneScreen(scene)
+    SAGEdit.currentScreen = new SceneScreen()
     SAGEdit.midLayer.addChild(SAGEdit.currentScreen)
 
     /* Thought

@@ -65,9 +65,9 @@
   //   console.log("state updated - so refresh scene model (pixi)")
   //   sceneModel.teardown()
   // }
-  console.log(worldStore.getCurrentScene)
+  //console.log(worldStore.getCurrentScene)
   const model = worldStore.getCurrentScene || ({} as SceneModel)
-  let chosenFile: any = undefined
+  let chosenFile: any
     //let imageData: any = ""
   const imageData: Ref<string | ArrayBuffer | null> = ref("")
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
