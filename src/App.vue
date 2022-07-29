@@ -1,9 +1,12 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      permanent
+    <!-- 
+      permanent 
       disable-resize-watcher
+    -->
+    <v-navigation-drawer
       v-model="drawer"
+      temporary
       touchless
       :width="350"
     >
@@ -18,7 +21,7 @@
           <v-icon>mdi-cog</v-icon>
         </v-btn>
 
-        <v-btn icon>
+        <v-btn icon @click.stop="toggleDrawer">
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </v-toolbar>
@@ -35,20 +38,27 @@
 <script setup lang="ts">
   // import type { Ref } from "vue"
   // import { ref } from "vue"
-  // import { PropModel } from "./models/PropModel" 
+  // import { PropModel } from "./models/PropModel"
   import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"
   import { SAGEdit } from "@/SAGEdit"
   import { Fullscreen } from "./utils/Fullscreen"
 
   import { useWorldStore } from "@/stores/index"
+  import { ref } from "vue"
   //import { useSceneStore } from "./stores/SceneStore"
 
   const worldStore = useWorldStore()
 
   SAGEdit.loadWorld()
 
-  const drawer = true
+  const drawer = ref(true)
+
+  const toggleDrawer = () => {
+    console.log("toggle!")
+    drawer.value = !drawer.value
+    console.log(drawer)
+  }
 </script>
 
 <style>
