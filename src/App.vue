@@ -6,7 +6,7 @@
     -->
     <v-navigation-drawer
       v-model="drawer"
-      temporary
+      :temporary="!!isMobile()"
       touchless
       :width="350"
     >
@@ -59,6 +59,8 @@
     drawer.value = !drawer.value
     console.log(drawer)
   }
+
+  const isMobile = () => screen.width <= 760
 </script>
 
 <style>
