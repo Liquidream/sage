@@ -14,7 +14,7 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn icon>
+        <v-btn icon @click="Fullscreen.toggleFullScreen">
           <v-icon>mdi-cog</v-icon>
         </v-btn>
 
@@ -39,6 +39,7 @@
   import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"
   import { SAGEdit } from "@/SAGEdit"
+  import { Fullscreen } from "./utils/Fullscreen"
 
   import { useWorldStore } from "@/stores/index"
   //import { useSceneStore } from "./stores/SceneStore"
