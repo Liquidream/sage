@@ -32,6 +32,10 @@
         <SceneProperties v-if="worldStore.currSceneId != ''" />
       </div>
     </v-navigation-drawer>
+
+    <v-main>
+      <canvas id="pixi-canvas"></canvas>
+    </v-main>
   </v-app>
 </template>
 
@@ -45,12 +49,12 @@
   import { Fullscreen } from "./utils/Fullscreen"
 
   import { useWorldStore } from "@/stores/index"
-  import { ref } from "vue"
+  import { onMounted, ref } from "vue"
   //import { useSceneStore } from "./stores/SceneStore"
 
   const worldStore = useWorldStore()
 
-  SAGEdit.loadWorld()
+  //SAGEdit.loadWorld()
 
   const drawer = ref(true)
 
@@ -61,6 +65,15 @@
   }
 
   const isMobile = () => screen.width <= 760
+
+  onMounted(() => {
+    console.log(`the component is now mounted.`)
+
+    // Initialise Pixi (with a "black" default bg color)
+    SAGEdit.initialize(1920, 1080, 0x6495ed) //0x0)
+
+    SAGEdit.loadWorld()
+  })
 </script>
 
 <style>
