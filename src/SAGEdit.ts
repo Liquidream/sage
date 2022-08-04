@@ -139,21 +139,39 @@ export class SAGEdit {
   }
 
   public static resize() {
+    // instead of basing it on screen width,
+    // base it on canvas width
+    const main = document.getElementById("main")
+
     // current screen size
     const screenWidth = Math.max(
-      document.documentElement.clientWidth,
+      main?.clientWidth || document.documentElement.clientWidth,
+      //document.documentElement.clientWidth,
       window.innerWidth || 0
     )
     const screenHeight = Math.max(
-      document.documentElement.clientHeight,
+      main?.clientHeight || document.documentElement.clientHeight,
+      //document.documentElement.clientHeight,
       window.innerHeight || 0
     )
+
+    console.log(
+      `document.documentElement.clientWidth:${document.documentElement.clientWidth}`
+    )
+    console.log(`main.clientWidth:${main?.clientWidth}`)
+    console.log(`main.clientHeight:${main?.clientHeight}`)
 
     // uniform scale for our game
     const scale = Math.min(
       screenWidth / SAGEdit.width,
       screenHeight / SAGEdit.height
     )
+
+    // console.log(`screenWidth:${screenWidth} / SAGEdit.width:${SAGEdit.width}`)
+    // console.log(
+    //   `screenHeight:${screenHeight} / SAGEdit.height:${SAGEdit.height}`
+    // )
+    // console.log(`scale = ${scale}`)
 
     // the "uniformly englarged" size for our game
     const enlargedWidth = Math.floor(scale * SAGEdit.width)

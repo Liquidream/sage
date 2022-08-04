@@ -33,8 +33,8 @@
       </div>
     </v-navigation-drawer>
 
-    <v-main>
-      <canvas id="pixi-canvas"></canvas>
+    <v-main id="main" align="center" justify="center">
+      <canvas id="pixi-canvas" class="ma-0"></canvas>
     </v-main>
   </v-app>
 </template>
@@ -66,6 +66,7 @@
 
   const isMobile = () => screen.width <= 760
 
+  // Delay initialising and using Pixi until the cavas element is in the DOM
   onMounted(() => {
     console.log(`the component is now mounted.`)
 
