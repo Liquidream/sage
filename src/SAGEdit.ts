@@ -140,26 +140,39 @@ export class SAGEdit {
 
   public static resize() {
     // instead of basing it on screen width,
-    // base it on canvas width
-    const main = document.getElementById("main")
+    // base it on main (e.g. -navbar) width
+    // const main = document.getElementById("main")
+    // const canvas = document.getElementById("pixi-canvas")
+    const mainWrap = document.getElementsByClassName("v-main__wrap")[0]
 
     // current screen size
-    const screenWidth = Math.max(
-      main?.clientWidth || document.documentElement.clientWidth,
-      //document.documentElement.clientWidth,
-      window.innerWidth || 0
-    )
+    const screenWidth = mainWrap?.clientWidth
+    // const screenWidth = Math.max(
+    //   mainWrap?.clientWidth || document.documentElement.clientWidth,
+    //   //document.documentElement.clientWidth,
+    //   window.innerWidth || 0
+    // )
     const screenHeight = Math.max(
-      main?.clientHeight || document.documentElement.clientHeight,
-      //document.documentElement.clientHeight,
+      //mainWrap?.clientHeight || document.documentElement.clientHeight,
+      document.documentElement.clientHeight,
       window.innerHeight || 0
     )
 
-    console.log(
-      `document.documentElement.clientWidth:${document.documentElement.clientWidth}`
-    )
-    console.log(`main.clientWidth:${main?.clientWidth}`)
-    console.log(`main.clientHeight:${main?.clientHeight}`)
+    // console.log("---------------------------")
+    // console.log(
+    //   `document.documentElement.clientWidth:${document.documentElement.clientWidth}`
+    // )
+    // console.log(
+    //   `document.documentElement.clientHeight:${document.documentElement.clientHeight}`
+    // )
+    // console.log(`screenWidth:${screenWidth}`)
+    // console.log(`screenHeight:${screenHeight}`)
+    // // console.log(`main.clientWidth:${main?.clientWidth}`)
+    // // console.log(`main.clientHeight:${main?.clientHeight}`)
+    // console.log(`canvas.clientWidth:${canvas?.clientWidth}`)
+    // console.log(`canvas.clientHeight:${canvas?.clientHeight}`)
+    // console.log(`mainWrap.clientWidth:${mainWrap?.clientWidth}`)
+    // console.log(`mainWrap.clientHeight:${mainWrap?.clientHeight}`)
 
     // uniform scale for our game
     const scale = Math.min(

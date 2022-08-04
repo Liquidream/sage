@@ -33,8 +33,9 @@
       </div>
     </v-navigation-drawer>
 
-    <v-main id="main" align="center" justify="center">
-      <canvas id="pixi-canvas" class="ma-0"></canvas>
+    <v-main align="center" justify="center">
+      <!-- Provides the application the proper gutter -->
+      <canvas id="pixi-canvas"></canvas>
     </v-main>
   </v-app>
 </template>
