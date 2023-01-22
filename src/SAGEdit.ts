@@ -165,7 +165,7 @@ export class SAGEdit {
     // console.log(
     //   `document.documentElement.clientHeight:${document.documentElement.clientHeight}`
     // )
-    // console.log(`screenWidth:${screenWidth}`)
+    console.log(`screenWidth:${screenWidth}`)
     // console.log(`screenHeight:${screenHeight}`)
     // // console.log(`main.clientWidth:${main?.clientWidth}`)
     // // console.log(`main.clientHeight:${main?.clientHeight}`)
@@ -175,7 +175,7 @@ export class SAGEdit {
     // console.log(`mainWrap.clientHeight:${mainWrap?.clientHeight}`)
 
     // console.log(`screenWidth:${screenWidth}`)
-    // console.log(`SAGEdit.width:${SAGEdit.width}`)
+    console.log(`SAGEdit.width:${SAGEdit.width}`)
     // console.log(`screenWidth / SAGEdit.width:${screenWidth / SAGEdit.width}`)
     // console.log(
     //   `screenHeight / SAGEdit.height:${screenHeight / SAGEdit.height}`
@@ -183,7 +183,7 @@ export class SAGEdit {
 
     // uniform scale for our game
     const scale = Math.min(
-      screenWidth / SAGEdit.width,
+      screenWidth / (SAGEdit.width + 615), // why do I need to add this to get it to "fit" 100%?
       screenHeight / SAGEdit.height
     )
 
@@ -204,10 +204,10 @@ export class SAGEdit {
     // now we use css trickery to set the sizes and margins
     SAGEdit._app.view.style.width = `${enlargedWidth}px`
     SAGEdit._app.view.style.height = `${enlargedHeight}px`
-    SAGEdit._app.view.style.marginLeft =
-      SAGEdit._app.view.style.marginRight = `${horizontalMargin}px`
+    // SAGEdit._app.view.style.marginLeft =
+    // SAGEdit._app.view.style.marginRight = `${horizontalMargin}px`
     SAGEdit._app.view.style.marginTop =
-      SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
+    SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
   }
 
   // Conditional console.log (if debugMode is true)
