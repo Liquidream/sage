@@ -143,7 +143,7 @@ export class SAGEdit {
     // base it on main (e.g. -navbar) width
     // const main = document.getElementById("main")
     // const canvas = document.getElementById("pixi-canvas")
-    const mainWrap = document.getElementsByClassName("v-main__wrap")[0]
+    const mainWrap = document.getElementsByClassName("v-main")[0]
 
     // current screen size
     const screenWidth = mainWrap?.clientWidth
@@ -174,6 +174,13 @@ export class SAGEdit {
     // console.log(`mainWrap.clientWidth:${mainWrap?.clientWidth}`)
     // console.log(`mainWrap.clientHeight:${mainWrap?.clientHeight}`)
 
+    // console.log(`screenWidth:${screenWidth}`)
+    // console.log(`SAGEdit.width:${SAGEdit.width}`)
+    // console.log(`screenWidth / SAGEdit.width:${screenWidth / SAGEdit.width}`)
+    // console.log(
+    //   `screenHeight / SAGEdit.height:${screenHeight / SAGEdit.height}`
+    // )
+
     // uniform scale for our game
     const scale = Math.min(
       screenWidth / SAGEdit.width,
@@ -184,7 +191,7 @@ export class SAGEdit {
     // console.log(
     //   `screenHeight:${screenHeight} / SAGEdit.height:${SAGEdit.height}`
     // )
-    // console.log(`scale = ${scale}`)
+    console.log(`scale = ${scale}`)
 
     // the "uniformly englarged" size for our game
     const enlargedWidth = Math.floor(scale * SAGEdit.width)
