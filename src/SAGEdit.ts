@@ -12,6 +12,8 @@ export class SAGEdit {
   public static debugMode = true
   public static enableFullscreen = false
 
+  public static navWidth = 350
+
   private static _app: Application
   private static _width: number
   private static _height: number
@@ -181,9 +183,13 @@ export class SAGEdit {
     //   `screenHeight / SAGEdit.height:${screenHeight / SAGEdit.height}`
     // )
 
+    const isMobile = screenWidth <= 1280
+    console.log(`screen.width = ${screen.width}`)
+    console.log(`isMobile = ${isMobile}`)
     // uniform scale for our game
     const scale = Math.min(
-      screenWidth / (SAGEdit.width + 615), // why do I need to add this to get it to "fit" 100%?
+      (screenWidth - (isMobile ? 0 : SAGEdit.navWidth)) / SAGEdit.width, // factor in the side-bar to make it fit 100%
+      //screenWidth / (SAGEdit.width + 615), // why do I need to add this to get it to "fit" 100%?
       screenHeight / SAGEdit.height
     )
 
@@ -208,6 +214,7 @@ export class SAGEdit {
     // SAGEdit._app.view.style.marginRight = `${horizontalMargin}px`
     SAGEdit._app.view.style.marginTop =
     SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
+
   }
 
   // Conditional console.log (if debugMode is true)

@@ -8,7 +8,7 @@
       v-model="drawer"
       :temporary="!!isMobile()"
       touchless
-      :width="350"
+      :width="SAGEdit.navWidth"
     >
       <v-toolbar dense>
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
@@ -52,12 +52,14 @@
   import { useWorldStore } from "@/stores/index"
   import { onMounted, ref } from "vue"
   //import { useSceneStore } from "./stores/SceneStore"
-
+  
   const worldStore = useWorldStore()
 
   //SAGEdit.loadWorld()
 
   const drawer = ref(true)
+
+  
 
   const toggleDrawer = () => {
     console.log("toggle!")
