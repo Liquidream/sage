@@ -143,60 +143,27 @@ export class SAGEdit {
   public static resize() {
     // instead of basing it on screen width,
     // base it on main (e.g. -navbar) width
-    // const main = document.getElementById("main")
-    // const canvas = document.getElementById("pixi-canvas")
     const mainWrap = document.getElementsByClassName("v-main")[0]
 
     // current screen size
     const screenWidth = mainWrap?.clientWidth
-    // const screenWidth = Math.max(
-    //   mainWrap?.clientWidth || document.documentElement.clientWidth,
-    //   //document.documentElement.clientWidth,
-    //   window.innerWidth || 0
-    // )
-    const screenHeight = Math.max(
-      //mainWrap?.clientHeight || document.documentElement.clientHeight,
+    const screenHeight = Math.max(      
       document.documentElement.clientHeight,
       window.innerHeight || 0
     )
 
-    // console.log("---------------------------")
-    // console.log(
-    //   `document.documentElement.clientWidth:${document.documentElement.clientWidth}`
-    // )
-    // console.log(
-    //   `document.documentElement.clientHeight:${document.documentElement.clientHeight}`
-    // )
     console.log(`screenWidth:${screenWidth}`)
-    // console.log(`screenHeight:${screenHeight}`)
-    // // console.log(`main.clientWidth:${main?.clientWidth}`)
-    // // console.log(`main.clientHeight:${main?.clientHeight}`)
-    // console.log(`canvas.clientWidth:${canvas?.clientWidth}`)
-    // console.log(`canvas.clientHeight:${canvas?.clientHeight}`)
-    // console.log(`mainWrap.clientWidth:${mainWrap?.clientWidth}`)
-    // console.log(`mainWrap.clientHeight:${mainWrap?.clientHeight}`)
-
-    // console.log(`screenWidth:${screenWidth}`)
     console.log(`SAGEdit.width:${SAGEdit.width}`)
-    // console.log(`screenWidth / SAGEdit.width:${screenWidth / SAGEdit.width}`)
-    // console.log(
-    //   `screenHeight / SAGEdit.height:${screenHeight / SAGEdit.height}`
-    // )
-
+    
     const isMobile = screenWidth <= 1280
     console.log(`screen.width = ${screen.width}`)
     console.log(`isMobile = ${isMobile}`)
     // uniform scale for our game
     const scale = Math.min(
       (screenWidth - (isMobile ? 0 : SAGEdit.navWidth)) / SAGEdit.width, // factor in the side-bar to make it fit 100%
-      //screenWidth / (SAGEdit.width + 615), // why do I need to add this to get it to "fit" 100%?
       screenHeight / SAGEdit.height
     )
 
-    // console.log(`screenWidth:${screenWidth} / SAGEdit.width:${SAGEdit.width}`)
-    // console.log(
-    //   `screenHeight:${screenHeight} / SAGEdit.height:${SAGEdit.height}`
-    // )
     console.log(`scale = ${scale}`)
 
     // the "uniformly englarged" size for our game
@@ -210,8 +177,6 @@ export class SAGEdit {
     // now we use css trickery to set the sizes and margins
     SAGEdit._app.view.style.width = `${enlargedWidth}px`
     SAGEdit._app.view.style.height = `${enlargedHeight}px`
-    // SAGEdit._app.view.style.marginLeft =
-    // SAGEdit._app.view.style.marginRight = `${horizontalMargin}px`
     SAGEdit._app.view.style.marginTop =
     SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
 
