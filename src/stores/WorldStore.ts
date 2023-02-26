@@ -1,27 +1,37 @@
 import type { SceneModel } from "@/models/SceneModel"
+import { useSceneStore } from "@/stores/SceneStore"
 import { defineStore } from "pinia"
 
-export type WorldState = {
+export interface WorldState {
   title: string
-  scenes: SceneModel[]
+  //scenes: SceneModel[]
   on_start: string
   currSceneId: string
 }
 
 export const useWorldStore = defineStore({
-  id: "sageStore",
+  id: "worldStore",
+  //sceneStore: useSceneStore(),
   // Recommendation not to use "as"
   // https://dev.to/cefn/comment/1m25c
+  // https://runthatline.com/pinia-typescript-type-state-actions-getters/
+  // https://pinia.vuejs.org/core-concepts/state.html#typescript
   state: (): WorldState => ({
     title: "",
-    scenes: [],
+    //scenes: [],
     on_start: "",
     currSceneId: "",
   }),
 
   getters: {
+    getScenes() {
+      const sceneStore = useSceneStore()
+      return sceneStore.scenes
+    },
+
     getCurrentScene(state) {
-      return state.scenes.find((item) => item.id === state.currSceneId)
+      const sceneStore = useSceneStore()
+      return sceneStore.scenes.find((item) => item.id === state.currSceneId)
     },
   },
 
@@ -30,7 +40,8 @@ export const useWorldStore = defineStore({
      * Scenes
      */
     createScene(scene: SceneModel) {
-      this.scenes.push(scene)
+      const sceneStore = useSceneStore()
+      sceneStore.scenes.push(scene)
     },
 
     updateScene(id: string, payload: SceneModel) {
@@ -39,7 +50,8 @@ export const useWorldStore = defineStore({
       const index = this.findIndexById(id)
 
       if (index !== -1) {
-        this.scenes[index] = payload
+        const sceneStore = useSceneStore()
+        sceneStore.scenes[index] = payload
       }
     },
 
@@ -48,11 +60,13 @@ export const useWorldStore = defineStore({
 
       if (index === -1) return
 
-      this.scenes.splice(index, 1)
+      const sceneStore = useSceneStore()
+      sceneStore.scenes.splice(index, 1)
     },
 
     findIndexById(id: string) {
-      return this.scenes.findIndex((item) => item.id === id)
+      const sceneStore = useSceneStore()
+      return sceneStore.scenes.findIndex((item) => item.id === id)
     },
 
     /* ----------------------------------------------------------
@@ -65,16 +79,16 @@ export const useWorldStore = defineStore({
      * (Think these shout be in own store, but want to keep neat hierarchy)
      */
 
-
-
     /* ----------------------------------------------------------
      * Other
      */
     resetToDemoData() {
-      this.scenes = [
+      const sceneStore = useSceneStore()
+      sceneStore.scenes = [
         {
           id: "scnBridge",
           name: "Bridge",
+          // ? = OPTIONAL (solves errors when creating objects and not specifying all props)
         },
         {
           id: "scnCave",

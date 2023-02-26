@@ -21,6 +21,7 @@ import type { SceneData } from "@/sagedit/SceneData"
 import type { PropData } from "@/sagedit/PropData"
 import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneModel } from "@/models/SceneModel"
+import { useSceneStore } from "@/stores/SceneStore"
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null
@@ -46,8 +47,9 @@ export class SceneScreen extends Container {
     const worldStore = useWorldStore()
     this.scene = worldStore.getCurrentScene
 
+    const sceneStore = useSceneStore()
     // Subscribe to state changes so that we refresh/recreate Pixi.js content
-    worldStore.$subscribe((mutation, state) => {
+    sceneStore.$subscribe((mutation, state) => {
       // Scene changed
       //if (this.scene?.id !== worldStore.currSceneId) {
       SAGEdit.debugLog("World/scene changed - so refresh scene model (pixi)")

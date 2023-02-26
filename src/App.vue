@@ -52,14 +52,12 @@
   import { useWorldStore } from "@/stores/WorldStore"
   import { onMounted, ref } from "vue"
   //import { useSceneStore } from "./stores/SceneStore"
-  
+
   const worldStore = useWorldStore()
 
   //SAGEdit.loadWorld()
 
   const drawer = ref(true)
-
-  
 
   const toggleDrawer = () => {
     console.log("toggle!")

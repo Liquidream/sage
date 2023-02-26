@@ -15,7 +15,7 @@
     <v-list>
       <v-list-item
         @click="onClickScene(scene)"
-        v-for="scene in worldStore.scenes"
+        v-for="scene in worldStore.getScenes"
         :key="scene.id"
       >
         {{ scene.name }}
