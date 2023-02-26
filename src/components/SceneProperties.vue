@@ -56,7 +56,7 @@
   import { ref } from "vue"
   import { PropModel } from "../models/PropModel"
   //import { useSceneStore } from "../stores/SceneStore"
-  import { useWorldStore } from "../stores/index"
+  import { useWorldStore } from "../stores/WorldStore"
   import type { SceneModel } from "@/models/SceneModel"
 
   const worldStore = useWorldStore()

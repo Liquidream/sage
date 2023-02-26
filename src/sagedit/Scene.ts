@@ -2,6 +2,7 @@
 import type { Serialization } from "../utils/Serialization"
 import * as PropData from "./PropData"
 import * as DoorData from "./DoorData"
+import type { ISceneData } from "./SceneData"
 //import { SAGEdit } from "@/SAGEdit"
 
 export class Scene implements ISceneData, Serialization<Scene> {
@@ -115,19 +116,4 @@ export class Scene implements ISceneData, Serialization<Scene> {
       doors: this.doors,
     }
   }
-}
-
-export interface ISceneData {
-  id: string
-  image: string
-  name: string
-  sound: string
-  firstVisit: boolean
-  // Key-Value pair to allow properties to be set/read
-  property: { [key: string]: string | number | boolean }
-  // Poss. event actions
-  on_enter: string
-  on_exit: string
-  props: Array<PropData.IPropData>
-  doors: Array<DoorData.IDoorData>
 }

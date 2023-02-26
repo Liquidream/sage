@@ -19,7 +19,7 @@ import { Prop } from "@/sagedit/Prop"
 import { Door } from "@/sagedit/Door"
 import type { SceneData } from "@/sagedit/SceneData"
 import type { PropData } from "@/sagedit/PropData"
-import { useWorldStore } from "@/stores"
+import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneModel } from "@/models/SceneModel"
 
 export class SceneScreen extends Container {

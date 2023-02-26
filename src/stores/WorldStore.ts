@@ -1,7 +1,7 @@
 import type { SceneModel } from "@/models/SceneModel"
 import { defineStore } from "pinia"
 
-export type RootState = {
+export type WorldState = {
   title: string
   scenes: SceneModel[]
   on_start: string
@@ -12,7 +12,7 @@ export const useWorldStore = defineStore({
   id: "sageStore",
   // Recommendation not to use "as"
   // https://dev.to/cefn/comment/1m25c
-  state: (): RootState => ({
+  state: (): WorldState => ({
     title: "",
     scenes: [],
     on_start: "",
@@ -26,6 +26,9 @@ export const useWorldStore = defineStore({
   },
 
   actions: {
+    /* ----------------------------------------------------------
+     * Scenes
+     */
     createScene(scene: SceneModel) {
       this.scenes.push(scene)
     },
@@ -52,6 +55,21 @@ export const useWorldStore = defineStore({
       return this.scenes.findIndex((item) => item.id === id)
     },
 
+    /* ----------------------------------------------------------
+     * Props
+     * (Think these shout be in own store, but want to keep neat hierarchy)
+     */
+
+    /* ----------------------------------------------------------
+     * Doors
+     * (Think these shout be in own store, but want to keep neat hierarchy)
+     */
+
+
+
+    /* ----------------------------------------------------------
+     * Other
+     */
     resetToDemoData() {
       this.scenes = [
         {

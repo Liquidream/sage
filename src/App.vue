@@ -49,7 +49,7 @@
   import { SAGEdit } from "@/SAGEdit"
   import { Fullscreen } from "./utils/Fullscreen"
 
-  import { useWorldStore } from "@/stores/index"
+  import { useWorldStore } from "@/stores/WorldStore"
   import { onMounted, ref } from "vue"
   //import { useSceneStore } from "./stores/SceneStore"
   

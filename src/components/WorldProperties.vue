@@ -37,24 +37,9 @@
   import { SAGEdit } from "@/SAGEdit"
   import type { Ref } from "vue"
   import { ref } from "vue"
-  import { useWorldStore } from "../stores/index"
+  import { useWorldStore } from "../stores/WorldStore"
 
   const worldStore = useWorldStore()
-
-  // const modelScenes: SceneModel[] = [
-  //   {
-  //     id: "scnBridge",
-  //     name: "Bridge",
-  //   },
-  //   {
-  //     id: "scnCave",
-  //     name: "Cave Entrance...",
-  //   },
-  //   {
-  //     id: "scnFort",
-  //     name: "Fortress",
-  //   },
-  // ]
 
   const onClickScene = (scene: SceneModel) => {
     SAGEdit.debugLog("onClickScene()...")
