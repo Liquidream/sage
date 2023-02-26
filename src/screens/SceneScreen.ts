@@ -11,7 +11,7 @@ import {
   BaseTexture,
 } from "pixi.js"
 
-import { useSceneStore } from "@/stores/SceneStore"
+//import { useSceneStore } from "@/stores/SceneStore"
 
 import { SAGEdit } from "@/SAGEdit"
 //import type { ISceneData } from "../sage/Scene"

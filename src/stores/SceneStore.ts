@@ -1,29 +1,29 @@
-import { defineStore } from "pinia"
+// import { defineStore } from "pinia"
 
-export const useSceneStore = defineStore({
-  id: "SceneStore",
+// export const useSceneStore = defineStore({
+//   id: "SceneStore",
 
-  state: () => ({
-    scenes: [],
-    // Fields
-    id: "",
-    image: "",
-    name: "",
-    soundFile: "",
-    // Events
-    onEnter: "",
-    onExit: "",
-  }),
+//   state: () => ({
+//     //scenes: [],
+//     // Fields
+//     id: "",
+//     image: "",
+//     name: "",
+//     soundFile: "",
+//     // Events
+//     onEnter: "",
+//     onExit: "",
+//   }),
 
-  actions: {
-    load() {
-      this.name = "Bridge"
-    },
-  },
+//   actions: {
+//     load() {
+//       this.name = "Bridge123"
+//     },
+//   },
 
-  // getters: {
-  //   doubleCount: (state) => state.counter * 2,
-  // },
+//   // getters: {
+//   //   doubleCount: (state) => state.counter * 2,
+//   // },
 
-  persist: true, // Save to localStorage
-})
+//   persist: true, // Save to localStorage
+// })

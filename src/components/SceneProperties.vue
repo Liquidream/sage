@@ -55,12 +55,12 @@
   import type { Ref } from "vue"
   import { ref } from "vue"
   import { PropModel } from "../models/PropModel"
-  import { useSceneStore } from "../stores/SceneStore"
+  //import { useSceneStore } from "../stores/SceneStore"
   import { useWorldStore } from "../stores/index"
   import type { SceneModel } from "@/models/SceneModel"
 
-  const sceneStore = useSceneStore()
   const worldStore = useWorldStore()
+  //const sceneStore = useSceneStore()
   // const sceneModel = new SceneModel()
 
   // sceneStore.$subscribe((mutation, state) => {
@@ -121,7 +121,7 @@
   ]
 
   const loadBtnClicked = () => {
-    // sceneStore.load()
+    sceneStore.load()
     // model.value = new PropModel()
     // model.value.createCircle()
   }
