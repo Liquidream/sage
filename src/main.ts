@@ -4,11 +4,11 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
 import App from "./App.vue"
 import vuetify from "./plugins/vuetify"
 import { loadFonts } from "./plugins/webfontloader"
-import { SAGEdit } from "@/SAGEdit"
+//import { SAGEdit } from "@/SAGEdit"
 
 // current screen size
-const gameWidth = 1920
-const gameHeight = 1080
+// const gameWidth = 1920
+// const gameHeight = 1080
 
 loadFonts()
 

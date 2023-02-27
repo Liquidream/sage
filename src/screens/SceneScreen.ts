@@ -16,8 +16,8 @@ import {
 import { SAGEdit } from "@/SAGEdit"
 //import type { ISceneData } from "../sage/Scene"
 import { Prop } from "@/sagedit/Prop"
-import { Door } from "@/sagedit/Door"
-import type { SceneData } from "@/sagedit/SceneData"
+//import { Door } from "@/sagedit/Door"
+//import type { SceneData } from "@/sagedit/SceneData"
 import type { PropData } from "@/sagedit/PropData"
 import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneModel } from "@/models/SceneModel"
@@ -29,7 +29,7 @@ export class SceneScreen extends Container {
   private scene: SceneModel | undefined
   private backdrop!: Sprite
   private props: Array<Prop> = []
-  private doors: Array<Door> = []
+  //private doors: Array<Door> = []
 
   public draggedProp!: Prop | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,28 +38,35 @@ export class SceneScreen extends Container {
   public touchTarget!: any // Could be Prop or Door
 
   constructor() {
-    //scene: SceneData) {
     super()
 
-    // Ref to scene data
-    //this.scene = scene
-
+    // Subscribe to World state changes so that we refresh/recreate Pixi.js content
     const worldStore = useWorldStore()
     this.scene = worldStore.getCurrentScene
-
-    const sceneStore = useSceneStore()
-    // Subscribe to state changes so that we refresh/recreate Pixi.js content
-    sceneStore.$subscribe((mutation, state) => {
-      // Scene changed
-      //if (this.scene?.id !== worldStore.currSceneId) {
-      SAGEdit.debugLog("World/scene changed - so refresh scene model (pixi)")
-      //console.log(mutation)
+    //.$subscribe((mutation, state) => {
+    worldStore.$subscribe(() => {
+      // Current scene changed
+      SAGEdit.debugLog("World changed - so refresh scene model (pixi)")
       this.scene = worldStore.getCurrentScene
-      this.teardown()
-      this.setup()
-      //}
+      this.refresh()
     })
 
+    // Subscribe to Scene state changes so that we refresh/recreate Pixi.js content
+    const sceneStore = useSceneStore()
+    //.$subscribe((mutation, state) => {
+    sceneStore.$subscribe(() => {
+      // Scene changed
+      //if (this.scene?.id !== worldStore.currSceneId) {
+      SAGEdit.debugLog("Scene changed - so refresh scene model (pixi)")
+      this.refresh()
+    })
+
+    // perform initial setup
+    this.setup()
+  }
+
+  refresh() {
+    this.teardown()
     this.setup()
   }
 
@@ -99,7 +106,7 @@ export class SceneScreen extends Container {
   teardown() {
     SAGEdit.debugLog(`>> SceneScreen teardown()`)
 
-    const worldStore = useWorldStore()
+    //const worldStore = useWorldStore()
 
     if (this.dialogText) {
       SAGEdit.app.stage.removeChild(this.dialogText)
@@ -114,9 +121,9 @@ export class SceneScreen extends Container {
     for (const prop of this.props) {
       prop.tidyUp()
     }
-    for (const door of this.doors) {
-      door.tidyUp()
-    }
+    // for (const door of this.doors) {
+    //   door.tidyUp()
+    // }
     SAGEdit.app.stage.off("pointermove", this.onPointerMove, this)
     SAGEdit.app.stage.off("pointerup", this.onPointerUp, this)
     SAGEdit.app.stage.off("touchmove", this.onTouchMove, this)
@@ -160,12 +167,11 @@ export class SceneScreen extends Container {
   private buildProps() {
     // Only create Lamp if not already "picked up"
     // TODO: Make this all dynamic/data-based eventually, this is just a crude example!
-    if (this.scene.props.length > 0) {
-      for (const propData of this.scene.props) {
-        this.addProp(propData)
-      }
-    }
-
+    // if (this.scene.props.length > 0) {
+    //   for (const propData of this.scene.props) {
+    //     this.addProp(propData)
+    //   }
+    // }
     //SAGE.Dialog.clearMessage()
   }
 
@@ -240,14 +246,14 @@ export class SceneScreen extends Container {
   }
 
   private buildDoorways() {
-    if (this.scene.doors.length > 0) {
-      for (const doorData of this.scene.doors) {
-        // Create new component obj (contains data + view)
-        const door = new Door(doorData)
-        this.addChild(door.graphics)
-        this.doors.push(door)
-      }
-    }
+    // if (this.scene.doors.length > 0) {
+    //   for (const doorData of this.scene.doors) {
+    //     // Create new component obj (contains data + view)
+    //     const door = new Door(doorData)
+    //     this.addChild(door.graphics)
+    //     this.doors.push(door)
+    //   }
+    // }
     //SAGE.Dialog.clearMessage()
   }
 

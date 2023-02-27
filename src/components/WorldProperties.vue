@@ -35,8 +35,8 @@
 <script setup lang="ts">
   import type { SceneModel } from "@/models/SceneModel"
   import { SAGEdit } from "@/SAGEdit"
-  import type { Ref } from "vue"
-  import { ref } from "vue"
+  // import type { Ref } from "vue"
+  // import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"
 
   const worldStore = useWorldStore()
@@ -48,11 +48,11 @@
     worldStore.currSceneId = scene.id
   }
 
-  const loadBtnClicked = () => {
-    //worldStore.load()
-  }
+  //const loadBtnClicked = () => {
+  //worldStore.load()
+  //}
 
-  const addSceneClicked = () => {
-    //
-  }
+  //const addSceneClicked = () => {
+  //
+  //}
 </script>

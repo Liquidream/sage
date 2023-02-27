@@ -53,6 +53,10 @@
   import { onMounted, ref } from "vue"
   //import { useSceneStore } from "./stores/SceneStore"
 
+  // current screen size
+  const gameWidth = 1920
+  const gameHeight = 1080
+  //
   const worldStore = useWorldStore()
 
   //SAGEdit.loadWorld()
@@ -72,7 +76,7 @@
     console.log(`the component is now mounted.`)
 
     // Initialise Pixi (with a "black" default bg color)
-    SAGEdit.initialize(1920, 1080, 0x6495ed) //0x0)
+    SAGEdit.initialize(gameWidth, gameHeight, 0x6495ed) //0x0)
 
     SAGEdit.loadWorld()
   })
