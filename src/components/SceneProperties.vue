@@ -35,7 +35,13 @@
     <v-divider />
     <v-list-subheader>Props</v-list-subheader>
     <!-- on click, replace panel with properties of Prop + select it in scene -->
-    <v-list :items="modelProps"></v-list>
+    <v-list>
+      <v-list-item
+        v-for="item in propStore.props"
+        :key="item.id"
+        :title="item.name"
+      ></v-list-item>
+    </v-list>
 
     <v-divider />
     <v-list-subheader>Doors</v-list-subheader>
@@ -58,10 +64,12 @@
   //import { useSceneStore } from "../stores/SceneStore"
   import { useWorldStore } from "../stores/WorldStore"
   import type { SceneModel } from "@/models/SceneModel"
+  import { usePropStore } from "@/stores/PropStore"
 
   const worldStore = useWorldStore()
   //const sceneStore = useSceneStore()
   // const sceneModel = new SceneModel()
+  const propStore = usePropStore()
 
   // sceneStore.$subscribe((mutation, state) => {
   //   console.log("state updated - so refresh scene model (pixi)")
@@ -90,20 +98,20 @@
     }
   }
 
-  const modelProps = [
-    {
-      title: "Old Lamp",
-      value: 1,
-    },
-    {
-      title: "Silver Key",
-      value: 3,
-    },
-    {
-      title: "Gold Bar",
-      value: 3,
-    },
-  ]
+  // const modelProps = [
+  //   {
+  //     title: "Old Lamp",
+  //     value: 1,
+  //   },
+  //   {
+  //     title: "Silver Key",
+  //     value: 3,
+  //   },
+  //   {
+  //     title: "Gold Bar",
+  //     value: 3,
+  //   },
+  // ]
 
   const modelDoors = [
     {

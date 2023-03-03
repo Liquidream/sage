@@ -1,6 +1,7 @@
 import type { SceneModel } from "@/models/SceneModel"
 import { useSceneStore } from "@/stores/SceneStore"
 import { defineStore } from "pinia"
+import { usePropStore } from "./PropStore"
 
 export interface WorldState {
   title: string
@@ -82,13 +83,14 @@ export const useWorldStore = defineStore({
     /* ----------------------------------------------------------
      * Other
      */
+    // This should prob be in another file?
     resetToDemoData() {
+      // Default scenes
       const sceneStore = useSceneStore()
       sceneStore.scenes = [
         {
           id: "scnBridge",
           name: "Bridge",
-          // ? = OPTIONAL (solves errors when creating objects and not specifying all props)
         },
         {
           id: "scnCave",
@@ -97,6 +99,22 @@ export const useWorldStore = defineStore({
         {
           id: "scnFort",
           name: "Fortress",
+        },
+      ]
+      // Default props
+      const propStore = usePropStore()
+      propStore.props = [
+        {
+          name: "Old Lamp",
+          id: "prp1",
+        },
+        {
+          name: "Silver Key",
+          id: "prp2",
+        },
+        {
+          name: "Gold Bar",
+          id: "prp3",
         },
       ]
     },
