@@ -35,13 +35,11 @@
     <v-divider />
     <v-list-subheader>Props</v-list-subheader>
     <!-- on click, replace panel with properties of Prop + select it in scene -->
-    <v-list>
-      <v-list-item
-        v-for="item in propStore.findPropBySceneId(worldStore.currSceneId)"
-        :key="item.id"
-        :title="item.name"
-      ></v-list-item>
-    </v-list>
+    <v-list
+      :items="propStore.findPropBySceneId(worldStore.currSceneId)"
+      item-title="name"
+      item-value="id"
+    ></v-list>
 
     <v-divider />
     <v-list-subheader>Doors</v-list-subheader>
