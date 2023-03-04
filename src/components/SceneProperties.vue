@@ -44,7 +44,11 @@
     <v-divider />
     <v-list-subheader>Doors</v-list-subheader>
     <!-- on click, replace panel with properties of Door + select it in scene -->
-    <v-list :items="modelDoors"></v-list>
+    <v-list
+      :items="doorStore.findDoorBySceneId(worldStore.currSceneId)"
+      item-title="name"
+      item-value="id"
+    ></v-list>
 
     <v-divider />
     <v-list-subheader>Events</v-list-subheader>
@@ -63,11 +67,11 @@
   import { useWorldStore } from "../stores/WorldStore"
   import type { SceneModel } from "@/models/SceneModel"
   import { usePropStore } from "@/stores/PropStore"
+  import { useDoorStore } from "@/stores/DoorStore"
 
   const worldStore = useWorldStore()
-  //const sceneStore = useSceneStore()
-  // const sceneModel = new SceneModel()
   const propStore = usePropStore()
+  const doorStore = useDoorStore()
 
   // sceneStore.$subscribe((mutation, state) => {
   //   console.log("state updated - so refresh scene model (pixi)")
@@ -92,7 +96,7 @@
     reader.readAsDataURL(e.target.files[0])
     reader.onload = () => {
       imageData.value = reader.result
-      model.image = reader.result
+      model.image = reader.result as string // added "as" to squash error/warn, ok?
     }
   }
 
