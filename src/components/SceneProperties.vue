@@ -37,7 +37,7 @@
     <!-- on click, replace panel with properties of Prop + select it in scene -->
     <v-list>
       <v-list-item
-        v-for="item in propStore.props"
+        v-for="item in propStore.findPropBySceneId(worldStore.currSceneId)"
         :key="item.id"
         :title="item.name"
       ></v-list-item>

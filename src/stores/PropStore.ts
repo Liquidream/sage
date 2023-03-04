@@ -22,6 +22,9 @@ export const usePropStore = defineStore({
     // load() {
     //   this.name = "Bridge123"
     // },
+    findPropBySceneId(scene_id: string) {
+      return this.props.filter((prop) => prop.in_scene_id === scene_id)
+    },
   },
 
   persist: true, // Save to localStorage

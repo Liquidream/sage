@@ -11,6 +11,7 @@ export interface PropModel {
   draggable?: boolean
   single_use?: boolean
   visible?: boolean
+  in_scene_id?: string
   // Key-Value pair to allow properties to be set/read
   property?: { [key: string]: string | number | boolean }
   // Poss. event actions
