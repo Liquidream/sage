@@ -17,4 +17,6 @@ const pinia = createPinia().use(piniaPluginPersistedstate)
 // // Initialise Pixi (with a "black" default bg color)
 // SAGEdit.initialize(gameWidth, gameHeight, 0x6495ed) //0x0)
 
+App.name = "SAGE"
+
 createApp(App).use(vuetify).use(pinia).mount("#app")
