@@ -28,6 +28,27 @@
 
       <div class="pa-2">
         <!-- Nav bar content area -->
+
+        <v-breadcrumbs :items="[
+        {
+          title: 'World',
+          href: 'breadcrumbs_dashboard',
+          
+        },
+        {
+          title: 'Scene',
+          href: 'breadcrumbs_link_1',
+        },
+        {
+          title: 'Prop',
+          href: 'breadcrumbs_link_2',
+        },
+      ]" @click="testEvent">
+          <template v-slot:divider>
+            <v-icon icon="mdi-chevron-right"></v-icon>
+          </template>
+        </v-breadcrumbs>
+
         <WorldProperties v-if="worldStore.currSceneId == ''" />
         <SceneProperties
           v-if="worldStore.currSceneId != '' && worldStore.currPropId == ''"
@@ -71,6 +92,10 @@
     console.log("toggle!")
     drawer.value = !drawer.value
     console.log(drawer)
+  }
+
+  const testEvent = (...payload: any[]) => {
+    console.log(">>>> clicked!")
   }
 
   const isMobile = () => screen.width <= 760

@@ -23,37 +23,31 @@
       prepend-icon="mdi-camera"
     ></v-file-input>
     <v-img :src="model.image" max-height="150" />
-
-    <!-- <v-file-input
-      class="mt-8"
-      accept="audio/mpeg, audio/ogg, audio/vnd.wav"
-      placeholder="Pick a backdrop sound"
-      prepend-icon="mdi-volume-high"
-      label="Interact Sound"
-    ></v-file-input> -->
-
-    <!--
-    <v-divider />
-    <v-list-subheader>Props</v-list-subheader>
-     <v-list
-      :items="propStore.findPropBySceneId(worldStore.currSceneId)"
-      item-title="name"
-      item-value="id"
-    ></v-list> -->
-
-    <!--
-    <v-divider />
-    <v-list-subheader>Doors</v-list-subheader>    
-    <v-list
-      :items="doorStore.findDoorBySceneId(worldStore.currSceneId)"
-      item-title="name"
-      item-value="id"
-    ></v-list> -->
+    <v-textarea
+      name="desc"
+      v-model="model.desc"
+      label="Description"
+      auto-grow
+      rows="2"
+    ></v-textarea>
 
     <v-divider />
     <v-list-subheader>Events</v-list-subheader>
-    <v-textarea name="on_enter" label="On Enter" auto-grow></v-textarea>
-    <v-textarea name="on_exit" label="On Exit" auto-grow></v-textarea>
+    <v-textarea
+      name="on_action"
+      v-model="model.on_action"
+      label="On Action"
+      auto-grow
+      rows="2"
+    ></v-textarea>
+
+    <v-textarea
+      name="on_use"
+      v-model="model.on_use"
+      label="On Use"
+      auto-grow
+      rows="2"
+    ></v-textarea>
 
     <!-- <v-btn @click="loadBtnClicked" color="info" class="mt-2">Load</v-btn> -->
   </v-form>

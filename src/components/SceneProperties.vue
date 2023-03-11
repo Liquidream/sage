@@ -52,11 +52,25 @@
     ></v-list>
 
     <v-divider />
-    <v-list-subheader>Events</v-list-subheader>
-    <v-textarea name="on_enter" label="On Enter" auto-grow></v-textarea>
-    <v-textarea name="on_exit" label="On Exit" auto-grow></v-textarea>
 
-    <v-btn @click="loadBtnClicked" color="info" class="mt-2">Load</v-btn>
+    <v-list-subheader>Events</v-list-subheader>
+    <v-textarea
+      name="on_enter"
+      v-model="model.on_enter"
+      label="On Enter"
+      auto-grow
+      rows="2"
+    ></v-textarea>
+
+    <v-textarea
+      name="on_exit"
+      v-model="model.on_exit"
+      label="On Exit"
+      auto-grow
+      rows="2"
+    ></v-textarea>
+
+    <!-- <v-btn @click="loadBtnClicked" color="info" class="mt-2">Load</v-btn> -->
   </v-form>
 </template>
 

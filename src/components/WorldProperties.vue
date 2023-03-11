@@ -24,7 +24,13 @@
 
     <v-divider />
     <v-list-subheader>Events</v-list-subheader>
-    <v-textarea name="on_start" label="On Start" auto-grow></v-textarea>
+    <v-textarea
+      name="on_start"
+      v-model="worldStore.on_start"
+      label="On Start"
+      auto-grow
+      rows="2"
+    ></v-textarea>
 
     <v-btn @click="worldStore.resetToDemoData" color="info" class="mt-2"
       >Reset Data</v-btn
