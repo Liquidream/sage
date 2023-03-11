@@ -9,6 +9,7 @@ export interface WorldState {
   //scenes: SceneModel[]
   on_start: string
   currSceneId: string
+  currPropId: string
 }
 
 export const useWorldStore = defineStore({
@@ -23,6 +24,7 @@ export const useWorldStore = defineStore({
     //scenes: [],
     on_start: "",
     currSceneId: "",
+    currPropId: "",
   }),
 
   getters: {
@@ -34,6 +36,11 @@ export const useWorldStore = defineStore({
     getCurrentScene(state) {
       const sceneStore = useSceneStore()
       return sceneStore.scenes.find((item) => item.id === state.currSceneId)
+    },
+
+    getCurrentProp(state) {
+      const propStore = usePropStore()
+      return propStore.props.find((item) => item.id === state.currPropId)
     },
   },
 

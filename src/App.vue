@@ -29,7 +29,10 @@
       <div class="pa-2">
         <!-- Nav bar content area -->
         <WorldProperties v-if="worldStore.currSceneId == ''" />
-        <SceneProperties v-if="worldStore.currSceneId != ''" />
+        <SceneProperties
+          v-if="worldStore.currSceneId != '' && worldStore.currPropId == ''"
+        />
+        <PropProperties v-if="worldStore.currPropId != ''" />
       </div>
     </v-navigation-drawer>
 
@@ -46,6 +49,7 @@
   // import { PropModel } from "./models/PropModel"
   import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"
+  import PropProperties from "./components/PropProperties.vue"
   import { SAGEdit } from "@/SAGEdit"
   import { Fullscreen } from "./utils/Fullscreen"
 
