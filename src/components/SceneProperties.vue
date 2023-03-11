@@ -53,6 +53,7 @@
       :items="doorStore.findDoorBySceneId(worldStore.currSceneId)"
       item-title="name"
       item-value="id"
+      @click:select="doorSelected"
     ></v-list>
 
     <v-divider />
@@ -132,6 +133,15 @@
     path: unknown[]
   }) => {
     worldStore.currPropId = value.id as string
+    parent.scrollY > 0
+  }
+
+  const doorSelected = (value: {
+    id: unknown
+    value: boolean
+    path: unknown[]
+  }) => {
+    worldStore.currDoorId = value.id as string
     parent.scrollY > 0
   }
 

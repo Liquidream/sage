@@ -4,12 +4,12 @@
   <v-icon icon="mdi-chevron-right"></v-icon>
   <v-btn variant="plain" @click="backToSceneClicked">Scene</v-btn>
   <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn variant="plain" disabled>Prop</v-btn>
+  <v-btn variant="plain" disabled>Door</v-btn>
 
   <v-form>
     <div class="header pa-3">
       <div class="mt-2 text-h5">
-        <!-- Prop Name -->
+        <!-- Door Name -->
         {{ model.name }}
       </div>
     </div>
@@ -47,14 +47,6 @@
       rows="2"
     ></v-textarea>
 
-    <v-textarea
-      name="on_use"
-      v-model="model.on_use"
-      label="On Use"
-      auto-grow
-      rows="2"
-    ></v-textarea>
-
     <!-- <v-btn @click="loadBtnClicked" color="info" class="mt-2">Load</v-btn> -->
   </v-form>
 </template>
@@ -63,13 +55,13 @@
   import type { Ref } from "vue"
   import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"
-  import type { PropModel } from "@/models/PropModel"
-  import { usePropStore } from "@/stores/PropStore"
+  import type { DoorModel } from "@/models/DoorModel"
+  import { useDoorStore } from "@/stores/DoorStore"
 
   const worldStore = useWorldStore()
-  //const propStore = usePropStore()
+  //const doorStore = useDoorStore()
 
-  const model = worldStore.getCurrentProp || ({} as PropModel)
+  const model = worldStore.getCurrentDoor || ({} as DoorModel)
   let chosenFile: any
   //let imageData: any = ""
   const imageData: Ref<string | ArrayBuffer | null> = ref("")
@@ -87,13 +79,13 @@
   }
 
   const backToWorldClicked = () => {
-    worldStore.currPropId = ""
+    worldStore.currDoorId = ""
     worldStore.currSceneId = ""
     parent.scrollY > 0
   }
 
   const backToSceneClicked = () => {
-    worldStore.currPropId = ""
+    worldStore.currDoorId = ""
     parent.scrollY > 0
   }
 

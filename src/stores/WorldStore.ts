@@ -10,6 +10,7 @@ export interface WorldState {
   on_start: string
   currSceneId: string
   currPropId: string
+  currDoorId: string
 }
 
 export const useWorldStore = defineStore({
@@ -25,6 +26,7 @@ export const useWorldStore = defineStore({
     on_start: "",
     currSceneId: "",
     currPropId: "",
+    currDoorId: "",
   }),
 
   getters: {
@@ -41,6 +43,11 @@ export const useWorldStore = defineStore({
     getCurrentProp(state) {
       const propStore = usePropStore()
       return propStore.props.find((item) => item.id === state.currPropId)
+    },
+
+    getCurrentDoor(state) {
+      const doorStore = useDoorStore()
+      return doorStore.doors.find((item) => item.id === state.currDoorId)
     },
   },
 

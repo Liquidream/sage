@@ -30,9 +30,14 @@
         <!-- Nav bar content area -->
         <WorldProperties v-if="worldStore.currSceneId == ''" />
         <SceneProperties
-          v-if="worldStore.currSceneId != '' && worldStore.currPropId == ''"
+          v-if="
+            worldStore.currSceneId != '' &&
+            worldStore.currPropId == '' &&
+            worldStore.currDoorId == ''
+          "
         />
         <PropProperties v-if="worldStore.currPropId != ''" />
+        <DoorProperties v-if="worldStore.currDoorId != ''" />
       </div>
     </v-navigation-drawer>
 
@@ -50,6 +55,7 @@
   import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"
   import PropProperties from "./components/PropProperties.vue"
+  import DoorProperties from "./components/DoorProperties.vue"
   import { SAGEdit } from "@/SAGEdit"
   import { Fullscreen } from "./utils/Fullscreen"
 
