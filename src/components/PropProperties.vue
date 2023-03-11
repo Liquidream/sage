@@ -1,6 +1,12 @@
 <template>
+  <!-- Breadcrumbs -->
+  <v-btn variant="plain" @click="backToWorldClicked">World</v-btn>
+  <v-icon icon="mdi-chevron-right"></v-icon>
+  <v-btn variant="plain" @click="backToSceneClicked">Scene</v-btn>
+  <v-icon icon="mdi-chevron-right"></v-icon>
+  <v-btn variant="plain" disabled>Prop</v-btn>
+
   <v-form>
-    <v-btn @click="backBtnClicked" color="info" class="mt-2">Back</v-btn>
     <div class="header pa-3">
       <div class="mt-2 text-h5">
         <!-- Prop Name -->
@@ -80,14 +86,15 @@
     }
   }
 
-  const loadBtnClicked = () => {
-    //sceneStore.load()
-    // model.value = new PropModel()
-    // model.value.createCircle()
+  const backToWorldClicked = () => {
+    worldStore.currPropId = ""
+    worldStore.currSceneId = ""
+    parent.scrollY > 0
   }
 
-  const backBtnClicked = () => {
+  const backToSceneClicked = () => {
     worldStore.currPropId = ""
+    parent.scrollY > 0
   }
 
   let motionExpand: false
