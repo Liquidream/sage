@@ -1,6 +1,8 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn variant="plain" size="small" prepend-icon="mdi-earth" disabled>World</v-btn>
+  <v-btn variant="plain" size="small" prepend-icon="mdi-earth" disabled
+    >World</v-btn
+  >
   <v-form>
     <!-- <div class="header pa-3">
       <div class="mt-2 text-h5">World Settings</div>

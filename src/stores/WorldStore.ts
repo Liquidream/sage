@@ -1,3 +1,5 @@
+import type { DoorModel } from "@/models/DoorModel"
+import type { PropModel } from "@/models/PropModel"
 import type { SceneModel } from "@/models/SceneModel"
 import { useSceneStore } from "@/stores/SceneStore"
 import { defineStore } from "pinia"
@@ -13,10 +15,8 @@ export interface WorldState {
   currDoorId: string
 }
 
-export const useWorldStore = defineStore({
-  id: "worldStore",
-  //sceneStore: useSceneStore(),
-  // Recommendation not to use "as"
+export const useWorldStore = defineStore("worldStore", {
+  // Recommendation NOT to use "as"
   // https://dev.to/cefn/comment/1m25c
   // https://runthatline.com/pinia-typescript-type-state-actions-getters/
   // https://pinia.vuejs.org/core-concepts/state.html#typescript
@@ -30,22 +30,22 @@ export const useWorldStore = defineStore({
   }),
 
   getters: {
-    getScenes() {
+    getScenes(): SceneModel[] {
       const sceneStore = useSceneStore()
       return sceneStore.scenes
     },
 
-    getCurrentScene(state) {
+    getCurrentScene(state): SceneModel | undefined {
       const sceneStore = useSceneStore()
       return sceneStore.scenes.find((item) => item.id === state.currSceneId)
     },
 
-    getCurrentProp(state) {
+    getCurrentProp(state): PropModel | undefined {
       const propStore = usePropStore()
       return propStore.props.find((item) => item.id === state.currPropId)
     },
 
-    getCurrentDoor(state) {
+    getCurrentDoor(state): DoorModel | undefined {
       const doorStore = useDoorStore()
       return doorStore.doors.find((item) => item.id === state.currDoorId)
     },
@@ -80,7 +80,7 @@ export const useWorldStore = defineStore({
       sceneStore.scenes.splice(index, 1)
     },
 
-    findIndexById(id: string) {
+    findIndexById(id: string): number {
       const sceneStore = useSceneStore()
       return sceneStore.scenes.findIndex((item) => item.id === id)
     },

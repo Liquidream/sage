@@ -1,8 +1,16 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn variant="plain" size="small" prepend-icon="mdi-earth" @click="backToWorldClicked">World</v-btn>
+  <v-btn
+    variant="plain"
+    size="small"
+    prepend-icon="mdi-earth"
+    @click="backToWorldClicked"
+    >World</v-btn
+  >
   <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn variant="plain" size="small" prepend-icon="mdi-filmstrip-box" disabled>Scene</v-btn>
+  <v-btn variant="plain" size="small" prepend-icon="mdi-filmstrip-box" disabled
+    >Scene</v-btn
+  >
 
   <v-form>
     <div class="header pa-3">
@@ -82,11 +90,8 @@
 <script setup lang="ts">
   import type { Ref } from "vue"
   import { ref } from "vue"
-  //import { PropModel } from "../models/PropModel"
-  //import { useSceneStore } from "../stores/SceneStore"
   import { useWorldStore } from "../stores/WorldStore"
   import type { SceneModel } from "@/models/SceneModel"
-  import type { PropModel } from "@/models/PropModel"
   import { usePropStore } from "@/stores/PropStore"
   import { useDoorStore } from "@/stores/DoorStore"
 
@@ -100,17 +105,14 @@
   // }
   //console.log(worldStore.getCurrentScene)
   const model = worldStore.getCurrentScene || ({} as SceneModel)
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any
   //let imageData: any = ""
   const imageData: Ref<string | ArrayBuffer | null> = ref("")
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const model: Ref<any> = ref(null)
-  // model.value = new PropModel()
-  //let drawer = true
-
   const onFileChange = (e: any) => {
     //debugger
-
     const reader = new FileReader()
     // Use the javascript reader object to load the contents
     // of the file in the v-model prop
@@ -144,6 +146,4 @@
     worldStore.currDoorId = value.id as string
     parent.scrollY > 0
   }
-
-  let motionExpand: false
 </script>

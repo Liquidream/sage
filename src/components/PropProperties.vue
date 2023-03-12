@@ -1,10 +1,24 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn variant="plain" size="small" prepend-icon="mdi-earth" @click="backToWorldClicked">World</v-btn>
+  <v-btn
+    variant="plain"
+    size="small"
+    prepend-icon="mdi-earth"
+    @click="backToWorldClicked"
+    >World</v-btn
+  >
   <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn variant="plain" size="small" prepend-icon="mdi-filmstrip-box" @click="backToSceneClicked">Scene</v-btn>
+  <v-btn
+    variant="plain"
+    size="small"
+    prepend-icon="mdi-filmstrip-box"
+    @click="backToSceneClicked"
+    >Scene</v-btn
+  >
   <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn variant="plain" size="small" prepend-icon="mdi-trophy" disabled>Prop</v-btn>
+  <v-btn variant="plain" size="small" prepend-icon="mdi-trophy" disabled
+    >Prop</v-btn
+  >
 
   <v-form>
     <div class="header pa-3">
@@ -38,6 +52,33 @@
       rows="2"
     ></v-textarea>
 
+    <v-row>
+      <v-col>
+        <v-text-field
+          label="X-Pos"
+          v-model="model.x"
+          type="number"
+        ></v-text-field>
+        <v-text-field
+          label="Width"
+          v-model="model.width"
+          type="number"
+        ></v-text-field>
+      </v-col>
+      <v-col>
+        <v-text-field
+          label="Y-Pos"
+          v-model="model.y"
+          type="number"
+        ></v-text-field>
+        <v-text-field
+          label="Height"
+          v-model="model.height"
+          type="number"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+
     <v-divider />
     <v-list-subheader
       ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader
@@ -67,16 +108,18 @@
   import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"
   import type { PropModel } from "@/models/PropModel"
-  import { usePropStore } from "@/stores/PropStore"
+  //import { usePropStore } from "@/stores/PropStore"
 
   const worldStore = useWorldStore()
   //const propStore = usePropStore()
-
   const model = worldStore.getCurrentProp || ({} as PropModel)
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any
   //let imageData: any = ""
   const imageData: Ref<string | ArrayBuffer | null> = ref("")
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFileChange = (e: any) => {
     //debugger
     const reader = new FileReader()
@@ -99,6 +142,4 @@
     worldStore.currPropId = ""
     parent.scrollY > 0
   }
-
-  let motionExpand: false
 </script>

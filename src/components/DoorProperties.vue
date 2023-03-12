@@ -1,10 +1,24 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn variant="plain" size="small" prepend-icon="mdi-earth" @click="backToWorldClicked">World</v-btn>
+  <v-btn
+    variant="plain"
+    size="small"
+    prepend-icon="mdi-earth"
+    @click="backToWorldClicked"
+    >World</v-btn
+  >
   <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn variant="plain" size="small" prepend-icon="mdi-filmstrip-box" @click="backToSceneClicked">Scene</v-btn>
+  <v-btn
+    variant="plain"
+    size="small"
+    prepend-icon="mdi-filmstrip-box"
+    @click="backToSceneClicked"
+    >Scene</v-btn
+  >
   <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn variant="plain" size="small" prepend-icon="mdi-door" disabled>Door</v-btn>
+  <v-btn variant="plain" size="small" prepend-icon="mdi-door" disabled
+    >Door</v-btn
+  >
 
   <v-form>
     <div class="header pa-3">
@@ -59,16 +73,16 @@
   import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"
   import type { DoorModel } from "@/models/DoorModel"
-  import { useDoorStore } from "@/stores/DoorStore"
+  //import { useDoorStore } from "@/stores/DoorStore"
 
   const worldStore = useWorldStore()
   //const doorStore = useDoorStore()
 
   const model = worldStore.getCurrentDoor || ({} as DoorModel)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any
-  //let imageData: any = ""
   const imageData: Ref<string | ArrayBuffer | null> = ref("")
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFileChange = (e: any) => {
     //debugger
     const reader = new FileReader()
@@ -91,6 +105,4 @@
     worldStore.currDoorId = ""
     parent.scrollY > 0
   }
-
-  let motionExpand: false
 </script>
