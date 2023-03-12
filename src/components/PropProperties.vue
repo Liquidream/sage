@@ -1,10 +1,10 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn variant="plain" @click="backToWorldClicked">World</v-btn>
+  <v-btn variant="plain" size="small" prepend-icon="mdi-earth" @click="backToWorldClicked">World</v-btn>
   <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn variant="plain" @click="backToSceneClicked">Scene</v-btn>
+  <v-btn variant="plain" size="small" prepend-icon="mdi-filmstrip-box" @click="backToSceneClicked">Scene</v-btn>
   <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn variant="plain" disabled>Prop</v-btn>
+  <v-btn variant="plain" size="small" prepend-icon="mdi-trophy" disabled>Prop</v-btn>
 
   <v-form>
     <div class="header pa-3">
@@ -15,8 +15,9 @@
     </div>
 
     <v-divider />
-    <v-list-subheader>General</v-list-subheader>
-
+    <v-list-subheader
+      ><v-icon icon="mdi-view-list-outline"></v-icon>General</v-list-subheader
+    >
     <v-text-field label="ID" v-model="model.id"></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
     <v-file-input
@@ -38,7 +39,9 @@
     ></v-textarea>
 
     <v-divider />
-    <v-list-subheader>Events</v-list-subheader>
+    <v-list-subheader
+      ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader
+    >
     <v-textarea
       name="on_action"
       v-model="model.on_action"

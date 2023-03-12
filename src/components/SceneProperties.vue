@@ -1,8 +1,8 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn variant="plain" @click="backToWorldClicked">World</v-btn>
+  <v-btn variant="plain" size="small" prepend-icon="mdi-earth" @click="backToWorldClicked">World</v-btn>
   <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn variant="plain" disabled>Scene</v-btn>
+  <v-btn variant="plain" size="small" prepend-icon="mdi-filmstrip-box" disabled>Scene</v-btn>
 
   <v-form>
     <div class="header pa-3">
