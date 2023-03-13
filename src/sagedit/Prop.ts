@@ -1,9 +1,10 @@
-import { Sprite, Texture } from "pixi.js"
+import { BaseTexture, Sprite, Texture } from "pixi.js"
 // import { Easing, Tween } from "tweedle.js"
 // import { DialogType } from "./Dialog"
 import { InputEventEmitter } from "./ui/InputEventEmitter"
 import type { IPropData } from "./PropData"
 import { SAGEdit } from "@/SAGEdit"
+import type { PropModel } from "@/models/PropModel"
 
 export class Prop {
   // "constants"
@@ -12,28 +13,31 @@ export class Prop {
   DRAG_SENSDIST = 25
   DRAG_ALPHA = 0.75
 
-  public data!: IPropData
+  public data!: PropModel
   public sprite!: Sprite
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
   private propInputEvents!: InputEventEmitter
   public dragging = false
 
-  public constructor(propData: IPropData) {
+  public constructor(propData: PropModel) {
     // Initialise from data object
     let sprite = undefined
-    if (propData.image) {
-      sprite = Sprite.from(propData.image)
+    if (propData.image) {      
+      const base = new BaseTexture(propData.image)
+      const texture = new Texture(base)
+      sprite = Sprite.from(texture)
+      //sprite = Sprite.from(propData.image)
     } else {
       sprite = new Sprite(Texture.EMPTY)
-      sprite.width = propData.width
-      sprite.height = propData.height
     }
     this.data = propData
     this.sprite = sprite
     sprite.anchor.set(0.5)
-    sprite.x = propData.x
-    sprite.y = propData.y
+    sprite.x = propData.x || 0
+    sprite.y = propData.y || 0
+    sprite.width = propData.width || 0
+    sprite.height = propData.height || 0
 
     // Events
     this.propInputEvents = new InputEventEmitter(this.sprite)
@@ -48,7 +52,7 @@ export class Prop {
     //SAGE.Events.on("scenehint", this.onSceneHint, this)
 
     // visible state
-    this.sprite.visible = propData.visible
+    this.sprite.visible = propData.visible || true
   }
 
   tidyUp() {

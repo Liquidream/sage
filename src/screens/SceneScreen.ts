@@ -22,6 +22,8 @@ import type { PropData } from "@/sagedit/PropData"
 import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneModel } from "@/models/SceneModel"
 import { useSceneStore } from "@/stores/SceneStore"
+import { usePropStore } from "@/stores/PropStore"
+import type { PropModel } from "@/models/PropModel"
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null
@@ -61,6 +63,14 @@ export class SceneScreen extends Container {
       this.refresh()
     })
 
+    // Subscribe to Prop state changes so that we refresh/recreate Pixi.js content
+    const propStore = usePropStore()
+    //.$subscribe((mutation, state) => {
+    propStore.$subscribe(() => {
+      SAGEdit.debugLog("Prop changed - so refresh scene model (pixi)")
+      this.refresh()
+    })
+
     // perform initial setup
     this.setup()
   }
@@ -76,7 +86,7 @@ export class SceneScreen extends Container {
     // Construct scene from data
     this.buildBackdrop()
     // this.buildDoorways()
-    // this.buildProps()
+    this.buildProps()
 
     // Create text
     const styly: TextStyle = new TextStyle({
@@ -165,17 +175,21 @@ export class SceneScreen extends Container {
   }
 
   private buildProps() {
+    //debugger
     // Only create Lamp if not already "picked up"
     // TODO: Make this all dynamic/data-based eventually, this is just a crude example!
-    // if (this.scene.props.length > 0) {
-    //   for (const propData of this.scene.props) {
-    //     this.addProp(propData)
-    //   }
-    // }
+    //if (this.props.length > 0) {
+      //for (const propData of this.props) {
+        const propStore = usePropStore()
+        const propModel = propStore.findPropBySceneId(this.scene?.id || "")[0]
+        
+        this.addProp(propModel)
+      //}
+    //}
     //SAGE.Dialog.clearMessage()
   }
 
-  public addProp(data: PropData, fadeIn = false) {
+  public addProp(data: PropModel, fadeIn = false) {
     // Create new component obj (contains data + view)
     const prop = new Prop(data)
     this.addChild(prop.sprite)
