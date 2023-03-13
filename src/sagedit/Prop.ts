@@ -23,7 +23,7 @@ export class Prop {
   public constructor(propData: PropModel) {
     // Initialise from data object
     let sprite = undefined
-    if (propData.image) {      
+    if (propData.image) {
       const base = new BaseTexture(propData.image)
       const texture = new Texture(base)
       sprite = Sprite.from(texture)
@@ -88,6 +88,7 @@ export class Prop {
     // if (this.inInventory) {
     //   SAGE.World.player.removeFromInventory(this.data.id)
     // } else {
+    //SAGEdit.currentScreen.removeProp(this, true)
     //   SAGE.World.currentScene.screen.removeProp(this, true)
     // }
   }

@@ -130,6 +130,7 @@ export class SceneScreen extends Container {
     // Unsubscribe from events, etc.
     for (const prop of this.props) {
       prop.tidyUp()
+      prop.destroy()
     }
     // for (const door of this.doors) {
     //   door.tidyUp()
@@ -142,6 +143,11 @@ export class SceneScreen extends Container {
     // if (this.scene.sound) {
     //   SAGE.Sound.stop(this.scene.sound, !restartGame)
     // }
+
+    // remove everything from stage
+    //debugger
+    SAGEdit.currentScreen.removeChildren()
+    //SAGEdit.app.stage.removeChildren()
   }
 
   private buildBackdrop() {
@@ -179,12 +185,14 @@ export class SceneScreen extends Container {
     // Only create Lamp if not already "picked up"
     // TODO: Make this all dynamic/data-based eventually, this is just a crude example!
     //if (this.props.length > 0) {
-      //for (const propData of this.props) {
-        const propStore = usePropStore()
-        const propModel = propStore.findPropBySceneId(this.scene?.id || "")[0]
-        
-        this.addProp(propModel)
-      //}
+    //for (const propData of this.props) {
+    const propStore = usePropStore()
+    const propModel = propStore.findPropBySceneId(this.scene?.id || "")[0]
+
+    if (propModel != undefined) {
+      this.addProp(propModel)
+    }
+    //}
     //}
     //SAGE.Dialog.clearMessage()
   }
