@@ -179,7 +179,6 @@ export class SceneScreen extends Container {
   }
 
   private buildProps() {
-    //debugger
     // Only create Lamp if not already "picked up"
     // TODO: Make this all dynamic/data-based eventually, this is just a crude example!
     //if (this.props.length > 0) {
@@ -211,19 +210,15 @@ export class SceneScreen extends Container {
     // DEBUG?
     if (SAGEdit.debugMode) {
       const graphics = new Graphics()
+      const propWidth = prop.data.width || 0,
+        propHeight = prop.data.height || 0
       graphics.beginFill(0xe74c3c, 125) // Red
       graphics.lineStyle(10, 0xff0000)
-      graphics.pivot.set(prop.sprite.width / 2, prop.sprite.height / 2)
+      graphics.pivot.set(propWidth / 2, propHeight / 2)
       // Need to handle diff for "non-image" sprites
       // (as Graphics scaling goes screwy if image dimensions are not really there)
       if (prop.data.image) {
-        graphics.drawRoundedRect(
-          0,
-          0,
-          prop.sprite.width,
-          prop.sprite.height,
-          30
-        )
+        graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
         prop.sprite.addChild(graphics)
       } else {
         graphics.drawRoundedRect(

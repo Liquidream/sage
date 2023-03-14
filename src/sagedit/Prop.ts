@@ -24,12 +24,26 @@ export class Prop {
     // Initialise from data object
     let sprite = undefined
     if (propData.image) {
-      const base = new BaseTexture(propData.image)
+      const imgBase64 = propData.image
+      const base = new BaseTexture(imgBase64)
+      base.on("loaded", () => {
+        console.log(
+          `>> base LOADED dimensions: width=${base.width} height=${base.height}`
+        )
+        // ##### don't do this here
+        // ##### instead, set at point of IMPORTING (to allow overriding)
+        if (base.width > 0) {
+          propData.width = base.width
+          propData.height = base.height
+        }
+      })
+      // Do it here also, in case texture is cached (so loaded won't fire)
+      if (base.width > 0) {
+        propData.width = base.width
+        propData.height = base.height
+      }
       const texture = new Texture(base)
       sprite = Sprite.from(texture)
-      // Seems hit and miss whether it gets dimensions correctly??
-      sprite.width = texture.width || propData.width || 0
-      sprite.height = texture.height || propData.height || 0
     } else {
       sprite = new Sprite(Texture.EMPTY)
       sprite.width = propData.width || 0
