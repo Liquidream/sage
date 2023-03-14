@@ -2,8 +2,8 @@ import { BaseTexture, Sprite, Texture } from "pixi.js"
 // import { Easing, Tween } from "tweedle.js"
 // import { DialogType } from "./Dialog"
 import { InputEventEmitter } from "./ui/InputEventEmitter"
-import type { IPropData } from "./PropData"
-import { SAGEdit } from "@/SAGEdit"
+//import type { IPropData } from "./PropData"
+//import { SAGEdit } from "@/SAGEdit"
 import type { PropModel } from "@/models/PropModel"
 
 export class Prop {
@@ -27,17 +27,19 @@ export class Prop {
       const base = new BaseTexture(propData.image)
       const texture = new Texture(base)
       sprite = Sprite.from(texture)
-      //sprite = Sprite.from(propData.image)
+      // Seems hit and miss whether it gets dimensions correctly??
+      sprite.width = texture.width || propData.width || 0
+      sprite.height = texture.height || propData.height || 0
     } else {
       sprite = new Sprite(Texture.EMPTY)
+      sprite.width = propData.width || 0
+      sprite.height = propData.height || 0
     }
     this.data = propData
     this.sprite = sprite
     sprite.anchor.set(0.5)
     sprite.x = propData.x || 0
     sprite.y = propData.y || 0
-    sprite.width = propData.width || 0
-    sprite.height = propData.height || 0
 
     // Events
     this.propInputEvents = new InputEventEmitter(this.sprite)

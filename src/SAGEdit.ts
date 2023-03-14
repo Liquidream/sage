@@ -1,5 +1,5 @@
 import { Application, Container } from "pixi.js"
-import { SceneData } from "./sagedit/SceneData"
+//import { SceneData } from "./sagedit/SceneData"
 import { Events } from "./sagedit/Events"
 import { SceneScreen } from "./screens/SceneScreen"
 import { Dialog } from "./sagedit/Dialog"
@@ -147,14 +147,13 @@ export class SAGEdit {
 
     // current screen size
     const screenWidth = mainWrap?.clientWidth
-    const screenHeight = Math.max(      
+    const screenHeight = Math.max(
       document.documentElement.clientHeight,
       window.innerHeight || 0
     )
 
     console.log(`screenWidth:${screenWidth}`)
     console.log(`SAGEdit.width:${SAGEdit.width}`)
-    
     const isMobile = screenWidth <= 1280
     console.log(`screen.width = ${screen.width}`)
     console.log(`isMobile = ${isMobile}`)
@@ -171,15 +170,14 @@ export class SAGEdit {
     const enlargedHeight = Math.floor(scale * SAGEdit.height)
 
     // margins for centering our game
-    const horizontalMargin = (screenWidth - enlargedWidth) / 2
+    //const horizontalMargin = (screenWidth - enlargedWidth) / 2
     const verticalMargin = (screenHeight - enlargedHeight) / 2
 
     // now we use css trickery to set the sizes and margins
     SAGEdit._app.view.style.width = `${enlargedWidth}px`
     SAGEdit._app.view.style.height = `${enlargedHeight}px`
     SAGEdit._app.view.style.marginTop =
-    SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
-
+      SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
   }
 
   // Conditional console.log (if debugMode is true)

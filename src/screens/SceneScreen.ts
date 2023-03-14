@@ -18,7 +18,7 @@ import { SAGEdit } from "@/SAGEdit"
 import { Prop } from "@/sagedit/Prop"
 //import { Door } from "@/sagedit/Door"
 //import type { SceneData } from "@/sagedit/SceneData"
-import type { PropData } from "@/sagedit/PropData"
+//import type { PropData } from "@/sagedit/PropData"
 import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneModel } from "@/models/SceneModel"
 import { useSceneStore } from "@/stores/SceneStore"
@@ -145,9 +145,7 @@ export class SceneScreen extends Container {
     // }
 
     // remove everything from stage
-    //debugger
-    SAGEdit.currentScreen.removeChildren()
-    //SAGEdit.app.stage.removeChildren()
+    this.removeChildren()
   }
 
   private buildBackdrop() {
@@ -310,8 +308,8 @@ export class SceneScreen extends Container {
         //        this.draggedProp.use(this.dragTarget)
       } else {
         // Didn't drop on object, so... do nothing? (+put back to orig pos)
-        this.draggedProp.sprite.x = this.draggedProp.data.x
-        this.draggedProp.sprite.y = this.draggedProp.data.y
+        this.draggedProp.sprite.x = this.draggedProp.data.x || 0
+        this.draggedProp.sprite.y = this.draggedProp.data.y || 0
       }
       // End Drag+Drop mode
       this.draggedProp.dragging = false
