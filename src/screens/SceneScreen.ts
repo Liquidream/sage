@@ -209,6 +209,7 @@ export class SceneScreen extends Container {
 
     // DEBUG?
     if (SAGEdit.debugMode) {
+      //debugger
       const graphics = new Graphics()
       const propWidth = prop.data.width || 0,
         propHeight = prop.data.height || 0

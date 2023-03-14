@@ -108,6 +108,7 @@
   import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"
   import type { PropModel } from "@/models/PropModel"
+  import { BaseTexture } from "pixi.js"
   //import { usePropStore } from "@/stores/PropStore"
 
   const worldStore = useWorldStore()
@@ -129,6 +130,12 @@
     reader.onload = () => {
       imageData.value = reader.result
       model.image = reader.result as string // added "as" to squash error/warn, ok?
+      // Now do a test load into Pixi texture to get dimensions
+      const base = new BaseTexture(model.image)
+      base.on("loaded", () => {
+        model.width = base.width
+        model.height = base.height
+      })
     }
   }
 
