@@ -33,12 +33,12 @@ export class Prop {
       //   console.log(
       //     `>> base LOADED dimensions: width=${base.width} height=${base.height}`
       //   )
-        // ##### don't do this here
-        // ##### instead, set at point of IMPORTING (to allow overriding)
-        // if (base.width > 0) {
-        //   propData.width = base.width
-        //   propData.height = base.height
-        // }
+      // ##### don't do this here
+      // ##### instead, set at point of IMPORTING (to allow overriding)
+      // if (base.width > 0) {
+      //   propData.width = base.width
+      //   propData.height = base.height
+      // }
       //})
       // Do it here also, in case texture is cached (so loaded won't fire)
       // if (base.width > 0) {
