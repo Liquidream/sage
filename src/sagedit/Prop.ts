@@ -148,14 +148,15 @@ export class Prop {
 
     // Select clicked prop
     const worldStore = useWorldStore()
-    worldStore.currPropId = this.data.id
-
-    // Start of drag...
-    this.dragging = true
-    //debugger
-    SAGEdit.currentScreen.draggedProp = this
-    this.sprite.alpha = this.DRAG_ALPHA
-
+    if (worldStore.currPropId != this.data.id) {
+      worldStore.currPropId = this.data.id
+    } else {
+      // Start of drag...
+      this.dragging = true
+      //debugger
+      SAGEdit.currentScreen.draggedProp = this
+      this.sprite.alpha = this.DRAG_ALPHA
+    }
     //   SAGE.Dialog.clearMessage()
     //   // Disable auto-close of inventory
     //   SAGE.invScreen.autoClose = false

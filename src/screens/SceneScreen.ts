@@ -195,15 +195,15 @@ export class SceneScreen extends Container {
     //SAGE.Dialog.clearMessage()
   }
 
-  public addProp(data: PropModel, fadeIn = false) {
+  public addProp(propModel: PropModel, fadeIn = false) {
     // Create new component obj (contains data + view)
-    const prop = new Prop(data)
+    const prop = new Prop(propModel)
     this.addChild(prop.sprite)
     this.props.push(prop)
     // Don't add to scene.propdata here, as it likely already came from it?
 
     // Force to be draggable now
-    data.draggable = true
+    propModel.draggable = true
 
     // Fade in?
     if (fadeIn) {
@@ -211,13 +211,15 @@ export class SceneScreen extends Container {
       new Tween(prop.sprite).to({ alpha: 1 }, 500).start()
     }
 
-    // DEBUG?
-    if (SAGEdit.debugMode) {
+    // Selected Prop?
+    const worldStore = useWorldStore()
+    //if (SAGEdit.debugMode) {
+    if (worldStore.currPropId === propModel.id) {
       //debugger
       const graphics = new Graphics()
       const propWidth = prop.data.width || 0,
         propHeight = prop.data.height || 0
-      graphics.beginFill(0xe74c3c, 125) // Red
+      //graphics.beginFill(0xe74c3c, 125) // Red
       graphics.lineStyle(10, 0xff0000)
       graphics.pivot.set(propWidth / 2, propHeight / 2)
       // Need to handle diff for "non-image" sprites

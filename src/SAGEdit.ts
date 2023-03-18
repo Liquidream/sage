@@ -13,6 +13,7 @@ export class SAGEdit {
   public static enableFullscreen = false
 
   public static navWidth = 350
+  public static currentScreen: SceneScreen // was private (should it be?)
 
   private static _app: Application
   private static _width: number
@@ -21,7 +22,6 @@ export class SAGEdit {
   private static backLayer: Container
   private static midLayer: Container
   private static topLayer: Container
-  private static currentScreen: SceneScreen
 
   // public static World: World;
   public static Dialog: Dialog
