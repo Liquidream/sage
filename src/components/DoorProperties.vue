@@ -52,6 +52,33 @@
       rows="2"
     ></v-textarea>
 
+    <v-row>
+      <v-col>
+        <v-text-field
+          label="X-Pos"
+          v-model.number="model.x"
+          type="number"
+        ></v-text-field>
+        <v-text-field
+          label="Width"
+          v-model.number="model.width"
+          type="number"
+        ></v-text-field>
+      </v-col>
+      <v-col>
+        <v-text-field
+          label="Y-Pos"
+          v-model.number="model.y"
+          type="number"
+        ></v-text-field>
+        <v-text-field
+          label="Height"
+          v-model.number="model.height"
+          type="number"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+
     <v-divider />
     <v-list-subheader
       ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader

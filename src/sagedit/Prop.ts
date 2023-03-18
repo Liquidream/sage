@@ -5,6 +5,7 @@ import { InputEventEmitter } from "./ui/InputEventEmitter"
 //import type { IPropData } from "./PropData"
 //import { SAGEdit } from "@/SAGEdit"
 import type { PropModel } from "@/models/PropModel"
+import { SAGEdit } from "@/SAGEdit"
 
 export class Prop {
   // "constants"
@@ -144,9 +145,9 @@ export class Prop {
     // On an inventory (or draggable) item?
     // if (this.inInventory || this.data.draggable) {
     //   // Start of drag...
-    //   this.dragging = true
-    //   SAGE.World.currentScene.screen.draggedProp = this
-    //   this.sprite.alpha = this.DRAG_ALPHA
+       this.dragging = true
+       SAGEdit.currentScreen.draggedProp = this
+       this.sprite.alpha = this.DRAG_ALPHA
     //   SAGE.Dialog.clearMessage()
     //   // Disable auto-close of inventory
     //   SAGE.invScreen.autoClose = false

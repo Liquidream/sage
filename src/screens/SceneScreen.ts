@@ -184,13 +184,14 @@ export class SceneScreen extends Container {
     //if (this.props.length > 0) {
     //for (const propData of this.props) {
     const propStore = usePropStore()
-    const propModel = propStore.findPropBySceneId(this.scene?.id || "")[0]
+    const scenePropModels = propStore.findPropBySceneId(this.scene?.id || "")
 
-    if (propModel != undefined) {
-      this.addProp(propModel)
+    if (scenePropModels.length > 0) {
+      for (const propModel of scenePropModels) {
+        this.addProp(propModel)
+      }
     }
-    //}
-    //}
+
     //SAGE.Dialog.clearMessage()
   }
 
@@ -200,6 +201,9 @@ export class SceneScreen extends Container {
     this.addChild(prop.sprite)
     this.props.push(prop)
     // Don't add to scene.propdata here, as it likely already came from it?
+
+    // Force to be draggable now
+    data.draggable = true
 
     // Fade in?
     if (fadeIn) {
@@ -286,7 +290,7 @@ export class SceneScreen extends Container {
     if (this.draggedProp) {
       // Temp remove interaction to "dragged" Prop
       this.draggedProp.sprite.interactive = false
-      // Update pos
+      // Update pos      
       this.draggedProp.sprite.x = _e.data.global.x
       this.draggedProp.sprite.y = _e.data.global.y
       // Check for valid "drop"
@@ -299,16 +303,19 @@ export class SceneScreen extends Container {
     SAGEdit.debugLog(`${this.name}::onPointerUp()`)
     if (this.draggedProp) {
       // We were dragging something - did we drop it on something?
-      if (this.dragTarget) {
-        // Was it a valid object?
-        //        this.draggedProp.use(this.dragTarget)
-      } else {
-        // Didn't drop on object, so... do nothing? (+put back to orig pos)
-        this.draggedProp.sprite.x = this.draggedProp.data.x || 0
-        this.draggedProp.sprite.y = this.draggedProp.data.y || 0
-      }
+      // if (this.dragTarget) {
+      //   // Was it a valid object?
+      //   //        this.draggedProp.use(this.dragTarget)
+      // } else {
+      //   // Didn't drop on object, so... do nothing? (+put back to orig pos)
+      //   this.draggedProp.sprite.x = this.draggedProp.data.x || 0
+      //   this.draggedProp.sprite.y = this.draggedProp.data.y || 0
+      // }
       // End Drag+Drop mode
       this.draggedProp.dragging = false
+      // Save final pos
+      this.draggedProp.data.x = Math.floor(this.draggedProp.sprite.x)
+      this.draggedProp.data.y = Math.floor(this.draggedProp.sprite.y)
       // Restore interaction to "dragged" Prop
       this.draggedProp.sprite.interactive = true
       this.draggedProp.sprite.alpha = 1
