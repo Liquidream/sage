@@ -79,6 +79,13 @@
       </v-col>
     </v-row>
 
+    <v-select
+      v-model="model.in_scene_id"
+      :items="worldStore.getScenes"
+      item-title="name"
+      item-value="id"
+    ></v-select>
+
     <v-divider />
     <v-list-subheader
       ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader

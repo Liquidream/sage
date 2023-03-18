@@ -290,7 +290,7 @@ export class SceneScreen extends Container {
     if (this.draggedProp) {
       // Temp remove interaction to "dragged" Prop
       this.draggedProp.sprite.interactive = false
-      // Update pos      
+      // Update pos
       this.draggedProp.sprite.x = _e.data.global.x
       this.draggedProp.sprite.y = _e.data.global.y
       // Check for valid "drop"
@@ -322,6 +322,12 @@ export class SceneScreen extends Container {
       this.draggedProp = undefined
       // Update inventory (in case it was an inventory prop)
       //      SAGE.invScreen.update()
+    } else {
+      // Test deselect prop/door
+      // Select clicked prop
+      const worldStore = useWorldStore()
+      worldStore.currPropId = ""
+      worldStore.currDoorId = ""
     }
   }
 
