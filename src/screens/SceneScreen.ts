@@ -97,9 +97,19 @@ export class SceneScreen extends Container {
       wordWrap: true,
       wordWrapWidth: 1280 / 2,
     })
-    this.dialogText = new Text(this.scene?.name, styly) // Text supports unicode!
-    this.dialogText.x = 800
-    this.dialogText.y = 300
+    // Get selected "name"
+    let dialogText = this.scene?.name
+    const worldStore = useWorldStore()
+    if (worldStore.currPropId != "") {
+      dialogText = worldStore.getCurrentProp?.name
+    }
+    if (worldStore.currDoorId != "") {
+      dialogText = worldStore.getCurrentDoor?.name
+    }
+
+    this.dialogText = new Text(dialogText, styly) // Text supports unicode!
+    this.dialogText.x = SAGEdit.width / 2
+    this.dialogText.y = SAGEdit.height - this.dialogText.height / 2 - 80
     this.dialogText.anchor.set(0.5)
     // .text = "This is expensive to change, please do not abuse";
     this.addChild(this.dialogText)
