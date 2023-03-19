@@ -77,16 +77,9 @@
       item-value="id"
     >
       <template v-slot:item="{ item, props }">
-        <v-list-item>
-          <v-row>
-            <v-col>
-              <v-img :src="item.raw.image" max-height="50" />
-            </v-col>
-            <v-col>
-              {{ item.title }}
-            </v-col>
-          </v-row>
-        </v-list-item>
+        <v-list-item v-bind="props"
+          ><v-img :src="item.raw.image" max-height="50"
+        /></v-list-item>
       </template>
     </v-select>
 
