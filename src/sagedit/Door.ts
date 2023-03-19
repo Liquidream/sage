@@ -1,8 +1,9 @@
+import { DoorState, type DoorModel } from "@/models/DoorModel"
 import { SAGEdit } from "@/SAGEdit"
 import { Graphics, Sprite } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"
 //import { DialogType } from "./Dialog"
-import * as DoorData from "./DoorData"
+//import * as DoorData from "./DoorData"
 import { InputEventEmitter } from "./ui/InputEventEmitter"
 
 export class Door {
@@ -10,16 +11,19 @@ export class Door {
   // (perhaps overridable in config?)
   TOUCH_DURATION = 500
 
-  public data!: DoorData.IDoorData
+  public data!: DoorModel //DoorData.IDoorData
   public graphics!: Graphics
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
   private doorInputEvents!: InputEventEmitter
 
-  public constructor(doorData: DoorData.IDoorData) {
+  public constructor(doorModel: DoorModel) {
+    //DoorData.IDoorData) {
     // Initialise from data object
-    this.data = doorData
+    this.data = doorModel
     const graphics = new Graphics()
+    const doorWidth = this.data.width || 0,
+      doorHeight = this.data.height || 0
     // Make doors visible in debug
     if (SAGEdit.debugMode) {
       // Set the fill color
@@ -33,13 +37,13 @@ export class Door {
       graphics.beginFill(0xccc, 0.00000000000001) // "Invisible"
     }
     // Make a center point of origin (anchor)
-    graphics.pivot.set(this.data.width / 2, this.data.height / 2)
+    graphics.pivot.set(doorWidth / 2, doorHeight / 2)
     // Draw a rectangle
     graphics.drawRoundedRect(
-      this.data.x,
-      this.data.y,
-      this.data.width,
-      this.data.height,
+      this.data.x || 0,
+      this.data.y || 0,
+      this.data.width || 0,
+      this.data.height || 0,
       30
     )
     // Applies fill to lines and shapes since the last call to beginFill.
@@ -60,7 +64,7 @@ export class Door {
 
   public unlockDoor() {
     // Unlock the door
-    this.data.state = DoorData.DoorState.Unlocked
+    this.data.state = DoorState.Unlocked
     // Play sound
     if (this.data.playSounds) {
       //SAGE.Sound.play("Unlock-Door")
@@ -77,8 +81,8 @@ export class Door {
     // Show attract tween for this
     const attractShine: Sprite = Sprite.from("UI-Shine")
     attractShine.anchor.set(0.5)
-    attractShine.x = this.data.x
-    attractShine.y = this.data.y
+    attractShine.x = this.data.x || 0
+    attractShine.y = this.data.y || 0
     attractShine.alpha = 0
 
     this.graphics.parent.addChild(attractShine)

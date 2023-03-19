@@ -11,19 +11,15 @@ import {
   BaseTexture,
 } from "pixi.js"
 
-//import { useSceneStore } from "@/stores/SceneStore"
-
 import { SAGEdit } from "@/SAGEdit"
-//import type { ISceneData } from "../sage/Scene"
 import { Prop } from "@/sagedit/Prop"
-//import { Door } from "@/sagedit/Door"
-//import type { SceneData } from "@/sagedit/SceneData"
-//import type { PropData } from "@/sagedit/PropData"
-import { useWorldStore } from "@/stores/WorldStore"
+import { Door } from "@/sagedit/Door"
 import type { SceneModel } from "@/models/SceneModel"
+import type { PropModel } from "@/models/PropModel"
+import { useWorldStore } from "@/stores/WorldStore"
 import { useSceneStore } from "@/stores/SceneStore"
 import { usePropStore } from "@/stores/PropStore"
-import type { PropModel } from "@/models/PropModel"
+import { useDoorStore } from "@/stores/DoorStore"
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null
@@ -31,7 +27,7 @@ export class SceneScreen extends Container {
   private scene: SceneModel | undefined
   private backdrop!: Sprite
   private props: Array<Prop> = []
-  //private doors: Array<Door> = []
+  private doors: Array<Door> = []
 
   public draggedProp!: Prop | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,7 +81,7 @@ export class SceneScreen extends Container {
 
     // Construct scene from data
     this.buildBackdrop()
-    // this.buildDoorways()
+    this.buildDoorways()
     this.buildProps()
 
     // Create text
@@ -132,9 +128,10 @@ export class SceneScreen extends Container {
       prop.tidyUp()
       prop.destroy()
     }
-    // for (const door of this.doors) {
-    //   door.tidyUp()
-    // }
+    for (const door of this.doors) {
+      door.tidyUp()
+    }
+
     SAGEdit.app.stage.off("pointermove", this.onPointerMove, this)
     SAGEdit.app.stage.off("pointerup", this.onPointerUp, this)
     SAGEdit.app.stage.off("touchmove", this.onTouchMove, this)
@@ -191,7 +188,21 @@ export class SceneScreen extends Container {
         this.addProp(propModel)
       }
     }
+    //SAGE.Dialog.clearMessage()
+  }
 
+  private buildDoorways() {
+    const doorStore = useDoorStore()
+    const sceneDoorModels = doorStore.findDoorBySceneId(this.scene?.id || "")
+
+    if (sceneDoorModels.length > 0) {
+      for (const doorModel of sceneDoorModels) {
+        // Create new component obj (contains data + view)
+        const door = new Door(doorModel)
+        this.addChild(door.graphics)
+        this.doors.push(door)
+      }
+    }
     //SAGE.Dialog.clearMessage()
   }
 
@@ -265,18 +276,6 @@ export class SceneScreen extends Container {
     if (scaleAnim) {
       new Tween(prop.sprite.scale).to({ x: 1.5, y: 1.5 }, 500).start()
     }
-  }
-
-  private buildDoorways() {
-    // if (this.scene.doors.length > 0) {
-    //   for (const doorData of this.scene.doors) {
-    //     // Create new component obj (contains data + view)
-    //     const door = new Door(doorData)
-    //     this.addChild(door.graphics)
-    //     this.doors.push(door)
-    //   }
-    // }
-    //SAGE.Dialog.clearMessage()
   }
 
   public update() {
