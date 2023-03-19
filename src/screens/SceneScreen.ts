@@ -20,6 +20,7 @@ import { useWorldStore } from "@/stores/WorldStore"
 import { useSceneStore } from "@/stores/SceneStore"
 import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
+import { InputEventEmitter } from "@/sagedit/ui/InputEventEmitter"
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null
@@ -34,6 +35,8 @@ export class SceneScreen extends Container {
   public dragTarget!: any // Could be Prop or Door
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public touchTarget!: any // Could be Prop or Door
+
+  private backdropInputEvents!: InputEventEmitter
 
   constructor() {
     super()
@@ -170,8 +173,8 @@ export class SceneScreen extends Container {
     this.backdrop = sprite
 
     // Events
-    // this.backdropInputEvents = new InputEventEmitter(this.backdrop)
-    // this.backdrop.on("primaryaction", this.onPrimaryAction, this)
+    this.backdropInputEvents = new InputEventEmitter(this.backdrop)
+    this.backdrop.on("primaryaction", this.onPrimaryAction, this)
     // this.backdrop.on("secondaryaction", this.onSecondaryAction, this)
   }
 
@@ -299,6 +302,13 @@ export class SceneScreen extends Container {
     }
   }
 
+  private onPrimaryAction() {
+    // Deselect all (only scene)
+    const worldStore = useWorldStore()
+    worldStore.currPropId = ""
+    worldStore.currDoorId = ""
+  }
+
   private onPointerUp() {
     //_e: InteractionEvent) {
     SAGEdit.debugLog(`${this.name}::onPointerUp()`)
@@ -323,13 +333,14 @@ export class SceneScreen extends Container {
       this.draggedProp = undefined
       // Update inventory (in case it was an inventory prop)
       //      SAGE.invScreen.update()
-    } else {
-      // Test deselect prop/door
-      // Select clicked prop
-      const worldStore = useWorldStore()
-      worldStore.currPropId = ""
-      worldStore.currDoorId = ""
     }
+    // else {
+    //   // Test deselect prop/door
+    //   // Select clicked prop
+    //   const worldStore = useWorldStore()
+    //   worldStore.currPropId = ""
+    //   worldStore.currDoorId = ""
+    // }
   }
 
   private onTouchMove(_e: InteractionEvent) {
