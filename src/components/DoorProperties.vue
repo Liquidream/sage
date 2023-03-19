@@ -34,16 +34,6 @@
     >
     <v-text-field label="ID" v-model="model.id"></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
-    <v-file-input
-      v-model="chosenFile"
-      type="file"
-      @change="onFileChange"
-      label="Image"
-      accept="image/png, image/jpeg, image/bmp"
-      placeholder="Pick a backdrop image"
-      prepend-icon="mdi-camera"
-    ></v-file-input>
-    <v-img :src="model.image" max-height="150" />
     <v-textarea
       name="desc"
       v-model="model.desc"
@@ -78,6 +68,29 @@
         ></v-text-field>
       </v-col>
     </v-row>
+
+    <v-select
+      label="Target Scene"
+      v-model="model.target_scene_id"
+      :items="worldStore.getScenes"
+      item-title="name"
+      item-value="id"
+    >
+      <template v-slot:item="{ item, props }">
+        <v-list-item v-bind="props"><img :src="item.title" /></v-list-item>
+      </template>
+    </v-select>
+
+    <v-file-input
+      v-model="chosenFile"
+      type="file"
+      @change="onFileChange"
+      label="Image"
+      accept="image/png, image/jpeg, image/bmp"
+      placeholder="Pick a backdrop image"
+      prepend-icon="mdi-camera"
+    ></v-file-input>
+    <v-img :src="model.image" max-height="150" />
 
     <v-divider />
     <v-list-subheader

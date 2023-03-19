@@ -150,6 +150,7 @@ export class Prop {
     const worldStore = useWorldStore()
     if (worldStore.currPropId != this.data.id) {
       worldStore.currPropId = this.data.id
+      worldStore.currDoorId = ""
     } else {
       // Start of drag...
       this.dragging = true
