@@ -11,12 +11,14 @@ export class Door {
   // "constants"
   // (perhaps overridable in config?)
   TOUCH_DURATION = 500
+  DRAG_ALPHA = 0.75
 
   public doorModel!: DoorModel //DoorData.IDoorData
   public graphics!: Graphics
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
   private doorInputEvents!: InputEventEmitter
+  public dragging = false
 
   public constructor(doorModel: DoorModel) {
     //DoorData.IDoorData) {
@@ -71,6 +73,7 @@ export class Door {
     graphics.on("pointerover", this.onPointerOver, this)
     graphics.on("pointerout", this.onPointerOut, this)
     //
+    graphics.on("pointerdown", this.onPointerDown, this)
     //SAGE.Events.on("scenehint", this.onSceneHint, this)
 
     this.graphics = graphics
@@ -123,6 +126,18 @@ export class Door {
     // if (SAGE.Dialog.currentDialogType === DialogType.Caption) {
     //   SAGE.Dialog.clearMessage()
     // }
+  }
+
+  private onPointerDown() {
+    // Select clicked prop
+    const worldStore = useWorldStore()
+    if (worldStore.currDoorId == this.doorModel.id) {
+      // Start of drag...
+      this.dragging = true
+      //debugger
+      SAGEdit.currentScreen.draggedDoor = this
+      this.graphics.alpha = this.DRAG_ALPHA
+    }
   }
 
   private onPrimaryAction() {

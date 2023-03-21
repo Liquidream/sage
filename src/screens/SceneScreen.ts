@@ -31,6 +31,7 @@ export class SceneScreen extends Container {
   private doors: Array<Door> = []
 
   public draggedProp!: Prop | undefined
+  public draggedDoor!: Door | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public dragTarget!: any // Could be Prop or Door
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -316,7 +317,18 @@ export class SceneScreen extends Container {
       this.draggedProp.sprite.x = _e.data.global.x
       this.draggedProp.sprite.y = _e.data.global.y
       // Check for valid "drop"
-      this.checkDragCollisions()
+      //this.checkDragCollisions()
+    }
+    if (this.draggedDoor) {      
+      // Temp remove interaction to "dragged" Prop
+      this.draggedDoor.graphics.interactive = false
+      // Update pos
+      this.draggedDoor.graphics.x =
+        _e.data.global.x - this.draggedDoor.graphics.width / 2
+      this.draggedDoor.graphics.y =
+        _e.data.global.y - this.draggedDoor.graphics.height / 2
+      // Check for valid "drop"
+      //this.checkDragCollisions()
     }
   }
 
@@ -349,6 +361,29 @@ export class SceneScreen extends Container {
       this.draggedProp.sprite.interactive = true
       this.draggedProp.sprite.alpha = 1
       this.draggedProp = undefined
+      // Update inventory (in case it was an inventory prop)
+      //      SAGE.invScreen.update()
+    }
+    if (this.draggedDoor) {
+      // We were dragging something - did we drop it on something?
+      // if (this.dragTarget) {
+      //   // Was it a valid object?
+      //   //        this.draggedProp.use(this.dragTarget)
+      // } else {
+      //   // Didn't drop on object, so... do nothing? (+put back to orig pos)
+      //   this.draggedProp.sprite.x = this.draggedProp.data.x || 0
+      //   this.draggedProp.sprite.y = this.draggedProp.data.y || 0
+      // }
+      // End Drag+Drop mode
+      this.draggedDoor.dragging = false
+      // Save final pos
+      this.draggedDoor.doorModel.x = Math.floor(this.draggedDoor.graphics.x)
+      this.draggedDoor.doorModel.y = Math.floor(this.draggedDoor.graphics.y)
+
+      // Restore interaction to "dragged" Prop
+      this.draggedDoor.graphics.interactive = true
+      this.draggedDoor.graphics.alpha = 1
+      this.draggedDoor = undefined
       // Update inventory (in case it was an inventory prop)
       //      SAGE.invScreen.update()
     }
