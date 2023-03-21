@@ -70,6 +70,14 @@ export class SceneScreen extends Container {
       this.refresh()
     })
 
+    // Subscribe to Door state changes so that we refresh/recreate Pixi.js content
+    const doorStore = useDoorStore()
+    //.$subscribe((mutation, state) => {
+    doorStore.$subscribe(() => {
+      SAGEdit.debugLog("Door changed - so refresh scene model (pixi)")
+      this.refresh()
+    })
+
     // perform initial setup
     this.setup()
   }

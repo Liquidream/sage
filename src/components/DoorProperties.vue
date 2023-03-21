@@ -77,25 +77,18 @@
       item-value="id"
     >
       <template v-slot:selection="{ item, index }">
-        <v-row align="center"> <!-- dense -->
+        <v-row align="center" class="mb-n5">
           <v-col class="text-left">
             <img
               :src="item.raw.image"
               style="width: 50px; height: 50px; object-fit: contain"
             />
           </v-col>
-          <v-col class="text-left">
+          <v-col class="text-left mt-n2">
             <span class="text-no-wrap">{{ item.title }}</span>
           </v-col>
         </v-row>
       </template>
-
-      <!-- <template v-slot:item="{ item }">
-        <img
-          :src="item.raw.image"
-          style="width: 50px; height: 50px; object-fit: contain"
-        /><span>{{ item.title }}</span>
-      </template> -->
 
       <template v-slot:item="{ item, props }">
         <v-list-item v-bind="props" title="">
@@ -109,21 +102,6 @@
           </v-row>
         </v-list-item>
       </template>
-<!--
-      <template v-slot:selection="{ item, props }">
-        <v-list-item>
-          <v-row align="center" no-gutters>
-            <v-col class="d-flex" md="4">
-               <v-avatar :rounded="0">
-                <v-img :src="item.raw.image" />
-              </v-avatar>
-            </v-col>
-            <v-col md="4">
-              <span>{{ item.title }}</span>
-            </v-col>
-          </v-row>
-        </v-list-item>
-      </template> -->
     </v-select>
 
     <v-file-input
