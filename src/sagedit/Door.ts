@@ -52,16 +52,20 @@ export class Door {
     //   graphics.beginFill(0xccc, 0.00000000000001) // "Invisible"
     // }
 
+    // Set Graphics "canvas" to correct pos/width
+    // (So we can easily move it when "dragging")
+    graphics.x = this.doorModel.x || 0
+    graphics.y = this.doorModel.y || 0
+    graphics.width = doorWidth
+    graphics.height = doorHeight
+
     // Make a center point of origin (anchor)
     graphics.pivot.set(doorWidth / 2, doorHeight / 2)
+
     // Draw a rectangle
-    graphics.drawRoundedRect(
-      this.doorModel.x || 0,
-      this.doorModel.y || 0,
-      this.doorModel.width || 0,
-      this.doorModel.height || 0,
-      30
-    )
+    // (graphics "canvas" are already in position/width)
+    graphics.drawRoundedRect(0, 0, doorWidth, doorHeight, 30)
+    
     // Applies fill to lines and shapes since the last call to beginFill.
     graphics.endFill()
 
