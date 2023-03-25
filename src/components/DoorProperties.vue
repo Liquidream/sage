@@ -39,8 +39,57 @@
       v-model="model.desc"
       label="Description"
       auto-grow
-      rows="2"
+      rows="1"
     ></v-textarea>
+    <v-textarea
+      name="desc"
+      v-model="model.desc_locked"
+      label="Description (Locked)"
+      auto-grow
+      rows="1"
+    ></v-textarea>
+
+    <v-select
+      label="State"
+      v-model="model.state"
+      :items="['UNKNOWN', 'LOCKED', 'UNLOCKED']"
+    ></v-select>
+
+    <v-select
+      label="Target Scene"
+      v-model="model.target_scene_id"
+      :items="worldStore.getScenes"
+      item-title="name"
+      item-value="id"
+    >
+      <template v-slot:selection="{ item }">
+        <!-- item, index-->
+        <v-row align="center" class="mb-n5">
+          <v-col class="text-left">
+            <img
+              :src="item.raw.image"
+              style="width: 50px; height: 50px; object-fit: contain"
+            />
+          </v-col>
+          <v-col class="text-left mt-n2">
+            <span class="text-no-wrap">{{ item.title }}</span>
+          </v-col>
+        </v-row>
+      </template>
+
+      <template v-slot:item="{ item, props }">
+        <v-list-item v-bind="props" title="">
+          <v-row align="center">
+            <v-col cols="3">
+              <v-img :src="item.raw.image" max-height="50" />
+            </v-col>
+            <v-col>
+              {{ item.title }}
+            </v-col>
+          </v-row>
+        </v-list-item>
+      </template>
+    </v-select>
 
     <v-row>
       <v-col>
@@ -69,41 +118,6 @@
       </v-col>
     </v-row>
 
-    <v-select
-      label="Target Scene"
-      v-model="model.target_scene_id"
-      :items="worldStore.getScenes"
-      item-title="name"
-      item-value="id"
-    >
-      <template v-slot:selection="{ item, index }">
-        <v-row align="center" class="mb-n5">
-          <v-col class="text-left">
-            <img
-              :src="item.raw.image"
-              style="width: 50px; height: 50px; object-fit: contain"
-            />
-          </v-col>
-          <v-col class="text-left mt-n2">
-            <span class="text-no-wrap">{{ item.title }}</span>
-          </v-col>
-        </v-row>
-      </template>
-
-      <template v-slot:item="{ item, props }">
-        <v-list-item v-bind="props" title="">
-          <v-row align="center">
-            <v-col cols="3">
-              <v-img :src="item.raw.image" max-height="50" />
-            </v-col>
-            <v-col>
-              {{ item.title }}
-            </v-col>
-          </v-row>
-        </v-list-item>
-      </template>
-    </v-select>
-
     <v-file-input
       v-model="chosenFile"
       type="file"
@@ -112,8 +126,16 @@
       accept="image/png, image/jpeg, image/bmp"
       placeholder="Pick a backdrop image"
       prepend-icon="mdi-camera"
+      hide-details
     ></v-file-input>
     <v-img :src="model.image" max-height="150" />
+
+    <v-switch
+      label="Play Sounds"
+      v-model="model.playSounds"
+      color="info"
+      hide-details
+    ></v-switch>
 
     <v-divider />
     <v-list-subheader

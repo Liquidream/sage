@@ -28,7 +28,6 @@
         <!-- <v-btn icon @click.stop="toggleDrawer">
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn> -->
-
       </v-toolbar>
 
       <div class="pa-2">
@@ -78,11 +77,11 @@
 
   const drawer = ref(true)
 
-  const toggleDrawer = () => {
-    console.log("toggle!")
-    drawer.value = !drawer.value
-    console.log(drawer)
-  }
+  // const toggleDrawer = () => {
+  //   console.log("toggle!")
+  //   drawer.value = !drawer.value
+  //   console.log(drawer)
+  // }
 
   const isMobile = () => screen.width <= 760
 
