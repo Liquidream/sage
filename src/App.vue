@@ -18,12 +18,17 @@
         <v-spacer></v-spacer>
 
         <v-btn icon @click="Fullscreen.toggleFullScreen">
-          <v-icon>mdi-cog</v-icon>
+          <v-icon>mdi-fullscreen</v-icon>
         </v-btn>
 
-        <v-btn icon @click.stop="toggleDrawer">
+        <!-- <v-btn icon @click="openSettings">
+          <v-icon>mdi-cog</v-icon>
+        </v-btn> -->
+
+        <!-- <v-btn icon @click.stop="toggleDrawer">
           <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
+        </v-btn> -->
+
       </v-toolbar>
 
       <div class="pa-2">

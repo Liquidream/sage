@@ -64,6 +64,18 @@
           v-model.number="model.width"
           type="number"
         ></v-text-field>
+        <v-switch
+          label="Pickupable"
+          v-model="model.pickupable"
+          color="info"
+          hide-details
+        ></v-switch>
+        <v-switch
+          label="Single Use"
+          v-model="model.single_use"
+          color="info"
+          hide-details
+        ></v-switch>
       </v-col>
       <v-col>
         <v-text-field
@@ -76,6 +88,18 @@
           v-model.number="model.height"
           type="number"
         ></v-text-field>
+        <v-switch
+          label="Draggable"
+          v-model="model.draggable"
+          color="info"
+          hide-details
+        ></v-switch>
+        <v-switch
+          label="Visible"
+          v-model="model.visible"
+          color="info"
+          hide-details
+        ></v-switch>
       </v-col>
     </v-row>
 

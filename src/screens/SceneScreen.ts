@@ -236,7 +236,7 @@ export class SceneScreen extends Container {
     // Don't add to scene.propdata here, as it likely already came from it?
 
     // Force to be draggable now
-    propModel.draggable = true
+    //propModel.draggable = true
 
     // Fade in?
     if (fadeIn) {
