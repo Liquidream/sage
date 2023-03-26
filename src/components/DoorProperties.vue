@@ -55,6 +55,11 @@
       :items="['UNKNOWN', 'LOCKED', 'UNLOCKED']"
     ></v-select>
 
+    <scene-select
+      :scene-id="model.target_scene_id"
+      @update:modelValue="newValue => sceneId = newValue"
+    />
+
     <v-select
       label="Target Scene"
       v-model="model.target_scene_id"
@@ -158,6 +163,7 @@
   import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"
   import type { DoorModel } from "@/models/DoorModel"
+  import SceneSelect from "./SceneSelect.vue"
   //import { useDoorStore } from "@/stores/DoorStore"
 
   const worldStore = useWorldStore()
