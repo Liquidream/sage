@@ -55,46 +55,7 @@
       :items="['UNKNOWN', 'LOCKED', 'UNLOCKED']"
     ></v-select>
 
-    <scene-select
-      :scene-id="model.target_scene_id"
-      @update:modelValue="newValue => sceneId = newValue"
-    />
-
-    <v-select
-      label="Target Scene"
-      v-model="model.target_scene_id"
-      :items="worldStore.getScenes"
-      item-title="name"
-      item-value="id"
-    >
-      <template v-slot:selection="{ item }">
-        <!-- item, index-->
-        <v-row align="center" class="mb-n5">
-          <v-col class="text-left">
-            <img
-              :src="item.raw.image"
-              style="width: 50px; height: 50px; object-fit: contain"
-            />
-          </v-col>
-          <v-col class="text-left mt-n2">
-            <span class="text-no-wrap">{{ item.title }}</span>
-          </v-col>
-        </v-row>
-      </template>
-
-      <template v-slot:item="{ item, props }">
-        <v-list-item v-bind="props" title="">
-          <v-row align="center">
-            <v-col cols="3">
-              <v-img :src="item.raw.image" max-height="50" />
-            </v-col>
-            <v-col>
-              {{ item.title }}
-            </v-col>
-          </v-row>
-        </v-list-item>
-      </template>
-    </v-select>
+    <scene-select label="Target Scene" v-model="model.target_scene_id" />
 
     <v-row>
       <v-col>

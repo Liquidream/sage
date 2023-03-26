@@ -103,12 +103,7 @@
       </v-col>
     </v-row>
 
-    <v-select
-      v-model="model.in_scene_id"
-      :items="worldStore.getScenes"
-      item-title="name"
-      item-value="id"
-    ></v-select>
+    <scene-select label="In Scene" v-model="model.in_scene_id" />
 
     <v-divider />
     <v-list-subheader
@@ -140,7 +135,7 @@
   import { useWorldStore } from "../stores/WorldStore"
   import type { PropModel } from "@/models/PropModel"
   import { BaseTexture } from "pixi.js"
-  //import { usePropStore } from "@/stores/PropStore"
+  import SceneSelect from "./SceneSelect.vue"
 
   const worldStore = useWorldStore()
   //const propStore = usePropStore()
