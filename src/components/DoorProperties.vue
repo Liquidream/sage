@@ -49,9 +49,8 @@
       rows="1"
     ></v-textarea>
 
-    
     <scene-select label="Target Scene" v-model="model.target_scene_id" />
-    
+
     <v-select
       label="State"
       v-model="model.state"
@@ -61,6 +60,7 @@
       "
     ></v-select>
     <prop-select label="Key Prop" v-model="model.key_prop_id" hide-details />
+
     <v-switch
       label="Auto Unlock"
       v-model="model.auto_unlock"

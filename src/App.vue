@@ -4,13 +4,14 @@
       permanent 
       disable-resize-watcher
     -->
+
     <v-navigation-drawer
       v-model="drawer"
       :temporary="!!isMobile()"
       touchless
       :width="SAGEdit.navWidth"
     >
-      <v-toolbar dense>
+      <v-toolbar>
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
         <v-toolbar-title>SAGE</v-toolbar-title>
@@ -30,7 +31,7 @@
         </v-btn> -->
       </v-toolbar>
 
-      <div class="pa-2">
+      <v-container class="pa-2">
         <!-- Nav bar content area -->
         <WorldProperties v-if="worldStore.currSceneId == ''" />
         <SceneProperties
@@ -42,7 +43,7 @@
         />
         <PropProperties v-if="worldStore.currPropId != ''" />
         <DoorProperties v-if="worldStore.currDoorId != ''" />
-      </div>
+      </v-container>
     </v-navigation-drawer>
 
     <v-main align="center" justify="center">
