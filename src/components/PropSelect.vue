@@ -2,7 +2,7 @@
 <template>
   <v-select
     :label="label"
-    :items="worldStore.getScenes"
+    :items="propStore.getProps"
     item-title="name"
     item-value="id"
     v-model="value"
@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
   import { computed } from "vue"
-  import { useWorldStore } from "../stores/WorldStore"
+  import { usePropStore } from "../stores/PropStore"
 
   const props = defineProps(["modelValue", "label"])
   const emit = defineEmits(["update:modelValue"])
@@ -52,5 +52,5 @@
     },
   })
 
-  const worldStore = useWorldStore()
+  const propStore = usePropStore()
 </script>

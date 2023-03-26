@@ -49,13 +49,21 @@
       rows="1"
     ></v-textarea>
 
+    
+    <scene-select label="Target Scene" v-model="model.target_scene_id" />
+    
     <v-select
       label="State"
       v-model="model.state"
       :items="['UNKNOWN', 'LOCKED', 'UNLOCKED']"
     ></v-select>
-
-    <scene-select label="Target Scene" v-model="model.target_scene_id" />
+    <prop-select label="Key Prop" v-model="model.key_prop_id" hide-details />
+    <v-switch
+      label="Auto Unlock"
+      v-model="model.auto_unlock"
+      color="info"
+      hide-details
+    ></v-switch>
 
     <v-row>
       <v-col>
@@ -125,6 +133,7 @@
   import { useWorldStore } from "../stores/WorldStore"
   import type { DoorModel } from "@/models/DoorModel"
   import SceneSelect from "./SceneSelect.vue"
+  import PropSelect from "./PropSelect.vue"
   //import { useDoorStore } from "@/stores/DoorStore"
 
   const worldStore = useWorldStore()

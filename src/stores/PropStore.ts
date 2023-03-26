@@ -13,6 +13,9 @@ export const usePropStore = defineStore({
   }),
 
   getters: {
+    getProps(): PropModel[] {
+      return this.props
+    },
     // getCurrentScene(state) {
     //   return state.scenes.find((item) => item.id === state.currSceneId)
     // },
