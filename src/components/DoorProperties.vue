@@ -55,7 +55,10 @@
     <v-select
       label="State"
       v-model="model.state"
-      :items="['UNKNOWN', 'LOCKED', 'UNLOCKED']"
+      :items="['LOCKED', 'UNLOCKED']"
+      :prepend-inner-icon="
+        model.state === 'LOCKED' ? 'mdi-lock' : 'mdi-lock-open-variant'
+      "
     ></v-select>
     <prop-select label="Key Prop" v-model="model.key_prop_id" hide-details />
     <v-switch
@@ -134,6 +137,7 @@
   import type { DoorModel } from "@/models/DoorModel"
   import SceneSelect from "./SceneSelect.vue"
   import PropSelect from "./PropSelect.vue"
+  import { computed } from "vue"
   //import { useDoorStore } from "@/stores/DoorStore"
 
   const worldStore = useWorldStore()

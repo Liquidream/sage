@@ -10,6 +10,4 @@ export interface SceneModel {
   // Poss. event actions
   on_enter?: string
   on_exit?: string
-  // props: Array<PropData.IPropData>
-  // doors: Array<DoorData.IDoorData>
 }

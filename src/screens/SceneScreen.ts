@@ -236,7 +236,7 @@ export class SceneScreen extends Container {
     // Don't add to scene.propdata here, as it likely already came from it?
 
     // Force to be draggable now
-    //propModel.draggable = true
+    //propModel.draggable = true // Could use this to lock prop postions?
 
     // Fade in?
     if (fadeIn) {
@@ -245,14 +245,12 @@ export class SceneScreen extends Container {
     }
 
     // Selected Prop?
-    const worldStore = useWorldStore()
-    //if (SAGEdit.debugMode) {
+    const worldStore = useWorldStore()    
     if (worldStore.currPropId === propModel.id) {
       //debugger
       const graphics = new Graphics()
       const propWidth = prop.data.width || 0,
         propHeight = prop.data.height || 0
-      //graphics.beginFill(0xe74c3c, 125) // Red
       graphics.lineStyle(10, 0xff0000)
       graphics.pivot.set(propWidth / 2, propHeight / 2)
       // Need to handle diff for "non-image" sprites
