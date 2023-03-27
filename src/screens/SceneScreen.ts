@@ -245,7 +245,7 @@ export class SceneScreen extends Container {
     }
 
     // Selected Prop?
-    const worldStore = useWorldStore()    
+    const worldStore = useWorldStore()
     if (worldStore.currPropId === propModel.id) {
       //debugger
       const graphics = new Graphics()

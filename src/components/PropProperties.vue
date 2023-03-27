@@ -168,11 +168,13 @@
   const backToWorldClicked = () => {
     worldStore.currPropId = ""
     worldStore.currSceneId = ""
-    parent.scrollY > 0
+    // Force scroll to top of nav panel
+    document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }
 
   const backToSceneClicked = () => {
     worldStore.currPropId = ""
-    parent.scrollY > 0
+    // Force scroll to top of nav panel
+    document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }
 </script>

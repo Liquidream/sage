@@ -31,8 +31,7 @@
         </v-btn> -->
       </v-toolbar>
 
-
-      <v-container class="pa-2 mt-16">
+      <v-container id="mainContainer" class="pa-2 mt-16">
         <!-- Nav bar content area -->
         <WorldProperties v-if="worldStore.currSceneId == ''" />
         <SceneProperties

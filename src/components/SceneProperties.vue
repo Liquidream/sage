@@ -126,7 +126,8 @@
   const backToWorldClicked = () => {
     worldStore.currPropId = ""
     worldStore.currSceneId = ""
-    parent.scrollY > 0
+    // Force scroll to top of nav panel
+    document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }
 
   const propSelected = (value: {
@@ -135,7 +136,8 @@
     path: unknown[]
   }) => {
     worldStore.currPropId = value.id as string
-    parent.scrollY > 0
+    // Force scroll to top of nav panel
+    document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }
 
   const doorSelected = (value: {
@@ -144,6 +146,7 @@
     path: unknown[]
   }) => {
     worldStore.currDoorId = value.id as string
-    parent.scrollY > 0
+    // Force scroll to top of nav panel
+    document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }
 </script>
