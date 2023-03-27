@@ -11,7 +11,7 @@
       touchless
       :width="SAGEdit.navWidth"
     >
-      <v-toolbar>
+      <v-toolbar absolute class="elevation-3" style="z-index: 2">
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
         <v-toolbar-title>SAGE</v-toolbar-title>
@@ -31,7 +31,8 @@
         </v-btn> -->
       </v-toolbar>
 
-      <v-container class="pa-2">
+
+      <v-container class="pa-2 mt-16">
         <!-- Nav bar content area -->
         <WorldProperties v-if="worldStore.currSceneId == ''" />
         <SceneProperties
