@@ -176,8 +176,14 @@ export class SAGEdit {
     // now we use css trickery to set the sizes and margins
     SAGEdit._app.view.style.width = `${enlargedWidth}px`
     SAGEdit._app.view.style.height = `${enlargedHeight}px`
-    SAGEdit._app.view.style.marginTop =
-      SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
+
+    // center vertically ONLY if not in "mobile" mode
+    if (screen.width > 600) {
+      SAGEdit._app.view.style.marginTop =
+        SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
+    } else {
+      SAGEdit._app.view.style.marginTop = `$0px`
+    }
   }
 
   // Conditional console.log (if debugMode is true)

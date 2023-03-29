@@ -5,34 +5,59 @@
       disable-resize-watcher
     -->
 
+    <!-- ============================
+      V2  
+     ============================ -->
+    <v-app-bar :elevation="2">
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-toolbar-title>SAGE</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon @click="Fullscreen.toggleFullScreen">
+        <v-icon>mdi-fullscreen</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main align="center" justify="center" class="h-15">
+      <!-- Provides the application the proper gutter -->
+      <canvas id="pixi-canvas"></canvas>
+    </v-main>
+
+    <v-container id="mainContainer" class="pa-2">
+      <!--  class="pa-2 mt-16" -->
+      <!-- Nav bar content area -->
+      <WorldProperties v-if="worldStore.currSceneId == ''" />
+      <SceneProperties
+        v-if="
+          worldStore.currSceneId != '' &&
+          worldStore.currPropId == '' &&
+          worldStore.currDoorId == ''
+        "
+      />
+      <PropProperties v-if="worldStore.currPropId != ''" />
+      <DoorProperties v-if="worldStore.currDoorId != ''" />
+    </v-container>
+
+    <!-- ============================
+      V1  
+     ============================ -->
+    <!-- <v-app-bar :elevation="2">
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-toolbar-title>SAGE</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon @click="Fullscreen.toggleFullScreen">
+        <v-icon>mdi-fullscreen</v-icon>
+      </v-btn>
+    </v-app-bar>
+
     <v-navigation-drawer
       v-model="drawer"
       :temporary="!!isMobile()"
       touchless
       :width="SAGEdit.navWidth"
     >
-      <v-toolbar absolute class="elevation-3" style="z-index: 2">
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-        <v-toolbar-title>SAGE</v-toolbar-title>
-
-        <v-spacer></v-spacer>
-
-        <v-btn icon @click="Fullscreen.toggleFullScreen">
-          <v-icon>mdi-fullscreen</v-icon>
-        </v-btn>
-
-        <!-- <v-btn icon @click="openSettings">
-          <v-icon>mdi-cog</v-icon>
-        </v-btn> -->
-
-        <!-- <v-btn icon @click.stop="toggleDrawer">
-          <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn> -->
-      </v-toolbar>
-
-      <v-container id="mainContainer" class="pa-2 mt-16">
-        <!-- Nav bar content area -->
+      <v-container id="mainContainer" class="pa-2">
+        
         <WorldProperties v-if="worldStore.currSceneId == ''" />
         <SceneProperties
           v-if="
@@ -47,9 +72,9 @@
     </v-navigation-drawer>
 
     <v-main align="center" justify="center">
-      <!-- Provides the application the proper gutter -->
+      
       <canvas id="pixi-canvas"></canvas>
-    </v-main>
+    </v-main> -->
   </v-app>
 </template>
 
