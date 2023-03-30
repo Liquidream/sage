@@ -22,9 +22,11 @@
       <canvas id="pixi-canvas"></canvas>
     </v-main>
 
-    <v-container id="mainContainer" class="pa-2">
-      <!--  class="pa-2 mt-16" -->
-      <!-- Nav bar content area -->
+    <v-container
+      id="mainContainer"
+      class="pa-2"
+      style="overflow-y: scroll; height: 100vh"
+    >
       <WorldProperties v-if="worldStore.currSceneId == ''" />
       <SceneProperties
         v-if="
