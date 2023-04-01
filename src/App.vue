@@ -1,5 +1,6 @@
 <template>
-  <v-app>
+  <v-app 
+    style="height: 100vh"> <!-- Added to force bottom container to show scrollbar? -->
     <!-- 
       permanent 
       disable-resize-watcher
@@ -25,7 +26,7 @@
     <v-container
       id="mainContainer"
       class="pa-2"
-      style="overflow-y: scroll; height: 100vh"
+      style="overflow-y: scroll;"
     >
       <WorldProperties v-if="worldStore.currSceneId == ''" />
       <SceneProperties
