@@ -38,8 +38,10 @@
       </v-container>
     </v-navigation-drawer>
 
-    <v-main v-if="!isPortrait" align="center" justify="center">
-      <canvas id="pixi-canvas"></canvas>
+    <v-main v-if="!isPortrait">
+      <v-container fluid class="pa-0">
+        <canvas id="pixi-canvas"></canvas>
+      </v-container>
     </v-main>
     <!-- Landscape/Desktop Layout (End) =================== -->
 
