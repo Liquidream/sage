@@ -1,15 +1,16 @@
 <template>
   <v-app style="height: 100vh">
     <!-- Added to force bottom container to show scrollbar? -->
-    <!-- 
-      permanent 
-      disable-resize-watcher
-    -->
+
+    <!-- For some reason had to add some padding at top to get 
+         canvas to v-center properly in landscape mode -->
+    <v-main class="pt-8">
+      <canvas :class="isPortrait ? 'mt-0 mb-0' : ''" id="pixi-canvas"></canvas>
+    </v-main>
 
     <v-app-bar :elevation="2">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>SAGE</v-toolbar-title>
-      isPortrait = {{ isPortrait }}
       <v-spacer></v-spacer>
       <v-btn icon @click="Fullscreen.toggleFullScreen">
         <v-icon>mdi-fullscreen</v-icon>
@@ -41,26 +42,21 @@
       </v-container>
     </v-navigation-drawer>
 
-    <v-main v-if="!isPortrait">
+    <!-- <v-main v-if="!isPortrait">
       <v-container fluid class="pa-0">
         <canvas id="pixi-canvas"></canvas>
       </v-container>
-    </v-main>
+    </v-main> -->
     <!-- Landscape/Desktop Layout (End) =================== -->
 
     <!-- Portrait/Mobile Layout (Start) =================== -->
 
-    <v-main v-if="isPortrait" align="center" justify="center" class="h-15">
-      <!-- Provides the application the proper gutter -->
+    <!-- <v-main align="center" justify="center" class="h-15"> -->
+    <!-- <v-main>
       <canvas id="pixi-canvas"></canvas>
-    </v-main>
+    </v-main> -->
 
-    <v-container
-      v-if="isPortrait"
-      id="mainContainer"
-      class="pa-2"
-      style="overflow-y: scroll"
-    >
+    <v-container v-if="isPortrait" style="overflow-y: scroll">
       <WorldProperties v-if="worldStore.currSceneId == ''" />
       <SceneProperties
         v-if="
@@ -78,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, onBeforeUpdate, onUpdated, ref } from "vue"
+  import { computed, onMounted, onUpdated, ref } from "vue"
   import { useDisplay } from "vuetify"
   import { Fullscreen } from "./utils/Fullscreen"
   import { SAGEdit } from "@/SAGEdit"
