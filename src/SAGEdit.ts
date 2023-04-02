@@ -154,7 +154,8 @@ export class SAGEdit {
 
     console.log(`screenWidth:${screenWidth}`)
     console.log(`SAGEdit.width:${SAGEdit.width}`)
-    const isMobile = screenWidth <= 1280
+    // const isMobile = screenWidth <= 1280
+    const isMobile = screenHeight > screenWidth
     console.log(`screen.width = ${screen.width}`)
     console.log(`isMobile = ${isMobile}`)
     // uniform scale for our game
@@ -178,7 +179,7 @@ export class SAGEdit {
     SAGEdit._app.view.style.height = `${enlargedHeight}px`
 
     // center vertically ONLY if not in "mobile" mode
-    if (screen.width > 600) {
+    if (!isMobile) {
       SAGEdit._app.view.style.marginTop =
         SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
     } else {
