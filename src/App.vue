@@ -4,7 +4,7 @@
 
     <!-- For some reason had to add some padding at top to get 
          canvas to v-center properly in landscape mode -->
-    <v-main class="pt-8">
+    <v-main :class="!isPortrait ? 'pt-8' : ''">
       <canvas :class="isPortrait ? 'mt-0 mb-0' : ''" id="pixi-canvas"></canvas>
     </v-main>
 
