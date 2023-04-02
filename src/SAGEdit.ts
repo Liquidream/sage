@@ -50,6 +50,7 @@ export class SAGEdit {
     height: number,
     background: number
   ): void {
+    console.log("SAGEdit:initialize()...")
     SAGEdit._width = width
     SAGEdit._height = height
 
@@ -152,11 +153,11 @@ export class SAGEdit {
       window.innerHeight || 0
     )
 
-    console.log(`screenWidth:${screenWidth}`)
-    console.log(`SAGEdit.width:${SAGEdit.width}`)
+    // console.log(`screenWidth:${screenWidth}`)
+    // console.log(`SAGEdit.width:${SAGEdit.width}`)
     // const isMobile = screenWidth <= 1280
     const isMobile = screenHeight > screenWidth
-    console.log(`screen.width = ${screen.width}`)
+    // console.log(`screen.width = ${screen.width}`)
     console.log(`isMobile = ${isMobile}`)
     // uniform scale for our game
     const scale = Math.min(
@@ -164,7 +165,7 @@ export class SAGEdit {
       screenHeight / SAGEdit.height
     )
 
-    console.log(`scale = ${scale}`)
+    // console.log(`scale = ${scale}`)
 
     // the "uniformly englarged" size for our game
     const enlargedWidth = Math.floor(scale * SAGEdit.width)
@@ -173,7 +174,7 @@ export class SAGEdit {
     // margins for centering our game
     //const horizontalMargin = (screenWidth - enlargedWidth) / 2
     const verticalMargin = (screenHeight - enlargedHeight) / 2
-    console.log(`verticalMargin = ${verticalMargin}`)
+    // console.log(`verticalMargin = ${verticalMargin}`)
 
     if (SAGEdit._app) {
       // now we use css trickery to set the sizes and margins
