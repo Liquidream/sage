@@ -70,7 +70,7 @@ export class SAGEdit {
     // SAGE._app.ticker.maxFPS = SAGE._fps;
 
     // listen for the browser telling us that the screen size changed
-    window.addEventListener("resize", SAGEdit.resize)
+    //window.addEventListener("resize", SAGEdit.resize)
 
     // call it manually once so we are sure we are the correct size after starting
     SAGEdit.resize()
@@ -173,17 +173,20 @@ export class SAGEdit {
     // margins for centering our game
     //const horizontalMargin = (screenWidth - enlargedWidth) / 2
     const verticalMargin = (screenHeight - enlargedHeight) / 2
+    console.log(`verticalMargin = ${verticalMargin}`)
 
-    // now we use css trickery to set the sizes and margins
-    SAGEdit._app.view.style.width = `${enlargedWidth}px`
-    SAGEdit._app.view.style.height = `${enlargedHeight}px`
+    if (SAGEdit._app) {
+      // now we use css trickery to set the sizes and margins
+      SAGEdit._app.view.style.width = `${enlargedWidth}px`
+      SAGEdit._app.view.style.height = `${enlargedHeight}px`
 
-    // center vertically ONLY if not in "mobile" mode
-    if (!isMobile) {
-      SAGEdit._app.view.style.marginTop =
-        SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
-    } else {
-      SAGEdit._app.view.style.marginTop = `$0px`
+      // center vertically ONLY if not in "mobile" mode
+      if (!isMobile) {
+        SAGEdit._app.view.style.marginTop =
+          SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
+      } else {
+        SAGEdit._app.view.style.marginTop = `$0px`
+      }
     }
   }
 

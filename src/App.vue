@@ -9,7 +9,7 @@
     <v-app-bar :elevation="2">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>SAGE</v-toolbar-title>
-      isPortrait = {{ isPortrait }}
+      <!-- isPortrait = {{ isPortrait }} -->
       <v-spacer></v-spacer>
       <v-btn icon @click="Fullscreen.toggleFullScreen">
         <v-icon>mdi-fullscreen</v-icon>
@@ -94,8 +94,16 @@
   //const { width, height } = useDisplay()
   const display = ref(useDisplay())
 
+  let lastIsPortrait = true
   const isPortrait = computed(() => {
-    return display.value.height > display.value.width
+    //console.log(`>>> Width:${display.value.width}`)
+    const currPort = display.value.height > display.value.width
+    //console.log(`>>> currPort = :${currPort} | lastIsPortrait = :${lastIsPortrait}`)
+    //if (currPort !== isPortrait.value) {
+      SAGEdit.resize()
+    //}
+    lastIsPortrait = currPort
+    return currPort
   })
 
   //const isMobile = () => screen.width <= 760
