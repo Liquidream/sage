@@ -15,9 +15,6 @@
       <v-btn icon @click="Fullscreen.toggleFullScreen">
         <v-icon>mdi-fullscreen</v-icon>
       </v-btn>
-      <v-btn icon @click="initPixi()">
-        <v-icon>mdi-bug</v-icon>
-      </v-btn>
     </v-app-bar>
 
     <!-- Landscape/Desktop Layout (Start) =============== -->
@@ -74,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, onUpdated, ref } from "vue"
+  import { computed, onMounted, ref } from "vue"
   import { useDisplay } from "vuetify"
   import { Fullscreen } from "./utils/Fullscreen"
   import { SAGEdit } from "@/SAGEdit"
@@ -115,24 +112,16 @@
   onMounted(() => {
     console.log(`the component is now mounted.`)
 
-    initPixi()
-    // Initialise Pixi (with a "black" default bg color)
-    // SAGEdit.initialize(gameWidth, gameHeight, 0x6495ed) //0x0)
-    // SAGEdit.loadWorld()
-  })
-
-  onUpdated(() => {
-    //debugger
-    // text content should be the same as current `count.value`
-    console.log(`the component is now updated.`)
-    initPixi()
-  })
-
-  const initPixi = () => {
     // Initialise Pixi (with a "black" default bg color)
     SAGEdit.initialize(gameWidth, gameHeight, 0x6495ed) //0x0)
     SAGEdit.loadWorld()
-  }
+  })
+
+  // const initPixi = () => {
+  //   // Initialise Pixi (with a "black" default bg color)
+  //   SAGEdit.initialize(gameWidth, gameHeight, 0x6495ed) //0x0)
+  //   SAGEdit.loadWorld()
+  // }
 </script>
 
 <style>
