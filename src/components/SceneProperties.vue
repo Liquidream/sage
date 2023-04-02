@@ -122,7 +122,6 @@
       model.image = reader.result as string // added "as" to squash error/warn, ok?
     }
   }
-
   const backToWorldClicked = () => {
     worldStore.currPropId = ""
     worldStore.currSceneId = ""

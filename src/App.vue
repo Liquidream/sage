@@ -1,66 +1,30 @@
 <template>
-  <v-app 
-    style="height: 100vh"> <!-- Added to force bottom container to show scrollbar? -->
+  <v-app style="height: 100vh">
+    <!-- Added to force bottom container to show scrollbar? -->
     <!-- 
       permanent 
       disable-resize-watcher
     -->
 
-    <!-- ============================
-      V2  
-     ============================ -->
     <v-app-bar :elevation="2">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>SAGE</v-toolbar-title>
+      isPortrait = {{ isPortrait }}
       <v-spacer></v-spacer>
       <v-btn icon @click="Fullscreen.toggleFullScreen">
         <v-icon>mdi-fullscreen</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <v-main align="center" justify="center" class="h-15">
-      <!-- Provides the application the proper gutter -->
-      <canvas id="pixi-canvas"></canvas>
-    </v-main>
-
-    <v-container
-      id="mainContainer"
-      class="pa-2"
-      style="overflow-y: scroll;"
-    >
-      <WorldProperties v-if="worldStore.currSceneId == ''" />
-      <SceneProperties
-        v-if="
-          worldStore.currSceneId != '' &&
-          worldStore.currPropId == '' &&
-          worldStore.currDoorId == ''
-        "
-      />
-      <PropProperties v-if="worldStore.currPropId != ''" />
-      <DoorProperties v-if="worldStore.currDoorId != ''" />
-    </v-container>
-
-    <!-- ============================
-      V1  
-     ============================ -->
-    <!-- <v-app-bar :elevation="2">
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      <v-toolbar-title>SAGE</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn icon @click="Fullscreen.toggleFullScreen">
-        <v-icon>mdi-fullscreen</v-icon>
-      </v-btn>
-    </v-app-bar>
+    <!-- Landscape/Desktop Layout (Start) =============== -->
 
     <v-navigation-drawer
-      v-model="drawer"
-      :temporary="!!isMobile()"
+      v-if="!isPortrait"
+      permanent
       touchless
       :width="SAGEdit.navWidth"
     >
-
       <v-container id="mainContainer" class="pa-2">
-        
         <WorldProperties v-if="worldStore.currSceneId == ''" />
         <SceneProperties
           v-if="
@@ -74,27 +38,50 @@
       </v-container>
     </v-navigation-drawer>
 
-    <v-main align="center" justify="center">
-      
+    <v-main v-if="!isPortrait" align="center" justify="center">
       <canvas id="pixi-canvas"></canvas>
-    </v-main> -->
+    </v-main>
+    <!-- Landscape/Desktop Layout (End) =================== -->
+
+    <!-- Portrait/Mobile Layout (Start) =================== -->
+
+    <v-main v-if="isPortrait" align="center" justify="center" class="h-15">
+      <!-- Provides the application the proper gutter -->
+      <canvas id="pixi-canvas"></canvas>
+    </v-main>
+
+    <v-container
+      v-if="isPortrait"
+      id="mainContainer"
+      class="pa-2"
+      style="overflow-y: scroll"
+    >
+      <WorldProperties v-if="worldStore.currSceneId == ''" />
+      <SceneProperties
+        v-if="
+          worldStore.currSceneId != '' &&
+          worldStore.currPropId == '' &&
+          worldStore.currDoorId == ''
+        "
+      />
+      <PropProperties v-if="worldStore.currPropId != ''" />
+      <DoorProperties v-if="worldStore.currDoorId != ''" />
+    </v-container>
+
+    <!-- Portrait/Mobile Layout (End) ========================= -->
   </v-app>
 </template>
 
 <script setup lang="ts">
-  // import type { Ref } from "vue"
-  // import { ref } from "vue"
-  // import { PropModel } from "./models/PropModel"
+  import { computed, onMounted, ref } from "vue"
+  import { useDisplay } from "vuetify"
+  import { Fullscreen } from "./utils/Fullscreen"
+  import { SAGEdit } from "@/SAGEdit"
+  import { useWorldStore } from "@/stores/WorldStore"
   import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"
   import PropProperties from "./components/PropProperties.vue"
   import DoorProperties from "./components/DoorProperties.vue"
-  import { SAGEdit } from "@/SAGEdit"
-  import { Fullscreen } from "./utils/Fullscreen"
-
-  import { useWorldStore } from "@/stores/WorldStore"
-  import { onMounted, ref } from "vue"
-  //import { useSceneStore } from "./stores/SceneStore"
 
   // current screen size
   const gameWidth = 1920
@@ -104,15 +91,14 @@
 
   //SAGEdit.loadWorld()
 
-  const drawer = ref(true)
+  //const { width, height } = useDisplay()
+  const display = ref(useDisplay())
 
-  // const toggleDrawer = () => {
-  //   console.log("toggle!")
-  //   drawer.value = !drawer.value
-  //   console.log(drawer)
-  // }
+  const isPortrait = computed(() => {
+    return display.value.height > display.value.width
+  })
 
-  const isMobile = () => screen.width <= 760
+  //const isMobile = () => screen.width <= 760
 
   // Delay initialising and using Pixi until the cavas element is in the DOM
   onMounted(() => {
