@@ -47,15 +47,32 @@
     <v-divider />
     <v-list-subheader>Props</v-list-subheader>
     <!-- on click, replace panel with properties of Prop + select it in scene -->
-    <v-list
+    <v-list>
+      <v-list-item
+        @click="propSelected(prop)"
+        v-for="prop in propStore.findPropBySceneId(worldStore.currSceneId)"
+        :key="prop.id"
+      >
+        <v-row align="center">
+          <v-col cols="3">
+            <v-img :src="prop.image" max-height="50" />
+          </v-col>
+          <v-col>
+            <span class="text-no-wrap">{{ prop.name }}</span>
+          </v-col>
+        </v-row>
+      </v-list-item>
+    </v-list>
+    <!-- <v-list
       :items="propStore.findPropBySceneId(worldStore.currSceneId)"
       item-title="name"
       item-value="id"
       @click:select="propSelected"
-    ></v-list>
+    ></v-list> -->
 
     <v-divider />
     <v-list-subheader>Doors</v-list-subheader>
+
     <!-- on click, replace panel with properties of Door + select it in scene -->
     <v-list
       :items="doorStore.findDoorBySceneId(worldStore.currSceneId)"

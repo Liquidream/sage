@@ -132,14 +132,16 @@
 <script setup lang="ts">
   import type { Ref } from "vue"
   import { ref } from "vue"
+  import { storeToRefs } from "pinia"
   import { useWorldStore } from "../stores/WorldStore"
   import type { PropModel } from "@/models/PropModel"
   import { BaseTexture } from "pixi.js"
   import SceneSelect from "./SceneSelect.vue"
 
   const worldStore = useWorldStore()
-  //const propStore = usePropStore()
-  const model = worldStore.getCurrentProp || ({} as PropModel)
+  const worldRefs = storeToRefs(worldStore)
+  const model = worldRefs.getCurrentProp || ({} as PropModel)
+  //const model = worldStore.getCurrentProp || ({} as PropModel)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any

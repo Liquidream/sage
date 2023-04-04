@@ -65,7 +65,7 @@ export class Door {
     // Draw a rectangle
     // (graphics "canvas" are already in position/width)
     graphics.drawRoundedRect(0, 0, doorWidth, doorHeight, 30)
-    
+
     // Applies fill to lines and shapes since the last call to beginFill.
     graphics.endFill()
 
@@ -133,7 +133,7 @@ export class Door {
   }
 
   private onPointerDown() {
-    // Select clicked prop
+    // Select clicked door
     const worldStore = useWorldStore()
     if (worldStore.currDoorId == this.doorModel.id) {
       // Start of drag...

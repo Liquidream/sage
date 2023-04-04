@@ -133,17 +133,16 @@
 <script setup lang="ts">
   import type { Ref } from "vue"
   import { ref } from "vue"
+  import { storeToRefs } from "pinia"
   import { useWorldStore } from "../stores/WorldStore"
   import type { DoorModel } from "@/models/DoorModel"
   import SceneSelect from "./SceneSelect.vue"
   import PropSelect from "./PropSelect.vue"
-  import { computed } from "vue"
-  //import { useDoorStore } from "@/stores/DoorStore"
 
   const worldStore = useWorldStore()
-  //const doorStore = useDoorStore()
-
-  const model = worldStore.getCurrentDoor || ({} as DoorModel)
+  const worldRefs = storeToRefs(worldStore)
+  const model = worldRefs.getCurrentDoor || ({} as DoorModel)
+  //const model = worldStore.getCurrentDoor || ({} as DoorModel)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any
   const imageData: Ref<string | ArrayBuffer | null> = ref("")

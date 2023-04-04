@@ -113,7 +113,7 @@
     console.log(`the component is now mounted.`)
 
     // Initialise Pixi (with a "black" default bg color)
-    SAGEdit.initialize(gameWidth, gameHeight, 0x6495ed) //0x0)
+    SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
     SAGEdit.loadWorld()
   })
 
