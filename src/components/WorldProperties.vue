@@ -22,7 +22,14 @@
         v-for="scene in worldStore.getScenes"
         :key="scene.id"
       >
-        {{ scene.name }}
+        <v-row align="center">
+          <v-col cols="3">
+            <v-img :src="scene.image" max-height="50" />
+          </v-col>
+          <v-col>
+            <span class="text-no-wrap">{{ scene.name }}</span>
+          </v-col>
+        </v-row>
       </v-list-item>
     </v-list>
 
