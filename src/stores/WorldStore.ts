@@ -5,6 +5,7 @@ import { useSceneStore } from "@/stores/SceneStore"
 import { defineStore } from "pinia"
 import { useDoorStore } from "./DoorStore"
 import { usePropStore } from "./PropStore"
+import { useActorStore } from "./ActorStore"
 
 export interface WorldState {
   title: string
@@ -290,6 +291,18 @@ export const useWorldStore = defineStore("worldStore", {
           name: "Fortress Exterior",
           id: "dor_fortress_cave",
           in_scene_id: "scn_fortress_int",
+        },
+      ]
+
+      // Default actors
+      const actorStore = useActorStore()
+      actorStore.actors = [
+        // Player
+        {
+          id: "act_player",
+          name: "Player",
+          col: "#ffffff",
+          isPlayer: true,
         },
       ]
     },
