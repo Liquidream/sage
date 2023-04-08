@@ -18,14 +18,14 @@ export class Prop {
   private propInputEvents!: InputEventEmitter
   public dragging = false
 
-  public constructor(propData: PropModel) {
+  public constructor(propModel: PropModel) {
     // Initialise from data object
     let sprite = undefined
-    if (propData.image) {
-      const imgBase64 = propData.image
+    if (propModel.image) {
+      const imgBase64 = propModel.image
       const base = new BaseTexture(imgBase64)
       console.log(
-        `>> model dimensions: width=${propData.width} height=${propData.height}`
+        `>> model dimensions: width=${propModel.width} height=${propModel.height}`
       )
       // base.on("loaded", () => {
       //   console.log(
@@ -34,27 +34,27 @@ export class Prop {
       // ##### don't do this here
       // ##### instead, set at point of IMPORTING (to allow overriding)
       // if (base.width > 0) {
-      //   propData.width = base.width
-      //   propData.height = base.height
+      //   propModel.width = base.width
+      //   propModel.height = base.height
       // }
       //})
       // Do it here also, in case texture is cached (so loaded won't fire)
       // if (base.width > 0) {
-      //   propData.width = base.width
-      //   propData.height = base.height
+      //   propModel.width = base.width
+      //   propModel.height = base.height
       // }
       const texture = new Texture(base)
       sprite = Sprite.from(texture)
     } else {
       sprite = new Sprite(Texture.EMPTY)
-      sprite.width = propData.width || 0
-      sprite.height = propData.height || 0
+      sprite.width = propModel.width || 0
+      sprite.height = propModel.height || 0
     }
-    this.data = propData
+    this.data = propModel
     this.sprite = sprite
     sprite.anchor.set(0.5)
-    sprite.x = propData.x || 0
-    sprite.y = propData.y || 0
+    sprite.x = propModel.x || 0
+    sprite.y = propModel.y || 0
 
     // Events
     this.propInputEvents = new InputEventEmitter(this.sprite)
@@ -69,7 +69,7 @@ export class Prop {
     //SAGE.Events.on("scenehint", this.onSceneHint, this)
 
     // visible state
-    this.sprite.visible = propData.visible || true
+    this.sprite.visible = propModel.visible || true
   }
 
   tidyUp() {

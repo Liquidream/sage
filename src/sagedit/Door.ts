@@ -4,7 +4,6 @@ import { useWorldStore } from "@/stores/WorldStore"
 import { Graphics, Sprite } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"
 //import { DialogType } from "./Dialog"
-//import * as DoorData from "./DoorData"
 import { InputEventEmitter } from "./ui/InputEventEmitter"
 
 export class Door {
@@ -13,7 +12,7 @@ export class Door {
   TOUCH_DURATION = 500
   DRAG_ALPHA = 0.75
 
-  public doorModel!: DoorModel //DoorData.IDoorData
+  public doorModel!: DoorModel
   public graphics!: Graphics
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
