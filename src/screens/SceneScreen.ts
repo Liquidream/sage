@@ -122,7 +122,6 @@ export class SceneScreen extends Container {
     this.dialogText.anchor.set(0.5)
     // .text = "This is expensive to change, please do not abuse";
     this.addChild(this.dialogText)
-    //SAGEdit.app.stage.addChild(this.dialogText)
 
     // Drag+Drop support
     SAGEdit.app.stage.interactive = true
@@ -134,12 +133,9 @@ export class SceneScreen extends Container {
   teardown() {
     SAGEdit.debugLog(`>> SceneScreen teardown()`)
 
-    //const worldStore = useWorldStore()
-
     if (this.dialogText) {
       SAGEdit.app.stage.removeChild(this.dialogText)
       this.dialogText.destroy()
-      //this.dialogText = null
     }
     if (this.backdrop) {
       SAGEdit.app.stage.removeChild(this.backdrop)
@@ -158,11 +154,6 @@ export class SceneScreen extends Container {
     SAGEdit.app.stage.off("pointerup", this.onPointerUp, this)
     SAGEdit.app.stage.off("touchmove", this.onTouchMove, this)
 
-    // Fade out scene music
-    // if (this.scene.sound) {
-    //   SAGE.Sound.stop(this.scene.sound, !restartGame)
-    // }
-
     // remove everything from stage
     this.removeChildren()
   }
@@ -171,16 +162,9 @@ export class SceneScreen extends Container {
     // Backdrop
     let sprite = undefined
     if (this.scene?.image) {
-      //console.log(this.scene.image)
-
-      //sprite = Sprite.from("/clampy.png")
-
       const base = new BaseTexture(this.scene.image)
       const texture = new Texture(base)
       sprite = Sprite.from(texture)
-
-      //sprite = new Sprite(Texture.EMPTY)
-      //sprite = Sprite.from(this.scene.image)
     } else {
       sprite = new Sprite(Texture.EMPTY)
     }
@@ -188,7 +172,6 @@ export class SceneScreen extends Container {
     sprite.x = SAGEdit.width / 2
     sprite.y = SAGEdit.height / 2
     this.addChild(sprite)
-    //SAGEdit.app.stage.addChild(sprite)
     this.backdrop = sprite
 
     // Events
@@ -198,10 +181,6 @@ export class SceneScreen extends Container {
   }
 
   private buildProps() {
-    // Only create Lamp if not already "picked up"
-    // TODO: Make this all dynamic/data-based eventually, this is just a crude example!
-    //if (this.props.length > 0) {
-    //for (const propData of this.props) {
     const propStore = usePropStore()
     const scenePropModels = propStore.findPropBySceneId(this.scene?.id || "")
 
@@ -210,7 +189,6 @@ export class SceneScreen extends Container {
         this.addProp(propModel)
       }
     }
-    //SAGE.Dialog.clearMessage()
   }
 
   private buildDoorways() {
@@ -225,7 +203,6 @@ export class SceneScreen extends Container {
         this.doors.push(door)
       }
     }
-    //SAGE.Dialog.clearMessage()
   }
 
   public addProp(propModel: PropModel, fadeIn = false) {
@@ -247,7 +224,6 @@ export class SceneScreen extends Container {
     // Selected Prop?
     const worldStore = useWorldStore()
     if (worldStore.currPropId === propModel.id) {
-      //debugger
       const graphics = new Graphics()
       const propWidth = prop.data.width || 0,
         propHeight = prop.data.height || 0
@@ -289,8 +265,6 @@ export class SceneScreen extends Container {
           )
           if (index !== -1) this.props.splice(index, 1)
           prop.tidyUp()
-          // remove from game data
-          //          this.scene.removePropDataById(prop.data.id)
         })
     }
     if (scaleAnim) {
@@ -339,15 +313,6 @@ export class SceneScreen extends Container {
     //_e: InteractionEvent) {
     SAGEdit.debugLog(`${this.name}::onPointerUp()`)
     if (this.draggedProp) {
-      // We were dragging something - did we drop it on something?
-      // if (this.dragTarget) {
-      //   // Was it a valid object?
-      //   //        this.draggedProp.use(this.dragTarget)
-      // } else {
-      //   // Didn't drop on object, so... do nothing? (+put back to orig pos)
-      //   this.draggedProp.sprite.x = this.draggedProp.data.x || 0
-      //   this.draggedProp.sprite.y = this.draggedProp.data.y || 0
-      // }
       // End Drag+Drop mode
       this.draggedProp.dragging = false
       // Save final pos
@@ -361,15 +326,6 @@ export class SceneScreen extends Container {
       //      SAGE.invScreen.update()
     }
     if (this.draggedDoor) {
-      // We were dragging something - did we drop it on something?
-      // if (this.dragTarget) {
-      //   // Was it a valid object?
-      //   //        this.draggedProp.use(this.dragTarget)
-      // } else {
-      //   // Didn't drop on object, so... do nothing? (+put back to orig pos)
-      //   this.draggedProp.sprite.x = this.draggedProp.data.x || 0
-      //   this.draggedProp.sprite.y = this.draggedProp.data.y || 0
-      // }
       // End Drag+Drop mode
       this.draggedDoor.dragging = false
       // Save final pos
@@ -383,13 +339,6 @@ export class SceneScreen extends Container {
       // Update inventory (in case it was an inventory prop)
       //      SAGE.invScreen.update()
     }
-    // else {
-    //   // Test deselect prop/door
-    //   // Select clicked prop
-    //   const worldStore = useWorldStore()
-    //   worldStore.currPropId = ""
-    //   worldStore.currDoorId = ""
-    // }
   }
 
   private onTouchMove(_e: InteractionEvent) {
@@ -397,96 +346,5 @@ export class SceneScreen extends Container {
     // Get touch position
     const touchPoint: Point = new Point()
     _e.data.getLocalPosition(this, touchPoint, _e.data.global)
-    // Check for any collisions...
-    //const result = this.checkTouchCollisions(touchPoint)
-    //if (result) {
-    // if (this.touchTarget) this.touchTarget.onPointerOver()
-    // else SAGE.Dialog.clearMessage()
-    //}
   }
-
-  private checkDragCollisions() {
-    // Check selected/dragged Prop with
-    // let currTarget = undefined
-    // //  > Other Props in inventory
-    // for (const prop of SAGE.invScreen.propsList) {
-    //   if (
-    //     Collision.isCollidingObjToObj(this.draggedProp?.sprite, prop.sprite)
-    //   ) {
-    //     SAGE.debugLog(`>> collided with ${prop.data.name}`)
-    //     currTarget = prop
-    //   }
-    // }
-    // //  > Other Props in current scene
-    // for (const prop of this.props) {
-    //   if (
-    //     Collision.isCollidingObjToObj(this.draggedProp?.sprite, prop.sprite)
-    //   ) {
-    //     SAGE.debugLog(`>> collided with ${prop.data.name}`)
-    //     currTarget = prop
-    //   }
-    // }
-    // //  > Doors in current scene
-    // for (const door of this.doors) {
-    //   if (
-    //     Collision.isCollidingObjToObj(this.draggedProp?.sprite, door.graphics)
-    //   ) {
-    //     SAGE.debugLog(`>> collided with ${door.data.name}`)
-    //     currTarget = door
-    //   }
-    // }
-    // // If collision, then highlight source AND target
-    // // (...and remember if "dropped" on it)
-    // if (currTarget !== this.dragTarget) {
-    //   if (currTarget) {
-    //     // Different target...
-    //     SAGE.debugLog(`>> new target = ${currTarget.data.name}`)
-    //   } else {
-    //     // Lost target
-    //     SAGE.debugLog(`>> NO target`)
-    //   }
-    //   this.dragTarget = currTarget
-    // }
-  }
-
-  //private checkTouchCollisions(touchPoint: Point): boolean {
-  // Check selected/dragged Prop with
-  // let currTarget = undefined
-  // //  > Other Props in inventory
-  // for (const prop of SAGE.invScreen.propsList) {
-  //   if (Collision.isCollidingPointToObj(touchPoint, prop.sprite)) {
-  //     SAGE.debugLog(`>> collided with ${prop.data.name}`)
-  //     currTarget = prop
-  //   }
-  // }
-  // //  > Other Props in current scene
-  // for (const prop of this.props) {
-  //   if (Collision.isCollidingPointToObj(touchPoint, prop.sprite)) {
-  //     SAGE.debugLog(`>> collided with ${prop.data.name}`)
-  //     currTarget = prop
-  //   }
-  // }
-  // //  > Doors in current scene
-  // for (const door of this.doors) {
-  //   if (Collision.isCollidingPointToObj(touchPoint, door.graphics)) {
-  //     SAGE.debugLog(`>> collided with ${door.data.name}`)
-  //     currTarget = door
-  //   }
-  // }
-
-  // // If collision, then highlight source AND target
-  // // (...and remember if "dropped" on it)
-  // if (currTarget !== this.touchTarget) {
-  //   if (currTarget) {
-  //     // Different target...
-  //     SAGE.debugLog(`>> new target = ${currTarget.data.name}`)
-  //   } else {
-  //     // Lost target
-  //     SAGE.debugLog(`>> NO target`)
-  //   }
-  //   this.touchTarget = currTarget
-  //   return true
-  // }
-  //return false
-  //}
 }

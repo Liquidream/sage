@@ -1,9 +1,5 @@
 import { BaseTexture, Sprite, Texture } from "pixi.js"
-// import { Easing, Tween } from "tweedle.js"
-// import { DialogType } from "./Dialog"
 import { InputEventEmitter } from "./ui/InputEventEmitter"
-//import type { IPropData } from "./PropData"
-//import { SAGEdit } from "@/SAGEdit"
 import type { PropModel } from "@/models/PropModel"
 import { SAGEdit } from "@/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
@@ -79,31 +75,7 @@ export class Prop {
   tidyUp() {
     // Unsubscribe from events, etc.
     this.sprite.removeAllListeners()
-    //SAGE.Events.off("scenehint", this.onSceneHint, this)
   }
-
-  // public async use(object: any) {
-  //   let validUse = false
-  //   // Run any OnEnter action?
-  //   if (this.data.on_use) {
-  //     validUse = await SAGE.Script.safeExecFuncWithParams(
-  //       this.data.on_use,
-  //       this,
-  //       object
-  //     )
-  //   }
-  //   SAGE.debugLog(`Use case valid? ${validUse}`)
-  //   if (validUse) {
-  //     // Valid use-case
-  //   } else {
-  //     // Invalid, so restore position
-  //     // (if not already in inventory)
-  //     if (!this.inInventory) {
-  //       this.sprite.x = this.data.x
-  //       this.sprite.y = this.data.y
-  //     }
-  //   }
-  // }
 
   public destroy() {
     // if (this.inInventory) {
@@ -114,38 +86,7 @@ export class Prop {
     // }
   }
 
-  /** Returns whether or not the this prop is in player's inventory */
-  // public get inInventory(): boolean {
-  //   return SAGE.World.player.inventory.some((prop) => prop.id === this.data.id)
-  // }
-
-  // private onSceneHint() {
-  //   // Show attract tween for this
-  //   // (...but abort if in player inventory!)
-  //   if (this.inInventory) return
-  //   const attractShine: Sprite = Sprite.from("UI-Shine")
-  //   attractShine.anchor.set(0.5)
-  //   attractShine.x = this.data.x
-  //   attractShine.y = this.data.y
-  //   attractShine.alpha = 0
-
-  //   this.sprite.parent.addChild(attractShine)
-
-  //   new Tween(attractShine)
-  //     .to({ alpha: 1 }, 500)
-  //     .easing(Easing.Quadratic.InOut)
-  //     .yoyo(true)
-  //     .repeat(1)
-  //     .start()
-  //     .onComplete(() => {
-  //       this.sprite.parent.removeChild(attractShine)
-  //     })
-  // }
-
   private onPointerDown() {
-    // On an inventory (or draggable) item?
-    // if (this.inInventory || this.data.draggable) {
-
     // Select clicked prop
     const worldStore = useWorldStore()
     if (worldStore.currPropId != this.data.id) {
@@ -158,10 +99,6 @@ export class Prop {
       SAGEdit.currentScreen.draggedProp = this
       this.sprite.alpha = this.DRAG_ALPHA
     }
-    //   SAGE.Dialog.clearMessage()
-    //   // Disable auto-close of inventory
-    //   SAGE.invScreen.autoClose = false
-    // }
   }
 
   private onPointerOver() {
@@ -178,40 +115,4 @@ export class Prop {
     //   SAGE.Dialog.clearMessage()
     // }
   }
-
-  // private onPrimaryAction() {
-  //   SAGE.debugLog(`You interacted with a prop! (${this.data.name})`)
-  //   // Custom action?
-  //   if (this.data.on_action) {
-  //     Function(this.data.on_action)()
-  //     return
-  //   }
-  //   // Can prop be picked up?
-  //   // (...and not already in inventory)?
-  //   if (this.data.pickupable && !this.inInventory) {
-  //     SAGE.Dialog.showMessage(`You picked up the ${this.data.name}`)
-  //     // Remove prop from scene
-  //     SAGE.World.currentScene.screen.removeProp(this, true, true)
-  //     // Add to Player's inventory
-  //     SAGE.World.player.addToInventory(this.data)
-  //     // Play sound
-  //     SAGE.Sound.play("Pick-Up")
-  //     // Auto-open player inventory
-  //     SAGE.invScreen.open(true)
-  //     return
-  //   }
-  //   // Interacted while in player inventory?
-  //   // ...if so, perform secondary action (describe)
-  //   if (this.inInventory) {
-  //     this.onSecondaryAction()
-  //     // Disable auto-close of inventory
-  //     SAGE.invScreen.autoClose = false
-  //     return
-  //   }
-  // }
-
-  // private onSecondaryAction() {
-  //   SAGE.debugLog(`onSecondaryAction for :${this.data.id}`)
-  //   SAGE.Dialog.showMessage(this.data.desc)
-  // }
 }

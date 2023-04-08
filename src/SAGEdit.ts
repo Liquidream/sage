@@ -1,6 +1,4 @@
 import { Application, Container } from "pixi.js"
-//import { SceneData } from "./sagedit/SceneData"
-import { Events } from "./sagedit/Events"
 import { SceneScreen } from "./screens/SceneScreen"
 import { Dialog } from "./sagedit/Dialog"
 
@@ -27,7 +25,7 @@ export class SAGEdit {
   public static Dialog: Dialog
   // public static Actions: Actions;
   // public static Script: Script;
-  public static Events: Events
+  //public static Events: Events
   // public static Sound: Sound;
   // public static UI_Overlay: UI_Overlay;
 
@@ -65,11 +63,7 @@ export class SAGEdit {
 
     SAGEdit._app.ticker.add(SAGEdit.update)
 
-    // Lock to 30fps (for cinematic effect)
-    // ## REMOVED as made inventory jerky (+no longer CAGE/Cinematic engine anyway)
-    // SAGE._fps = 30;
-    // SAGE._app.ticker.maxFPS = SAGE._fps;
-
+    // (REMOVED: Now using Vuetify useDisplay() reactive property)
     // listen for the browser telling us that the screen size changed
     //window.addEventListener("resize", SAGEdit.resize)
 
@@ -116,29 +110,9 @@ export class SAGEdit {
     - (Means that Prop will have to have a ref (id?) to Scene it's located in)
     - 
 */
-
-    //   //const gamedata = require("./gamedata.json");
-    //   //import * as gamedata from "./gamedata.json";
-    //   //let gamedata = JSON.parse(fs.readFileSync("./gamedata.json", "utf-8"));
-    //   // Initialise UI
-    //   SAGE.UI_Overlay = new UI_Overlay(SAGE.topLayer);
-    //   // Create and initialise game world
-    //   SAGE.World = new World();
-    //   SAGE.World.initialize(gamedata);
-    //   //Manager.World = new World().fromJSON(gamedata);
-    // ...and events
-    SAGEdit.Events = new Events()
-    //   // ...and inventory (UI)
-    //   SAGE.invScreen = new InventoryScreen(SAGE.topLayer);
-    //   // ...and game actions
-    //   SAGE.Actions = new Actions();
     // ...and dialog
+    // (currently using it to display selected item name - not essential!)
     SAGEdit.Dialog = new Dialog()
-    //   // ...and script
-    //   SAGE.Script = new Script();
-    //   SAGE.Script.initialize();
-    //   // ...and sounds
-    //   SAGE.Sound = new Sound();
   }
 
   public static resize() {
@@ -153,11 +127,7 @@ export class SAGEdit {
       window.innerHeight || 0
     )
 
-    // console.log(`screenWidth:${screenWidth}`)
-    // console.log(`SAGEdit.width:${SAGEdit.width}`)
-    // const isMobile = screenWidth <= 1280
     const isMobile = screenHeight > screenWidth
-    // console.log(`screen.width = ${screen.width}`)
     console.log(`isMobile = ${isMobile}`)
     // uniform scale for our game
     const scale = Math.min(
@@ -174,7 +144,6 @@ export class SAGEdit {
     // margins for centering our game
     //const horizontalMargin = (screenWidth - enlargedWidth) / 2
     const verticalMargin = (screenHeight - enlargedHeight) / 2
-    // console.log(`verticalMargin = ${verticalMargin}`)
 
     if (SAGEdit._app) {
       // now we use css trickery to set the sizes and margins

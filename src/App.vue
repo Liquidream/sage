@@ -39,19 +39,9 @@
       </v-container>
     </v-navigation-drawer>
 
-    <!-- <v-main v-if="!isPortrait">
-      <v-container fluid class="pa-0">
-        <canvas id="pixi-canvas"></canvas>
-      </v-container>
-    </v-main> -->
     <!-- Landscape/Desktop Layout (End) =================== -->
 
     <!-- Portrait/Mobile Layout (Start) =================== -->
-
-    <!-- <v-main align="center" justify="center" class="h-15"> -->
-    <!-- <v-main>
-      <canvas id="pixi-canvas"></canvas>
-    </v-main> -->
 
     <v-container v-if="isPortrait" style="overflow-y: scroll">
       <WorldProperties v-if="worldStore.currSceneId == ''" />
@@ -84,29 +74,14 @@
   // current screen size
   const gameWidth = 1920
   const gameHeight = 1080
-  //
-  const worldStore = useWorldStore()
-
-  //SAGEdit.loadWorld()
-
-  //const { width, height } = useDisplay()
   const display = ref(useDisplay())
 
-  //let lastIsPortrait = true
+  const worldStore = useWorldStore()
+
   const isPortrait = computed(() => {
-    //console.log(`>>> Width:${display.value.width}`)
     const currPort = display.value.height > display.value.width
-    //console.log(`>>> currPort = :${currPort} | lastIsPortrait = :${lastIsPortrait}`)
-    // if (currPort == isPortrait.value) {
-    SAGEdit.resize()
-    // } else {
-    //   initPixi()
-    // }
-    //lastIsPortrait = currPort
     return currPort
   })
-
-  //const isMobile = () => screen.width <= 760
 
   // Delay initialising and using Pixi until the cavas element is in the DOM
   onMounted(() => {
@@ -116,12 +91,6 @@
     SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
     SAGEdit.loadWorld()
   })
-
-  // const initPixi = () => {
-  //   // Initialise Pixi (with a "black" default bg color)
-  //   SAGEdit.initialize(gameWidth, gameHeight, 0x6495ed) //0x0)
-  //   SAGEdit.loadWorld()
-  // }
 </script>
 
 <style>

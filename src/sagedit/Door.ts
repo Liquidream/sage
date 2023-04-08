@@ -1,4 +1,4 @@
-import { DoorState, type DoorModel } from "@/models/DoorModel"
+import type { DoorModel } from "@/models/DoorModel"
 import { SAGEdit } from "@/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
 import { Graphics, Sprite } from "pixi.js"
@@ -39,19 +39,6 @@ export class Door {
       graphics.lineStyle(10, 0x000000, 0) // "Invisible"
     }
 
-    // Make doors visible in debug
-    // if (SAGEdit.debugMode) {
-    //   // Set the fill color
-    //   graphics.beginFill(0xe74c3c, 125) // light red
-    //   // Line/stroke style
-    //   graphics.lineStyle(10, 0xff0000) // Red
-    // } else {
-    //   // Set the fill color to barely visible
-    //   // (else won't get collision hit)
-    //   // TODO: find a nicer solution to this!
-    //   graphics.beginFill(0xccc, 0.00000000000001) // "Invisible"
-    // }
-
     // Set Graphics "canvas" to correct pos/width
     // (So we can easily move it when "dragging")
     graphics.x = this.doorModel.x || 0
@@ -83,19 +70,9 @@ export class Door {
     this.graphics = graphics
   }
 
-  public unlockDoor() {
-    // Unlock the door
-    this.doorModel.state = DoorState.Unlocked
-    // Play sound
-    if (this.doorModel.playSounds) {
-      //SAGE.Sound.play("Unlock-Door")
-    }
-  }
-
   tidyUp() {
     // Unsubscribe from events, etc.
     this.graphics.removeAllListeners()
-    //SAGE.Events.off("scenehint", this.onSceneHint, this)
   }
 
   private onSceneHint() {
@@ -158,52 +135,5 @@ export class Door {
     } else {
       //
     }
-    // Check door state
-    // if (this.data.state == DoorState.Locked) {
-    //   // Does player have the key?
-    //   const key = SAGE.World.player.inventory.find((obj) => {
-    //     return obj.id === this.data.key_prop_id
-    //   })
-    //   if (this.data.auto_unlock && key) {
-    //     // Unlock the door
-    //     this.unlockDoor()
-    //     // Remove item from inventory (unless not single-use)
-    //     if (key.single_use) {
-    //       SAGE.World.player.removeFromInventory(key.id)
-    //     }
-    //   } else {
-    //     SAGE.Dialog.showMessage(this.data.desc_locked || "It is locked")
-    //     // Play sound
-    //     if (this.data.playSounds) {
-    //       SAGE.Sound.play("Locked-Door")
-    //     }
-    //     return
-    //   }
   }
-
-  //   // TODO: Find the target door/scene
-  //   // const first: {id: number; language: string;} | undefined
-  //   const targetScene = SAGE.World.scenes.find((obj) => {
-  //     return obj.id === this.data.target_scene_id
-  //   })
-
-  //   if (targetScene) {
-  //     // Change scene to the game scene!
-  //     targetScene.show()
-  //   }
-  //   // Custom action?
-  //   else if (this.data.on_action) {
-  //     Function(this.data.on_action)()
-  //     return
-  //   } else {
-  //     SAGE.Dialog.showErrorMessage(
-  //       `Error: Scene with ID '${this.data.target_scene_id}' is invalid`
-  //     )
-  //   }
-  // }
-
-  // private onSecondaryAction() {
-  //   if (SAGE.debugMode) console.log(`onSecondaryAction for :${this.data.id}`)
-  //   SAGE.Dialog.showMessage(this.data.desc)
-  // }
 }
