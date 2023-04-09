@@ -11,6 +11,9 @@
     <v-app-bar :elevation="2">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>SAGE</v-toolbar-title>
+      <v-btn @click="playGame" color="info"
+      >Play</v-btn
+      >
       <v-spacer></v-spacer>
       <v-btn icon @click="Fullscreen.toggleFullScreen">
         <v-icon>mdi-fullscreen</v-icon>
@@ -66,10 +69,15 @@
   import { Fullscreen } from "./utils/Fullscreen"
   import { SAGEdit } from "@/SAGEdit"
   import { useWorldStore } from "@/stores/WorldStore"
+  import { useSageEditStore } from "@/stores/SAGEditStore"
   import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"
   import PropProperties from "./components/PropProperties.vue"
   import DoorProperties from "./components/DoorProperties.vue"
+import { useSceneStore } from "./stores/SceneStore"
+import { useActorStore } from "./stores/ActorStore"
+import { useDoorStore } from "./stores/DoorStore"
+import { usePropStore } from "./stores/PropStore"
 
   // current screen size
   const gameWidth = 1920
@@ -77,6 +85,7 @@
   const display = ref(useDisplay())
 
   const worldStore = useWorldStore()
+  const sageEditStore = useSageEditStore()
 
   const isPortrait = computed(() => {
     const currPort = display.value.height > display.value.width
@@ -91,6 +100,15 @@
     SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
     SAGEdit.loadWorld()
   })
+
+  const playGame = () => {
+    console.log("in playGame()...")
+    sageEditStore.worldData = JSON.stringify(useWorldStore())
+    sageEditStore.sceneData = JSON.stringify(useSceneStore())
+    sageEditStore.propData = JSON.stringify(usePropStore())
+    sageEditStore.doorData = JSON.stringify(useDoorStore())
+    sageEditStore.actorData = JSON.stringify(useActorStore())
+  }
 </script>
 
 <style>

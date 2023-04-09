@@ -4,6 +4,7 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
 import App from "./App.vue"
 import vuetify from "./plugins/vuetify"
 import { loadFonts } from "./plugins/webfontloader"
+import { SAGEdit } from "./SAGEdit"
 
 const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
@@ -12,10 +13,15 @@ const mode = urlParams.get("mode")
 if (mode == "play") {
   //let app = createApp(AppServer);
   console.log(">>> Play/Test mode!")
+  // console.log(`>>> JSON = ${window.S.JSON}`)
+  App.name = "SAGE-Play"
 } else {
   //let id = urlParams.get('id')
   //app = createApp(App, { id: parseInt(id) } );
   console.log(">>> Editor mode!")
+  // window.S = {}
+  // S.JSON = "hello!"
+  App.name = "SAGE-Edit"
 }
 
 // current screen size
@@ -25,10 +31,5 @@ if (mode == "play") {
 loadFonts()
 
 const pinia = createPinia().use(piniaPluginPersistedstate)
-
-// // Initialise Pixi (with a "black" default bg color)
-// SAGEdit.initialize(gameWidth, gameHeight, 0x6495ed) //0x0)
-
-App.name = "SAGE"
 
 createApp(App).use(vuetify).use(pinia).mount("#app")
