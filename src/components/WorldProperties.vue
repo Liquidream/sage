@@ -46,6 +46,10 @@
     <v-btn @click="worldStore.resetToDemoData" color="info" class="mt-2"
       >Reset Data</v-btn
     >
+    &nbsp;
+    <v-btn @click="worldStore.exportDataToJSON" color="info" class="mt-2"
+      >Export Data</v-btn
+    >
   </v-form>
 </template>
 

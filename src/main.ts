@@ -4,7 +4,19 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
 import App from "./App.vue"
 import vuetify from "./plugins/vuetify"
 import { loadFonts } from "./plugins/webfontloader"
-//import { SAGEdit } from "@/SAGEdit"
+
+const queryString = window.location.search
+const urlParams = new URLSearchParams(queryString)
+const mode = urlParams.get("mode")
+
+if (mode == "play") {
+  //let app = createApp(AppServer);
+  console.log(">>> Play/Test mode!")
+} else {
+  //let id = urlParams.get('id')
+  //app = createApp(App, { id: parseInt(id) } );
+  console.log(">>> Editor mode!")
+}
 
 // current screen size
 // const gameWidth = 1920

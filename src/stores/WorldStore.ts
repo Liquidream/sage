@@ -99,6 +99,13 @@ export const useWorldStore = defineStore("worldStore", {
     /* ----------------------------------------------------------
      * Other
      */
+
+    exportDataToJSON() {
+      const sceneStore = useSceneStore()
+      const test = JSON.stringify(sceneStore.$state)
+      debugger
+    },
+
     // This should prob be in another file?
     resetToDemoData() {
       // Default world
