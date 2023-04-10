@@ -21,6 +21,10 @@ if (mode == "play") {
   console.log(">>> Play/Test mode!")
   // console.log(`>>> JSON = ${window.S.JSON}`)
   App.name = "SAGE-Play"
+  localforage.config({
+    driver: localforage.INDEXEDDB, // This force IndexedDB as the driver
+    name: "sagePlay",
+  })
 } else {
   //let id = urlParams.get('id')
   //app = createApp(App, { id: parseInt(id) } );
@@ -28,6 +32,10 @@ if (mode == "play") {
   // window.S = {}
   // S.JSON = "hello!"
   App.name = "SAGE-Edit"
+  localforage.config({
+    driver: localforage.INDEXEDDB, // This force IndexedDB as the driver
+    name: "sageEdit",
+  })
 }
 
 loadFonts()
@@ -59,10 +67,10 @@ loadFonts()
 // Pinia with pinia-plugin-persistedstate-2 using localforage storage
 // -------------------------------------------------------------------
 // Now use localforage (forcing IndexedDB)
-localforage.config({
-  driver: localforage.INDEXEDDB, // This force IndexedDB as the driver
-  name: "sageEdit",
-})
+// localforage.config({
+//   driver: localforage.INDEXEDDB, // This force IndexedDB as the driver
+//   name: "sageEdit",
+// })
 const pinia = createPinia()
 pinia.use(
   createPersistedStatePlugin({
