@@ -78,6 +78,7 @@ import { useSceneStore } from "./stores/SceneStore"
 import { useActorStore } from "./stores/ActorStore"
 import { useDoorStore } from "./stores/DoorStore"
 import { usePropStore } from "./stores/PropStore"
+import localforage from "localforage"
 
   // current screen size
   const gameWidth = 1920
@@ -102,12 +103,31 @@ import { usePropStore } from "./stores/PropStore"
 
   const playGame = () => {
     console.log("in playGame()...")
-    const sageEditStore = useSageEditStore()
-    sageEditStore.worldData = JSON.stringify(useWorldStore())
-    sageEditStore.sceneData = JSON.stringify(useSceneStore())
-    sageEditStore.propData = JSON.stringify(usePropStore())
-    sageEditStore.doorData = JSON.stringify(useDoorStore())
-    sageEditStore.actorData = JSON.stringify(useActorStore())
+    // Get the current "edit" data
+    window.worldData = JSON.stringify(useWorldStore())
+    window.sceneData = JSON.stringify(useSceneStore())
+    window.propData = JSON.stringify(usePropStore())
+    window.doorData = JSON.stringify(useDoorStore())
+    window.actorData = JSON.stringify(useActorStore())
+
+    window.open("http://localhost:3000/?mode=play", "sagePlay")
+    // // Now switch to "play" db to write
+    // localforage.config({
+    //   driver: localforage.INDEXEDDB, // This force IndexedDB as the driver
+    //   name: "sagePlay",
+    // })
+    // const sageEditStore = useSageEditStore()
+    // sageEditStore.worldData = worldData
+    // sageEditStore.sceneData = sceneData
+    // sageEditStore.propData = propData
+    // sageEditStore.doorData = doorData
+    // sageEditStore.actorData = actorData
+
+    // // Finally, switch to "edit" db
+    // localforage.config({
+    //   driver: localforage.INDEXEDDB, // This force IndexedDB as the driver
+    //   name: "sageEdit",
+    // })
   }
 </script>
 
