@@ -104,11 +104,12 @@ import localforage from "localforage"
   const playGame = () => {
     console.log("in playGame()...")
     // Get the current "edit" data
-    window.worldData = JSON.stringify(useWorldStore())
-    window.sceneData = JSON.stringify(useSceneStore())
-    window.propData = JSON.stringify(usePropStore())
-    window.doorData = JSON.stringify(useDoorStore())
-    window.actorData = JSON.stringify(useActorStore())
+    window.sagePlayData = {}
+    window.sagePlayData.worldData = JSON.stringify(useWorldStore())
+    window.sagePlayData.sceneData = JSON.stringify(useSceneStore())
+    window.sagePlayData.propData = JSON.stringify(usePropStore())
+    window.sagePlayData.doorData = JSON.stringify(useDoorStore())
+    window.sagePlayData.actorData = JSON.stringify(useActorStore())
 
     window.open("http://localhost:3000/?mode=play", "sagePlay")
     // // Now switch to "play" db to write
