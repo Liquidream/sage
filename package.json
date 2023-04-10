@@ -16,6 +16,7 @@
     "localforage": "^1.10.0",
     "pinia": "^2.0.14",
     "pinia-plugin-persistedstate": "^1.6.3",
+    "pinia-plugin-persistedstate-2": "^2.0.14",
     "pixi.js": "^6.4.2",
     "roboto-fontface": "*",
     "tweedle.js": "^2.0.0",
