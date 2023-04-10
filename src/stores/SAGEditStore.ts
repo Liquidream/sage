@@ -1,13 +1,17 @@
 import { defineStore } from "pinia"
 
-// export interface ActorState {
-//   actors: ActorModel[]
-// }
+export interface SageEditState {
+  worldData: string
+  sceneData: string
+  propData: string
+  doorData: string
+  actorData: string
+}
 
 export const useSageEditStore = defineStore({
   id: "sageEditStore",
 
-  state: () => ({
+  state: (): SageEditState => ({
     worldData: "",
     sceneData: "",
     propData: "",

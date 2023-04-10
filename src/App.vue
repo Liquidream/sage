@@ -85,7 +85,6 @@ import { usePropStore } from "./stores/PropStore"
   const display = ref(useDisplay())
 
   const worldStore = useWorldStore()
-  const sageEditStore = useSageEditStore()
 
   const isPortrait = computed(() => {
     const currPort = display.value.height > display.value.width
@@ -103,6 +102,7 @@ import { usePropStore } from "./stores/PropStore"
 
   const playGame = () => {
     console.log("in playGame()...")
+    const sageEditStore = useSageEditStore()
     sageEditStore.worldData = JSON.stringify(useWorldStore())
     sageEditStore.sceneData = JSON.stringify(useSceneStore())
     sageEditStore.propData = JSON.stringify(usePropStore())
