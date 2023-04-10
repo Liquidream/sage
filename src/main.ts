@@ -61,6 +61,7 @@ loadFonts()
 // Now use localforage (forcing IndexedDB)
 localforage.config({
   driver: localforage.INDEXEDDB, // This force IndexedDB as the driver
+  name: "sageEdit",
 })
 const pinia = createPinia()
 pinia.use(
