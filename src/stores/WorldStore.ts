@@ -111,13 +111,12 @@ export const useWorldStore = defineStore("worldStore", {
       if (window.opener.sagePlayData) {
         const sagePlayData = window.opener.sagePlayData
         // World Data
-        const worldStore = useWorldStore()
         const worldData: WorldState = JSON.parse(sagePlayData.worldData)
-        worldStore.title = worldData.title
-        worldStore.on_start = worldData.on_start
-        worldStore.currSceneId = worldData.currSceneId
-        worldStore.currPropId = worldData.currPropId
-        worldStore.currDoorId = worldData.currDoorId
+        this.title = worldData.title
+        this.on_start = worldData.on_start
+        this.currSceneId = worldData.currSceneId
+        this.currPropId = worldData.currPropId
+        this.currDoorId = worldData.currDoorId
       }
     },
 
