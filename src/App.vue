@@ -104,10 +104,10 @@ import { usePropStore } from "./stores/PropStore"
     console.log("in playGame()...")
     const sageEditStore = useSageEditStore()
     sageEditStore.worldData = JSON.stringify(useWorldStore())
-    // sageEditStore.sceneData = JSON.stringify(useSceneStore())
-    // sageEditStore.propData = JSON.stringify(usePropStore())
-    // sageEditStore.doorData = JSON.stringify(useDoorStore())
-    // sageEditStore.actorData = JSON.stringify(useActorStore())
+    sageEditStore.sceneData = JSON.stringify(useSceneStore())
+    sageEditStore.propData = JSON.stringify(usePropStore())
+    sageEditStore.doorData = JSON.stringify(useDoorStore())
+    sageEditStore.actorData = JSON.stringify(useActorStore())
   }
 </script>
 

@@ -58,14 +58,11 @@ loadFonts()
 // v3 ----------------------------------------------------------------
 // Pinia with pinia-plugin-persistedstate-2 using localforage storage
 // -------------------------------------------------------------------
-// Optional
+// Now use localforage (forcing IndexedDB)
 localforage.config({
   driver: localforage.INDEXEDDB, // This force IndexedDB as the driver
 })
 const pinia = createPinia()
-const installPersistedStatePlugin = createPersistedStatePlugin()
-pinia.use((context) => installPersistedStatePlugin(context))
-// Now use localforage
 pinia.use(
   createPersistedStatePlugin({
     storage: {
@@ -79,8 +76,7 @@ pinia.use(
         return localforage.removeItem(key)
       },
     },
-  }),
+  })
 )
-
 
 createApp(App).use(vuetify).use(pinia).mount("#app")
