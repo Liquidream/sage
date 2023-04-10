@@ -106,6 +106,21 @@ export const useWorldStore = defineStore("worldStore", {
       debugger
     },
 
+    loadPlayData() {
+      //debugger
+      if (window.opener.sagePlayData) {
+        const sagePlayData = window.opener.sagePlayData
+        // World Data
+        const worldStore = useWorldStore()
+        const worldData: WorldState = JSON.parse(sagePlayData.worldData)
+        worldStore.title = worldData.title
+        worldStore.on_start = worldData.on_start
+        worldStore.currSceneId = worldData.currSceneId
+        worldStore.currPropId = worldData.currPropId
+        worldStore.currDoorId = worldData.currDoorId
+      }
+    },
+
     // This should prob be in another file?
     resetToDemoData() {
       // Default world

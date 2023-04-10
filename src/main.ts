@@ -7,6 +7,7 @@ import App from "./App.vue"
 import vuetify from "./plugins/vuetify"
 import { loadFonts } from "./plugins/webfontloader"
 import { SAGEdit } from "./SAGEdit"
+import { useWorldStore, type WorldState } from "./stores/WorldStore"
 
 // current screen size
 // const gameWidth = 1920
@@ -89,3 +90,24 @@ pinia.use(
 )
 
 createApp(App).use(vuetify).use(pinia).mount("#app")
+
+// Restore play data?
+// if (mode == "play") {
+//   //let app = createApp(AppServer);
+//   console.log(">>> Load data?")
+//   // Check for data to load
+//   // debugger
+//   if (window.opener.sagePlayData) {
+//     const sagePlayData = window.opener.sagePlayData
+//     // World Data
+//     const worldStore = useWorldStore()
+//     const worldData: WorldState = JSON.parse(sagePlayData.worldData)
+//     worldStore.title = worldData.title
+//     worldStore.on_start = worldData.on_start
+//     worldStore.currSceneId = worldData.currSceneId
+//     worldStore.currPropId = worldData.currPropId
+//     worldStore.currDoorId = worldData.currDoorId
+//   }
+// } else {
+//   // console.log(">>> Editor mode!")
+// }

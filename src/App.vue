@@ -79,6 +79,7 @@ import { useActorStore } from "./stores/ActorStore"
 import { useDoorStore } from "./stores/DoorStore"
 import { usePropStore } from "./stores/PropStore"
 import localforage from "localforage"
+import type { WorldState } from "@/stores/WorldStore"
 
   // current screen size
   const gameWidth = 1920
@@ -105,7 +106,9 @@ import localforage from "localforage"
     console.log("in playGame()...")
     // Get the current "edit" data
     window.sagePlayData = {}
-    window.sagePlayData.worldData = JSON.stringify(useWorldStore())
+    const worldStore = useWorldStore()
+    window.sagePlayData.worldData = JSON.stringify(worldStore)
+    // window.sagePlayData.worldData.title = worldStore.title
     window.sagePlayData.sceneData = JSON.stringify(useSceneStore())
     window.sagePlayData.propData = JSON.stringify(usePropStore())
     window.sagePlayData.doorData = JSON.stringify(useDoorStore())
