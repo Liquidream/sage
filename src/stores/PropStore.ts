@@ -30,5 +30,5 @@ export const usePropStore = defineStore({
     },
   },
 
-  persist: true, // Save to localStorage
+  //persist: true, // Save to localStorage
 })

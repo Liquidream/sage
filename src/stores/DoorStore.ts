@@ -27,5 +27,5 @@ export const useDoorStore = defineStore({
     },
   },
 
-  persist: true, // Save to localStorage
+  //persist: true, // Save to localStorage
 })

@@ -315,5 +315,5 @@ export const useWorldStore = defineStore("worldStore", {
     },
   },
 
-  persist: true, // Save to localStorage
+  //persist: true, // Save to localStorage
 })

@@ -26,5 +26,5 @@ export const useSceneStore = defineStore({
     // },
   },
 
-  persist: true, // Save to localStorage
+  //persist: true, // Save to localStorage
 })

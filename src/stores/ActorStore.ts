@@ -24,5 +24,5 @@ export const useActorStore = defineStore({
   //   // },
   // },
 
-  persist: true, // Save to localStorage
+  //persist: true, // Save to localStorage
 })
