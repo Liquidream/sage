@@ -111,7 +111,7 @@ import localforage from "localforage"
     window.sagePlayData.doorData = JSON.stringify(useDoorStore())
     window.sagePlayData.actorData = JSON.stringify(useActorStore())
 
-    window.open("http://localhost:3000/?mode=play", "sagePlay")
+    window.open("/?mode=play", "sagePlay")
     // // Now switch to "play" db to write
     // localforage.config({
     //   driver: localforage.INDEXEDDB, // This force IndexedDB as the driver
