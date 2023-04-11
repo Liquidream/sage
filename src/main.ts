@@ -5,6 +5,11 @@ import localforage from "localforage"
 import App from "./App.vue"
 import vuetify from "./plugins/vuetify"
 import { loadFonts } from "./plugins/webfontloader"
+import { useWorldStore, type WorldState } from "./stores/WorldStore"
+import { useSceneStore, type SceneState } from "./stores/SceneStore"
+import { usePropStore, type PropState } from "./stores/PropStore"
+import { useDoorStore, type DoorState } from "./stores/DoorStore"
+import { useActorStore, type ActorState } from "./stores/ActorStore"
 // import { SAGEdit } from "./SAGEdit"
 // import { useWorldStore, type WorldState } from "./stores/WorldStore"
 
@@ -48,7 +53,6 @@ if (mode == "play") {
     createPersistedStatePlugin({
       storage: {
         getItem: async (key) => {
-          console.log(`start getItem(${key})`)
           return localforage.getItem(key)
         },
         setItem: async (key, value) => {
@@ -116,23 +120,33 @@ loadFonts()
 
 // createApp(App).use(vuetify).use(pinia).mount("#app")
 
-// Restore play data?
-// if (mode == "play") {
-//   //let app = createApp(AppServer);
-//   console.log(">>> Load data?")
-//   // Check for data to load
-//   // debugger
-//   if (window.opener.sagePlayData) {
-//     const sagePlayData = window.opener.sagePlayData
-//     // World Data
-//     const worldStore = useWorldStore()
-//     const worldData: WorldState = JSON.parse(sagePlayData.worldData)
-//     worldStore.title = worldData.title
-//     worldStore.on_start = worldData.on_start
-//     worldStore.currSceneId = worldData.currSceneId
-//     worldStore.currPropId = worldData.currPropId
-//     worldStore.currDoorId = worldData.currDoorId
-//   }
-// } else {
-//   // console.log(">>> Editor mode!")
-// }
+//Restore play data?
+if (mode == "play") {
+  //let app = createApp(AppServer);
+  console.log(">>> Load data?")
+  // Check for data to load
+  // debugger
+  if (window.opener.sagePlayData) {
+    const sagePlayData = window.opener.sagePlayData
+    // World Data
+    const worldStore = useWorldStore()
+    const worldData: WorldState = JSON.parse(sagePlayData.worldData)
+    worldStore.$state = worldData
+    // Scene Data
+    const sceneStore = useSceneStore()
+    const sceneData: SceneState = JSON.parse(sagePlayData.sceneData)
+    sceneStore.$state = sceneData
+    // Prop Data
+    const propStore = usePropStore()
+    const propData: PropState = JSON.parse(sagePlayData.propData)
+    propStore.$state = propData
+    // Door Data
+    const doorStore = useDoorStore()
+    const doorData: DoorState = JSON.parse(sagePlayData.doorData)
+    doorStore.$state = doorData
+    // Actor Data
+    const actorStore = useActorStore()
+    const actorData: ActorState = JSON.parse(sagePlayData.actorData)
+    actorStore.$state = actorData
+  }
+}
