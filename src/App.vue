@@ -62,12 +62,11 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, ref } from "vue"
+  import { computed, ref, onMounted } from "vue"
   import { useDisplay } from "vuetify"
   import { Fullscreen } from "./utils/Fullscreen"
   import { SAGEdit } from "@/SAGEdit"
   import { useWorldStore } from "@/stores/WorldStore"
-  import { useSageEditStore } from "@/stores/SAGEditStore"
   import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"
   import PropProperties from "./components/PropProperties.vue"
@@ -76,8 +75,6 @@
   import { useActorStore } from "./stores/ActorStore"
   import { useDoorStore } from "./stores/DoorStore"
   import { usePropStore } from "./stores/PropStore"
-  import localforage from "localforage"
-  import type { WorldState } from "@/stores/WorldStore"
   import type { SagePlayData } from "./sageplay/SagePlayData"
 
   // current screen size
@@ -93,57 +90,35 @@
   })
 
   // Delay initialising and using Pixi until the cavas element is in the DOM
-  // onMounted(() => {
-  //   console.log(`the component is now mounted.`)
+  onMounted(() => {
+    console.log(`the component is now mounted.`)
 
-  //   // Initialise Pixi (with a "black" default bg color)
-  //   SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
-  //   SAGEdit.loadWorld()
+    // Initialise Pixi (with a "black" default bg color)
+    SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
+    SAGEdit.loadWorld()
 
-  //   // Play mode?
-  //   const queryString = window.location.search
-  //   const urlParams = new URLSearchParams(queryString)
-  //   const mode = urlParams.get("mode")
-  //   if (mode == "play") {
-  //     //let app = createApp(AppServer);
-  //     console.log(">>> Play/Test mode!22")
-  //     const worldStore = useWorldStore()
-  //     //worldStore.$reset()
-  //     //worldStore.$dispose()
-  //     //worldStore.loadPlayData()
-  //   }
-  // })
+    // Play mode?
+    // const queryString = window.location.search
+    // const urlParams = new URLSearchParams(queryString)
+    // const mode = urlParams.get("mode")
+    // if (mode == "play") {
+    //   //let app = createApp(AppServer);
+    //   console.log(">>> Play/Test mode!22")
+    //   const worldStore = useWorldStore()
+    //}
+  })
 
   const playGame = () => {
     console.log("in playGame()...")
     // Get the current "edit" data
     window.sagePlayData = {} as SagePlayData
-    const worldStore = useWorldStore()
-    window.sagePlayData.worldData = JSON.stringify(worldStore)
-    // window.sagePlayData.worldData.title = worldStore.title
+    window.sagePlayData.worldData = JSON.stringify(useWorldStore())
     window.sagePlayData.sceneData = JSON.stringify(useSceneStore())
     window.sagePlayData.propData = JSON.stringify(usePropStore())
     window.sagePlayData.doorData = JSON.stringify(useDoorStore())
     window.sagePlayData.actorData = JSON.stringify(useActorStore())
-
+    // Launch "Play" window
     window.open("/?mode=play", "sagePlay")
-    // // Now switch to "play" db to write
-    // localforage.config({
-    //   driver: localforage.INDEXEDDB, // This force IndexedDB as the driver
-    //   name: "sagePlay",
-    // })
-    // const sageEditStore = useSageEditStore()
-    // sageEditStore.worldData = worldData
-    // sageEditStore.sceneData = sceneData
-    // sageEditStore.propData = propData
-    // sageEditStore.doorData = doorData
-    // sageEditStore.actorData = actorData
-
-    // // Finally, switch to "edit" db
-    // localforage.config({
-    //   driver: localforage.INDEXEDDB, // This force IndexedDB as the driver
-    //   name: "sageEdit",
-    // })
   }
 </script>
 
