@@ -1,4 +1,4 @@
-import { SAGEdit } from "@/SAGEdit"
+import { SAGEdit } from "@/sagedit/SAGEdit"
 import { Container, Graphics, Text, TextStyle } from "pixi.js"
 
 export class DialogChoice {

@@ -1,7 +1,7 @@
 import { BaseTexture, Sprite, Texture } from "pixi.js"
 import { InputEventEmitter } from "./ui/InputEventEmitter"
 import type { PropModel } from "@/models/PropModel"
-import { SAGEdit } from "@/SAGEdit"
+import { SAGEdit } from "@/sagedit/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
 
 export class Prop {

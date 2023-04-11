@@ -1,4 +1,4 @@
-import { SAGEdit } from "@/SAGEdit"
+import { SAGEdit } from "@/sagedit/SAGEdit"
 import { Container, Graphics, Loader } from "pixi.js"
 //import { assets } from "../assets"
 //import { IScreen, SAGE } from "../Manager"

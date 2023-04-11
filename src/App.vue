@@ -65,7 +65,7 @@
   import { computed, ref, onMounted } from "vue"
   import { useDisplay } from "vuetify"
   import { Fullscreen } from "./utils/Fullscreen"
-  import { SAGEdit } from "@/SAGEdit"
+  import { SAGEdit } from "./sagedit/SAGEdit"
   import { useWorldStore } from "@/stores/WorldStore"
   import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"

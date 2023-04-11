@@ -50,16 +50,16 @@
     <v-btn @click="worldStore.exportDataToJSON" color="info" class="mt-2"
       >Export Data</v-btn
     >
-    &nbsp;
+    <!-- &nbsp;
     <v-btn @click="worldStore.loadPlayData" color="info" class="mt-2"
       >Load Data</v-btn
-    >
+    > -->
   </v-form>
 </template>
 
 <script setup lang="ts">
   import type { SceneModel } from "@/models/SceneModel"
-  import { SAGEdit } from "@/SAGEdit"
+  import { SAGEdit } from "../sagedit/SAGEdit"
   // import type { Ref } from "vue"
   // import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"

@@ -1,6 +1,6 @@
 import { Application, Container } from "pixi.js"
-import { SceneScreen } from "./screens/SceneScreen"
-import { Dialog } from "./sagedit/Dialog"
+import { SceneScreen } from "../screens/SceneScreen"
+import { Dialog } from "./Dialog"
 
 export class SAGEdit {
   private constructor() {

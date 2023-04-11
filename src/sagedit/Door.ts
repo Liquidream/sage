@@ -1,5 +1,5 @@
 import type { DoorModel } from "@/models/DoorModel"
-import { SAGEdit } from "@/SAGEdit"
+import { SAGEdit } from "@/sagedit/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
 import { Graphics, Sprite } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"

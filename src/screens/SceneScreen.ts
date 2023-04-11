@@ -11,7 +11,7 @@ import {
   BaseTexture,
 } from "pixi.js"
 
-import { SAGEdit } from "@/SAGEdit"
+import { SAGEdit } from "@/sagedit/SAGEdit"
 import { Prop } from "@/sagedit/Prop"
 import { Door } from "@/sagedit/Door"
 import type { SceneModel } from "@/models/SceneModel"
