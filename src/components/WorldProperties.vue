@@ -63,7 +63,7 @@
   // import type { Ref } from "vue"
   // import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"
-
+  console.log("start WordProperties.vue...")
   const worldStore = useWorldStore()
 
   const onClickScene = (scene: SceneModel) => {

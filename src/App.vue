@@ -85,7 +85,7 @@ import type { WorldState } from "@/stores/WorldStore"
   const gameWidth = 1920
   const gameHeight = 1080
   const display = ref(useDisplay())
-
+  console.log("start App.vue...")
   const worldStore = useWorldStore()
 
   const isPortrait = computed(() => {
@@ -109,6 +109,8 @@ import type { WorldState } from "@/stores/WorldStore"
       //let app = createApp(AppServer);
       console.log(">>> Play/Test mode!22")
       const worldStore = useWorldStore()
+      //worldStore.$reset()
+      //worldStore.$dispose()
       worldStore.loadPlayData()
     }
   })
