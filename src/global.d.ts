@@ -27,3 +27,7 @@ interface Document {
   msExitFullscreen(): Promise<void>
   mozCancelFullScreen(): Promise<void>
 }
+
+interface Window {
+  sagePlayData: SagePlayData
+}

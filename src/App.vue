@@ -11,9 +11,7 @@
     <v-app-bar :elevation="2">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>SAGE</v-toolbar-title>
-      <v-btn @click="playGame" color="info"
-      >Play</v-btn
-      >
+      <v-btn @click="playGame" color="info">Play</v-btn>
       <v-spacer></v-spacer>
       <v-btn icon @click="Fullscreen.toggleFullScreen">
         <v-icon>mdi-fullscreen</v-icon>
@@ -74,12 +72,13 @@
   import SceneProperties from "./components/SceneProperties.vue"
   import PropProperties from "./components/PropProperties.vue"
   import DoorProperties from "./components/DoorProperties.vue"
-import { useSceneStore } from "./stores/SceneStore"
-import { useActorStore } from "./stores/ActorStore"
-import { useDoorStore } from "./stores/DoorStore"
-import { usePropStore } from "./stores/PropStore"
-import localforage from "localforage"
-import type { WorldState } from "@/stores/WorldStore"
+  import { useSceneStore } from "./stores/SceneStore"
+  import { useActorStore } from "./stores/ActorStore"
+  import { useDoorStore } from "./stores/DoorStore"
+  import { usePropStore } from "./stores/PropStore"
+  import localforage from "localforage"
+  import type { WorldState } from "@/stores/WorldStore"
+  import type { SagePlayData } from "./sageplay/SagePlayData"
 
   // current screen size
   const gameWidth = 1920
@@ -118,7 +117,7 @@ import type { WorldState } from "@/stores/WorldStore"
   const playGame = () => {
     console.log("in playGame()...")
     // Get the current "edit" data
-    window.sagePlayData = {}
+    window.sagePlayData = {} as SagePlayData
     const worldStore = useWorldStore()
     window.sagePlayData.worldData = JSON.stringify(worldStore)
     // window.sagePlayData.worldData.title = worldStore.title
