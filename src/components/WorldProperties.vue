@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
   import type { SceneModel } from "@/models/SceneModel"
-  import { SAGEdit } from "../sagedit/SAGEdit"
+  import { SAGEdit } from "../pixi-sagedit/SAGEdit"
   // import type { Ref } from "vue"
   // import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"

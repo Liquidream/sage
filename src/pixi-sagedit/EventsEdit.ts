@@ -1,6 +1,6 @@
 import { EventEmitter } from "@pixi/utils"
 
-export class Events extends EventEmitter {
+export class EventsEdit extends EventEmitter {
   constructor() {
     super()
   }

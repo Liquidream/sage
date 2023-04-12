@@ -1,6 +1,6 @@
 import { Application, Container } from "pixi.js"
-import { SceneScreen } from "../screens/SceneScreen"
-import { Dialog } from "./Dialog"
+import { SceneScreen } from "./screens/SceneScreenEdit"
+import { DialogEdit } from "./DialogEdit"
 
 export class SAGEdit {
   private constructor() {
@@ -22,7 +22,7 @@ export class SAGEdit {
   private static topLayer: Container
 
   // public static World: World;
-  public static Dialog: Dialog
+  public static Dialog: DialogEdit
   // public static Actions: Actions;
   // public static Script: Script;
   //public static Events: Events
@@ -112,7 +112,7 @@ export class SAGEdit {
 */
     // ...and dialog
     // (currently using it to display selected item name - not essential!)
-    SAGEdit.Dialog = new Dialog()
+    SAGEdit.Dialog = new DialogEdit()
   }
 
   public static resize() {

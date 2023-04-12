@@ -1,8 +1,8 @@
 import { DropShadowFilter } from "pixi-filters";
 import { Container, Sprite } from "pixi.js";
-import { SAGE } from "../../Manager";
-import { Fullscreen } from "../../utils/Fullscreen";
-import { DialogType } from "../Dialog";
+import { SAGE } from "../../SAGEPlay";
+import { Fullscreen } from "../../../utils/Fullscreen";
+import { DialogType } from "../../../pixi-sagedit/DialogEdit";
 
 
 export class UI_Overlay {

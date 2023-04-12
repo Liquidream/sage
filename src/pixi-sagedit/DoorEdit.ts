@@ -1,12 +1,12 @@
 import type { DoorModel } from "@/models/DoorModel"
-import { SAGEdit } from "@/sagedit/SAGEdit"
+import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
 import { Graphics, Sprite } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"
 //import { DialogType } from "./Dialog"
-import { InputEventEmitter } from "./ui/InputEventEmitter"
+import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter"
 
-export class Door {
+export class DoorEdit {
   // "constants"
   // (perhaps overridable in config?)
   TOUCH_DURATION = 500

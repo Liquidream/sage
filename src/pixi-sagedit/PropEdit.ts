@@ -1,10 +1,10 @@
 import { BaseTexture, Sprite, Texture } from "pixi.js"
-import { InputEventEmitter } from "./ui/InputEventEmitter"
+import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter"
 import type { PropModel } from "@/models/PropModel"
-import { SAGEdit } from "@/sagedit/SAGEdit"
+import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
 
-export class Prop {
+export class PropEdit {
   // "constants"
   // (perhaps overridable in config?)
   TOUCH_DURATION = 500

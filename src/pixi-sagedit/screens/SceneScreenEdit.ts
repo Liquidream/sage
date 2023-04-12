@@ -11,27 +11,27 @@ import {
   BaseTexture,
 } from "pixi.js"
 
-import { SAGEdit } from "@/sagedit/SAGEdit"
-import { Prop } from "@/sagedit/Prop"
-import { Door } from "@/sagedit/Door"
+import { SAGEdit } from "../SAGEdit"
+import { PropEdit } from "../PropEdit"
+import { DoorEdit } from "../DoorEdit"
 import type { SceneModel } from "@/models/SceneModel"
 import type { PropModel } from "@/models/PropModel"
 import { useWorldStore } from "@/stores/WorldStore"
 import { useSceneStore } from "@/stores/SceneStore"
 import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
-import { InputEventEmitter } from "@/sagedit/ui/InputEventEmitter"
+import { InputEventEmitter } from "../../pixi-sageplay/screens/ui/InputEventEmitter"
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null
 
   private scene: SceneModel | undefined
   private backdrop!: Sprite
-  private props: Array<Prop> = []
-  private doors: Array<Door> = []
+  private props: Array<PropEdit> = []
+  private doors: Array<DoorEdit> = []
 
-  public draggedProp!: Prop | undefined
-  public draggedDoor!: Door | undefined
+  public draggedProp!: PropEdit | undefined
+  public draggedDoor!: DoorEdit | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public dragTarget!: any // Could be Prop or Door
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -198,7 +198,7 @@ export class SceneScreen extends Container {
     if (sceneDoorModels.length > 0) {
       for (const doorModel of sceneDoorModels) {
         // Create new component obj (contains data + view)
-        const door = new Door(doorModel)
+        const door = new DoorEdit(doorModel)
         this.addChild(door.graphics)
         this.doors.push(door)
       }
@@ -207,7 +207,7 @@ export class SceneScreen extends Container {
 
   public addProp(propModel: PropModel, fadeIn = false) {
     // Create new component obj (contains data + view)
-    const prop = new Prop(propModel)
+    const prop = new PropEdit(propModel)
     this.addChild(prop.sprite)
     this.props.push(prop)
     // Don't add to scene.propdata here, as it likely already came from it?
@@ -251,7 +251,7 @@ export class SceneScreen extends Container {
   /**
    * Removes a Prop from a scene (default = fade out).
    */
-  removeProp(prop: Prop, fadeOut = true, scaleAnim?: boolean) {
+  removeProp(prop: PropEdit, fadeOut = true, scaleAnim?: boolean) {
     if (fadeOut) {
       new Tween(prop.sprite)
         .to({ alpha: 0 }, 500)

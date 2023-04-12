@@ -65,7 +65,7 @@
   import { computed, ref, onMounted } from "vue"
   import { useDisplay } from "vuetify"
   import { Fullscreen } from "./utils/Fullscreen"
-  import { SAGEdit } from "./sagedit/SAGEdit"
+  import { SAGEdit } from "./pixi-sagedit/SAGEdit"
   import { useWorldStore } from "@/stores/WorldStore"
   import WorldProperties from "./components/WorldProperties.vue"
   import SceneProperties from "./components/SceneProperties.vue"
@@ -75,13 +75,14 @@
   import { useActorStore } from "./stores/ActorStore"
   import { useDoorStore } from "./stores/DoorStore"
   import { usePropStore } from "./stores/PropStore"
-  import type { SagePlayData } from "./sageplay/SagePlayData"
+  import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
 
+  console.log("start App.vue...")
+  
   // current screen size
   const gameWidth = 1920
   const gameHeight = 1080
   const display = ref(useDisplay())
-  console.log("start App.vue...")
   const worldStore = useWorldStore()
 
   const isPortrait = computed(() => {

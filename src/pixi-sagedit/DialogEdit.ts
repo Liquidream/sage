@@ -1,4 +1,4 @@
-import { SAGEdit } from "@/sagedit/SAGEdit"
+import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 import { Container, Graphics, Text, TextStyle } from "pixi.js"
 
 export class DialogChoice {
@@ -24,7 +24,7 @@ export class DialogChoice {
   }
 }
 
-export class Dialog {
+export class DialogEdit {
   // "constants"
   // (perhaps overridable in config?)
   CHARS_PER_SEC = 15

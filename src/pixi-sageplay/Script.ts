@@ -1,5 +1,4 @@
-
-import { SAGE } from "../Manager";
+import { SAGE } from "./SAGEPlay"
 
 export class Script {
   

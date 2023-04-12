@@ -2,7 +2,8 @@ import { createApp } from "vue"
 import { createPinia } from "pinia"
 import { createPersistedStatePlugin } from "pinia-plugin-persistedstate-2"
 import localforage from "localforage"
-import App from "./App.vue"
+import AppEdit from "./AppEdit.vue"
+import AppPlay from "./AppPlay.vue"
 import vuetify from "./plugins/vuetify"
 import { loadFonts } from "./plugins/webfontloader"
 import { useWorldStore, type WorldState } from "./stores/WorldStore"
@@ -10,6 +11,7 @@ import { useSceneStore, type SceneState } from "./stores/SceneStore"
 import { usePropStore, type PropState } from "./stores/PropStore"
 import { useDoorStore, type DoorState } from "./stores/DoorStore"
 import { useActorStore, type ActorState } from "./stores/ActorStore"
+import { SAGE } from "./pixi-sageplay/SAGEPlay"
 // import { SAGEdit } from "./SAGEdit"
 // import { useWorldStore, type WorldState } from "./stores/WorldStore"
 
@@ -27,11 +29,15 @@ const mode = urlParams.get("mode")
 if (mode == "play") {
   //let app = createApp(AppServer);
   console.log(">>> Play/Test mode!")
+
+  // Expose to JavaScript/Browser console
+  window.SAGE = SAGE
+
   // console.log(`>>> JSON = ${window.S.JSON}`)
-  App.name = "SAGE-Play"
+  AppPlay.name = "SAGE-Play"
   // Just init basic (non-persisted) Pinia
   const pinia = createPinia()
-  createApp(App).use(vuetify).use(pinia).mount("#app")
+  createApp(AppPlay).use(vuetify).use(pinia).mount("#app")
 } else {
   // ------------------------------
   // Edit Mode
@@ -41,7 +47,7 @@ if (mode == "play") {
   console.log(">>> Editor mode!")
   // window.S = {}
   // S.JSON = "hello!"
-  App.name = "SAGE-Edit"
+  AppEdit.name = "SAGE-Edit"
   // This force IndexedDB as the driver
   localforage.config({
     driver: localforage.INDEXEDDB,
@@ -64,7 +70,7 @@ if (mode == "play") {
       },
     })
   )
-  createApp(App).use(vuetify).use(pinia).mount("#app")
+  createApp(AppEdit).use(vuetify).use(pinia).mount("#app")
 }
 
 loadFonts()
