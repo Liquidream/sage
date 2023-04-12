@@ -2,7 +2,7 @@
   import { ref, onMounted } from "vue"
   import { useDisplay } from "vuetify"
   //import { Fullscreen } from "./utils/Fullscreen"
-  import { SAGEdit } from "./pixi-sagedit/SAGEdit"
+  import { SAGE } from "./pixi-sageplay/SAGEPlay"
   import { useWorldStore } from "@/stores/WorldStore"
   //import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
 
@@ -24,8 +24,9 @@
     console.log(`the component is now mounted.`)
 
     // Initialise Pixi (with a "black" default bg color)
-    SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
-    SAGEdit.loadWorld()
+    SAGE.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
+    SAGE.loadWorld()
+    SAGE.startGame()
 
     // Play mode?
     // const queryString = window.location.search
