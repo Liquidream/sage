@@ -219,6 +219,7 @@ export class SAGE {
 
   // Call this function when you want to go to a new scene
   public static changeScreen(newScene: IScreen) {
+    console.log("in changeScreen(IScreen)...")
     // Remove and destroy old scene... if we had one..
     if (SAGE.currentScreen) {
       // remove all event subscriptions

@@ -1,6 +1,6 @@
-import { SAGEPlay } from "@/pixi-sageplay/SAGEPlay"
+import { SAGE } from "@/pixi-sageplay/SAGEPlay"
 import { Container, Graphics, Loader } from "pixi.js"
-//import { assets } from "../assets"
+import { assets } from "../../assets"
 //import { IScreen, SAGE } from "../Manager"
 import { Button } from "@/pixi-sageplay/screens/ui/Button"
 import { Fullscreen } from "@/utils/Fullscreen"
@@ -17,8 +17,8 @@ export class LoaderScreen extends Container {
   constructor() {
     super()
 
-    const loaderBarWidth = SAGEPlay.width * 0.7
-    const loaderBarHeight = SAGEPlay.height * 0.1
+    const loaderBarWidth = SAGE.width * 0.7
+    const loaderBarHeight = SAGE.height * 0.1
 
     this.loaderBarFill = new Graphics()
     this.loaderBarFill.beginFill(this.colPrime, 1)
@@ -33,11 +33,11 @@ export class LoaderScreen extends Container {
     this.loaderBar = new Container()
     this.loaderBar.addChild(this.loaderBarFill)
     this.loaderBar.addChild(this.loaderBarBorder)
-    this.loaderBar.position.x = (SAGEPlay.width - this.loaderBar.width) / 2
-    this.loaderBar.position.y = (SAGEPlay.height - this.loaderBar.height) / 2
+    this.loaderBar.position.x = (SAGE.width - this.loaderBar.width) / 2
+    this.loaderBar.position.y = (SAGE.height - this.loaderBar.height) / 2
     this.addChild(this.loaderBar)
 
-    //    Loader.shared.add(assets)
+    Loader.shared.add(assets)
 
     Loader.shared.onProgress.add(this.downloadProgress, this)
     Loader.shared.onComplete.once(this.gameLoaded, this)
@@ -63,17 +63,17 @@ export class LoaderScreen extends Container {
     // Remove loading bar
     this.removeChild(this.loaderBar)
 
-    if (SAGEPlay.enableFullscreen) this.showStartButton()
+    if (SAGE.enableFullscreen) this.showStartButton()
     else {
-      SAGEPlay.loadWorld()
+      SAGE.loadWorld()
       //SAGEdit.startGame()
     }
   }
 
   private showStartButton() {
     // Make a center point of origin (anchor)
-    const x = SAGEPlay.width / 2
-    const y = SAGEPlay.height / 2
+    const x = SAGE.width / 2
+    const y = SAGE.height / 2
     const w = 550
     const h = 175
 
@@ -83,7 +83,7 @@ export class LoaderScreen extends Container {
       // Launch fullscreen
       Fullscreen.openFullscreen()
       // Change scene to the game scene!
-      SAGEPlay.loadWorld()
+      SAGE.loadWorld()
       //SAGEdit.startGame()
     })
   }
