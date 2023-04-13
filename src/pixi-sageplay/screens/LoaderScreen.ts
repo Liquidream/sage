@@ -1,5 +1,5 @@
 import { SAGE } from "@/pixi-sageplay/SAGEPlay"
-import { Container, Graphics, Loader } from "pixi.js"
+import { Container, Graphics, Assets } from "pixi.js"
 import { assets } from "../../assets"
 //import { IScreen, SAGE } from "../Manager"
 import { Button } from "@/pixi-sageplay/screens/ui/Button"
@@ -37,12 +37,11 @@ export class LoaderScreen extends Container {
     this.loaderBar.position.y = (SAGE.height - this.loaderBar.height) / 2
     this.addChild(this.loaderBar)
 
-    Loader.shared.add(assets)
-
-    Loader.shared.onProgress.add(this.downloadProgress, this)
-    Loader.shared.onComplete.once(this.gameLoaded, this)
-
-    Loader.shared.load()
+    Assets.
+    // Loader.shared.add(assets)
+    // Loader.shared.onProgress.add(this.downloadProgress, this)
+    // Loader.shared.onComplete.once(this.gameLoaded, this)
+    // Loader.shared.load()
   }
 
   public update() {
@@ -66,7 +65,7 @@ export class LoaderScreen extends Container {
     if (SAGE.enableFullscreen) this.showStartButton()
     else {
       SAGE.loadWorld()
-      //SAGEdit.startGame()
+      SAGE.startGame()
     }
   }
 
