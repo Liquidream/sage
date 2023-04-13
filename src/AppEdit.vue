@@ -86,6 +86,7 @@
   const worldStore = useWorldStore()
 
   const isPortrait = computed(() => {
+    SAGEdit.resize()
     const currPort = display.value.height > display.value.width
     return currPort
   })

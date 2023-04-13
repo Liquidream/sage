@@ -82,7 +82,7 @@ export class SAGE {
 
     // (REMOVED: Now using Vuetify useDisplay() reactive property)
     // listen for the browser telling us that the screen size changed
-    //window.addEventListener("resize", SAGE.resize)
+    window.addEventListener("resize", SAGE.resize)
 
     // call it manually once so we are sure we are the correct size after starting
     SAGE.resize()
@@ -173,6 +173,7 @@ export class SAGE {
   }
 
   public static resize() {
+    console.log("SAGE:resize()...")
     // instead of basing it on screen width,
     // base it on main (e.g. -navbar) width
     const mainWrap = document.getElementsByClassName("v-main")[0]
@@ -188,7 +189,7 @@ export class SAGE {
     console.log(`isMobile = ${isMobile}`)
     // uniform scale for our game
     const scale = Math.min(
-      (screenWidth - (isMobile ? 0 : SAGE.navWidth)) / SAGE.width, // factor in the side-bar to make it fit 100%
+      screenWidth / SAGE.width, // factor in the side-bar to make it fit 100%
       screenHeight / SAGE.height
     )
 
@@ -199,7 +200,7 @@ export class SAGE {
     const enlargedHeight = Math.floor(scale * SAGE.height)
 
     // margins for centering our game
-    //const horizontalMargin = (screenWidth - enlargedWidth) / 2
+    const horizontalMargin = (screenWidth - enlargedWidth) / 2
     const verticalMargin = (screenHeight - enlargedHeight) / 2
 
     if (SAGE._app) {
@@ -208,12 +209,14 @@ export class SAGE {
       SAGE._app.view.style.height = `${enlargedHeight}px`
 
       // center vertically ONLY if not in "mobile" mode
-      if (!isMobile) {
+      // if (!isMobile) {
         SAGE._app.view.style.marginTop =
           SAGE._app.view.style.marginBottom = `${verticalMargin}px`
-      } else {
-        SAGE._app.view.style.marginTop = `$0px`
-      }
+        SAGE._app.view.style.marginLeft =
+          SAGE._app.view.style.marginRight = `${horizontalMargin}px`
+      // } else {
+      //   SAGE._app.view.style.marginTop = `$0px`
+      // }
     }
   }
 

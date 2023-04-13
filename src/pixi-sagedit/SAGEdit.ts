@@ -116,6 +116,7 @@ export class SAGEdit {
   }
 
   public static resize() {
+    console.log("SAGEdit:resize()...")
     // instead of basing it on screen width,
     // base it on main (e.g. -navbar) width
     const mainWrap = document.getElementsByClassName("v-main")[0]

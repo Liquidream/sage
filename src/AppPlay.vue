@@ -1,16 +1,20 @@
 <template>
-  <canvas
-    id="pixi-canvas"
-    style="width: 100%; height: 100%; background: #000000"
-  ></canvas>
+  <v-app>
+    <v-main>
+        <canvas
+          id="pixi-canvas"
+          width="100%"
+          height="100%"
+          style="background: #000000"
+        ></canvas>
+    </v-main>
+  </v-app>
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from "vue"
-  import { useDisplay } from "vuetify"
+  import { onMounted } from "vue"
   //import { Fullscreen } from "./utils/Fullscreen"
   import { SAGE } from "./pixi-sageplay/SAGEPlay"
-  import { useWorldStore } from "@/stores/WorldStore"
   import { LoaderScreen } from "./pixi-sageplay/screens/LoaderScreen"
   //import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
 
@@ -19,10 +23,11 @@
   // current screen size
   const gameWidth = 1920
   const gameHeight = 1080
-  const display = ref(useDisplay())
-  const worldStore = useWorldStore()
+  // const display = ref(useDisplay())
+  // const worldStore = useWorldStore()
 
   // const isPortrait = computed(() => {
+  //   SAGE.resize()
   //   const currPort = display.value.height > display.value.width
   //   return currPort
   // })
