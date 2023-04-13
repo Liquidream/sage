@@ -1,6 +1,6 @@
 import { SAGE } from "@/pixi-sageplay/SAGEPlay"
-import { Container, Graphics, Assets } from "pixi.js"
-import { assets } from "../../assets"
+import { Container, Graphics, Assets, Sprite } from "pixi.js"
+//import { assets } from "../../assets"
 //import { IScreen, SAGE } from "../Manager"
 import { Button } from "@/pixi-sageplay/screens/ui/Button"
 import { Fullscreen } from "@/utils/Fullscreen"
@@ -14,6 +14,7 @@ export class LoaderScreen extends Container {
   private loaderBar: Container
   private loaderBarBorder: Graphics
   private loaderBarFill: Graphics
+
   constructor() {
     super()
 
@@ -37,11 +38,23 @@ export class LoaderScreen extends Container {
     this.loaderBar.position.y = (SAGE.height - this.loaderBar.height) / 2
     this.addChild(this.loaderBar)
 
-    Assets.
+    this.loadAssets()
     // Loader.shared.add(assets)
     // Loader.shared.onProgress.add(this.downloadProgress, this)
     // Loader.shared.onComplete.once(this.gameLoaded, this)
     // Loader.shared.load()
+  }
+
+  async loadAssets() {
+    //const clampy: Sprite = Sprite.from("debug.png")
+    Assets.load("./debug.png").then(clampyTexture => {
+        const clampySprite = Sprite.from(clampyTexture);
+    });
+    //debugger
+    //const texture = await Assets.load("debug.png")
+    //Assets.init({ manifest: "assets.json" })
+    //Assets.loadBundle("load-screen")
+    //const assets = await Assets.loadBundle("load-screen")
   }
 
   public update() {
@@ -53,10 +66,10 @@ export class LoaderScreen extends Container {
 
   // }
 
-  private downloadProgress(loader: Loader) {
-    const progressRatio = loader.progress / 100
-    this.loaderBarFill.scale.x = progressRatio
-  }
+  // private downloadProgress(loader: Loader) {
+  //   const progressRatio = loader.progress / 100
+  //   this.loaderBarFill.scale.x = progressRatio
+  // }
 
   private gameLoaded() {
     // Remove loading bar

@@ -2,7 +2,7 @@ import { Group, Tween } from "tweedle.js" //Easing
 import {
   Container,
   Graphics,
-  InteractionEvent,
+  FederatedPointerEvent,
   Point,
   Sprite,
   TextStyle,
@@ -280,7 +280,7 @@ export class SceneScreen extends Container {
     Group.shared.update()
   }
 
-  private onPointerMove(_e: InteractionEvent) {
+  private onPointerMove(_e: FederatedPointerEvent) {
     //SAGE.debugLog(`${this.name}::onPointerMove()`)
     if (this.draggedProp) {
       // Temp remove interaction to "dragged" Prop
@@ -341,7 +341,7 @@ export class SceneScreen extends Container {
     }
   }
 
-  private onTouchMove(_e: InteractionEvent) {
+  private onTouchMove(_e: FederatedPointerEvent) {
     SAGEdit.debugLog(`${this.name}::onTouchMove()`)
     // Get touch position
     const touchPoint: Point = new Point()

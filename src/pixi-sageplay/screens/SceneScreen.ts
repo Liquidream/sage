@@ -6,7 +6,7 @@ import {
   Text,
   TextStyle,
   Texture,
-  InteractionEvent,
+  FederatedPointerEvent,
   Point,
 } from "pixi.js" //filters
 

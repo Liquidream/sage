@@ -18,7 +18,7 @@
     "pinia": "^2.0.14",
     "pinia-plugin-persistedstate-2": "^2.0.14",
     "pixi-filters": "^5.2.1",
-    "pixi.js": "^6.4.2",
+    "pixi.js": "^7.2.0",
     "roboto-fontface": "*",
     "tweedle.js": "^2.0.0",
     "vue": "^3.2.37",

@@ -1,0 +1,10 @@
+{
+  "bundles":[
+    {
+        "name":"load-screen",
+        "assets":[
+          { "name": "DebugFill", "srcs": "debug.png" }
+        ]
+    }
+  ]
+}
