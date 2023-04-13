@@ -1,13 +1,14 @@
 import { Application, Container, DisplayObject, filters } from "pixi.js"
-import { InventoryScreen } from "./screens/ui/InventoryPanel"
-import { UI_Overlay } from "./screens/ui/UI_Overlay"
+import { Tween } from "tweedle.js"
 import { Dialog } from "./Dialog"
 import { Events } from "./Events"
+import { Actions } from "./gameactions"
 import { Script } from "./Script"
 import { Sound } from "./Sound"
-import { World } from "./World"
+import { World, type IWorldData } from "./World"
+import { InventoryScreen } from "./screens/ui/InventoryPanel"
+import { UI_Overlay } from "./screens/ui/UI_Overlay"
 
-import { Actions } from "./gameactions"
 import gamedataJSON from "./gamedata.json"
 const gamedata: IWorldData = (<unknown>gamedataJSON) as IWorldData
 
@@ -208,15 +209,11 @@ export class SAGE {
       SAGE._app.view.style.width = `${enlargedWidth}px`
       SAGE._app.view.style.height = `${enlargedHeight}px`
 
-      // center vertically ONLY if not in "mobile" mode
-      // if (!isMobile) {
-        SAGE._app.view.style.marginTop =
-          SAGE._app.view.style.marginBottom = `${verticalMargin}px`
-        SAGE._app.view.style.marginLeft =
-          SAGE._app.view.style.marginRight = `${horizontalMargin}px`
-      // } else {
-      //   SAGE._app.view.style.marginTop = `$0px`
-      // }
+      // center vertically and horizontally
+      SAGE._app.view.style.marginTop =
+        SAGE._app.view.style.marginBottom = `${verticalMargin}px`
+      SAGE._app.view.style.marginLeft =
+        SAGE._app.view.style.marginRight = `${horizontalMargin}px`
     }
   }
 
@@ -282,12 +279,11 @@ export class SAGE {
   }
 
   // This update will be called by a pixi ticker and tell the scene that a tick happened
-  private static update() {
-    //framesPassed: number) {
+  private static update(framesPassed: number) {
     // Let the current scene know that we updated it...
     // Just for funzies, sanity check that it exists first.
     if (SAGE.currentScreen) {
-      SAGE.currentScreen.update() //framesPassed)
+      SAGE.currentScreen.update(framesPassed)
     }
 
     // as I said before, I HATE the "frame passed" approach. I would rather use `Manager.app.ticker.deltaMS`

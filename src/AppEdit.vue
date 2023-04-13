@@ -78,7 +78,6 @@
   import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
 
   console.log("start App.vue...")
-  
   // current screen size
   const gameWidth = 1920
   const gameHeight = 1080

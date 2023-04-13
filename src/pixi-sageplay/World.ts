@@ -1,8 +1,7 @@
 import type { Serialization } from "../utils/Serialization"
 import * as Player from "./Player"
 import * as Scene from "./Scene"
-import type { PropData } from "./data/PropData";
-//import { PropData } from "./PropData";
+import type { PropData } from "./data/PropData"
 import { SAGE } from "./SAGEPlay"
 
 export class World implements IWorldData, Serialization<World> {

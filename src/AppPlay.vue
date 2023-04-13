@@ -1,12 +1,12 @@
 <template>
   <v-app>
     <v-main>
-        <canvas
-          id="pixi-canvas"
-          width="100%"
-          height="100%"
-          style="background: #000000"
-        ></canvas>
+      <canvas
+        id="pixi-canvas"
+        width="100%"
+        height="100%"
+        style="background: #000000"
+      ></canvas>
     </v-main>
   </v-app>
 </template>
