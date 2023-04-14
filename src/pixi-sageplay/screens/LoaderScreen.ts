@@ -46,10 +46,16 @@ export class LoaderScreen extends Container {
   }
 
   async loadAssets() {
-    //const clampy: Sprite = Sprite.from("debug.png")
+    // WORKS
+    const clampy: Sprite = Sprite.from("debug.png")
+
+    // ERRORS
     Assets.load("./debug.png").then(clampyTexture => {
         const clampySprite = Sprite.from(clampyTexture);
     });
+
+
+    
     //debugger
     //const texture = await Assets.load("debug.png")
     //Assets.init({ manifest: "assets.json" })
