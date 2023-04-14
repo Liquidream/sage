@@ -51,8 +51,8 @@ export class LoaderScreen extends Container {
 
     // ERRORS
     Assets.load("./debug.png").then(clampyTexture => {
-        const clampySprite = Sprite.from(clampyTexture);
-    });
+        const clampySprite = Sprite.from(clampyTexture)
+    })
 
 
     
