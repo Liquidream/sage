@@ -3,7 +3,43 @@
     {
         "name":"load-screen",
         "assets":[
-          { "name": "DebugFill", "srcs": "debug.png" }
+          { "name": "DebugFill", "srcs": "images/debug.png" },
+
+          { "name": "UI-Shine", "srcs": "images/ui/shine.png" },
+          { "name": "UI-Settings", "srcs": "images/ui/settings.png" },
+          { "name": "UI-Inventory", "srcs": "images/ui/inventory.png" },
+          
+          { "name": "Bridge", "srcs": "images/scenes/bridge.jpg" },
+          { "name": "Cave-Entrance", "srcs": "images/scenes/cave-entrance.jpg" },
+          { "name": "Cave-Tunnel", "srcs": "images/scenes/cave-tunnel.jpg" },
+          { "name": "Fortress-Exterior", "srcs": "images/scenes/fortress-exterior.jpg" },
+          { "name": "Fortress-Interior", "srcs": "images/scenes/fortress-interior.jpg" },
+          { "name": "Promontory", "srcs": "images/scenes/promontory.jpg" },
+          
+          { "name": "Lamp", "srcs": "images/props/lamp.png" },
+          { "name": "Rat", "srcs": "images/props/rat.png" },
+          { "name": "Old-Key", "srcs": "images/props/old-key.png" },
+          { "name": "Gold-Bar", "srcs": "images/props/gold-bar.png" },          
+
+          { "name": "Stream-Loop", "srcs": "sfx/stream-loop.mp3" },
+          { "name": "Cave-Loop", "srcs": "sfx/cave-loop.mp3" },
+          { "name": "Cave-Drip", "srcs": "sfx/cave-drip.mp3" },
+          { "name": "Lake-Loop", "srcs": "sfx/lake-loop-short.mp3" },
+          { "name": "Wind-Howl", "srcs": "sfx/wind-howl.mp3" },
+          { "name": "Dungeon", "srcs": "sfx/dungeon.mp3" },
+          
+          { "name": "Pick-Up", "srcs": "sfx/pick-up.mp3" },
+          { "name": "Unlock-Door", "srcs": "sfx/door-unlock.mp3" },
+          { "name": "Locked-Door", "srcs": "sfx/door-locked.mp3" },
+          { "name": "Game-Lost", "srcs": "sfx/game-lost.mp3" },
+          { "name": "Game-Won", "srcs": "sfx/game-won.mp3" },
+          { "name": "Snake-Attack", "srcs": "sfx/snake-attack.mp3" },
+          { "name": "Bush-Rustle", "srcs": "sfx/bush-rustle.mp3" },
+          { "name": "Key-Clink", "srcs": "sfx/key_clink.mp3" },
+          
+          { "name": "Intro-1", "srcs": "sfx/intro-1a.mp3" },
+          { "name": "Intro-2", "srcs": "sfx/intro-2a.mp3" },
+          { "name": "Intro-3", "srcs": "sfx/intro-3a.mp3" }
         ]
     }
   ]
