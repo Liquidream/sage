@@ -1,5 +1,5 @@
 import { SAGE } from "@/pixi-sageplay/SAGEPlay"
-import { Container, Graphics, Assets, Sprite } from "pixi.js"
+import { Container, Graphics, Assets } from "pixi.js"
 //import { assets } from "../../assets"
 //import { IScreen, SAGE } from "../Manager"
 import { Button } from "@/pixi-sageplay/screens/ui/Button"
@@ -38,37 +38,43 @@ export class LoaderScreen extends Container {
     this.loaderBar.position.y = (SAGE.height - this.loaderBar.height) / 2
     this.addChild(this.loaderBar)
 
-    this.loadAssets()
-    // Loader.shared.add(assets)
-    // Loader.shared.onProgress.add(this.downloadProgress, this)
-    // Loader.shared.onComplete.once(this.gameLoaded, this)
-    // Loader.shared.load()
+    // Start loading!
+    this.initializeLoader().then(() => {
+      // Remember that constructors can't be async, so we are forced to use .then(...) here!
+      this.gameLoaded()
+    })
   }
 
-  async loadAssets() {
-    //const texture = await Assets.load("debug.png")
-    await Assets.init({ manifest: "assets.json" })
-    await Assets.loadBundle("load-screen")
-    //const assets = await Assets.loadBundle("load-screen")
+  // async loadAssets() {
+  //   //const texture = await Assets.load("debug.png")
+  //   await Assets.init({ manifest: "assets.json" })
+  //   await Assets.loadBundle("load-screen")
+  //   //const assets = await Assets.loadBundle("load-screen")
 
-    // debugger
+  //   // debugger
 
-    this.gameLoaded()
-  }
+  //   this.gameLoaded()
+  // }
 
   public update() {
     //_framesPassed: number) {
     // To be a scene we must have the update method even if we don't use it.
   }
 
-  // public resize(_screenWidth: number, _screenHeight: number) {
+  private async initializeLoader(): Promise<void> {
+    await Assets.init({ manifest: "assets.json" })
 
-  // }
+    //const bundleIds = manifest.bundles.map((bundle) => bundle.name)
 
-  // private downloadProgress(loader: Loader) {
-  //   const progressRatio = loader.progress / 100
-  //   this.loaderBarFill.scale.x = progressRatio
-  // }
+    // The second parameter for `loadBundle` is a function that reports the download progress!
+    await Assets.loadBundle("load-screen", this.downloadProgress.bind(this))
+    //await Assets.loadBundle(bundleIds, this.downloadProgress.bind(this))
+  }
+
+  private downloadProgress(progressRatio: number): void {
+    // progressRatio goes from 0 to 1, so set it to scale
+    this.loaderBarFill.scale.x = progressRatio
+  }
 
   private gameLoaded() {
     // Remove loading bar
