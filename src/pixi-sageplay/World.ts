@@ -65,7 +65,7 @@ export class World implements IWorldData { //}, Serialization<World> {
 
     // ...and show it
     if (startingSceneData) {
-      const startingScene = new Scene.Scene(startingSceneData)
+      const startingScene: Scene.Scene = new Scene.Scene(startingSceneData)
       startingScene.show()
     } else {
       SAGE.Dialog.showErrorMessage(

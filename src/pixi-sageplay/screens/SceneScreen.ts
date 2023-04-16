@@ -301,10 +301,10 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     if (this.scene.image) {
       const worldStore = useWorldStore()
       //debugger
-      const scene = worldStore.getScenes[0]
+      //const scene = worldStore.getScenes[0]
       // debugger
-      sprite = Sprite.from(scene.image)
-      //sprite = Sprite.from(this.scene.image)
+      //sprite = Sprite.from(scene.image)
+      sprite = Sprite.from(this.scene.image)
     } else {
       sprite = new Sprite(Texture.EMPTY)
     }

@@ -13,6 +13,8 @@
 
     <v-text-field label="Title" v-model="worldStore.title"></v-text-field>
 
+    <scene-select label="Starting Scene" v-model="worldStore.startingSceneId" />
+
     <v-divider />
     <v-list-subheader>Scenes</v-list-subheader>
     <!-- on click, replace panel with properties of Scene -->
@@ -63,6 +65,8 @@
   // import type { Ref } from "vue"
   // import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"
+  import SceneSelect from "./SceneSelect.vue"
+  
   console.log("start WordProperties.vue...")
   const worldStore = useWorldStore()
 

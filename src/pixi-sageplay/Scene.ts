@@ -5,7 +5,7 @@ import * as PropData from "./data/PropData"
 import * as DoorData from "./data/DoorData"
 import type { SceneModel } from "@/models/SceneModel"
 
-export class Scene implements ISceneData, Serialization<Scene> {
+export class Scene implements SceneModel { //implements ISceneData, Serialization<Scene> {
   // public constructor() {
   //   // Anything?
   // }
@@ -16,14 +16,27 @@ export class Scene implements ISceneData, Serialization<Scene> {
 
   private sceneModel: SceneModel
 
-  public id = ""
+  // public id = ""
+  public get id(): string {
+    return this.sceneModel.id
+  }
+  // public name = ""
+  public get name(): string {
+    return this.sceneModel.name
+  }
   //public image = ""
   public get image(): string | undefined {
     return this.sceneModel.image
   }
-  public name = ""
-  public sound = ""
-  public firstVisit = true
+  // public sound = ""
+  public get sound(): string | undefined {
+    return this.sceneModel.sound
+  }
+  // public firstVisit = true
+  public get firstVisit(): boolean | undefined {
+    return this.sceneModel.firstVisit
+  }
+
   // Key-Value pair to allow properties to be set/read
   public property: { [key: string]: string | number | boolean } = {}
 
