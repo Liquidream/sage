@@ -17,6 +17,7 @@ import { Door } from "../Door"
 import type { PropData } from "../data/PropData"
 import { InputEventEmitter } from "./ui/InputEventEmitter"
 import { Collision } from "../../utils/Collision"
+import { useWorldStore } from "@/stores/WorldStore"
 
 export class SceneScreen extends Container implements SAGEPlay.IScreen {
   private scene: Scene
@@ -294,11 +295,16 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     SAGEPlay.SAGE.restartGame()
   }
 
-  private buildBackdrop() {
+  private async buildBackdrop() {
     // Backdrop
     let sprite = undefined
     if (this.scene.image) {
-      sprite = Sprite.from(this.scene.image)
+      const worldStore = useWorldStore()
+      //debugger
+      const scene = worldStore.getScenes[0]
+      // debugger
+      sprite = Sprite.from(scene.image)
+      //sprite = Sprite.from(this.scene.image)
     } else {
       sprite = new Sprite(Texture.EMPTY)
     }

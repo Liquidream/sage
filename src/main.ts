@@ -1,4 +1,4 @@
-import { createApp } from "vue"
+import { createApp, type App } from "vue"
 import { createPinia } from "pinia"
 import { createPersistedStatePlugin } from "pinia-plugin-persistedstate-2"
 import localforage from "localforage"
@@ -12,8 +12,8 @@ import { usePropStore, type PropState } from "./stores/PropStore"
 import { useDoorStore, type DoorState } from "./stores/DoorStore"
 import { useActorStore, type ActorState } from "./stores/ActorStore"
 import { SAGE } from "./pixi-sageplay/SAGEPlay"
-// import { SAGEdit } from "./SAGEdit"
-// import { useWorldStore, type WorldState } from "./stores/WorldStore"
+
+let app: App
 
 // current screen size
 // const gameWidth = 1920
@@ -33,11 +33,11 @@ if (mode == "play") {
   // Expose to JavaScript/Browser console
   window.SAGE = SAGE
 
-  // console.log(`>>> JSON = ${window.S.JSON}`)
   AppPlay.name = "SAGE-Play"
   // Just init basic (non-persisted) Pinia
   const pinia = createPinia()
-  createApp(AppPlay).use(vuetify).use(pinia).mount("#app")
+  app = createApp(AppPlay).use(vuetify).use(pinia)
+  //
 } else {
   // ------------------------------
   // Edit Mode
@@ -70,10 +70,8 @@ if (mode == "play") {
       },
     })
   )
-  createApp(AppEdit).use(vuetify).use(pinia).mount("#app")
+  app = createApp(AppEdit).use(vuetify).use(pinia)
 }
-
-loadFonts()
 
 // v1 ----------------------------------------------------------------
 // Pinia initialisation with localStorage
@@ -154,5 +152,18 @@ if (mode == "play") {
     const actorStore = useActorStore()
     const actorData: ActorState = JSON.parse(sagePlayData.actorData)
     actorStore.$state = actorData
+
+    // debugger
   }
+
+  console.log(">>> (finished loading data)")
 }
+
+await loadFonts()
+
+
+
+// Finally, mount the app
+console.log(">>> Mounting #app...")
+app.mount("#app")
+
