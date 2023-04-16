@@ -45,17 +45,6 @@ export class LoaderScreen extends Container {
     })
   }
 
-  // async loadAssets() {
-  //   //const texture = await Assets.load("debug.png")
-  //   await Assets.init({ manifest: "assets.json" })
-  //   await Assets.loadBundle("load-screen")
-  //   //const assets = await Assets.loadBundle("load-screen")
-
-  //   // debugger
-
-  //   this.gameLoaded()
-  // }
-
   public update() {
     //_framesPassed: number) {
     // To be a scene we must have the update method even if we don't use it.
@@ -64,11 +53,8 @@ export class LoaderScreen extends Container {
   private async initializeLoader(): Promise<void> {
     await Assets.init({ manifest: "assets.json" })
 
-    //const bundleIds = manifest.bundles.map((bundle) => bundle.name)
-
     // The second parameter for `loadBundle` is a function that reports the download progress!
     await Assets.loadBundle("load-screen", this.downloadProgress.bind(this))
-    //await Assets.loadBundle(bundleIds, this.downloadProgress.bind(this))
   }
 
   private downloadProgress(progressRatio: number): void {
