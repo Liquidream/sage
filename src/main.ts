@@ -161,9 +161,6 @@ if (mode == "play") {
 
 await loadFonts()
 
-
-
 // Finally, mount the app
 console.log(">>> Mounting #app...")
 app.mount("#app")
-

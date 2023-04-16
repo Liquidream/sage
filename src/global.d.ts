@@ -1,5 +1,7 @@
 // global.d.ts
 
+import type { SAGE } from "./pixi-sageplay/SAGEPlay"
+
 // -------------------------------------------------------
 // Add support for fullscreen API's
 
@@ -30,4 +32,5 @@ interface Document {
 
 interface Window {
   sagePlayData: SagePlayData
+  SAGE: SAGE
 }

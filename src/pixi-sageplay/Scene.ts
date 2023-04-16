@@ -3,14 +3,24 @@ import { SceneScreen } from "./screens/SceneScreen"
 import type { Serialization } from "../utils/Serialization"
 import * as PropData from "./data/PropData"
 import * as DoorData from "./data/DoorData"
+import type { SceneModel } from "@/models/SceneModel"
 
 export class Scene implements ISceneData, Serialization<Scene> {
-  public constructor() {
-    // Anything?
+  // public constructor() {
+  //   // Anything?
+  // }
+
+  public constructor(inModel: SceneModel) {
+    this.sceneModel = inModel
   }
 
+  private sceneModel: SceneModel
+
   public id = ""
-  public image = ""
+  //public image = ""
+  public get image(): string | undefined {
+    return this.sceneModel.image
+  }
   public name = ""
   public sound = ""
   public firstVisit = true
@@ -52,7 +62,7 @@ export class Scene implements ISceneData, Serialization<Scene> {
     // Remember the new scene
     // (happens in above function)
     SAGE.World.currentScene = this
-    SAGE.World.starting_scene_id = this.id
+    //SAGE.World.startingSceneId = this.id
 
     // DEBUG
     //console.log(SAGE.World.serialize());
@@ -119,7 +129,7 @@ export class Scene implements ISceneData, Serialization<Scene> {
 
 export interface ISceneData {
   id: string
-  image: string
+  image: string | undefined
   name: string
   sound: string
   firstVisit: boolean

@@ -9,7 +9,7 @@ import { useActorStore } from "./ActorStore"
 
 export interface WorldState {
   title: string
-  //scenes: SceneModel[]
+  startingSceneId: string
   on_start: string
   currSceneId: string
   currPropId: string
@@ -23,7 +23,7 @@ export const useWorldStore = defineStore("worldStore", {
   // https://pinia.vuejs.org/core-concepts/state.html#typescript
   state: (): WorldState => ({
     title: "",
-    //scenes: [],
+    startingSceneId: "",
     on_start: "",
     currSceneId: "",
     currPropId: "",
@@ -120,6 +120,7 @@ export const useWorldStore = defineStore("worldStore", {
     resetToDemoData() {
       // Default world
       this.title = "King's Ransom"
+      this.startingSceneId = "scn_cave_ent"
       this.on_start = "// TODO: Play intro"
 
       // Default scenes

@@ -3,21 +3,38 @@ import * as Player from "./Player"
 import * as Scene from "./Scene"
 import type { PropData } from "./data/PropData"
 import { SAGE } from "./SAGEPlay"
+import { useWorldStore } from "@/stores/WorldStore"
+import type { SceneModel } from "@/models/SceneModel"
 
-export class World implements IWorldData, Serialization<World> {
+export class World implements IWorldData { //}, Serialization<World> {
   public constructor() {
     // Anything?
   }
-  public title: string | undefined
-  public player!: Player.Player
-  public scenes: Array<Scene.Scene> = []
-  public starting_scene_id: string | undefined
+
+  private worldStore = useWorldStore()
+
+  public get title(): string | undefined {
+    return this.worldStore.title
+  }
+  // public title: string | undefined
+
+  public get scenes(): SceneModel[] {
+    return this.worldStore.getScenes
+  }
+  // public scenes: Array<Scene.Scene> = []
+
+  public get startingSceneId(): string | undefined {
+    return this.worldStore.startingSceneId
+  }
+  // public starting_scene_id: string | undefined
   // Events
   public on_start = ""
   // Key-Value pair to allow properties to be set/read
   property: { [key: string]: string | number | boolean } = {}
 
   public currentScene!: Scene.Scene
+
+  public player!: Player.Player
 
   public initialize(data: IWorldData): void {
     // (Done in gamedata - else can't define hidden props)
@@ -26,10 +43,12 @@ export class World implements IWorldData, Serialization<World> {
     //     id: "scn_void",
     //     name: "The Void"
     // });
-    // this.scenes.push(voidScene);
+    // this.scenes.push(voidScene)
 
     // Now restore the rest from data
-    this.fromJSON(data)
+    //this.fromJSON(data)
+
+    this.player = new Player.Player() //.fromJSON(input.player)
   }
 
   // Start the adventure!
@@ -40,16 +59,17 @@ export class World implements IWorldData, Serialization<World> {
     }
 
     // Find the starting scene...
-    const startingScene = this.scenes.find((obj) => {
-      return obj.id === this.starting_scene_id
+    const startingSceneData = this.scenes.find((obj) => {
+      return obj.id === this.startingSceneId
     })
 
     // ...and show it
-    if (startingScene) {
+    if (startingSceneData) {
+      const startingScene = new Scene.Scene(startingSceneData)
       startingScene.show()
     } else {
       SAGE.Dialog.showErrorMessage(
-        `Error: Scene with ID '${this.starting_scene_id}' is invalid`
+        `Error: Scene with ID '${this.startingSceneId}' is invalid`
       )
     }
   }
@@ -138,39 +158,39 @@ export class World implements IWorldData, Serialization<World> {
   // ----------------------------------------------------------
   // Serialisation related
 
-  fromJSON(input: IWorldData) {
-    this.title = input.title
-    if (input.property) this.property = input.property
-    for (const scene of input.scenes) {
-      this.scenes.push(new Scene.Scene().fromJSON(scene))
-    }
-    this.player = new Player.Player().fromJSON(input.player)
-    this.starting_scene_id = input.starting_scene_id
-    this.on_start = input.on_start
-    return this
-  }
+  // fromJSON(input: IWorldData) {
+  //   //this.title = input.title
+  //   if (input.property) this.property = input.property
+  //   // for (const scene of input.scenes) {
+  //   //   this.scenes.push(new Scene.Scene().fromJSON(scene))
+  //   // }
+  //   this.player = new Player.Player().fromJSON(input.player)
+  //   //this.starting_scene_id = input.starting_scene_id
+  //   this.on_start = input.on_start
+  //   return this
+  // }
 
-  toJSON(): IWorldData {
-    return {
-      title: this.title,
-      property: this.property,
-      scenes: this.scenes,
-      starting_scene_id: this.starting_scene_id,
-      on_start: this.on_start,
-      player: this.player,
-    }
-  }
+  // toJSON(): IWorldData {
+  //   return {
+  //     title: this.title,
+  //     property: this.property,
+  //     // scenes: this.scenes,
+  //     startingSceneId: this.startingSceneId,
+  //     on_start: this.on_start,
+  //     player: this.player,
+  //   }
+  // }
 
-  serialize(): string {
-    return JSON.stringify(this) //, replacer());
-  }
+  // serialize(): string {
+  //   return JSON.stringify(this) //, replacer());
+  // }
 }
 
 export interface IWorldData {
   title: string | undefined
   player: Player.IPlayerData
-  scenes: Array<Scene.ISceneData>
-  starting_scene_id: string | undefined
+  scenes: SceneModel[] //Array<Scene.ISceneData>
+  startingSceneId: string | undefined
   on_start: string
   // Key-Value pair to allow properties to be set/read
   property: { [key: string]: string | number | boolean }
