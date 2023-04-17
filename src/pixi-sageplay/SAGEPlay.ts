@@ -8,6 +8,7 @@ import { Sound } from "./Sound"
 import { World, type IWorldData } from "./World"
 import { InventoryScreen } from "./screens/ui/InventoryPanel"
 import { UI_Overlay } from "./screens/ui/UI_Overlay"
+import { playAssets } from "./playAssets"
 
 import gamedataJSON from "./gamedata.json"
 const gamedata: IWorldData = (<unknown>gamedataJSON) as IWorldData
@@ -30,6 +31,8 @@ export class SAGE {
   public static enableFullscreen = false
 
   public static navWidth = 350
+
+  private static playManifest = playAssets
 
   private static _app: Application
   private static _width: number
@@ -219,7 +222,7 @@ export class SAGE {
 
   // Call this function when you want to go to a new scene
   public static changeScreen(newScene: IScreen) {
-    console.log("in changeScreen(IScreen)...")
+    console.log("in changeScreen(IScreen)")
     // Remove and destroy old scene... if we had one..
     if (SAGE.currentScreen) {
       // remove all event subscriptions

@@ -51,10 +51,16 @@ export class LoaderScreen extends Container {
   }
 
   private async initializeLoader(): Promise<void> {
-    await Assets.init({ manifest: "assets.json" })
+    console.log("in initializeLoader()...")
+    // use .json file
+    // await Assets.init({ manifest: "assets.json" })
+    // await Assets.loadBundle("load-screen", this.downloadProgress.bind(this))
 
-    // The second parameter for `loadBundle` is a function that reports the download progress!
+    await Assets.init({ manifest: SAGE.playManifest })
     await Assets.loadBundle("load-screen", this.downloadProgress.bind(this))
+    //debugger
+
+    console.log("initializeLoader() done.")
   }
 
   private downloadProgress(progressRatio: number): void {
@@ -63,6 +69,7 @@ export class LoaderScreen extends Container {
   }
 
   private gameLoaded() {
+    console.log("gameLoaded()...")
     // Remove loading bar
     this.removeChild(this.loaderBar)
 

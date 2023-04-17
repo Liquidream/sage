@@ -22,6 +22,7 @@ export class Sound {
     //fadeIn = false
     if (fadeIn) {
       const sfx = sound.sound.find(soundName)
+      debugger
       if (sfx) {
         sfx.volume = 0 // Doing this in one hit doesn't work??? (stays 0 volume)
         sfx.play({ loop: true }) //

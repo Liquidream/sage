@@ -136,18 +136,36 @@ if (mode == "play") {
     const worldStore = useWorldStore()
     const worldData: WorldState = JSON.parse(sagePlayData.worldData)
     worldStore.$state = worldData
+
     // Scene Data
     const sceneStore = useSceneStore()
     const sceneData: SceneState = JSON.parse(sagePlayData.sceneData)
     sceneStore.$state = sceneData
+    for (const scene of sceneData.scenes) {
+      if (scene.sound) {
+        const assetName = scene.name + "_sound"
+        SAGE.playManifest.bundles[0].assets.push({
+          name: assetName,
+          srcs: "sfx/dungeon.mp3", //scene.sound,
+        })
+        // Now replace sound with asset name
+        scene.sound = assetName
+      }
+    }
+
     // Prop Data
     const propStore = usePropStore()
     const propData: PropState = JSON.parse(sagePlayData.propData)
     propStore.$state = propData
+    // for (const prop of propData) {
+    //   if ()
+    // }
+
     // Door Data
     const doorStore = useDoorStore()
     const doorData: DoorState = JSON.parse(sagePlayData.doorData)
     doorStore.$state = doorData
+
     // Actor Data
     const actorStore = useActorStore()
     const actorData: ActorState = JSON.parse(sagePlayData.actorData)

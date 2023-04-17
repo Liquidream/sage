@@ -44,6 +44,7 @@
 
     // pass in the screen size to avoid "asking up"
     const sceny: LoaderScreen = new LoaderScreen()
+    console.log("changing screen to loader")
     SAGE.changeScreen(sceny)
 
     // Play mode?

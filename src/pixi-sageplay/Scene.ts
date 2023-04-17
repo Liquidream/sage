@@ -70,6 +70,7 @@ export class Scene implements SceneModel { //implements ISceneData, Serializatio
    * (also destroy/release previous screen objects)
    */
   show(skipFade = false) {
+    console.log("in Scene.show()...")
     // Teardown current scene
     SAGE.World.currentScene?.teardown()
     // Clean up current scene "screen"
