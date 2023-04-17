@@ -3,7 +3,8 @@ import { Easing, Tween } from "tweedle.js"
 import { SAGE } from "./SAGEPlay"
 import { DialogType } from "./Dialog"
 import { InputEventEmitter } from "./screens/ui/InputEventEmitter"
-import type { IPropData } from "./data/PropData"
+//import type { IPropData } from "./data/PropData"
+import type { PropModel } from "@/models/PropModel"
 
 export class Prop {
   // "constants"
@@ -12,28 +13,32 @@ export class Prop {
   DRAG_SENSDIST = 25
   DRAG_ALPHA = 0.75
 
-  public data!: IPropData
+  //public data!: IPropData
+  private propModel: PropModel
+
   public sprite!: Sprite
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
   private propInputEvents!: InputEventEmitter
   public dragging = false
 
-  public constructor(propData: IPropData) {
+  public constructor(inModel: PropModel) {
     // Initialise from data object
+    this.propModel = inModel
+
     let sprite = undefined
-    if (propData.image) {
-      sprite = Sprite.from(propData.image)
+    if (inModel.image) {
+      sprite = Sprite.from(inModel.image)
     } else {
       sprite = new Sprite(Texture.EMPTY)
-      sprite.width = propData.width
-      sprite.height = propData.height
+      sprite.width = inModel.width || 0
+      sprite.height = inModel.height || 0
     }
-    this.data = propData
+    // this.data = propModel
     this.sprite = sprite
     sprite.anchor.set(0.5)
-    sprite.x = propData.x
-    sprite.y = propData.y
+    sprite.x = inModel.x || 0
+    sprite.y = inModel.y || 0
 
     // Events
     this.propInputEvents = new InputEventEmitter(this.sprite)
@@ -48,7 +53,7 @@ export class Prop {
     SAGE.Events.on("scenehint", this.onSceneHint, this)
 
     // visible state
-    this.sprite.visible = propData.visible
+    this.sprite.visible = inModel.visible || true // default to visible, unless otherwise specified
   }
 
   tidyUp() {
@@ -60,9 +65,9 @@ export class Prop {
   public async use(object: any) {
     let validUse = false
     // Run any OnEnter action?
-    if (this.data.on_use) {
+    if (this.propModel.on_use) {
       validUse = await SAGE.Script.safeExecFuncWithParams(
-        this.data.on_use,
+        this.propModel.on_use,
         this,
         object
       )
@@ -74,15 +79,15 @@ export class Prop {
       // Invalid, so restore position
       // (if not already in inventory)
       if (!this.inInventory) {
-        this.sprite.x = this.data.x
-        this.sprite.y = this.data.y
+        this.sprite.x = this.propModel.x || 0
+        this.sprite.y = this.propModel.y || 0
       }
     }
   }
 
   public destroy() {
     if (this.inInventory) {
-      SAGE.World.player.removeFromInventory(this.data.id)
+      SAGE.World.player.removeFromInventory(this.propModel.id)
     } else {
       SAGE.World.currentScene.screen.removeProp(this, true)
     }
@@ -90,7 +95,7 @@ export class Prop {
 
   /** Returns whether or not the this prop is in player's inventory */
   public get inInventory(): boolean {
-    return SAGE.World.player.inventory.some((prop) => prop.id === this.data.id)
+    return SAGE.World.player.inventory.some((prop) => prop.id === this.propModel.id)
   }
 
   private onSceneHint() {
@@ -99,8 +104,8 @@ export class Prop {
     if (this.inInventory) return
     const attractShine: Sprite = Sprite.from("UI-Shine")
     attractShine.anchor.set(0.5)
-    attractShine.x = this.data.x
-    attractShine.y = this.data.y
+    attractShine.x = this.propModel.x || 0
+    attractShine.y = this.propModel.y || 0
     attractShine.alpha = 0
 
     this.sprite.parent.addChild(attractShine)
@@ -117,9 +122,10 @@ export class Prop {
   }
 
   private onPointerDown() {
+    //debugger
     //_e: InteractionEvent
     // On an inventory (or draggable) item?
-    if (this.inInventory || this.data.draggable) {
+    if (this.inInventory || this.propModel.draggable) {
       // Start of drag...
       this.dragging = true
       SAGE.World.currentScene.screen.draggedProp = this
@@ -132,7 +138,7 @@ export class Prop {
 
   private onPointerOver() {
     //_e: InteractionEvent
-    SAGE.Dialog.showMessage(this.data.name, DialogType.Caption, -1)
+    SAGE.Dialog.showMessage(this.propModel.name, DialogType.Caption, -1)
   }
 
   private onPointerOut() {
@@ -148,20 +154,20 @@ export class Prop {
   }
 
   private onPrimaryAction() {
-    SAGE.debugLog(`You interacted with a prop! (${this.data.name})`)
+    SAGE.debugLog(`You interacted with a prop! (${this.propModel.name})`)
     // Custom action?
-    if (this.data.on_action) {
-      Function(this.data.on_action)()
+    if (this.propModel.on_action) {
+      Function(this.propModel.on_action)()
       return
     }
     // Can prop be picked up?
     // (...and not already in inventory)?
-    if (this.data.pickupable && !this.inInventory) {
-      SAGE.Dialog.showMessage(`You picked up the ${this.data.name}`)
+    if (this.propModel.pickupable && !this.inInventory) {
+      SAGE.Dialog.showMessage(`You picked up the ${this.propModel.name}`)
       // Remove prop from scene
       SAGE.World.currentScene.screen.removeProp(this, true, true)
       // Add to Player's inventory
-      SAGE.World.player.addToInventory(this.data)
+      SAGE.World.player.addToInventory(this.propModel)
       // Play sound
       SAGE.Sound.play("Pick-Up")
       // Auto-open player inventory
@@ -179,7 +185,7 @@ export class Prop {
   }
 
   private onSecondaryAction() {
-    SAGE.debugLog(`onSecondaryAction for :${this.data.id}`)
-    SAGE.Dialog.showMessage(this.data.desc)
+    SAGE.debugLog(`onSecondaryAction for :${this.propModel.id}`)
+    SAGE.Dialog.showMessage(this.propModel.desc)
   }
 }

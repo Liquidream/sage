@@ -1,9 +1,11 @@
 import { SAGE } from "./SAGEPlay"
 import { SceneScreen } from "./screens/SceneScreen"
-import type { Serialization } from "../utils/Serialization"
-import * as PropData from "./data/PropData"
+//import type { Serialization } from "../utils/Serialization"
+//import * as PropData from "./data/PropData"
 import * as DoorData from "./data/DoorData"
 import type { SceneModel } from "@/models/SceneModel"
+import type { PropModel } from "@/models/PropModel"
+import { usePropStore } from "@/stores/PropStore"
 
 export class Scene implements SceneModel { //implements ISceneData, Serialization<Scene> {
   // public constructor() {
@@ -36,6 +38,9 @@ export class Scene implements SceneModel { //implements ISceneData, Serializatio
   public get firstVisit(): boolean | undefined {
     return this.sceneModel.firstVisit
   }
+  public set firstVisit(value: boolean | undefined) {
+    this.sceneModel.firstVisit = value
+  }
 
   // Key-Value pair to allow properties to be set/read
   public property: { [key: string]: string | number | boolean } = {}
@@ -44,7 +49,13 @@ export class Scene implements SceneModel { //implements ISceneData, Serializatio
   public on_enter = ""
   public on_exit = ""
 
-  public props: Array<PropData.PropData> = []
+  //public props: Array<PropData.PropData> = []
+  //public props: Array<PropModel> = []
+  public get props(): Array<PropModel> {
+    const propStore = usePropStore()
+    return propStore.findPropBySceneId(this.id)
+  }
+
   public doors: Array<DoorData.DoorData> = []
 
   screen!: SceneScreen
@@ -94,9 +105,9 @@ export class Scene implements SceneModel { //implements ISceneData, Serializatio
     if (this.firstVisit) this.firstVisit = false
   }
 
-  addPropData(propData: PropData.PropData) {
+  addPropModel(propModel: PropModel) {
     // add to list of props
-    this.props.push(propData)
+    this.props.push(propModel)
   }
 
   removePropDataById(propId: string) {
@@ -105,52 +116,52 @@ export class Scene implements SceneModel { //implements ISceneData, Serializatio
     if (index !== -1) this.props.splice(index, 1)
   }
 
-  fromJSON(input: ISceneData) {
-    this.id = input.id
-    this.image = input.image || ""
-    this.name = input.name
-    this.sound = input.sound
-    if (input.firstVisit) this.firstVisit = input.firstVisit
-    if (input.property) this.property = input.property
-    this.on_enter = input.on_enter
-    this.on_exit = input.on_exit
-    for (const prop of input.props) {
-      this.props.push(new PropData.PropData().fromJSON(prop))
-    }
-    for (const door of input.doors) {
-      this.doors.push(new DoorData.DoorData().fromJSON(door))
-    }
-    return this
-  }
+  // fromJSON(input: ISceneData) {
+  //   this.id = input.id
+  //   this.image = input.image || ""
+  //   this.name = input.name
+  //   this.sound = input.sound
+  //   if (input.firstVisit) this.firstVisit = input.firstVisit
+  //   if (input.property) this.property = input.property
+  //   this.on_enter = input.on_enter
+  //   this.on_exit = input.on_exit
+  //   for (const prop of input.props) {
+  //     this.props.push(new PropData.PropData().fromJSON(prop))
+  //   }
+  //   for (const door of input.doors) {
+  //     this.doors.push(new DoorData.DoorData().fromJSON(door))
+  //   }
+  //   return this
+  // }
 
-  toJSON(): ISceneData {
-    // exclude certain properties from serialisation
-    return {
-      id: this.id,
-      image: this.image,
-      sound: this.sound,
-      name: this.name,
-      firstVisit: this.firstVisit,
-      property: this.property,
-      on_enter: this.on_enter,
-      on_exit: this.on_exit,
-      props: this.props,
-      doors: this.doors,
-    }
-  }
+  // toJSON(): ISceneData {
+  //   // exclude certain properties from serialisation
+  //   return {
+  //     id: this.id,
+  //     image: this.image,
+  //     sound: this.sound,
+  //     name: this.name,
+  //     firstVisit: this.firstVisit,
+  //     property: this.property,
+  //     on_enter: this.on_enter,
+  //     on_exit: this.on_exit,
+  //     props: this.props,
+  //     doors: this.doors,
+  //   }
+  // }
 }
 
-export interface ISceneData {
-  id: string
-  image: string | undefined
-  name: string
-  sound: string
-  firstVisit: boolean
-  // Key-Value pair to allow properties to be set/read
-  property: { [key: string]: string | number | boolean }
-  // Poss. event actions
-  on_enter: string
-  on_exit: string
-  props: Array<PropData.IPropData>
-  doors: Array<DoorData.IDoorData>
-}
+// export interface ISceneData {
+//   id: string
+//   image: string | undefined
+//   name: string
+//   sound: string
+//   firstVisit: boolean
+//   // Key-Value pair to allow properties to be set/read
+//   property: { [key: string]: string | number | boolean }
+//   // Poss. event actions
+//   on_enter: string
+//   on_exit: string
+//   props: Array<PropData.IPropData>
+//   doors: Array<DoorData.IDoorData>
+// }

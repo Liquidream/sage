@@ -10,14 +10,15 @@ import {
   Point,
 } from "pixi.js" //filters
 
-import * as SAGEPlay from "../SAGEPlay"
+import { SAGE } from "../SAGEPlay"
 import type { Scene } from "../Scene"
 import { Prop } from "../Prop"
 import { Door } from "../Door"
-import type { PropData } from "../data/PropData"
+//import type { PropData } from "../data/PropData"
 import { InputEventEmitter } from "./ui/InputEventEmitter"
 import { Collision } from "../../utils/Collision"
 import { useWorldStore } from "@/stores/WorldStore"
+import type { PropModel } from "@/models/PropModel"
 
 export class SceneScreen extends Container implements SAGEPlay.IScreen {
   private scene: Scene
@@ -48,14 +49,14 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
 
     // Fade in scene music
     if (this.scene.sound) {
-      SAGEPlay.SAGE.Sound.playLoop(this.scene.sound, true)
+      SAGE.Sound.playLoop(this.scene.sound, true)
     }
 
     // Drag+Drop support
-    SAGEPlay.SAGE.app.stage.interactive = true
-    SAGEPlay.SAGE.app.stage.on("pointermove", this.onPointerMove, this)
-    SAGEPlay.SAGE.app.stage.on("pointerup", this.onPointerUp, this)
-    SAGEPlay.SAGE.app.stage.on("touchmove", this.onTouchMove, this)
+    SAGE.app.stage.interactive = true
+    SAGE.app.stage.on("pointermove", this.onPointerMove, this)
+    SAGE.app.stage.on("pointerup", this.onPointerUp, this)
+    SAGE.app.stage.on("touchmove", this.onTouchMove, this)
   }
 
   public update() {
@@ -71,7 +72,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
   // }
 
   public tidyUp(restartGame?: boolean) {
-    SAGEPlay.SAGE.debugLog(`>> SceneScreen tidyUp()`)
+    SAGE.debugLog(`>> SceneScreen tidyUp()`)
     // Unsubscribe from events, etc.
     for (const prop of this.props) {
       prop.tidyUp()
@@ -79,13 +80,13 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     for (const door of this.doors) {
       door.tidyUp()
     }
-    SAGEPlay.SAGE.app.stage.off("pointermove", this.onPointerMove, this)
-    SAGEPlay.SAGE.app.stage.off("pointerup", this.onPointerUp, this)
-    SAGEPlay.SAGE.app.stage.off("touchmove", this.onTouchMove, this)
+    SAGE.app.stage.off("pointermove", this.onPointerMove, this)
+    SAGE.app.stage.off("pointerup", this.onPointerUp, this)
+    SAGE.app.stage.off("touchmove", this.onTouchMove, this)
 
     // Fade out scene music
     if (this.scene.sound) {
-      SAGEPlay.SAGE.Sound.stop(this.scene.sound, !restartGame)
+      SAGE.Sound.stop(this.scene.sound, !restartGame)
     }
   }
 
@@ -98,7 +99,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
   }
 
   private onPointerMove(_e: InteractionEvent) {
-    SAGEPlay.SAGE.debugLog(`${this.name}::onPointerMove()`)
+    SAGE.debugLog(`${this.name}::onPointerMove()`)
     if (this.draggedProp) {
       // Temp remove interaction to "dragged" Prop
       this.draggedProp.sprite.interactive = false
@@ -112,7 +113,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
 
   private onPointerUp() {
     //_e: InteractionEvent) {
-    SAGEPlay.SAGE.debugLog(`${this.name}::onPointerUp()`)
+    SAGE.debugLog(`${this.name}::onPointerUp()`)
     if (this.draggedProp) {
       // We were dragging something - did we drop it on something?
       if (this.dragTarget) {
@@ -130,12 +131,12 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
       this.draggedProp.sprite.alpha = 1
       this.draggedProp = undefined
       // Update inventory (in case it was an inventory prop)
-      SAGEPlay.SAGE.invScreen.update()
+      SAGE.invScreen.update()
     }
   }
 
   private onTouchMove(_e: InteractionEvent) {
-    SAGEPlay.SAGE.debugLog(`${this.name}::onTouchMove()`)
+    SAGE.debugLog(`${this.name}::onTouchMove()`)
     // Get touch position
     const touchPoint: Point = new Point()
     _e.data.getLocalPosition(this, touchPoint, _e.data.global)
@@ -143,7 +144,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     const result = this.checkTouchCollisions(touchPoint)
     if (result) {
       if (this.touchTarget) this.touchTarget.onPointerOver()
-      else SAGEPlay.SAGE.Dialog.clearMessage()
+      else SAGE.Dialog.clearMessage()
     }
   }
 
@@ -151,11 +152,11 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     // Check selected/dragged Prop with
     let currTarget = undefined
     //  > Other Props in inventory
-    for (const prop of SAGEPlay.SAGE.invScreen.propsList) {
+    for (const prop of SAGE.invScreen.propsList) {
       if (
         Collision.isCollidingObjToObj(this.draggedProp?.sprite, prop.sprite)
       ) {
-        SAGEPlay.SAGE.debugLog(`>> collided with ${prop.data.name}`)
+        SAGE.debugLog(`>> collided with ${prop.data.name}`)
         currTarget = prop
       }
     }
@@ -164,7 +165,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
       if (
         Collision.isCollidingObjToObj(this.draggedProp?.sprite, prop.sprite)
       ) {
-        SAGEPlay.SAGE.debugLog(`>> collided with ${prop.data.name}`)
+        SAGE.debugLog(`>> collided with ${prop.data.name}`)
         currTarget = prop
       }
     }
@@ -173,7 +174,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
       if (
         Collision.isCollidingObjToObj(this.draggedProp?.sprite, door.graphics)
       ) {
-        SAGEPlay.SAGE.debugLog(`>> collided with ${door.data.name}`)
+        SAGE.debugLog(`>> collided with ${door.data.name}`)
         currTarget = door
       }
     }
@@ -183,10 +184,10 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     if (currTarget !== this.dragTarget) {
       if (currTarget) {
         // Different target...
-        SAGEPlay.SAGE.debugLog(`>> new target = ${currTarget.data.name}`)
+        SAGE.debugLog(`>> new target = ${currTarget.data.name}`)
       } else {
         // Lost target
-        SAGEPlay.SAGE.debugLog(`>> NO target`)
+        SAGE.debugLog(`>> NO target`)
       }
       this.dragTarget = currTarget
     }
@@ -196,23 +197,23 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     // Check selected/dragged Prop with
     let currTarget = undefined
     //  > Other Props in inventory
-    for (const prop of SAGEPlay.SAGE.invScreen.propsList) {
+    for (const prop of SAGE.invScreen.propsList) {
       if (Collision.isCollidingPointToObj(touchPoint, prop.sprite)) {
-        SAGEPlay.SAGE.debugLog(`>> collided with ${prop.data.name}`)
+        SAGE.debugLog(`>> collided with ${prop.data.name}`)
         currTarget = prop
       }
     }
     //  > Other Props in current scene
     for (const prop of this.props) {
       if (Collision.isCollidingPointToObj(touchPoint, prop.sprite)) {
-        SAGEPlay.SAGE.debugLog(`>> collided with ${prop.data.name}`)
+        SAGE.debugLog(`>> collided with ${prop.data.name}`)
         currTarget = prop
       }
     }
     //  > Doors in current scene
     for (const door of this.doors) {
       if (Collision.isCollidingPointToObj(touchPoint, door.graphics)) {
-        SAGEPlay.SAGE.debugLog(`>> collided with ${door.data.name}`)
+        SAGE.debugLog(`>> collided with ${door.data.name}`)
         currTarget = door
       }
     }
@@ -222,10 +223,10 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     if (currTarget !== this.touchTarget) {
       if (currTarget) {
         // Different target...
-        SAGEPlay.SAGE.debugLog(`>> new target = ${currTarget.data.name}`)
+        SAGE.debugLog(`>> new target = ${currTarget.data.name}`)
       } else {
         // Lost target
-        SAGEPlay.SAGE.debugLog(`>> NO target`)
+        SAGE.debugLog(`>> NO target`)
       }
       this.touchTarget = currTarget
       return true
@@ -246,7 +247,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     const overlay = new Graphics()
     overlay.beginFill(backgroundColour)
     overlay.alpha = 0
-    overlay.drawRect(0, 0, SAGEPlay.SAGE.width, SAGEPlay.SAGE.height)
+    overlay.drawRect(0, 0, SAGE.width, SAGE.height)
     overlay.endFill()
     overlay.interactive = true // Super important or the object will never receive mouse events!
     overlay.on("pointertap", this.onClickGameOver, this)
@@ -268,8 +269,8 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
         })
         const text = new Text(actionMessage, style)
         text.anchor.set(0.5)
-        text.x = SAGEPlay.SAGE.width / 2
-        text.y = SAGEPlay.SAGE.height / 1.5
+        text.x = SAGE.width / 2
+        text.y = SAGE.height / 1.5
         overlay.addChild(text)
       })
     // "Game Over"
@@ -284,15 +285,15 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     })
     const text = new Text(message, style)
     text.anchor.set(0.5)
-    text.x = SAGEPlay.SAGE.width / 2
-    text.y = SAGEPlay.SAGE.height / 2
+    text.x = SAGE.width / 2
+    text.y = SAGE.height / 2
     overlay.addChild(text)
   }
 
   private onClickGameOver() {
     //_e: InteractionEvent
     // Restart game
-    SAGEPlay.SAGE.restartGame()
+    SAGE.restartGame()
   }
 
   private async buildBackdrop() {
@@ -309,8 +310,8 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
       sprite = new Sprite(Texture.EMPTY)
     }
     sprite.anchor.set(0.5)
-    sprite.x = SAGEPlay.SAGE.width / 2
-    sprite.y = SAGEPlay.SAGE.height / 2
+    sprite.x = SAGE.width / 2
+    sprite.y = SAGE.height / 2
     this.addChild(sprite)
     this.backdrop = sprite
 
@@ -329,12 +330,12 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
       }
     }
 
-    SAGEPlay.SAGE.Dialog.clearMessage()
+    SAGE.Dialog.clearMessage()
   }
 
-  public addProp(data: PropData, fadeIn = false) {
+  public addProp(model: PropModel, fadeIn = false) {
     // Create new component obj (contains data + view)
-    const prop = new Prop(data)
+    const prop = new Prop(model)
     this.addChild(prop.sprite)
     this.props.push(prop)
     // Don't add to scene.propdata here, as it likely already came from it?
@@ -346,14 +347,14 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     }
 
     // DEBUG?
-    if (SAGEPlay.SAGE.debugMode) {
+    if (SAGE.debugMode) {
       const graphics = new Graphics()
       graphics.beginFill(0xe74c3c, 125) // Red
       graphics.lineStyle(10, 0xff0000)
       graphics.pivot.set(prop.sprite.width / 2, prop.sprite.height / 2)
       // Need to handle diff for "non-image" sprites
       // (as Graphics scaling goes screwy if image dimensions are not really there)
-      if (prop.data.image) {
+      if (prop.propModel.image) {
         graphics.drawRoundedRect(
           0,
           0,
@@ -389,12 +390,12 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
           // remove when tween completes
           this.removeChild(prop.sprite)
           const index = this.props.findIndex(
-            (item) => item.data.id === prop.data.id
+            (item) => item.propModel.id === prop.propModel.id
           )
           if (index !== -1) this.props.splice(index, 1)
           prop.tidyUp()
           // remove from game data
-          this.scene.removePropDataById(prop.data.id)
+          this.scene.removePropDataById(prop.propModel.id)
         })
     }
     if (scaleAnim) {
@@ -411,18 +412,18 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
         this.doors.push(door)
       }
     }
-    SAGEPlay.SAGE.Dialog.clearMessage()
+    SAGE.Dialog.clearMessage()
   }
 
   private onPrimaryAction() {
     //_e: InteractionEvent
-    SAGEPlay.SAGE.debugLog("Backdrop was clicked/tapped")
-    SAGEPlay.SAGE.Events.emit("sceneinteract")
+    SAGE.debugLog("Backdrop was clicked/tapped")
+    SAGE.Events.emit("sceneinteract")
   }
 
   private onSecondaryAction() {
     //_e: InteractionEvent
     // Make all interactive objects flash (by raising 'global' event)");
-    SAGEPlay.SAGE.Events.emit("scenehint")
+    SAGE.Events.emit("scenehint")
   }
 }

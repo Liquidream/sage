@@ -28,7 +28,7 @@
     <v-file-input
       v-model="chosenFile"
       type="file"
-      @change="onFileChange"
+      @change="onImageFileChange"
       label="Backdrop Image"
       accept="image/png, image/jpeg, image/bmp"
       placeholder="Pick a backdrop image"
@@ -38,10 +38,11 @@
 
     <v-file-input
       class="mt-8"
+      @change="onSoundFileChange"
+      label="Background Sound"
       accept="audio/mpeg, audio/ogg, audio/vnd.wav"
       placeholder="Pick a backdrop sound"
       prepend-icon="mdi-volume-high"
-      label="Background Sound"
     ></v-file-input>
 
     <v-divider />
@@ -125,11 +126,9 @@
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any
-  //let imageData: any = ""
   const imageData: Ref<string | ArrayBuffer | null> = ref("")
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onFileChange = (e: any) => {
-    //debugger
+  const onImageFileChange = (e: any) => {
     const reader = new FileReader()
     // Use the javascript reader object to load the contents
     // of the file in the v-model prop
@@ -137,6 +136,18 @@
     reader.onload = () => {
       imageData.value = reader.result
       model.image = reader.result as string // added "as" to squash error/warn, ok?
+    }
+  }
+  const soundData: Ref<string | ArrayBuffer | null> = ref("")
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSoundFileChange = (e: any) => {
+    const reader = new FileReader()
+    // Use the javascript reader object to load the contents
+    // of the file in the v-model prop
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = () => {
+      soundData.value = reader.result
+      model.sound = reader.result as string // added "as" to squash error/warn, ok?
     }
   }
   const backToWorldClicked = () => {

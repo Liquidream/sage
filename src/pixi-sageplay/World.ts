@@ -1,10 +1,11 @@
-import type { Serialization } from "../utils/Serialization"
+//import type { Serialization } from "../utils/Serialization"
 import * as Player from "./Player"
 import * as Scene from "./Scene"
-import type { PropData } from "./data/PropData"
+//import type { PropData } from "./data/PropData"
 import { SAGE } from "./SAGEPlay"
 import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneModel } from "@/models/SceneModel"
+import { usePropStore } from "@/stores/PropStore"
 
 export class World implements IWorldData { //}, Serialization<World> {
   public constructor() {
@@ -36,7 +37,7 @@ export class World implements IWorldData { //}, Serialization<World> {
 
   public player!: Player.Player
 
-  public initialize(data: IWorldData): void {
+  public initialize() { //data: IWorldData): void {
     // (Done in gamedata - else can't define hidden props)
     // Create the first scene as "void"?
     // let voidScene = Object.assign( new Scene(), {
@@ -91,15 +92,19 @@ export class World implements IWorldData { //}, Serialization<World> {
 
   /** Find and return prop with specific id */
   getPropById(propId: string) {
-    // First, find scene that contains prop...
-    const scene = this.scenes.filter(
-      (e) => e.props.filter((c) => c.id === propId)[0]
-    )[0]
-    // Then get the propdata...
-    const propData = scene
-      ? scene.props.filter((c) => c.id === propId)[0]
-      : null
-    return propData
+    const propStore = usePropStore()
+    const propModel = propStore.getProps.filter((c) => c.id === propId)[0]
+    return propModel
+
+    // // First, find scene that contains prop...
+    // const scene = this.scenes.filter(
+    //   (e) => e.props.filter((c) => c.id === propId)[0]
+    // )[0]
+    // // Then get the propdata...
+    // const propData = scene
+    //   ? scene.props.filter((c) => c.id === propId)[0]
+    //   : null
+    // return propData
   }
 
   // ### REMOVED for now - as perhaps should move to Void instead? (once gone, can't come back)
@@ -125,33 +130,51 @@ export class World implements IWorldData { //}, Serialization<World> {
     fadeIn?: boolean
   ) {
     // Get prop data
-    const propData = this.getPropById(propId)
-    if (propData) {
+    const propModel = this.getPropById(propId)
+    if (propModel) {
+      const sourceSceneId = propModel.in_scene_id
+      // If prop is in current scene (e.g. being displayed)
+      if (sourceSceneId === this.currentScene.id) {
+        // ...Remove prop from its current scene...
+        this.currentScene.removePropDataById(propId)
+      }
+
       // Remove prop from its current scene...
-      const sourceScene = this.scenes.find((scn) => {
-        return scn.props.find((prp: PropData) => {
-          return prp.id === propId
-        })
-      })
-      if (sourceScene) {
-        sourceScene.removePropDataById(propId)
+      // const sourceScene = this.scenes.find((scn) => {
+      //   return scn.props.find((prp: PropData) => {
+      //     return prp.id === propId
+      //   })
+      // })
+      // if (sourceScene) {
+      //   sourceScene.removePropDataById(propId)
+      // }
+
+      // ..and place in target scene...
+      propModel.in_scene_id = targetSceneId
+
+      // If prop is NOW in current scene (e.g. being displayed)
+      if (
+        targetSceneId === this.currentScene.id &&
+        sourceSceneId !== targetSceneId
+      ) {
+        this.currentScene.screen.addProp(propModel, fadeIn)
       }
 
       // ..and place in target scene...
-      const targetScene = this.getSceneById(targetSceneId)
-      if (targetScene) {
-        // data...
-        targetScene.addPropData(propData)
-        //targetScene.props.push(propData);
+      //const targetScene = this.getSceneById(targetSceneId)
+      // if (targetScene) {
+      //   // data...
+      //   targetScene.addPropData(propData)
+      //   //targetScene.props.push(propData);
 
-        // sprite... (if scene is active)
-        if (targetScene === this.currentScene && sourceScene != targetScene) {
-          this.currentScene.screen.addProp(propData, fadeIn)
-        }
-      }
+      //   // sprite... (if scene is active)
+      //   if (targetScene === this.currentScene && sourceScene != targetScene) {
+      //     this.currentScene.screen.addProp(propData, fadeIn)
+      //   }
+      // }
       // (optionally, at position)
-      if (x) propData.x = x
-      if (y) propData.y = y
+      if (x) propModel.x = x
+      if (y) propModel.y = y
     }
   }
 
