@@ -141,12 +141,13 @@ if (mode == "play") {
     const sceneStore = useSceneStore()
     const sceneData: SceneState = JSON.parse(sagePlayData.sceneData)
     sceneStore.$state = sceneData
+    //debugger
     for (const scene of sceneData.scenes) {
       if (scene.sound) {
-        const assetName = scene.name + "_sound"
+        const assetName = scene.name + "-sound"
         SAGE.playManifest.bundles[0].assets.push({
           name: assetName,
-          srcs: "sfx/dungeon.mp3", //scene.sound,
+          srcs: scene.sound,
         })
         // Now replace sound with asset name
         scene.sound = assetName

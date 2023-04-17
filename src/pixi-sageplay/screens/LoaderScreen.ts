@@ -58,7 +58,7 @@ export class LoaderScreen extends Container {
 
     await Assets.init({ manifest: SAGE.playManifest })
     await Assets.loadBundle("load-screen", this.downloadProgress.bind(this))
-    //debugger
+    // debugger
 
     console.log("initializeLoader() done.")
   }
