@@ -9,10 +9,23 @@ export const playAssets: ResolverManifest = {
           name: "DebugFill",
           srcs: "images/debug.png",
         },
-        // {
-        //   name: "Dungeon",
-        //   srcs: "sfx/dungeon.mp3",
-        // },
+        {
+          name: "UI-Shine",
+          srcs: "images/ui/shine.png",
+        },
+        {
+          name: "UI-Settings",
+          srcs: "images/ui/settings.png",
+        },
+        {
+          name: "UI-Inventory",
+          srcs: "images/ui/inventory.png",
+        },
+        {
+          name: "SFX-PickUp",
+          srcs: "sfx/pick-up.mp3",
+        },
+
       ],
     },
   ],

@@ -187,3 +187,8 @@ await loadFonts()
 // Finally, mount the app
 console.log(">>> Mounting #app...")
 app.mount("#app")
+
+// prevent right click contextBox
+document.addEventListener("contextmenu", (e) => {
+  e.preventDefault()
+})

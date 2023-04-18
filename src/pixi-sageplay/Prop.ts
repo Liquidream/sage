@@ -169,7 +169,7 @@ export class Prop {
       // Add to Player's inventory
       SAGE.World.player.addToInventory(this.propModel)
       // Play sound
-      SAGE.Sound.play("Pick-Up")
+      SAGE.Sound.play("SFX-PickUp")
       // Auto-open player inventory
       SAGE.invScreen.open(true)
       return
