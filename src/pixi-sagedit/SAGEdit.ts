@@ -146,7 +146,7 @@ export class SAGEdit {
     //const horizontalMargin = (screenWidth - enlargedWidth) / 2
     const verticalMargin = (screenHeight - enlargedHeight) / 2
 
-    if (SAGEdit._app) {
+    if (SAGEdit._app && SAGEdit._app.view.style) {
       // now we use css trickery to set the sizes and margins
       SAGEdit._app.view.style.width = `${enlargedWidth}px`
       SAGEdit._app.view.style.height = `${enlargedHeight}px`

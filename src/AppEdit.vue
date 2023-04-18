@@ -97,16 +97,6 @@
     // Initialise Pixi (with a "black" default bg color)
     SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
     SAGEdit.loadWorld()
-
-    // Play mode?
-    // const queryString = window.location.search
-    // const urlParams = new URLSearchParams(queryString)
-    // const mode = urlParams.get("mode")
-    // if (mode == "play") {
-    //   //let app = createApp(AppServer);
-    //   console.log(">>> Play/Test mode!22")
-    //   const worldStore = useWorldStore()
-    //}
   })
 
   const playGame = () => {

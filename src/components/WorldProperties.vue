@@ -66,7 +66,7 @@
   // import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"
   import SceneSelect from "./SceneSelect.vue"
-  
+
   console.log("start WordProperties.vue...")
   const worldStore = useWorldStore()
 

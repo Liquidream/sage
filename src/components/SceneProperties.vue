@@ -27,16 +27,16 @@
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
     <v-file-input
-    v-model="chosenFile"
-    type="file"
-    @change="onImageFileChange"
-    label="Backdrop Image"
-    accept="image/png, image/jpeg, image/bmp"
-    placeholder="Pick a backdrop image"
-    prepend-icon="mdi-camera"
+      v-model="chosenFile"
+      type="file"
+      @change="onImageFileChange"
+      label="Backdrop Image"
+      accept="image/png, image/jpeg, image/bmp"
+      placeholder="Pick a backdrop image"
+      prepend-icon="mdi-camera"
     ></v-file-input>
     <v-img :src="model.image" max-height="150" />
-    
+
     <!-- <v-text-field label="Sound" v-model="model.sound"></v-text-field> -->
     <v-file-input
       class="mt-8"

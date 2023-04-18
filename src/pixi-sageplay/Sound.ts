@@ -1,4 +1,4 @@
-import { sound, SoundLibrary } from "@pixi/sound"
+import * as sound from "@pixi/sound"
 import { Tween } from "tweedle.js"
 import { SAGE } from "./SAGEPlay"
 
@@ -7,8 +7,8 @@ export class Sound {
     //
   }
 
-  public get soundLibrary(): SoundLibrary {
-    return sound
+  public get soundLibrary(): sound.SoundLibrary {
+    return sound.sound
   }
 
   public play(soundName: string) {
@@ -19,7 +19,7 @@ export class Sound {
     SAGE.debugLog(`playLoop(${soundName})`)
     //fadeIn = false
     if (fadeIn) {
-      const sfx = sound.find(soundName)
+      const sfx = sound.sound.find(soundName)
       if (sfx) {
         sfx.volume = 0 // Doing this in one hit doesn't work??? (stays 0 volume)
         sfx.play({ loop: true }) //
@@ -38,13 +38,13 @@ export class Sound {
     //fadeOut = false
     try {
       if (fadeOut) {
-        const sfx = sound.find(soundName)
+        const sfx = sound.sound.find(soundName)
         if (sfx) {
           new Tween(sfx)
             .to({ volume: 0 }, 1000)
             .start()
             .onComplete(() => {
-              sound.stop(soundName)
+              sound.sound.stop(soundName)
             })
         } else {
           SAGE.Dialog.showErrorMessage(
@@ -52,7 +52,7 @@ export class Sound {
           )
         }
       } else {
-        sound.stop(soundName)
+        sound.sound.stop(soundName)
       }
     } catch (e) {
       SAGE.Dialog.showErrorMessage(
@@ -64,11 +64,11 @@ export class Sound {
 
   public stopAll() {
     SAGE.debugLog(`>> Sound.stopAll()`)
-    sound.stopAll()
+    sound.sound.stopAll()
   }
 
   public toggleMute() {
-    sound.toggleMuteAll()
+    sound.sound.toggleMuteAll()
   }
 
   private playCore(
@@ -79,7 +79,7 @@ export class Sound {
       // Poss workaround for current iOS issues
       //sound.useLegacy = true;
       SAGE.debugLog(`playCore(${soundName})`)
-      return sound.play(soundName, { loop: loop })
+      return sound.sound.play(soundName, { loop: loop })
     } catch (e) {
       SAGE.Dialog.showErrorMessage(
         `Error: Sound with ID '${soundName}' is invalid`

@@ -7,7 +7,8 @@ import type { SceneModel } from "@/models/SceneModel"
 import type { PropModel } from "@/models/PropModel"
 import { usePropStore } from "@/stores/PropStore"
 
-export class Scene implements SceneModel { //implements ISceneData, Serialization<Scene> {
+export class Scene implements SceneModel {
+  //implements ISceneData, Serialization<Scene> {
   // public constructor() {
   //   // Anything?
   // }

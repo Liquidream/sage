@@ -25,7 +25,6 @@ export const playAssets: ResolverManifest = {
           name: "SFX-PickUp",
           srcs: "sfx/pick-up.mp3",
         },
-
       ],
     },
   ],

@@ -134,14 +134,14 @@
   import { ref } from "vue"
   import { storeToRefs } from "pinia"
   import { useWorldStore } from "../stores/WorldStore"
-  import type { PropModel } from "@/models/PropModel"
+  //import type { PropModel } from "@/models/PropModel"
   import { BaseTexture } from "pixi.js"
   import SceneSelect from "./SceneSelect.vue"
 
   const worldStore = useWorldStore()
+  // Make prop info react when selection changes
   const worldRefs = storeToRefs(worldStore)
-  const model = worldRefs.getCurrentProp || ({} as PropModel)
-  //const model = worldStore.getCurrentProp || ({} as PropModel)
+  const model = worldRefs.getCurrentProp // || ({} as PropModel)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any
@@ -157,13 +157,17 @@
     reader.readAsDataURL(e.target.files[0])
     reader.onload = () => {
       imageData.value = reader.result
-      model.image = reader.result as string // added "as" to squash error/warn, ok?
-      // Now do a test load into Pixi texture to get dimensions
-      const base = new BaseTexture(model.image)
-      base.on("loaded", () => {
-        model.width = base.width
-        model.height = base.height
-      })
+      if (model.value) {
+        model.value.image = reader.result as string // added "as" to squash error/warn, ok?
+        // Now do a test load into Pixi texture to get dimensions
+        const base = new BaseTexture(model.value.image)
+        base.on("loaded", () => {
+          if (model.value) {
+            model.value.width = base.width
+            model.value.height = base.height
+          }
+        })
+      }
     }
   }
 

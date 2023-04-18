@@ -5,13 +5,13 @@ import { Events } from "./Events"
 import { Actions } from "./gameactions"
 import { Script } from "./Script"
 import { Sound } from "./Sound"
-import { World, type IWorldData } from "./World"
+import { World } from "./World"
 import { InventoryScreen } from "./screens/ui/InventoryPanel"
 import { UI_Overlay } from "./screens/ui/UI_Overlay"
 import { playAssets } from "./playAssets"
 
-import gamedataJSON from "./gamedata.json"
-const gamedata: IWorldData = (<unknown>gamedataJSON) as IWorldData
+//import gamedataJSON from "./gamedata.json"
+//const gamedata: IWorldData = (<unknown>gamedataJSON) as IWorldData
 
 // This could have a lot more generic functions that you force all your scenes to have. Update is just an example.
 // Also, this could be in its own file...
@@ -122,7 +122,7 @@ export class SAGE {
 
     // Create and initialise game world
     SAGE.World = new World()
-    SAGE.World.initialize(gamedata)
+    SAGE.World.initialize() //gamedata)
     //Manager.World = new World().fromJSON(gamedata);
 
     // ...and events
@@ -235,7 +235,7 @@ export class SAGE {
     const horizontalMargin = (screenWidth - enlargedWidth) / 2
     const verticalMargin = (screenHeight - enlargedHeight) / 2
 
-    if (SAGE._app) {
+    if (SAGE._app && SAGE._app.view.style) {
       // now we use css trickery to set the sizes and margins
       SAGE._app.view.style.width = `${enlargedWidth}px`
       SAGE._app.view.style.height = `${enlargedHeight}px`

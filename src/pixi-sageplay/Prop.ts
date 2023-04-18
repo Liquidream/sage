@@ -14,7 +14,7 @@ export class Prop {
   DRAG_ALPHA = 0.75
 
   //public data!: IPropData
-  private propModel: PropModel
+  public propModel: PropModel
 
   public sprite!: Sprite
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -95,7 +95,9 @@ export class Prop {
 
   /** Returns whether or not the this prop is in player's inventory */
   public get inInventory(): boolean {
-    return SAGE.World.player.inventory.some((prop) => prop.id === this.propModel.id)
+    return SAGE.World.player.inventory.some(
+      (prop) => prop.id === this.propModel.id
+    )
   }
 
   private onSceneHint() {
@@ -186,6 +188,8 @@ export class Prop {
 
   private onSecondaryAction() {
     SAGE.debugLog(`onSecondaryAction for :${this.propModel.id}`)
-    SAGE.Dialog.showMessage(this.propModel.desc)
+    if (this.propModel.desc) {
+      SAGE.Dialog.showMessage(this.propModel.desc)
+    }
   }
 }

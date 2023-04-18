@@ -30,7 +30,14 @@ interface Document {
   mozCancelFullScreen(): Promise<void>
 }
 
-interface Window {
-  sagePlayData: SagePlayData
-  SAGE: SAGE
+interface ICanvasStyle {
+  marginTop: string
+}
+
+// https://stackoverflow.com/questions/56457935/typescript-error-property-x-does-not-exist-on-type-window
+declare global {
+  interface Window {
+    sagePlayData: SagePlayData
+    SAGE: SAGE
+  }
 }

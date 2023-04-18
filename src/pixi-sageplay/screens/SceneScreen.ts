@@ -10,7 +10,7 @@ import {
   Point,
 } from "pixi.js" //filters
 
-import { SAGE } from "../SAGEPlay"
+import { SAGE, type IScreen } from "../SAGEPlay"
 import type { Scene } from "../Scene"
 import { Prop } from "../Prop"
 import { Door } from "../Door"
@@ -20,7 +20,7 @@ import { Collision } from "../../utils/Collision"
 import { useWorldStore } from "@/stores/WorldStore"
 import type { PropModel } from "@/models/PropModel"
 
-export class SceneScreen extends Container implements SAGEPlay.IScreen {
+export class SceneScreen extends Container implements IScreen {
   private scene: Scene
   private backdrop!: Sprite
   private props: Array<Prop> = []
@@ -98,7 +98,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     this.showGameEndScreen(message, "Press to Restart", 0xbe1226)
   }
 
-  private onPointerMove(_e: InteractionEvent) {
+  private onPointerMove(_e: FederatedPointerEvent) {
     SAGE.debugLog(`${this.name}::onPointerMove()`)
     if (this.draggedProp) {
       // Temp remove interaction to "dragged" Prop
@@ -112,7 +112,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
   }
 
   private onPointerUp() {
-    //_e: InteractionEvent) {
+    //_e: FederatedPointerEvent) {
     SAGE.debugLog(`${this.name}::onPointerUp()`)
     if (this.draggedProp) {
       // We were dragging something - did we drop it on something?
@@ -121,8 +121,8 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
         this.draggedProp.use(this.dragTarget)
       } else {
         // Didn't drop on object, so... do nothing? (+put back to orig pos)
-        this.draggedProp.sprite.x = this.draggedProp.data.x
-        this.draggedProp.sprite.y = this.draggedProp.data.y
+        this.draggedProp.sprite.x = this.draggedProp.propModel.x || 0
+        this.draggedProp.sprite.y = this.draggedProp.propModel.y || 0
       }
       // End Drag+Drop mode
       this.draggedProp.dragging = false
@@ -135,7 +135,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     }
   }
 
-  private onTouchMove(_e: InteractionEvent) {
+  private onTouchMove(_e: FederatedPointerEvent) {
     SAGE.debugLog(`${this.name}::onTouchMove()`)
     // Get touch position
     const touchPoint: Point = new Point()
@@ -165,7 +165,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
       if (
         Collision.isCollidingObjToObj(this.draggedProp?.sprite, prop.sprite)
       ) {
-        SAGE.debugLog(`>> collided with ${prop.data.name}`)
+        SAGE.debugLog(`>> collided with ${prop.propModel.name}`)
         currTarget = prop
       }
     }
@@ -206,7 +206,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     //  > Other Props in current scene
     for (const prop of this.props) {
       if (Collision.isCollidingPointToObj(touchPoint, prop.sprite)) {
-        SAGE.debugLog(`>> collided with ${prop.data.name}`)
+        SAGE.debugLog(`>> collided with ${prop.propModel.name}`)
         currTarget = prop
       }
     }
@@ -300,7 +300,7 @@ export class SceneScreen extends Container implements SAGEPlay.IScreen {
     // Backdrop
     let sprite = undefined
     if (this.scene.image) {
-      const worldStore = useWorldStore()
+      //const worldStore = useWorldStore()
       //debugger
       //const scene = worldStore.getScenes[0]
       // debugger
