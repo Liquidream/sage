@@ -1,4 +1,4 @@
-import * as sound from "@pixi/sound"
+import { sound, SoundLibrary } from "@pixi/sound"
 import { Tween } from "tweedle.js"
 import { SAGE } from "./SAGEPlay"
 
@@ -7,13 +7,11 @@ export class Sound {
     //
   }
 
-  public get soundLibrary(): sound.SoundLibrary {
-    return sound.sound
+  public get soundLibrary(): SoundLibrary {
+    return sound
   }
 
-  public play(
-    soundName: string
-  ): sound.IMediaInstance | Promise<sound.IMediaInstance> | undefined {
+  public play(soundName: string) {
     return this.playCore(soundName, false)
   }
 
@@ -21,8 +19,7 @@ export class Sound {
     SAGE.debugLog(`playLoop(${soundName})`)
     //fadeIn = false
     if (fadeIn) {
-      const sfx = sound.sound.find(soundName)
-      // debugger
+      const sfx = sound.find(soundName)
       if (sfx) {
         sfx.volume = 0 // Doing this in one hit doesn't work??? (stays 0 volume)
         sfx.play({ loop: true }) //
@@ -41,13 +38,13 @@ export class Sound {
     //fadeOut = false
     try {
       if (fadeOut) {
-        const sfx = sound.sound.find(soundName)
+        const sfx = sound.find(soundName)
         if (sfx) {
           new Tween(sfx)
             .to({ volume: 0 }, 1000)
             .start()
             .onComplete(() => {
-              sound.sound.stop(soundName)
+              sound.stop(soundName)
             })
         } else {
           SAGE.Dialog.showErrorMessage(
@@ -55,7 +52,7 @@ export class Sound {
           )
         }
       } else {
-        sound.sound.stop(soundName)
+        sound.stop(soundName)
       }
     } catch (e) {
       SAGE.Dialog.showErrorMessage(
@@ -67,11 +64,11 @@ export class Sound {
 
   public stopAll() {
     SAGE.debugLog(`>> Sound.stopAll()`)
-    sound.sound.stopAll()
+    sound.stopAll()
   }
 
   public toggleMute() {
-    sound.sound.toggleMuteAll()
+    sound.toggleMuteAll()
   }
 
   private playCore(
@@ -82,7 +79,7 @@ export class Sound {
       // Poss workaround for current iOS issues
       //sound.useLegacy = true;
       SAGE.debugLog(`playCore(${soundName})`)
-      return sound.sound.play(soundName, { loop: loop })
+      return sound.play(soundName, { loop: loop })
     } catch (e) {
       SAGE.Dialog.showErrorMessage(
         `Error: Sound with ID '${soundName}' is invalid`

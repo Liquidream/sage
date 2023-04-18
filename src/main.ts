@@ -142,17 +142,21 @@ if (mode == "play") {
     const sceneData: SceneState = JSON.parse(sagePlayData.sceneData)
     sceneStore.$state = sceneData
     //debugger
-    for (const scene of sceneData.scenes) {
-      if (scene.sound) {
-        const assetName = scene.name + "-sound"
-        SAGE.playManifest.bundles[0].assets.push({
-          name: assetName,
-          srcs: scene.sound,
-        })
-        // Now replace sound with asset name
-        scene.sound = assetName
-      }
-    }
+    // for (const scene of sceneData.scenes) {
+    //   if (scene.sound && scene.sound.startsWith("data:")) {
+    //     debugger
+    //     const assetName = scene.name + "-sound"
+    //     const data = scene.sound.split(",").slice(1).join(",")
+    //     const buffer = SAGE.Sound.soundLibrary.base64ToArrayBuffer(data)
+    //     SAGE.Sound.soundLibrary.add(assetName, buffer)
+    //     scene.sound = assetName
+    //   }
+    //   // SAGE.playManifest.bundles[0].assets.push({
+    //   //   name: assetName,
+    //   //   srcs: scene.sound,
+    //   // })
+    //   // Now replace sound with asset name
+    // }
 
     // Prop Data
     const propStore = usePropStore()

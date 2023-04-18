@@ -37,7 +37,7 @@
     ></v-file-input>
     <v-img :src="model.image" max-height="150" />
     
-    <v-text-field label="Sound" v-model="model.sound"></v-text-field>
+    <!-- <v-text-field label="Sound" v-model="model.sound"></v-text-field> -->
     <v-file-input
       class="mt-8"
       @change="onSoundFileChange"

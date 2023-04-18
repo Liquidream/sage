@@ -143,6 +143,34 @@ export class SAGE {
 
     // ...and sounds
     SAGE.Sound = new Sound()
+    // Load and convert byte64 data to sounds
+    this.loadSounds()
+  }
+
+  private static loadSounds() {
+    //debugger
+    for (const scene of SAGE.World.scenes) {
+      if (scene.sound && scene.sound.startsWith("data:")) {
+        const assetName = scene.name + "-sound"
+        const data = scene.sound.split(",").slice(1).join(",")
+        const buffer = SAGE.base64ToArrayBuffer(data)
+        SAGE.Sound.soundLibrary.add(assetName, buffer)
+        scene.sound = assetName
+      }
+    }
+  }
+
+  /**
+   * Utility function to convert base64 to ArrayBuffer
+   */
+  private static base64ToArrayBuffer(base64: string) {
+    const binary_string = window.atob(base64)
+    const len = binary_string.length
+    const bytes = new Uint8Array(len)
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binary_string.charCodeAt(i)
+    }
+    return bytes.buffer
   }
 
   public static startGame() {
