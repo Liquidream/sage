@@ -4,6 +4,7 @@ import { SAGE } from "./SAGEPlay"
 import { DialogType } from "./Dialog"
 import * as DoorData from "./data/DoorData"
 import { InputEventEmitter } from "./screens/ui/InputEventEmitter"
+import { Scene } from "./Scene"
 
 export class Door {
   // "constants"
@@ -109,6 +110,7 @@ export class Door {
   }
 
   private onPrimaryAction() {
+    //debugger
     if (SAGE.debugMode)
       console.log(
         `door > target_scene_id: ${this.data.target_scene_id}, state:${this.data.state}`
@@ -138,12 +140,13 @@ export class Door {
 
     // TODO: Find the target door/scene
     // const first: {id: number; language: string;} | undefined
-    const targetScene = SAGE.World.scenes.find((obj) => {
+    const targetSceneModel = SAGE.World.scenes.find((obj) => {
       return obj.id === this.data.target_scene_id
     })
 
-    if (targetScene) {
+    if (targetSceneModel) {
       // Change scene to the game scene!
+      const targetScene: Scene = new Scene(targetSceneModel)
       targetScene.show()
     }
     // Custom action?

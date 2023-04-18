@@ -2,10 +2,12 @@ import { SAGE } from "./SAGEPlay"
 import { SceneScreen } from "./screens/SceneScreen"
 //import type { Serialization } from "../utils/Serialization"
 //import * as PropData from "./data/PropData"
-import * as DoorData from "./data/DoorData"
+//import * as DoorData from "./data/DoorData"
 import type { SceneModel } from "@/models/SceneModel"
 import type { PropModel } from "@/models/PropModel"
 import { usePropStore } from "@/stores/PropStore"
+import type { DoorModel } from "@/models/DoorModel"
+import { useDoorStore } from "@/stores/DoorStore"
 
 export class Scene implements SceneModel {
   //implements ISceneData, Serialization<Scene> {
@@ -57,7 +59,11 @@ export class Scene implements SceneModel {
     return propStore.findPropBySceneId(this.id)
   }
 
-  public doors: Array<DoorData.DoorData> = []
+  //public doors: Array<DoorData.DoorData> = []
+  public get doors(): Array<DoorModel> {
+    const doorStore = useDoorStore()
+    return doorStore.findDoorBySceneId(this.id)
+  }
 
   screen!: SceneScreen
 

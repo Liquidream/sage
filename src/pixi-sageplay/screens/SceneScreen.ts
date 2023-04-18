@@ -322,8 +322,6 @@ export class SceneScreen extends Container implements IScreen {
   }
 
   private buildProps() {
-    // Only create Lamp if not already "picked up"
-    // TODO: Make this all dynamic/data-based eventually, this is just a crude example!
     if (this.scene.props.length > 0) {
       for (const propData of this.scene.props) {
         this.addProp(propData)

@@ -27,7 +27,8 @@ export class SAGE {
     /*this class is purely static. No constructor to see here*/
   }
 
-  public static debugMode = false
+  public static debugMode = true
+
   public static enableFullscreen = false
 
   public static navWidth = 350
