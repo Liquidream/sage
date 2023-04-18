@@ -393,7 +393,7 @@ export class SceneScreen extends Container implements IScreen {
           if (index !== -1) this.props.splice(index, 1)
           prop.tidyUp()
           // remove from game data
-          this.scene.removePropDataById(prop.propModel.id)
+          this.scene.removePropModelById(prop.propModel.id)
         })
     }
     if (scaleAnim) {

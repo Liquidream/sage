@@ -19,7 +19,7 @@ export class Door {
   // @ts-ignore (ignore the "declared but never used" for now)
   private doorInputEvents!: InputEventEmitter
 
-  public constructor(doorData: DoorData.IDoorData) {
+  public constructor(doorData: DoorModel) {
     // Initialise from data object
     this.data = doorData
     const graphics = new Graphics()

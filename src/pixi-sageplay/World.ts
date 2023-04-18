@@ -138,7 +138,7 @@ export class World implements IWorldData {
       // If prop is in current scene (e.g. being displayed)
       if (sourceSceneId === this.currentScene.id) {
         // ...Remove prop from its current scene...
-        this.currentScene.removePropDataById(propId)
+        this.currentScene.removePropModelById(propId)
       }
 
       // Remove prop from its current scene...

@@ -118,7 +118,7 @@ export class Scene implements SceneModel {
     this.props.push(propModel)
   }
 
-  removePropDataById(propId: string) {
+  removePropModelById(propId: string) {
     // Remove data from prop list (no DisplayObject changes)
     const index = this.props.findIndex((item) => item.id === propId)
     if (index !== -1) this.props.splice(index, 1)
