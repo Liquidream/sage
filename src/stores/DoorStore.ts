@@ -23,7 +23,7 @@ export const useDoorStore = defineStore({
     //   this.name = "Bridge123"
     // },
     findDoorBySceneId(scene_id: string) {
-      return this.doors.filter((door) => door.in_scene_id === scene_id)
+      return this.doors.filter((door) => door.location_id === scene_id)
     },
   },
 

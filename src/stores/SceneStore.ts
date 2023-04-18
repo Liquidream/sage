@@ -15,7 +15,7 @@ export const useSceneStore = defineStore({
   getters: {
     // getProps(scene_id: string) {
     //   const propStore = usePropStore()
-    //   return propStore.props.find((item) => item.in_scene_id === scene_id)
+    //   return propStore.props.find((item) => item.location_id === scene_id)
     //   //return state.scenes.find((item) => item.id === state.currSceneId)
     // },
   },

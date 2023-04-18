@@ -6,6 +6,7 @@ import { SAGE } from "./SAGEPlay"
 import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneModel } from "@/models/SceneModel"
 import { usePropStore } from "@/stores/PropStore"
+import { LocationType } from "@/models/PropModel"
 
 export class World implements IWorldData {
   //}, Serialization<World> {
@@ -134,25 +135,19 @@ export class World implements IWorldData {
     // Get prop data
     const propModel = this.getPropById(propId)
     if (propModel) {
-      const sourceSceneId = propModel.in_scene_id
-      // If prop is in current scene (e.g. being displayed)
-      if (sourceSceneId === this.currentScene.id) {
-        // ...Remove prop from its current scene...
-        this.currentScene.removePropModelById(propId)
+      let sourceSceneId = ""
+      // Remove prop from its current scene...
+      if (propModel.location_type === LocationType.Scene) {
+        sourceSceneId = propModel.location_id || ""
+        // If prop is in current scene (e.g. being displayed)
+        if (sourceSceneId === this.currentScene.id) {
+          // ...Remove prop from its current scene...
+          this.currentScene.removePropModelById(propId)
+        }
       }
 
-      // Remove prop from its current scene...
-      // const sourceScene = this.scenes.find((scn) => {
-      //   return scn.props.find((prp: PropData) => {
-      //     return prp.id === propId
-      //   })
-      // })
-      // if (sourceScene) {
-      //   sourceScene.removePropDataById(propId)
-      // }
-
       // ..and place in target scene...
-      propModel.in_scene_id = targetSceneId
+      propModel.location_id = targetSceneId
 
       // If prop is NOW in current scene (e.g. being displayed)
       if (
@@ -162,18 +157,6 @@ export class World implements IWorldData {
         this.currentScene.screen.addProp(propModel, fadeIn)
       }
 
-      // ..and place in target scene...
-      //const targetScene = this.getSceneById(targetSceneId)
-      // if (targetScene) {
-      //   // data...
-      //   targetScene.addPropData(propData)
-      //   //targetScene.props.push(propData);
-
-      //   // sprite... (if scene is active)
-      //   if (targetScene === this.currentScene && sourceScene != targetScene) {
-      //     this.currentScene.screen.addProp(propData, fadeIn)
-      //   }
-      // }
       // (optionally, at position)
       if (x) propModel.x = x
       if (y) propModel.y = y

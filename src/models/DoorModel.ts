@@ -12,7 +12,9 @@ export interface DoorModel {
   y?: number
   width?: number
   height?: number
-  in_scene_id?: string
+  // in_scene_id?: string
+  location_id?: string
+
   // Key-Value pair to allow properties to be set/read
   property?: { [key: string]: string | number | boolean }
   playSounds?: boolean

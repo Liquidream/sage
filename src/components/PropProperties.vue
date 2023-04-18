@@ -88,12 +88,12 @@
           v-model.number="model.height"
           type="number"
         ></v-text-field>
-        <v-switch
+        <!-- <v-switch
           label="Draggable"
           v-model="model.draggable"
           color="info"
           hide-details
-        ></v-switch>
+        ></v-switch> -->
         <v-switch
           label="Visible"
           v-model="model.visible"
@@ -103,7 +103,8 @@
       </v-col>
     </v-row>
 
-    <scene-select label="In Scene" v-model="model.in_scene_id" />
+    <!-- Fair to assume location id is always a scene (in design?) -->
+    <scene-select label="In Scene" v-model="model.location_id" />
 
     <v-divider />
     <v-list-subheader
