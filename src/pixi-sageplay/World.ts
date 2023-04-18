@@ -7,7 +7,8 @@ import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneModel } from "@/models/SceneModel"
 import { usePropStore } from "@/stores/PropStore"
 
-export class World implements IWorldData { //}, Serialization<World> {
+export class World implements IWorldData {
+  //}, Serialization<World> {
   public constructor() {
     // Anything?
   }
@@ -37,7 +38,8 @@ export class World implements IWorldData { //}, Serialization<World> {
 
   public player!: Player.Player
 
-  public initialize() { //data: IWorldData): void {
+  public initialize() {
+    //data: IWorldData): void {
     // (Done in gamedata - else can't define hidden props)
     // Create the first scene as "void"?
     // let voidScene = Object.assign( new Scene(), {

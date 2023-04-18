@@ -2,7 +2,8 @@ import { Graphics, Sprite } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"
 import { SAGE } from "./SAGEPlay"
 import { DialogType } from "./Dialog"
-import * as DoorData from "./data/DoorData"
+import { DoorState, type DoorModel } from "@/models/DoorModel"
+//import * as DoorData from "./data/DoorData"
 import { InputEventEmitter } from "./screens/ui/InputEventEmitter"
 import { Scene } from "./Scene"
 
@@ -11,7 +12,8 @@ export class Door {
   // (perhaps overridable in config?)
   TOUCH_DURATION = 500
 
-  public data!: DoorData.IDoorData
+  //public data!: DoorData.IDoorData
+  public data!: DoorModel
   public graphics!: Graphics
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
@@ -33,16 +35,18 @@ export class Door {
       // TODO: find a nicer solution to this!
       graphics.beginFill(0xccc, 0.00000000000001) // "Invisible"
     }
-    // Make a center point of origin (anchor)
-    graphics.pivot.set(this.data.width / 2, this.data.height / 2)
-    // Draw a rectangle
-    graphics.drawRoundedRect(
-      this.data.x,
-      this.data.y,
-      this.data.width,
-      this.data.height,
-      30
-    )
+    if (this.data && this.data.width && this.data.height) {
+      // Make a center point of origin (anchor)
+      graphics.pivot.set(this.data.width / 2, this.data.height / 2)
+      // Draw a rectangle
+      graphics.drawRoundedRect(
+        this.data.x || 0,
+        this.data.y || 0,
+        this.data.width,
+        this.data.height,
+        30
+      )
+    }
     // Applies fill to lines and shapes since the last call to beginFill.
     graphics.endFill()
 
@@ -61,7 +65,7 @@ export class Door {
 
   public unlockDoor() {
     // Unlock the door
-    this.data.state = DoorData.DoorState.Unlocked
+    this.data.state = DoorState.Unlocked
     // Play sound
     if (this.data.playSounds) {
       SAGE.Sound.play("Unlock-Door")
@@ -78,8 +82,8 @@ export class Door {
     // Show attract tween for this
     const attractShine: Sprite = Sprite.from("UI-Shine")
     attractShine.anchor.set(0.5)
-    attractShine.x = this.data.x
-    attractShine.y = this.data.y
+    attractShine.x = this.data.x || 0
+    attractShine.y = this.data.y || 0
     attractShine.alpha = 0
 
     this.graphics.parent.addChild(attractShine)
@@ -116,7 +120,7 @@ export class Door {
         `door > target_scene_id: ${this.data.target_scene_id}, state:${this.data.state}`
       )
     // Check door state
-    if (this.data.state == DoorData.DoorState.Locked) {
+    if (this.data.state == DoorState.Locked) {
       // Does player have the key?
       const key = SAGE.World.player.inventory.find((obj) => {
         return obj.id === this.data.key_prop_id
@@ -162,6 +166,6 @@ export class Door {
 
   private onSecondaryAction() {
     if (SAGE.debugMode) console.log(`onSecondaryAction for :${this.data.id}`)
-    SAGE.Dialog.showMessage(this.data.desc)
+    if (this.data.desc) SAGE.Dialog.showMessage(this.data.desc)
   }
 }
