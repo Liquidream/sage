@@ -166,7 +166,7 @@ export class SceneScreen extends Container {
       const texture = new Texture(base)
       sprite = Sprite.from(texture)
     } else {
-      console.log("<No scene backgdrop image specified>")
+      // console.log("<No scene backgdrop image specified>")
       sprite = new Sprite(Texture.EMPTY)
     }
     sprite.anchor.set(0.5)
