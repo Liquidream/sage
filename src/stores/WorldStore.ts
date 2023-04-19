@@ -183,7 +183,7 @@ export const useWorldStore = defineStore("worldStore", {
           height: 178,
           //draggable: true,
           desc: "An old key",
-          on_action: "onKeyUse",
+          on_use: "onKeyUse",
           single_use: true,
           visible: true,
           pickupable: true,
