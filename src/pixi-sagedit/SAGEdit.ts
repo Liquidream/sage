@@ -122,6 +122,10 @@ export class SAGEdit {
     const mainWrap = document.getElementsByClassName("v-main")[0]
 
     // current screen size
+    // const screenWidth = mainWrap?.clientWidth
+    // const screenWidth = Math.max(
+      //   mainWrap?.clientWidth, 
+      //   window.innerWidth || 0)
     const screenWidth = mainWrap?.clientWidth
     const screenHeight = Math.max(
       document.documentElement.clientHeight,
@@ -130,10 +134,11 @@ export class SAGEdit {
 
     const isMobile = screenHeight > screenWidth
     console.log(`isMobile = ${isMobile}`)
+    const toolbarHeight = 64
     // uniform scale for our game
     const scale = Math.min(
       (screenWidth - (isMobile ? 0 : SAGEdit.navWidth)) / SAGEdit.width, // factor in the side-bar to make it fit 100%
-      screenHeight / SAGEdit.height
+      (screenHeight - (isMobile ? 0 : toolbarHeight)) / SAGEdit.height
     )
 
     // console.log(`scale = ${scale}`)
@@ -143,8 +148,11 @@ export class SAGEdit {
     const enlargedHeight = Math.floor(scale * SAGEdit.height)
 
     // margins for centering our game
-    //const horizontalMargin = (screenWidth - enlargedWidth) / 2
+    const horizontalMargin = (screenWidth - enlargedWidth - SAGEdit.navWidth) / 2
     const verticalMargin = (screenHeight - enlargedHeight) / 2
+
+    // console.log(`verticalMargin = ${verticalMargin}px`)
+    // console.log(`horizontalMargin = ${horizontalMargin}px`)
 
     if (SAGEdit._app && SAGEdit._app.view.style) {
       // now we use css trickery to set the sizes and margins
@@ -155,8 +163,10 @@ export class SAGEdit {
       if (!isMobile) {
         SAGEdit._app.view.style.marginTop =
           SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
+        SAGEdit._app.view.style.marginLeft = `${horizontalMargin}px`
       } else {
         SAGEdit._app.view.style.marginTop = `$0px`
+        SAGEdit._app.view.style.marginLeft = `$0px`
       }
     }
   }
