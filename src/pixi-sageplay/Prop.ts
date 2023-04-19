@@ -14,7 +14,7 @@ export class Prop {
   DRAG_ALPHA = 0.75
 
   //public data!: IPropData
-  public propModel: PropModel
+  public model: PropModel
 
   public sprite!: Sprite
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -24,7 +24,7 @@ export class Prop {
 
   public constructor(inModel: PropModel) {
     // Initialise from data object
-    this.propModel = inModel
+    this.model = inModel
 
     let sprite = undefined
     if (inModel.image) {
@@ -65,9 +65,9 @@ export class Prop {
   public async use(object: any) {
     let validUse = false
     // Run any OnEnter action?
-    if (this.propModel.on_use) {
+    if (this.model.on_use) {
       validUse = await SAGE.Script.safeExecFuncWithParams(
-        this.propModel.on_use,
+        this.model.on_use,
         this,
         object
       )
@@ -79,15 +79,15 @@ export class Prop {
       // Invalid, so restore position
       // (if not already in inventory)
       if (!this.inInventory) {
-        this.sprite.x = this.propModel.x || 0
-        this.sprite.y = this.propModel.y || 0
+        this.sprite.x = this.model.x || 0
+        this.sprite.y = this.model.y || 0
       }
     }
   }
 
   public destroy() {
     if (this.inInventory) {
-      SAGE.World.player.removeFromInventory(this.propModel.id)
+      SAGE.World.player.removeFromInventory(this.model.id)
     } else {
       SAGE.World.currentScene.screen.removeProp(this, true)
     }
@@ -96,7 +96,7 @@ export class Prop {
   /** Returns whether or not the this prop is in player's inventory */
   public get inInventory(): boolean {
     return SAGE.World.player.inventory.some(
-      (prop) => prop.id === this.propModel.id
+      (prop) => prop.id === this.model.id
     )
   }
 
@@ -106,8 +106,8 @@ export class Prop {
     if (this.inInventory) return
     const attractShine: Sprite = Sprite.from("UI-Shine")
     attractShine.anchor.set(0.5)
-    attractShine.x = this.propModel.x || 0
-    attractShine.y = this.propModel.y || 0
+    attractShine.x = this.model.x || 0
+    attractShine.y = this.model.y || 0
     attractShine.alpha = 0
 
     this.sprite.parent.addChild(attractShine)
@@ -127,7 +127,7 @@ export class Prop {
     //debugger
     //_e: InteractionEvent
     // On an inventory (or draggable) item?
-    if (this.inInventory || this.propModel.draggable) {
+    if (this.inInventory || this.model.draggable) {
       // Start of drag...
       this.dragging = true
       SAGE.World.currentScene.screen.draggedProp = this
@@ -140,7 +140,7 @@ export class Prop {
 
   private onPointerOver() {
     //_e: InteractionEvent
-    SAGE.Dialog.showMessage(this.propModel.name, DialogType.Caption, -1)
+    SAGE.Dialog.showMessage(this.model.name, DialogType.Caption, -1)
   }
 
   private onPointerOut() {
@@ -156,20 +156,20 @@ export class Prop {
   }
 
   private onPrimaryAction() {
-    SAGE.debugLog(`You interacted with a prop! (${this.propModel.name})`)
+    SAGE.debugLog(`You interacted with a prop! (${this.model.name})`)
     // Custom action?
-    if (this.propModel.on_action) {
-      Function(this.propModel.on_action)()
+    if (this.model.on_action) {
+      Function(this.model.on_action)()
       return
     }
     // Can prop be picked up?
     // (...and not already in inventory)?
-    if (this.propModel.pickupable && !this.inInventory) {
-      SAGE.Dialog.showMessage(`You picked up the ${this.propModel.name}`)
+    if (this.model.pickupable && !this.inInventory) {
+      SAGE.Dialog.showMessage(`You picked up the ${this.model.name}`)
       // Remove prop from scene
       SAGE.World.currentScene.screen.removeProp(this, true, true)
       // Add to Player's inventory
-      SAGE.World.player.addToInventory(this.propModel)
+      SAGE.World.player.addToInventory(this.model)
       // Play sound
       SAGE.Sound.play("SFX-PickUp")
       // Auto-open player inventory
@@ -187,9 +187,9 @@ export class Prop {
   }
 
   private onSecondaryAction() {
-    SAGE.debugLog(`onSecondaryAction for :${this.propModel.id}`)
-    if (this.propModel.desc) {
-      SAGE.Dialog.showMessage(this.propModel.desc)
+    SAGE.debugLog(`onSecondaryAction for :${this.model.id}`)
+    if (this.model.desc) {
+      SAGE.Dialog.showMessage(this.model.desc)
     }
   }
 }

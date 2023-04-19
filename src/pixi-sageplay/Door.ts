@@ -13,7 +13,7 @@ export class Door {
   TOUCH_DURATION = 500
 
   //public data!: DoorData.IDoorData
-  public data!: DoorModel
+  public model: DoorModel
   public graphics!: Graphics
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
@@ -21,7 +21,7 @@ export class Door {
 
   public constructor(doorData: DoorModel) {
     // Initialise from data object
-    this.data = doorData
+    this.model = doorData
     const graphics = new Graphics()
     // Make doors visible in debug
     if (SAGE.debugMode) {
@@ -35,15 +35,15 @@ export class Door {
       // TODO: find a nicer solution to this!
       graphics.beginFill(0xccc, 0.00000000000001) // "Invisible"
     }
-    if (this.data && this.data.width && this.data.height) {
+    if (this.model && this.model.width && this.model.height) {
       // Make a center point of origin (anchor)
-      graphics.pivot.set(this.data.width / 2, this.data.height / 2)
+      graphics.pivot.set(this.model.width / 2, this.model.height / 2)
       // Draw a rectangle
       graphics.drawRoundedRect(
-        this.data.x || 0,
-        this.data.y || 0,
-        this.data.width,
-        this.data.height,
+        this.model.x || 0,
+        this.model.y || 0,
+        this.model.width,
+        this.model.height,
         30
       )
     }
@@ -65,10 +65,10 @@ export class Door {
 
   public unlockDoor() {
     // Unlock the door
-    this.data.state = DoorState.Unlocked
+    this.model.state = DoorState.Unlocked
     // Play sound
-    if (this.data.playSounds) {
-      SAGE.Sound.play("Unlock-Door")
+    if (this.model.playSounds) {
+      SAGE.Sound.play("SFX-DoorUnlock")
     }
   }
 
@@ -82,8 +82,8 @@ export class Door {
     // Show attract tween for this
     const attractShine: Sprite = Sprite.from("UI-Shine")
     attractShine.anchor.set(0.5)
-    attractShine.x = this.data.x || 0
-    attractShine.y = this.data.y || 0
+    attractShine.x = this.model.x || 0
+    attractShine.y = this.model.y || 0
     attractShine.alpha = 0
 
     this.graphics.parent.addChild(attractShine)
@@ -101,8 +101,8 @@ export class Door {
 
   private onPointerOver() {
     //_e: InteractionEvent
-    if (SAGE.debugMode) console.log(`${this.data.name}::onPointerOver()`)
-    SAGE.Dialog.showMessage(this.data.name, DialogType.Caption, -1)
+    if (SAGE.debugMode) console.log(`${this.model.name}::onPointerOver()`)
+    SAGE.Dialog.showMessage(this.model.name, DialogType.Caption, -1)
   }
 
   private onPointerOut() {
@@ -117,15 +117,15 @@ export class Door {
     //debugger
     if (SAGE.debugMode)
       console.log(
-        `door > target_scene_id: ${this.data.target_scene_id}, state:${this.data.state}`
+        `door > target_scene_id: ${this.model.target_scene_id}, state:${this.model.state}`
       )
     // Check door state
-    if (this.data.state == DoorState.Locked) {
+    if (this.model.state == DoorState.Locked) {
       // Does player have the key?
       const key = SAGE.World.player.inventory.find((obj) => {
-        return obj.id === this.data.key_prop_id
+        return obj.id === this.model.key_prop_id
       })
-      if (this.data.auto_unlock && key) {
+      if (this.model.auto_unlock && key) {
         // Unlock the door
         this.unlockDoor()
         // Remove item from inventory (unless not single-use)
@@ -133,10 +133,10 @@ export class Door {
           SAGE.World.player.removeFromInventory(key.id)
         }
       } else {
-        SAGE.Dialog.showMessage(this.data.desc_locked || "It is locked")
+        SAGE.Dialog.showMessage(this.model.desc_locked || "It is locked")
         // Play sound
-        if (this.data.playSounds) {
-          SAGE.Sound.play("Locked-Door")
+        if (this.model.playSounds) {
+          SAGE.Sound.play("SFX-DoorLocked")
         }
         return
       }
@@ -145,7 +145,7 @@ export class Door {
     // TODO: Find the target door/scene
     // const first: {id: number; language: string;} | undefined
     const targetSceneModel = SAGE.World.scenes.find((obj) => {
-      return obj.id === this.data.target_scene_id
+      return obj.id === this.model.target_scene_id
     })
 
     if (targetSceneModel) {
@@ -154,18 +154,18 @@ export class Door {
       targetScene.show()
     }
     // Custom action?
-    else if (this.data.on_action) {
-      Function(this.data.on_action)()
+    else if (this.model.on_action) {
+      Function(this.model.on_action)()
       return
     } else {
       SAGE.Dialog.showErrorMessage(
-        `Error: Scene with ID '${this.data.target_scene_id}' is invalid`
+        `Error: Scene with ID '${this.model.target_scene_id}' is invalid`
       )
     }
   }
 
   private onSecondaryAction() {
-    if (SAGE.debugMode) console.log(`onSecondaryAction for :${this.data.id}`)
-    if (this.data.desc) SAGE.Dialog.showMessage(this.data.desc)
+    if (SAGE.debugMode) console.log(`onSecondaryAction for :${this.model.id}`)
+    if (this.model.desc) SAGE.Dialog.showMessage(this.model.desc)
   }
 }

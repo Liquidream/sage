@@ -121,8 +121,8 @@ export class SceneScreen extends Container implements IScreen {
         this.draggedProp.use(this.dragTarget)
       } else {
         // Didn't drop on object, so... do nothing? (+put back to orig pos)
-        this.draggedProp.sprite.x = this.draggedProp.propModel.x || 0
-        this.draggedProp.sprite.y = this.draggedProp.propModel.y || 0
+        this.draggedProp.sprite.x = this.draggedProp.model.x || 0
+        this.draggedProp.sprite.y = this.draggedProp.model.y || 0
       }
       // End Drag+Drop mode
       this.draggedProp.dragging = false
@@ -156,7 +156,7 @@ export class SceneScreen extends Container implements IScreen {
       if (
         Collision.isCollidingObjToObj(this.draggedProp?.sprite, prop.sprite)
       ) {
-        SAGE.debugLog(`>> collided with ${prop.data.name}`)
+        SAGE.debugLog(`>> collided with ${prop.model.name}`)
         currTarget = prop
       }
     }
@@ -165,7 +165,7 @@ export class SceneScreen extends Container implements IScreen {
       if (
         Collision.isCollidingObjToObj(this.draggedProp?.sprite, prop.sprite)
       ) {
-        SAGE.debugLog(`>> collided with ${prop.propModel.name}`)
+        SAGE.debugLog(`>> collided with ${prop.model.name}`)
         currTarget = prop
       }
     }
@@ -174,7 +174,7 @@ export class SceneScreen extends Container implements IScreen {
       if (
         Collision.isCollidingObjToObj(this.draggedProp?.sprite, door.graphics)
       ) {
-        SAGE.debugLog(`>> collided with ${door.data.name}`)
+        SAGE.debugLog(`>> collided with ${door.model.name}`)
         currTarget = door
       }
     }
@@ -184,7 +184,7 @@ export class SceneScreen extends Container implements IScreen {
     if (currTarget !== this.dragTarget) {
       if (currTarget) {
         // Different target...
-        SAGE.debugLog(`>> new target = ${currTarget.data.name}`)
+        SAGE.debugLog(`>> new target = ${currTarget.model.name}`)
       } else {
         // Lost target
         SAGE.debugLog(`>> NO target`)
@@ -199,21 +199,21 @@ export class SceneScreen extends Container implements IScreen {
     //  > Other Props in inventory
     for (const prop of SAGE.invScreen.propsList) {
       if (Collision.isCollidingPointToObj(touchPoint, prop.sprite)) {
-        SAGE.debugLog(`>> collided with ${prop.data.name}`)
+        SAGE.debugLog(`>> collided with ${prop.model.name}`)
         currTarget = prop
       }
     }
     //  > Other Props in current scene
     for (const prop of this.props) {
       if (Collision.isCollidingPointToObj(touchPoint, prop.sprite)) {
-        SAGE.debugLog(`>> collided with ${prop.propModel.name}`)
+        SAGE.debugLog(`>> collided with ${prop.model.name}`)
         currTarget = prop
       }
     }
     //  > Doors in current scene
     for (const door of this.doors) {
       if (Collision.isCollidingPointToObj(touchPoint, door.graphics)) {
-        SAGE.debugLog(`>> collided with ${door.data.name}`)
+        SAGE.debugLog(`>> collided with ${door.model.name}`)
         currTarget = door
       }
     }
@@ -223,7 +223,7 @@ export class SceneScreen extends Container implements IScreen {
     if (currTarget !== this.touchTarget) {
       if (currTarget) {
         // Different target...
-        SAGE.debugLog(`>> new target = ${currTarget.data.name}`)
+        SAGE.debugLog(`>> new target = ${currTarget.model.name}`)
       } else {
         // Lost target
         SAGE.debugLog(`>> NO target`)
@@ -346,22 +346,22 @@ export class SceneScreen extends Container implements IScreen {
 
     // DEBUG?
     if (SAGE.debugMode) {
-      console.log(`prop.propModel.width = ${prop.propModel.width}`)
+      console.log(`prop.propModel.width = ${prop.model.width}`)
       const graphics = new Graphics()
-      const propWidth = prop.propModel.width || 0,
-        propHeight = prop.propModel.height || 0
+      const propWidth = prop.model.width || 0,
+        propHeight = prop.model.height || 0
       graphics.beginFill(0xe74c3c, 125) // Red
       graphics.lineStyle(10, 0xff0000)
       graphics.pivot.set(propWidth / 2, propHeight / 2)
       // Need to handle diff for "non-image" sprites
       // (as Graphics scaling goes screwy if image dimensions are not really there)
-      if (prop.propModel.image) {
+      if (prop.model.image) {
         graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
         prop.sprite.addChild(graphics)
       } else {
         graphics.drawRoundedRect(
-          prop.propModel.x || 0,
-          prop.propModel.y || 0,
+          prop.model.x || 0,
+          prop.model.y || 0,
           propWidth,
           propHeight,
           30
@@ -385,12 +385,12 @@ export class SceneScreen extends Container implements IScreen {
           // remove when tween completes
           this.removeChild(prop.sprite)
           const index = this.props.findIndex(
-            (item) => item.propModel.id === prop.propModel.id
+            (item) => item.model.id === prop.model.id
           )
           if (index !== -1) this.props.splice(index, 1)
           prop.tidyUp()
           // remove from game data
-          this.scene.removePropModelById(prop.propModel.id)
+          this.scene.removePropModelById(prop.model.id)
         })
     }
     if (scaleAnim) {

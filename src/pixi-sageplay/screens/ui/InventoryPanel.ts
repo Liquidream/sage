@@ -1,7 +1,7 @@
 import { Container, Graphics } from "pixi.js"
 import { Tween } from "tweedle.js"
 import { SAGE } from "../../SAGEPlay"
-import { PropEdit } from "../../../pixi-sagedit/PropEdit"
+import { Prop } from "@/pixi-sageplay/Prop"
 
 export class InventoryScreen {
   // "constants"
@@ -22,7 +22,7 @@ export class InventoryScreen {
   private inventoryContainer: Container
   private inventoryBackground!: Graphics
 
-  public propsList: Array<PropEdit>
+  public propsList: Array<Prop>
 
   public isOpen = false
   public autoClose = true
@@ -32,7 +32,7 @@ export class InventoryScreen {
     this.parentLayer = parentLayer
     this.inventoryContainer = new Container()
     this.parentLayer.addChild(this.inventoryContainer)
-    this.propsList = new Array<PropEdit>()
+    this.propsList = new Array<Prop>()
     // Background
     this.createBackground()
     // Build initial inventory
@@ -46,11 +46,11 @@ export class InventoryScreen {
   private initialise() {
     // Create and add objects for initial inventory
     for (const propData of SAGE.World.player.inventory) {
-      this.addProp(new PropEdit(propData))
+      this.addProp(new Prop(propData))
     }
   }
 
-  public addProp(prop: PropEdit) {
+  public addProp(prop: Prop) {
     // Prep the sprite for the inventory
     // TODO: Use "Inventory" image, if specified
     const propSprite = prop.sprite
@@ -71,9 +71,11 @@ export class InventoryScreen {
     new Tween(propSprite).to({ alpha: 1 }, 500).start()
   }
 
-  public removeProp(propId: string): PropEdit | undefined {
-    const index = this.propsList.findIndex((item) => item.data.id === propId)
-    let prop: PropEdit | undefined
+  public removeProp(propId: string): Prop | undefined {
+    const index = this.propsList.findIndex(
+      (item) => item.model.id === propId
+    )
+    let prop: Prop | undefined
     if (index !== -1) prop = this.propsList.splice(index, 1)[0]
     if (prop) {
       const propSprite = prop.sprite

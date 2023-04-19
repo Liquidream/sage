@@ -194,13 +194,13 @@ export class SAGE {
   }
 
   public static gameOver(message: string) {
-    SAGE.Sound.play("Game-Lost")
+    SAGE.Sound.play("SFX-GameLost")
     SAGE.invScreen.close()
     SAGE.World.currentScene.screen.showGameOver(message)
   }
 
   public static gameWon(message: string) {
-    SAGE.Sound.play("Game-Won")
+    SAGE.Sound.play("SFX-GameWon")
     SAGE.invScreen.close()
     SAGE.World.currentScene.screen.showGameWon(message)
   }
