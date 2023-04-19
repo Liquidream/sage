@@ -43,6 +43,8 @@ export class SAGE {
   private static topLayer: Container
   public static currentScreen: IScreen // was private (should it be?)
 
+  private static invScreen: InventoryScreen
+
   public static World: World
   public static Dialog: Dialog
   public static Actions: Actions
