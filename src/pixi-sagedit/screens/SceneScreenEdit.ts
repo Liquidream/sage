@@ -21,7 +21,6 @@ import { useSceneStore } from "@/stores/SceneStore"
 import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
 import { InputEventEmitter } from "../../pixi-sageplay/screens/ui/InputEventEmitter"
-import { storeToRefs } from "pinia"
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null
@@ -40,20 +39,16 @@ export class SceneScreen extends Container {
 
   private backdropInputEvents!: InputEventEmitter
 
-  private worldStore: any
-  private worldRefs: any
-
   constructor() {
     super()
 
     // Subscribe to World state changes so that we refresh/recreate Pixi.js content
-    this.worldStore = useWorldStore()
-    this.worldRefs = storeToRefs(this.worldStore)
-    this.scene = this.worldRefs.getCurrentScene
-    this.worldStore.$subscribe(() => {
+    const worldStore = useWorldStore()
+    this.scene = worldStore.getCurrentScene
+    worldStore.$subscribe(() => {
       // Current scene changed
       SAGEdit.debugLog("World changed - so refresh scene model (pixi)")
-      this.scene = this.worldStore.getCurrentScene
+      this.scene = worldStore.getCurrentScene
       this.refresh()
     })
 
@@ -95,7 +90,7 @@ export class SceneScreen extends Container {
     // Moved re-getting store here to try to resolve rendering issue
     // (when jump straight to scene/selection on reload)
     const worldStore = useWorldStore()
-    this.scene = this.worldStore.getCurrentScene
+    this.scene = worldStore.getCurrentScene
 
     // Construct scene from data
     this.buildBackdrop()
