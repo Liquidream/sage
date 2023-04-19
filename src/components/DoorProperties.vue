@@ -155,7 +155,9 @@
     reader.readAsDataURL(e.target.files[0])
     reader.onload = () => {
       imageData.value = reader.result
-      model.image = reader.result as string // added "as" to squash error/warn, ok?
+      if (model.value) {
+        model.value.image = reader.result as string // added "as" to squash error/warn, ok?
+      }
     }
   }
 

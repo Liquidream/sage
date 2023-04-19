@@ -346,27 +346,24 @@ export class SceneScreen extends Container implements IScreen {
 
     // DEBUG?
     if (SAGE.debugMode) {
+      console.log(`prop.propModel.width = ${prop.propModel.width}`)
       const graphics = new Graphics()
+      const propWidth = prop.propModel.width || 0,
+        propHeight = prop.propModel.height || 0
       graphics.beginFill(0xe74c3c, 125) // Red
       graphics.lineStyle(10, 0xff0000)
-      graphics.pivot.set(prop.sprite.width / 2, prop.sprite.height / 2)
+      graphics.pivot.set(propWidth / 2, propHeight / 2)
       // Need to handle diff for "non-image" sprites
       // (as Graphics scaling goes screwy if image dimensions are not really there)
       if (prop.propModel.image) {
-        graphics.drawRoundedRect(
-          0,
-          0,
-          prop.sprite.width,
-          prop.sprite.height,
-          30
-        )
+        graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
         prop.sprite.addChild(graphics)
       } else {
         graphics.drawRoundedRect(
-          prop.sprite.x,
-          prop.sprite.y,
-          prop.sprite.width,
-          prop.sprite.height,
+          prop.propModel.x || 0,
+          prop.propModel.y || 0,
+          propWidth,
+          propHeight,
           30
         )
         this.addChild(graphics)
