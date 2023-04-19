@@ -20,7 +20,7 @@
     >Prop</v-btn
   >
 
-  <v-form>
+  <v-form v-if="model">
     <div class="header pa-3">
       <div class="mt-2 text-h5">
         <!-- Prop Name -->
@@ -138,12 +138,14 @@
   //import type { PropModel } from "@/models/PropModel"
   import { BaseTexture } from "pixi.js"
   import SceneSelect from "./SceneSelect.vue"
+import type { PropModel } from "@/models/PropModel"
 
   const worldStore = useWorldStore()
   // Make prop info react when selection changes
   const worldRefs = storeToRefs(worldStore)
-  const model = worldRefs.getCurrentProp // || ({} as PropModel)
-
+  const model = worldRefs.getCurrentProp || ({} as PropModel)
+  console.log(`model.name = ${model.Name}`)  
+  console.log(`model.name = ${model.Name}`)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any
   //let imageData: any = ""

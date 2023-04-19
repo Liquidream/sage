@@ -129,7 +129,6 @@ if (mode == "play") {
   //let app = createApp(AppServer);
   console.log(">>> Load data?")
   // Check for data to load
-  // debugger
   if (window.opener.sagePlayData) {
     const sagePlayData = window.opener.sagePlayData
     // World Data
@@ -141,30 +140,11 @@ if (mode == "play") {
     const sceneStore = useSceneStore()
     const sceneData: SceneState = JSON.parse(sagePlayData.sceneData)
     sceneStore.$state = sceneData
-    //debugger
-    // for (const scene of sceneData.scenes) {
-    //   if (scene.sound && scene.sound.startsWith("data:")) {
-    //     debugger
-    //     const assetName = scene.name + "-sound"
-    //     const data = scene.sound.split(",").slice(1).join(",")
-    //     const buffer = SAGE.Sound.soundLibrary.base64ToArrayBuffer(data)
-    //     SAGE.Sound.soundLibrary.add(assetName, buffer)
-    //     scene.sound = assetName
-    //   }
-    //   // SAGE.playManifest.bundles[0].assets.push({
-    //   //   name: assetName,
-    //   //   srcs: scene.sound,
-    //   // })
-    //   // Now replace sound with asset name
-    // }
 
     // Prop Data
     const propStore = usePropStore()
     const propData: PropState = JSON.parse(sagePlayData.propData)
     propStore.$state = propData
-    // for (const prop of propData) {
-    //   if ()
-    // }
 
     // Door Data
     const doorStore = useDoorStore()

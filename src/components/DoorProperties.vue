@@ -20,7 +20,7 @@
     >Door</v-btn
   >
 
-  <v-form>
+  <v-form v-if="model">
     <div class="header pa-3">
       <div class="mt-2 text-h5">
         <!-- Door Name -->

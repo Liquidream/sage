@@ -12,7 +12,7 @@
     >Scene</v-btn
   >
 
-  <v-form>
+  <v-form v-if="model">
     <div class="header pa-3">
       <div class="mt-2 text-h5">
         <!-- Scene Name -->
@@ -114,17 +114,15 @@
   import type { SceneModel } from "@/models/SceneModel"
   import { usePropStore } from "@/stores/PropStore"
   import { useDoorStore } from "@/stores/DoorStore"
+import { storeToRefs } from "pinia"
 
   const worldStore = useWorldStore()
+  const worldRefs = storeToRefs(worldStore)
   const propStore = usePropStore()
   const doorStore = useDoorStore()
 
-  // sceneStore.$subscribe((mutation, state) => {
-  //   console.log("state updated - so refresh scene model (pixi)")
-  //   sceneModel.teardown()
-  // }
-  //console.log(worldStore.getCurrentScene)
-  const model = worldStore.getCurrentScene || ({} as SceneModel)
+  const model = worldRefs.getCurrentScene
+  //const model = worldStore.getCurrentScene || ({} as SceneModel)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any
