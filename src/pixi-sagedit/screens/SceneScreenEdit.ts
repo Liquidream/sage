@@ -21,6 +21,7 @@ import { useSceneStore } from "@/stores/SceneStore"
 import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
 import { InputEventEmitter } from "../../pixi-sageplay/screens/ui/InputEventEmitter"
+import { storeToRefs } from "pinia"
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null
@@ -39,23 +40,25 @@ export class SceneScreen extends Container {
 
   private backdropInputEvents!: InputEventEmitter
 
+  private worldStore: any
+  private worldRefs: any
+
   constructor() {
     super()
 
     // Subscribe to World state changes so that we refresh/recreate Pixi.js content
-    const worldStore = useWorldStore()
-    this.scene = worldStore.getCurrentScene
-    //.$subscribe((mutation, state) => {
-    worldStore.$subscribe(() => {
+    this.worldStore = useWorldStore()
+    this.worldRefs = storeToRefs(this.worldStore)
+    this.scene = this.worldRefs.getCurrentScene
+    this.worldStore.$subscribe(() => {
       // Current scene changed
       SAGEdit.debugLog("World changed - so refresh scene model (pixi)")
-      this.scene = worldStore.getCurrentScene
+      this.scene = this.worldStore.getCurrentScene
       this.refresh()
     })
 
     // Subscribe to Scene state changes so that we refresh/recreate Pixi.js content
     const sceneStore = useSceneStore()
-    //.$subscribe((mutation, state) => {
     sceneStore.$subscribe(() => {
       // Scene changed
       //if (this.scene?.id !== worldStore.currSceneId) {
@@ -65,7 +68,6 @@ export class SceneScreen extends Container {
 
     // Subscribe to Prop state changes so that we refresh/recreate Pixi.js content
     const propStore = usePropStore()
-    //.$subscribe((mutation, state) => {
     propStore.$subscribe(() => {
       SAGEdit.debugLog("Prop changed - so refresh scene model (pixi)")
       this.refresh()
@@ -73,7 +75,6 @@ export class SceneScreen extends Container {
 
     // Subscribe to Door state changes so that we refresh/recreate Pixi.js content
     const doorStore = useDoorStore()
-    //.$subscribe((mutation, state) => {
     doorStore.$subscribe(() => {
       SAGEdit.debugLog("Door changed - so refresh scene model (pixi)")
       this.refresh()
@@ -90,6 +91,11 @@ export class SceneScreen extends Container {
 
   setup() {
     SAGEdit.debugLog("SceneScreen : setup()...")
+
+    // Moved re-getting store here to try to resolve rendering issue
+    // (when jump straight to scene/selection on reload)
+    const worldStore = useWorldStore()
+    this.scene = this.worldStore.getCurrentScene
 
     // Construct scene from data
     this.buildBackdrop()
@@ -108,7 +114,6 @@ export class SceneScreen extends Container {
     })
     // Get selected "name"
     let dialogText = this.scene?.name
-    const worldStore = useWorldStore()
     if (worldStore.currPropId != "") {
       dialogText = worldStore.getCurrentProp?.name
     }
@@ -166,6 +171,7 @@ export class SceneScreen extends Container {
       const texture = new Texture(base)
       sprite = Sprite.from(texture)
     } else {
+      console.log("<No scene backgdrop image specified>")
       sprite = new Sprite(Texture.EMPTY)
     }
     sprite.anchor.set(0.5)
@@ -312,6 +318,7 @@ export class SceneScreen extends Container {
   private onPointerUp() {
     //_e: InteractionEvent) {
     SAGEdit.debugLog(`${this.name}::onPointerUp()`)
+
     if (this.draggedProp) {
       // End Drag+Drop mode
       this.draggedProp.dragging = false
