@@ -106,11 +106,11 @@ import { SAGExport } from "./pixi-sagedit/SAGExport"
     console.log("in playGame()...")
     // Get the current "edit" data
     window.sagePlayData = {} as SagePlayData
-    window.sagePlayData.worldData = JSON.stringify(useWorldStore())
-    window.sagePlayData.sceneData = JSON.stringify(useSceneStore())
-    window.sagePlayData.propData = JSON.stringify(usePropStore())
-    window.sagePlayData.doorData = JSON.stringify(useDoorStore())
-    window.sagePlayData.actorData = JSON.stringify(useActorStore())
+    window.sagePlayData.worldData = JSON.stringify(useWorldStore().$state)
+    window.sagePlayData.sceneData = JSON.stringify(useSceneStore().$state)
+    window.sagePlayData.propData = JSON.stringify(usePropStore().$state)
+    window.sagePlayData.doorData = JSON.stringify(useDoorStore().$state)
+    window.sagePlayData.actorData = JSON.stringify(useActorStore().$state)
     // Launch "Play" window
     window.open("/?mode=play", "sagePlay")
   }

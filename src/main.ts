@@ -162,7 +162,7 @@ if (mode == "play") {
   console.log(">>> (finished loading data)")
 }
 
-await loadFonts()
+loadFonts()
 
 // Finally, mount the app
 console.log(">>> Mounting #app...")
