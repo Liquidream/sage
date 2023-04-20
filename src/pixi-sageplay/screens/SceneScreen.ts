@@ -300,11 +300,6 @@ export class SceneScreen extends Container implements IScreen {
     // Backdrop
     let sprite = undefined
     if (this.scene.image) {
-      //const worldStore = useWorldStore()
-      //debugger
-      //const scene = worldStore.getScenes[0]
-      // debugger
-      //sprite = Sprite.from(scene.image)
       sprite = Sprite.from(this.scene.image)
     } else {
       sprite = new Sprite(Texture.EMPTY)

@@ -11,8 +11,10 @@
     <v-app-bar :elevation="2">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>SAGE</v-toolbar-title>
-      <v-btn @click="playGame" color="info">Play</v-btn>
-      <v-spacer></v-spacer>
+      <v-btn @click="playGame" color="info" prepend-icon="mdi-play">Play</v-btn>
+      <v-spacer />
+      <v-btn @click="exportGame" color="info" prepend-icon="mdi-content-save">Export</v-btn>
+      <v-spacer />
       <v-btn icon @click="Fullscreen.toggleFullScreen">
         <v-icon>mdi-fullscreen</v-icon>
       </v-btn>
@@ -76,6 +78,7 @@
   import { useDoorStore } from "./stores/DoorStore"
   import { usePropStore } from "./stores/PropStore"
   import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
+import { SAGExport } from "./pixi-sagedit/SAGExport"
 
   console.log("start App.vue...")
   // current screen size
@@ -110,6 +113,12 @@
     window.sagePlayData.actorData = JSON.stringify(useActorStore())
     // Launch "Play" window
     window.open("/?mode=play", "sagePlay")
+  }
+
+  const exportGame = () => {
+    console.log("in exportGame()...")
+
+    SAGExport.performExport()
   }
 </script>
 
