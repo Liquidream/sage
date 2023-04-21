@@ -15,25 +15,69 @@ import { SAGE } from "./pixi-sageplay/SAGEPlay"
 
 let app: App
 
-// current screen size
-// const gameWidth = 1920
-// const gameHeight = 1080
-
 const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
-const mode = urlParams.get("mode")
+let mode = urlParams.get("mode")
+//if (mode === undefined) {
+//let mode = releaseMode === undefined ? urlParams.get("mode") : releaseMode
+//}
 
-// ------------------------------
-// Play Mode
-// ------------------------------
-if (mode == "play") {
-  //let app = createApp(AppServer);
-  console.log(">>> Play/Test mode!")
+// Try reading release data...
+try {
+  const response = await fetch("/sageData.json")
+  const sageData = await response.json()
+  if (sageData) {
+    mode = "release"
+    debugger
+  }
+} catch {
+  // ignore, must not be in release mode
+}
+
+if (mode === "release") {
+  // ------------------------------
+  // Release Mode
+  // ------------------------------
+  console.log(">>> Release mode!")
 
   // Expose to JavaScript/Browser console
   window.SAGE = SAGE
 
-  AppPlay.name = "SAGE-Play"
+  AppPlay.name = `SAGE-${sageData.id}`
+  // This force IndexedDB as the driver
+  localforage.config({
+    driver: localforage.INDEXEDDB,
+    name: AppPlay.name,
+  })
+  // Create pinia with persisted (indexedDB) storage
+  const pinia = createPinia()
+  pinia.use(
+    createPersistedStatePlugin({
+      storage: {
+        getItem: async (key) => {
+          return localforage.getItem(key)
+        },
+        setItem: async (key, value) => {
+          return localforage.setItem(key, value)
+        },
+        removeItem: async (key) => {
+          return localforage.removeItem(key)
+        },
+      },
+    })
+  )
+  app = createApp(AppPlay).use(vuetify).use(pinia)
+  //
+} else if (mode == "test") {
+  // ------------------------------
+  // Play Mode
+  // ------------------------------
+  console.log(">>> Test mode!")
+
+  // Expose to JavaScript/Browser console
+  window.SAGE = SAGE
+
+  AppPlay.name = "SAGE-Test"
   // Just init basic (non-persisted) Pinia
   const pinia = createPinia()
   app = createApp(AppPlay).use(vuetify).use(pinia)
@@ -42,11 +86,8 @@ if (mode == "play") {
   // ------------------------------
   // Edit Mode
   // ------------------------------
-  //let id = urlParams.get('id')
-  //app = createApp(App, { id: parseInt(id) } );
   console.log(">>> Editor mode!")
-  // window.S = {}
-  // S.JSON = "hello!"
+
   AppEdit.name = "SAGE-Edit"
   // This force IndexedDB as the driver
   localforage.config({
@@ -124,10 +165,12 @@ if (mode == "play") {
 
 // createApp(App).use(vuetify).use(pinia).mount("#app")
 
-//Restore play data?
-if (mode == "play") {
+if (mode == "test") {
+  // --------------------------------
+  //Restore test data?
+  // --------------------------------
   //let app = createApp(AppServer);
-  console.log(">>> Load data?")
+  console.log(">>> Load test data?")
   // Check for data to load
   if (window.opener.sagePlayData) {
     const sagePlayData = window.opener.sagePlayData
@@ -158,8 +201,12 @@ if (mode == "play") {
 
     // debugger
   }
-
-  console.log(">>> (finished loading data)")
+  console.log(">>> (finished loading test data)")
+  //
+} else if (mode == "play") {
+  // --------------------------------
+  // Restore exported game data
+  // --------------------------------
 }
 
 loadFonts()

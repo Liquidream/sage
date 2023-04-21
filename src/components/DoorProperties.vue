@@ -42,7 +42,7 @@
       rows="1"
     ></v-textarea>
     <v-textarea
-      name="desc"
+      name="desc_locked"
       v-model="model.desc_locked"
       label="Description (Locked)"
       auto-grow

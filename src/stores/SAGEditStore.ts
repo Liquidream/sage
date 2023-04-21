@@ -1,6 +1,10 @@
+import { Constants } from "@/constants"
 import { defineStore } from "pinia"
 
 export interface SageEditState {
+  version: string // "1.0"
+  id: string      // "kingsRansom"
+  //
   worldData: string
   sceneData: string
   propData: string
@@ -12,6 +16,9 @@ export const useSageEditStore = defineStore({
   id: "sageEditStore",
 
   state: (): SageEditState => ({
+    version: Constants.APP_VERSION,
+    id: "",
+    //
     worldData: "",
     sceneData: "",
     propData: "",
