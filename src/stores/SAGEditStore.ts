@@ -3,13 +3,13 @@ import { defineStore } from "pinia"
 
 export interface SageEditState {
   version: string // "1.0"
-  id: string      // "kingsRansom"
+  gameId: string      // "kingsRansom"
   //
-  worldData: string
-  sceneData: string
-  propData: string
-  doorData: string
-  actorData: string
+  // worldData: string
+  // sceneData: string
+  // propData: string
+  // doorData: string
+  // actorData: string
 }
 
 export const useSageEditStore = defineStore({
@@ -17,13 +17,13 @@ export const useSageEditStore = defineStore({
 
   state: (): SageEditState => ({
     version: Constants.APP_VERSION,
-    id: "",
+    gameId: "kingsRansom",
     //
-    worldData: "",
-    sceneData: "",
-    propData: "",
-    doorData: "",
-    actorData: "",
+    // worldData: "",
+    // sceneData: "",
+    // propData: "",
+    // doorData: "",
+    // actorData: "",
   }),
 
   // getters: {

@@ -39,5 +39,7 @@ declare global {
   interface Window {
     sagePlayData: SagePlayData
     SAGE: SAGE
+    sageDataId: string
+    //sagePlayDataJSON: string
   }
 }

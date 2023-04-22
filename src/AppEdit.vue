@@ -78,8 +78,8 @@
   import { useDoorStore } from "./stores/DoorStore"
   import { usePropStore } from "./stores/PropStore"
   import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
-import { SAGExport } from "./pixi-sagedit/SAGExport"
-import { Constants } from "./constants"
+  import { SAGExport } from "./pixi-sagedit/SAGExport"
+  import { useSageEditStore } from "./stores/SAGEditStore"
 
   console.log("start App.vue...")
   // current screen size
@@ -106,10 +106,11 @@ import { Constants } from "./constants"
   const playGame = () => {
     console.log("in playGame()...")
     // Get the current "edit" data
+    const editStore = useSageEditStore()
     const playData = {} as SagePlayData
-    playData.version = Constants.APP_VERSION
+    playData.version = editStore.version
     // TODO: This needs to be pulled somewhere from storage (prob playData store?)
-    playData.id = "kingsRansom"
+    playData.id = editStore.gameId
     playData.worldData = JSON.stringify(useWorldStore().$state)
     playData.sceneData = JSON.stringify(useSceneStore().$state)
     playData.propData = JSON.stringify(usePropStore().$state)
@@ -119,10 +120,10 @@ import { Constants } from "./constants"
     window.sagePlayData = playData
 
     //navigator.clipboard.writeText(JSON.stringify(playData))
-    window.sagePlayDataJSON = JSON.stringify(playData)
+    //window.sagePlayDataJSON = JSON.stringify(playData)
 
     // Launch "Play" window
-    window.open("/?mode=test", "sagePlay")
+    window.open("/?mode=play", "sagePlay")
   }
 
   const exportGame = () => {

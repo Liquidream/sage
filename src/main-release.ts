@@ -1,4 +1,4 @@
-import { createApp, type App } from "vue"
+import { createApp } from "vue"
 import { createPinia } from "pinia"
 import { createPersistedStatePlugin } from "pinia-plugin-persistedstate-2"
 import localforage from "localforage"
@@ -17,7 +17,7 @@ import { SAGE } from "./pixi-sageplay/SAGEPlay"
 // const gameHeight = 1080
 
 // TODO: Populate the "safe" name of game here from data
-const nameOfGame = "TODO"
+const nameOfGame = window.sageDataId
 
 //const queryString = window.location.search
 //const urlParams = new URLSearchParams(queryString)
@@ -60,41 +60,51 @@ const app = createApp(AppPlay).use(vuetify).use(pinia)
 // --------------------------------
 console.log(">>> Load release data")
 
-const sagePlayData = window.opener.sagePlayData
-// World Data
 const worldStore = useWorldStore()
-const worldData: WorldState = JSON.parse(sagePlayData.worldData)
-worldStore.$state = worldData
-
-// Scene Data
 const sceneStore = useSceneStore()
-const sceneData: SceneState = JSON.parse(sagePlayData.sceneData)
-sceneStore.$state = sceneData
-
-// Prop Data
 const propStore = usePropStore()
-const propData: PropState = JSON.parse(sagePlayData.propData)
-propStore.$state = propData
-
-// Door Data
 const doorStore = useDoorStore()
-const doorData: DoorState = JSON.parse(sagePlayData.doorData)
-doorStore.$state = doorData
-
-// Actor Data
 const actorStore = useActorStore()
-const actorData: ActorState = JSON.parse(sagePlayData.actorData)
-actorStore.$state = actorData
+
+const importPlayData = async (): Promise<void> => {
+  //if (mode == "release") {
+  console.log(">>> Import release data?")
+  const response = await fetch("/sageData.json")
+  const sagePlayData = await response.json()
+  console.log(">>> (finished retriving release data)")
+
+  // World Data
+  const worldData: WorldState = JSON.parse(sagePlayData.worldData)
+  worldStore.$state = worldData
+
+  // Scene Data
+  const sceneData: SceneState = JSON.parse(sagePlayData.sceneData)
+  sceneStore.$state = sceneData
+
+  // Prop Data
+  const propData: PropState = JSON.parse(sagePlayData.propData)
+  propStore.$state = propData
+
+  // Door Data
+  const doorData: DoorState = JSON.parse(sagePlayData.doorData)
+  doorStore.$state = doorData
+
+  // Actor Data
+  const actorData: ActorState = JSON.parse(sagePlayData.actorData)
+  actorStore.$state = actorData
+
+  console.log(">>> (finished importing release data)")
+
+  loadFonts()
+
+  // Finally, mount the app
+  console.log(">>> Mounting #app...")
+  app.mount("#app")
+}
+
+importPlayData()
 
 // debugger
-
-console.log(">>> (finished loading test data)")
-
-loadFonts()
-
-// Finally, mount the app
-console.log(">>> Mounting #app...")
-app.mount("#app")
 
 // prevent right click contextBox
 document.addEventListener("contextmenu", (e) => {
