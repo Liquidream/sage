@@ -100,11 +100,11 @@ export const useWorldStore = defineStore("worldStore", {
      * Other
      */
 
-    exportDataToJSON() {
-      const sceneStore = useSceneStore()
-      const test = JSON.stringify(sceneStore.$state)
-      //debugger
-    },
+    // exportDataToJSON() {
+    //   const sceneStore = useSceneStore()
+    //   const test = JSON.stringify(sceneStore.$state)
+    //   //debugger
+    // },
 
     // loadPlayData() {
     //   //debugger
