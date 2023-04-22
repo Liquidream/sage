@@ -21,5 +21,13 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
     server: {
       host: "0.0.0.0",
     },
+    build: {
+      rollupOptions: {
+        output: {
+          assetFileNames: "SAGE.[ext]",
+          entryFileNames: 'entry-[name].js'
+        },
+      },
+    },
   }
 })
