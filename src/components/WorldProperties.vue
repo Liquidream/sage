@@ -13,6 +13,12 @@
 
     <v-text-field label="Title" v-model="worldStore.title"></v-text-field>
 
+    <v-text-field
+      label="ID"
+      v-model="worldStore.id"
+      hint="Unique reference for data storage"
+    ></v-text-field>
+
     <scene-select label="Starting Scene" v-model="worldStore.startingSceneId" />
 
     <v-divider />

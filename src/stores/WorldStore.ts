@@ -8,6 +8,7 @@ import { usePropStore } from "./PropStore"
 import { useActorStore } from "./ActorStore"
 
 export interface WorldState {
+  id: string
   title: string
   startingSceneId: string
   on_start: string
@@ -22,6 +23,7 @@ export const useWorldStore = defineStore("worldStore", {
   // https://runthatline.com/pinia-typescript-type-state-actions-getters/
   // https://pinia.vuejs.org/core-concepts/state.html#typescript
   state: (): WorldState => ({
+    id: "",
     title: "",
     startingSceneId: "",
     on_start: "",

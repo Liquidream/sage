@@ -39,42 +39,6 @@
           "name": "SFX-GameLost",
           "srcs": "sfx/game-lost.mp3"
         },
-        {
-          "name": "scn_bridge-image",
-          "srcs": "images/scn_bridge-image.jpeg"
-        },
-        {
-          "name": "scn_bridge-sound",
-          "srcs": "sfx/scn_bridge-sound.mpeg"
-        },
-        {
-          "name": "scn_cave_ent-image",
-          "srcs": "images/scn_cave_ent-image.jpeg"
-        },
-        {
-          "name": "scn_cave_ent-sound",
-          "srcs": "sfx/scn_cave_ent-sound.mpeg"
-        },
-        {
-          "name": "scn_fortress_ext-image",
-          "srcs": "images/scn_fortress_ext-image.jpeg"
-        },
-        {
-          "name": "scn_fortress_ext-sound",
-          "srcs": "sfx/scn_fortress_ext-sound.mpeg"
-        },
-        {
-          "name": "prp_lamp-image",
-          "srcs": "images/prp_lamp-image.png"
-        },
-        {
-          "name": "prp_key-image",
-          "srcs": "images/prp_key-image.png"
-        },
-        {
-          "name": "prp_gold_bar-image",
-          "srcs": "images/prp_gold_bar-image.png"
-        }
       ]
     }
   ]

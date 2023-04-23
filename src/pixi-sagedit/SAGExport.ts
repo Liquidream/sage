@@ -30,14 +30,11 @@ export class SAGExport {
 
     // Create the zip file
     const zip = new JSZip()
-
-    
     const assetsManifest = playAssets
-
     const playData = {} as SagePlayData
     playData.version = Constants.APP_VERSION
     // TODO: This needs to be pulled somewhere from storage (prob playData store?)
-    playData.id = "kingsRansom"
+    playData.id = useWorldStore().id
     // World
     playData.worldData = JSON.stringify(useWorldStore().$state)
     // Scenes
@@ -62,7 +59,14 @@ export class SAGExport {
 
     // Core runtime files
     //debugger
-    zip.file("index.html", SAGExport.urlToPromise("/index-release.html"), { binary: true })
+    let htmlPage = await fetch("/index-release.html").then((response) =>
+      // When the page is loaded convert it to text
+      response.text()
+    )
+    htmlPage = htmlPage.replace("{{title}}", useWorldStore().title)
+    htmlPage = htmlPage.replace("{{dataId}}", playData.id)
+    zip.file("index.html", htmlPage)
+    // zip.file("index.html", SAGExport.urlToPromise("/index-release.html"), { binary: true })
     zip.file("entry-index-release.js", SAGExport.urlToPromise("/entry-index-release.js"), { binary: true })
     
     // Code GFX files
@@ -80,6 +84,7 @@ export class SAGExport {
 
     // Other assets
     zip.file("favicon.ico", SAGExport.urlToPromise("favicon.ico"), { binary: true })
+    //zip.file("SAGE.css", SAGExport.urlToPromise("SAGE.css"), { binary: true })
     zip.folder("assets").file("webfontloader.js", SAGExport.urlToPromise("assets/webfontloader.js"), { binary: true })
 
     console.log("generating file...")
