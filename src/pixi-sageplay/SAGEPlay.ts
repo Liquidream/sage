@@ -151,8 +151,9 @@ export class SAGE {
   }
 
   private static loadSounds() {
-    //debugger
+    // debugger
     for (const scene of SAGE.World.scenes) {
+      // Should only happen while "testing" game, not in "release"
       if (scene.sound && scene.sound.startsWith("data:")) {
         const assetName = scene.name + "-sound"
         const data = scene.sound.split(",").slice(1).join(",")
