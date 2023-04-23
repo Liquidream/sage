@@ -53,10 +53,9 @@ export class LoaderScreen extends Container {
   private async initializeLoader(): Promise<void> {
     console.log("in initializeLoader()...")
     // use .json file
-    // await Assets.init({ manifest: "assets.json" })
-    // await Assets.loadBundle("load-screen", this.downloadProgress.bind(this))
+    await Assets.init({ manifest: "assets.json" })
+    //await Assets.init({ manifest: SAGE.playManifest })
 
-    await Assets.init({ manifest: SAGE.playManifest })
     await Assets.loadBundle("load-screen", this.downloadProgress.bind(this))
     // debugger
 

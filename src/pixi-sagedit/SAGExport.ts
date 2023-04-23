@@ -73,6 +73,9 @@ export class SAGExport {
     zip.folder("sfx").file("game-won.mp3", SAGExport.urlToPromise("sfx/game-won.mp3"), { binary: true })
     zip.folder("sfx").file("game-lost.mp3", SAGExport.urlToPromise("sfx/game-lost.mp3"), { binary: true })
 
+    // Other assets
+    zip.file("favicon.ico", SAGExport.urlToPromise("favicon.ico"), { binary: true })
+    zip.folder("assets").file("webfontloader.js", SAGExport.urlToPromise("assets/webfontloader.js"), { binary: true })
 
     console.log("generating file...")
     zip.generateAsync({ type: "blob" }).then(function (content) {
