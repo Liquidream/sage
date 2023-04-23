@@ -12,6 +12,7 @@ import { usePropStore, type PropState } from "./stores/PropStore"
 import { useDoorStore, type DoorState } from "./stores/DoorStore"
 import { useActorStore, type ActorState } from "./stores/ActorStore"
 import { SAGE } from "./pixi-sageplay/SAGEPlay"
+import { usePlayerStore, type PlayerState } from "./stores/PlayerStore"
 
 let app: App
 
@@ -155,6 +156,11 @@ if (mode == "play") {
     const actorStore = useActorStore()
     const actorData: ActorState = JSON.parse(sagePlayData.actorData)
     actorStore.$state = actorData
+
+    // Actor Data
+    const playerStore = usePlayerStore()
+    const playerData: PlayerState = JSON.parse(sagePlayData.playerData)
+    playerStore.$state = playerData
 
     // debugger
   }

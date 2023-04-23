@@ -12,6 +12,7 @@ import type { ResolverManifest } from "pixi.js"
 import { playAssets } from "@/pixi-sageplay/playAssets"
 // @ts-ignore
 import JSZipUtils from "jszip-utils"
+import { usePlayerStore } from "@/stores/PlayerStore"
 
 export class SAGExport {
   private constructor() {
@@ -49,6 +50,7 @@ export class SAGExport {
     // playData.propData = JSON.stringify(usePropStore().$state)
     playData.doorData = JSON.stringify(useDoorStore().$state)
     playData.actorData = JSON.stringify(useActorStore().$state)
+    playData.playerData = JSON.stringify(usePlayerStore().$state)
 
     const playDataJSON = JSON.stringify(playData, null, 2)
     zip.file("sageData.json", playDataJSON)

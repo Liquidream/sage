@@ -8,6 +8,7 @@ import type { PropModel } from "@/models/PropModel"
 import { usePropStore } from "@/stores/PropStore"
 import type { DoorModel } from "@/models/DoorModel"
 import { useDoorStore } from "@/stores/DoorStore"
+import { useWorldStore } from "@/stores/WorldStore"
 
 export class Scene implements SceneModel {
   //implements ISceneData, Serialization<Scene> {
@@ -94,7 +95,9 @@ export class Scene implements SceneModel {
     // Remember the new scene
     // (happens in above function)
     SAGE.World.currentScene = this
-    //SAGE.World.startingSceneId = this.id
+    //
+    const worldStore = useWorldStore()
+    worldStore.currSceneId = this.id
 
     // DEBUG
     //console.log(SAGE.World.serialize());
