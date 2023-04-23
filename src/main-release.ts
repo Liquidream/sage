@@ -74,35 +74,35 @@ const importPlayData = async (): Promise<void> => {
   const sagePlayData = await response.json()
   console.log(">>> (finished retriving release data)")
   
-  debugger
+  //debugger
   // Import game data (but only on first run)
-  if (worldStore.currSceneId === "") {
-    // World Data
-    const worldData: WorldState = JSON.parse(sagePlayData.worldData)
-    worldStore.$state = worldData
+//   if (worldStore.currSceneId === "") {
+//     // World Data
+//     const worldData: WorldState = JSON.parse(sagePlayData.worldData)
+//     worldStore.$state = worldData
 
-    // Scene Data
-    const sceneData: SceneState = JSON.parse(sagePlayData.sceneData)
-    sceneStore.$state = sceneData
+//     // Scene Data
+//     const sceneData: SceneState = JSON.parse(sagePlayData.sceneData)
+//     sceneStore.$state = sceneData
 
-    // Prop Data
-    const propData: PropState = JSON.parse(sagePlayData.propData)
-    propStore.$state = propData
+//     // Prop Data
+//     const propData: PropState = JSON.parse(sagePlayData.propData)
+//     propStore.$state = propData
 
-    // Door Data
-    const doorData: DoorState = JSON.parse(sagePlayData.doorData)
-    doorStore.$state = doorData
+//     // Door Data
+//     const doorData: DoorState = JSON.parse(sagePlayData.doorData)
+//     doorStore.$state = doorData
 
-    // Actor Data
-    const actorData: ActorState = JSON.parse(sagePlayData.actorData)
-    actorStore.$state = actorData
+//     // Actor Data
+//     const actorData: ActorState = JSON.parse(sagePlayData.actorData)
+//     actorStore.$state = actorData
 
-    // Player Data
-    const playerData: PlayerState = JSON.parse(sagePlayData.playerData)
-    playerStore.$state = playerData
+//     // Player Data
+//     const playerData: PlayerState = JSON.parse(sagePlayData.playerData)
+//     playerStore.$state = playerData
 
-    console.log(">>> (finished importing release data)")
-  }
+//     console.log(">>> (finished importing release data)")
+//   }
 
   loadFonts()
 
