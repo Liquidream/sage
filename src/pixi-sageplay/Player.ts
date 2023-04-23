@@ -3,13 +3,22 @@ import type { Serialization } from "../utils/Serialization"
 import { Prop } from "./Prop"
 //import * as PropData from "./data/PropData"
 import { LocationType, type PropModel } from "@/models/PropModel"
+import { usePlayerStore } from "@/stores/PlayerStore"
 
 export class Player implements IPlayerData, Serialization<Player> {
   public constructor() {
     // Anything?
   }
+
+  private playerStore = usePlayerStore()
+
   public name: string | undefined
-  public inventory: Array<PropModel> = []
+
+  public get inventory(): PropModel[] {
+    return this.playerStore.inventory
+  }
+  // public inventory: Array<PropModel> = []
+
   // Key-Value pair to allow properties to be set/read
   public property: { [key: string]: string | number | boolean } = {}
 
