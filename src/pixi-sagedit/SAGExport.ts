@@ -46,34 +46,34 @@ export class SAGExport {
     playData.propData = JSON.stringify(usePropStore().$state)
     playData.doorData = JSON.stringify(useDoorStore().$state)
     playData.actorData = JSON.stringify(useActorStore().$state)
-    
+
     const playDataJSON = JSON.stringify(playData, null, 2)
     zip.file("sageData.json", playDataJSON)
-    
+
     // debugger
-    
+
     const assetsJSON = JSON.stringify(assetsManifest, null, 2)
     zip.file("assets.json", assetsJSON)
-    
+
     // Core runtime files
     //debugger
-    JSZipUtils.getBinaryContent("/index.html", function (err, data) {
-      if (err) {
-        throw err // or handle the error
-      }
-      console.log("adding index.html")
-      zip.file("index.html", data, { binary: true })
-    })
-
-    JSZipUtils.getBinaryContent("/entry-index.js", function (err, data) {
-      if (err) {
-        throw err // or handle the error
-      }
-      console.log("adding entry-index.html")
-      zip.file("entry-index.js", data, { binary: true })
-      // debugger
-    })
+    zip.file("index.html", SAGExport.urlToPromise("/index.html"), { binary: true })
+    zip.file("entry-index.js", SAGExport.urlToPromise("/entry-index.js"), { binary: true })
     
+    // Code GFX files
+    zip.folder("images").file("debug.png", SAGExport.urlToPromise("images/debug.png"), { binary: true })
+    zip.folder("images").folder("ui").file("shine.png", SAGExport.urlToPromise("images/ui/shine.png"), { binary: true })
+    zip.folder("images").folder("ui").file("settings.png", SAGExport.urlToPromise("images/ui/settings.png"), { binary: true })
+    zip.folder("images").folder("ui").file("inventory.png", SAGExport.urlToPromise("images/ui/inventory.png"), { binary: true })
+
+    // Code SFX files
+    zip.folder("sfx").file("pick-up.mp3", SAGExport.urlToPromise("sfx/pick-up.mp3"), { binary: true })
+    zip.folder("sfx").file("door-locked.mp3", SAGExport.urlToPromise("sfx/door-locked.mp3"), { binary: true })
+    zip.folder("sfx").file("door-unlock.mp3", SAGExport.urlToPromise("sfx/door-unlock.mp3"), { binary: true })
+    zip.folder("sfx").file("game-won.mp3", SAGExport.urlToPromise("sfx/game-won.mp3"), { binary: true })
+    zip.folder("sfx").file("game-lost.mp3", SAGExport.urlToPromise("sfx/game-lost.mp3"), { binary: true })
+
+
     console.log("generating file...")
     zip.generateAsync({ type: "blob" }).then(function (content) {
       // see FileSaver.js
@@ -111,49 +111,17 @@ export class SAGExport {
     return JSON.stringify(sceneState)
   }
 
-  // public static exportSound(
-  //   assetName: string,
-  //   soundDataUri: string,
-  //   assets: ResolverManifest,
-  //   zipImageFolder: JSZip | null
-  // ) {
-  //   const idx = soundDataUri.indexOf("base64,") + "base64,".length
-  //   const soundData = soundDataUri.substring(idx)
-  //   const fileExt = soundDataUri.split(';')[0].split('/')[1]
-  //   const filename = `${assetName}.${fileExt}`
-  //   // TODO: Need to preserve original extensions
-  //   zipImageFolder?.file(`${filename}`, soundData, { base64: true })
-
-  //   // Add to assets list
-  //   assets.bundles[0].assets.push({
-  //     name: assetName,
-  //     srcs: `${zipImageFolder?.root}${filename}`,
-  //   })
-  // }
-
-  // public static exportImage(
-  //   assetName: string,
-  //   imgDataUri: string,
-  //   assets: ResolverManifest,
-  //   zipImageFolder: JSZip | null
-  // ) {
-  //   // Find the offset to start of data
-  //   // https://github.com/Stuk/jszip/issues/404
-  //   const idx = imgDataUri.indexOf("base64,") + "base64,".length
-  //   const imgData = imgDataUri.substring(idx)
-  //   const fileExt = soundDataUri.split(';')[0].split('/')[1]
-  //   const filename = `${assetName}.${fileExt}`
-  //   // TODO: Need to preserve original extensions
-  //   zipImageFolder?.file(`${assetName}.jpg`, imgData, { base64: true })
-
-  //   // Add to assets list
-  //   assets.bundles[0].assets.push({
-  //     name: assetName,
-  //     srcs: `${zipImageFolder?.root}${assetName}.jpg`,
-  //   })
-
-  //   // TODO: Need to also return filetype (maybe do both here, then parse)
-  // }
+  public static urlToPromise(url: string) {
+    return new Promise((resolve, reject) => {
+      JSZipUtils.getBinaryContent(url, function (err, data) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(data)
+        }
+      })
+    })
+  }
 
   public static exportData(
     assetName: string,

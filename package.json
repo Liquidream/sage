@@ -16,6 +16,7 @@
     "@pixi/sound": "^5.1.1",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
+    "jszip-utils": "^0.1.0",
     "localforage": "^1.10.0",
     "pinia": "^2.0.34",
     "pinia-plugin-persistedstate-2": "^2.0.14",
