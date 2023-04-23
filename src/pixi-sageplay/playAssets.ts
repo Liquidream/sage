@@ -34,7 +34,7 @@ export const playAssets: ResolverManifest = {
           srcs: "sfx/door-unlock.mp3",
         },
         {
-          name: "SFX-GameLost",
+          name: "SFX-GameWon",
           srcs: "sfx/game-won.mp3",
         },
         {
