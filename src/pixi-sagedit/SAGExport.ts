@@ -10,6 +10,8 @@ import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneState } from "@/stores/SceneStore"
 import type { ResolverManifest } from "pixi.js"
 import { playAssets } from "@/pixi-sageplay/playAssets"
+// @ts-ignore
+import JSZipUtils from "jszip-utils"
 
 export class SAGExport {
   private constructor() {
@@ -28,6 +30,7 @@ export class SAGExport {
     // Create the zip file
     const zip = new JSZip()
 
+    
     const assetsManifest = playAssets
 
     const playData = {} as SagePlayData
@@ -43,27 +46,38 @@ export class SAGExport {
     playData.propData = JSON.stringify(usePropStore().$state)
     playData.doorData = JSON.stringify(useDoorStore().$state)
     playData.actorData = JSON.stringify(useActorStore().$state)
-
+    
     const playDataJSON = JSON.stringify(playData, null, 2)
     zip.file("sageData.json", playDataJSON)
-
+    
+    // debugger
+    
     const assetsJSON = JSON.stringify(assetsManifest, null, 2)
     zip.file("assets.json", assetsJSON)
-
+    
     // Core runtime files
-    fetch("/" + "index.html")
-      .then((res) => res.arrayBuffer())
-      .then((ab) => {
-        zip.file("index.html", ab)
-      })
-    fetch("/" + "entry-index.js")
-      .then((res) => res.arrayBuffer())
-      .then((ab) => {
-        zip.file("entry-index.js", ab)
-      })
+    //debugger
+    JSZipUtils.getBinaryContent("/index.html", function (err, data) {
+      if (err) {
+        throw err // or handle the error
+      }
+      console.log("adding index.html")
+      zip.file("index.html", data, { binary: true })
+    })
 
+    JSZipUtils.getBinaryContent("/entry-index.js", function (err, data) {
+      if (err) {
+        throw err // or handle the error
+      }
+      console.log("adding entry-index.html")
+      zip.file("entry-index.js", data, { binary: true })
+      // debugger
+    })
+    
+    console.log("generating file...")
     zip.generateAsync({ type: "blob" }).then(function (content) {
       // see FileSaver.js
+      console.log("saving file...")
       saveAs(content, `${playData.id}-release.zip`)
     })
   }
