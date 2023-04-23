@@ -57,8 +57,8 @@ export class SAGExport {
 
     // Core runtime files
     //debugger
-    zip.file("index.html", SAGExport.urlToPromise("/index.html"), { binary: true })
-    zip.file("entry-index.js", SAGExport.urlToPromise("/entry-index.js"), { binary: true })
+    zip.file("index.html", SAGExport.urlToPromise("/index-release.html"), { binary: true })
+    zip.file("entry-index-release.js", SAGExport.urlToPromise("/entry-index-release.js"), { binary: true })
     
     // Code GFX files
     zip.folder("images").file("debug.png", SAGExport.urlToPromise("images/debug.png"), { binary: true })
