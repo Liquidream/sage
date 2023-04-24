@@ -38,7 +38,7 @@
         {
           "name": "SFX-GameLost",
           "srcs": "sfx/game-lost.mp3"
-        },
+        }
       ]
     }
   ]

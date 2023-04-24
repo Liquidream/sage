@@ -80,6 +80,7 @@
   import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
   import { SAGExport } from "./pixi-sagedit/SAGExport"
   import { useSageEditStore } from "./stores/SAGEditStore"
+import { usePlayerStore } from "./stores/PlayerStore"
 
   console.log("start App.vue...")
   // current screen size
@@ -116,6 +117,7 @@
     playData.propData = JSON.stringify(usePropStore().$state)
     playData.doorData = JSON.stringify(useDoorStore().$state)
     playData.actorData = JSON.stringify(useActorStore().$state)
+    playData.playerData = JSON.stringify(usePlayerStore().$state)
 
     window.sagePlayData = playData
 
