@@ -23,7 +23,7 @@
     <v-divider />
     <v-list-subheader>General</v-list-subheader>
 
-    <v-text-field label="ID" v-model="model.id"></v-text-field>
+    <v-text-field label="ID" v-model="model.id" @update:modelValue="scnIdUpdated"></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
     <v-file-input
@@ -155,6 +155,11 @@ import { storeToRefs } from "pinia"
     worldStore.currSceneId = ""
     // Force scroll to top of nav panel
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
+  }
+
+  const scnIdUpdated = () => {
+    console.log(">>> sceneId edited, so keep it 'current'")
+    useWorldStore().currSceneId = model.value.id
   }
 
   const propSelected = (value: {

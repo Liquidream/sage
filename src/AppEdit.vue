@@ -19,7 +19,7 @@
             v-for="(item, i) in items"
             :key="i"
             :value="item"
-            @click="itemClicked"
+            @click="item.func()"
           >
             <template v-slot:prepend>
               <v-icon :icon="item.icon"></v-icon>
@@ -101,6 +101,7 @@
   import { SAGExport } from "./pixi-sagedit/SAGExport"
   import { useSageEditStore } from "./stores/SAGEditStore"
   import { usePlayerStore } from "./stores/PlayerStore"
+  import type { SceneModel } from "./models/SceneModel"
 
   // For some reason, it seems VERY hard to manually create a clickable list
   // So having to work with a bound one for now...
@@ -108,21 +109,36 @@
     {
       icon: "mdi-filmstrip-box",
       text: "Add Scene",
-      value: 1,
+      func: () => {
+        console.log(">> Add scene")
+        const newScene: SceneModel = {
+          id: "scn_",
+          name: "New Scene",
+        }
+        useWorldStore().createScene(newScene)
+        // Now set it as current scene
+        useWorldStore().currSceneId = newScene.id
+        // TODO: this will be issue if they then rename scene id
+        // (need to handle that in sceneId text field to keep it current!)
+      },
     },
     {
       icon: "mdi-trophy",
       text: "Add Prop",
-      value: 2,
+      func: () => {
+        console.log(">>>2")
+      },
     },
     {
       icon: "mdi-door",
       text: "Add Door",
-      value: 3,
+      func: () => {
+        console.log(">>>3")
+      },
     },
   ]
   const itemClicked = function (item: any) {
-    debugger
+    console.log(`TODO: ${item.text}`)
   }
 
   console.log("start App.vue...")
