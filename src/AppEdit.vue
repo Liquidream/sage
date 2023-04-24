@@ -9,15 +9,25 @@
     </v-main>
 
     <v-app-bar :elevation="2">
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-menu :close-on-content-click="false">
+        <template v-slot:activator="{ props }">
+          <v-app-bar-nav-icon v-bind="props"></v-app-bar-nav-icon>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-list-item-title @click="alert('>')">Add Scene</v-list-item-title>
+            <v-list-item-title @click="alert('>')">Add Prop</v-list-item-title>
+            <v-list-item-title @click="alert('>')">Add Door</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-toolbar-title>SAGE</v-toolbar-title>
       <v-btn @click="playGame" color="info" prepend-icon="mdi-play">Play</v-btn>
       <v-spacer />
       <v-btn @click="exportGame" color="info" prepend-icon="mdi-content-save">Export</v-btn>
       <v-spacer />
-      <v-btn icon @click="Fullscreen.toggleFullScreen">
-        <v-icon>mdi-fullscreen</v-icon>
-      </v-btn>
+      <!-- <v-btn icon="mdi-plus"></v-btn> -->
+      <v-btn icon="mdi-fullscreen" @click="Fullscreen.toggleFullScreen"></v-btn>
     </v-app-bar>
 
     <!-- Landscape/Desktop Layout (Start) =============== -->
