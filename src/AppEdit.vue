@@ -13,7 +13,21 @@
         <template v-slot:activator="{ props }">
           <v-app-bar-nav-icon v-bind="props"></v-app-bar-nav-icon>
         </template>
-        <v-list :items="items" @click="itemClicked"></v-list>
+
+        <v-list>
+          <v-list-item
+            v-for="(item, i) in items"
+            :key="i"
+            :value="item"
+            @click="itemClicked"
+          >
+            <template v-slot:prepend>
+              <v-icon :icon="item.icon"></v-icon>
+            </template>
+
+            <v-list-item-title v-text="item.text"></v-list-item-title>
+          </v-list-item>
+        </v-list>
       </v-menu>
       <v-toolbar-title>SAGE</v-toolbar-title>
       <v-btn @click="playGame" color="info" prepend-icon="mdi-play">Play</v-btn>
@@ -92,19 +106,22 @@
   // So having to work with a bound one for now...
   const items = [
     {
-      title: "Add Scene",
+      icon: "mdi-filmstrip-box",
+      text: "Add Scene",
       value: 1,
     },
     {
-      title: "Add Prop",
+      icon: "mdi-trophy",
+      text: "Add Prop",
       value: 2,
     },
     {
-      title: "Add Door",
+      icon: "mdi-door",
+      text: "Add Door",
       value: 3,
     },
   ]
-  const itemClicked = function(item: any) {
+  const itemClicked = function (item: any) {
     debugger
   }
 
