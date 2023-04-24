@@ -69,14 +69,13 @@ const actorStore = useActorStore()
 const playerStore = usePlayerStore()
 
 const importPlayData = async (): Promise<void> => {
-  console.log(">>> Import release data...")
-  const response = await fetch("/sageData.json")
-  const sagePlayData = await response.json()
-  console.log(">>> (finished retriving release data)")
-
-  //debugger
   // Import game data (but only on first run)
   if (worldStore.currSceneId === "") {
+    console.log(">>> No saved data - so import release data...")
+    const response = await fetch("/sageData.json")
+    const sagePlayData = await response.json()
+    console.log(">>> (finished retriving release data)")
+
     // World Data
     const worldData: WorldState = JSON.parse(sagePlayData.worldData)
     worldStore.$state = worldData
@@ -111,9 +110,11 @@ const importPlayData = async (): Promise<void> => {
   app.mount("#app")
 }
 
-importPlayData()
-
-// debugger
+// Only proceed once store has fully loaded
+// (takes longer with IndexedDB)
+worldStore.$persistedState.isReady().then(() => {
+  importPlayData()
+})
 
 // prevent right click contextBox
 document.addEventListener("contextmenu", (e) => {

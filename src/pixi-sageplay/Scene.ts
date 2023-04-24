@@ -104,6 +104,7 @@ export class Scene implements SceneModel {
     // (remembers by changing the starting scene)
     const worldStore = useWorldStore()
     worldStore.startingSceneId = this.id
+    worldStore.currSceneId = this.id
 
     // DEBUG
     //console.log(SAGE.World.serialize());
