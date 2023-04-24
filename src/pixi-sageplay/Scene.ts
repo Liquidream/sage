@@ -50,8 +50,14 @@ export class Scene implements SceneModel {
   public property: { [key: string]: string | number | boolean } = {}
 
   // Events
-  public on_enter = ""
-  public on_exit = ""
+  // public on_enter = ""
+  public get on_enter(): string | undefined {
+    return this.sceneModel.on_enter
+  }
+  // public on_exit = ""
+  public get on_exit(): string | undefined {
+    return this.sceneModel.on_exit
+  }
 
   //public props: Array<PropData.PropData> = []
   //public props: Array<PropModel> = []
