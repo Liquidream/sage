@@ -9,22 +9,18 @@
     </v-main>
 
     <v-app-bar :elevation="2">
-      <v-menu :close-on-content-click="false">
+      <v-menu>
         <template v-slot:activator="{ props }">
           <v-app-bar-nav-icon v-bind="props"></v-app-bar-nav-icon>
         </template>
-        <v-list>
-          <v-list-item>
-            <v-list-item-title @click="alert('>')">Add Scene</v-list-item-title>
-            <v-list-item-title @click="alert('>')">Add Prop</v-list-item-title>
-            <v-list-item-title @click="alert('>')">Add Door</v-list-item-title>
-          </v-list-item>
-        </v-list>
+        <v-list :items="items" @click="itemClicked"></v-list>
       </v-menu>
       <v-toolbar-title>SAGE</v-toolbar-title>
       <v-btn @click="playGame" color="info" prepend-icon="mdi-play">Play</v-btn>
       <v-spacer />
-      <v-btn @click="exportGame" color="info" prepend-icon="mdi-content-save">Export</v-btn>
+      <v-btn @click="exportGame" color="info" prepend-icon="mdi-content-save"
+        >Export</v-btn
+      >
       <v-spacer />
       <!-- <v-btn icon="mdi-plus"></v-btn> -->
       <v-btn icon="mdi-fullscreen" @click="Fullscreen.toggleFullScreen"></v-btn>
@@ -90,7 +86,27 @@
   import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
   import { SAGExport } from "./pixi-sagedit/SAGExport"
   import { useSageEditStore } from "./stores/SAGEditStore"
-import { usePlayerStore } from "./stores/PlayerStore"
+  import { usePlayerStore } from "./stores/PlayerStore"
+
+  // For some reason, it seems VERY hard to manually create a clickable list
+  // So having to work with a bound one for now...
+  const items = [
+    {
+      title: "Add Scene",
+      value: 1,
+    },
+    {
+      title: "Add Prop",
+      value: 2,
+    },
+    {
+      title: "Add Door",
+      value: 3,
+    },
+  ]
+  const itemClicked = function(item: any) {
+    debugger
+  }
 
   console.log("start App.vue...")
   // current screen size
