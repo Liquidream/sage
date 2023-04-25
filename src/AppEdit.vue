@@ -9,9 +9,10 @@
     </v-main>
 
     <v-app-bar :elevation="2">
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-app-bar-nav-icon v-bind="props"></v-app-bar-nav-icon>
+          <v-btn icon="mdi-plus" v-bind="props" color="info" variant="tonal"></v-btn>
         </template>
 
         <v-list>
