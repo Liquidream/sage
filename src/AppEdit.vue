@@ -12,21 +12,23 @@
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-btn icon="mdi-plus" v-bind="props" color="info" variant="tonal"></v-btn>
+          <v-btn
+            icon="mdi-plus"
+            v-bind="props"
+            color="info"
+            variant="tonal"
+          ></v-btn>
         </template>
 
         <v-list>
-          <v-list-item
-            v-for="(item, i) in items"
-            :key="i"
-            :value="item"
-            @click="item.func()"
-          >
-            <template v-slot:prepend>
-              <v-icon :icon="item.icon"></v-icon>
-            </template>
-
-            <v-list-item-title v-text="item.text"></v-list-item-title>
+          <v-list-item prepend-icon="mdi-filmstrip-box" @click="addScene">
+            Add Scene
+          </v-list-item>
+          <v-list-item prepend-icon="mdi-trophy" @click="addProp">
+            Add Prop
+          </v-list-item>
+          <v-list-item prepend-icon="mdi-door" @click="addDoor">
+            Add Door
           </v-list-item>
         </v-list>
       </v-menu>
@@ -104,42 +106,23 @@
   import { usePlayerStore } from "./stores/PlayerStore"
   import type { SceneModel } from "./models/SceneModel"
 
-  // For some reason, it seems VERY hard to manually create a clickable list
-  // So having to work with a bound one for now...
-  const items = [
-    {
-      icon: "mdi-filmstrip-box",
-      text: "Add Scene",
-      func: () => {
-        console.log(">> Add scene")
-        const newScene: SceneModel = {
-          id: "scn_",
-          name: "New Scene",
-        }
-        useWorldStore().createScene(newScene)
-        // Now set it as current scene
-        useWorldStore().currSceneId = newScene.id
-        // TODO: this will be issue if they then rename scene id
-        // (need to handle that in sceneId text field to keep it current!)
-      },
-    },
-    {
-      icon: "mdi-trophy",
-      text: "Add Prop",
-      func: () => {
-        console.log(">>>2")
-      },
-    },
-    {
-      icon: "mdi-door",
-      text: "Add Door",
-      func: () => {
-        console.log(">>>3")
-      },
-    },
-  ]
-  const itemClicked = function (item: any) {
-    console.log(`TODO: ${item.text}`)
+  const addScene = () => {
+    console.log(">> Add scene")
+    const newScene: SceneModel = {
+      id: "scn_",
+      name: "New Scene",
+    }
+    useWorldStore().createScene(newScene)
+    // Now set it as current scene
+    useWorldStore().currSceneId = newScene.id
+    // TODO: this will be issue if they then rename scene id
+    // (need to handle that in sceneId text field to keep it current!)
+  }
+  const addProp = () => {
+    console.log(">> TODO: Add prop")
+  }
+  const addDoor = () => {
+    console.log(">> TODO: Add door")
   }
 
   console.log("start App.vue...")
