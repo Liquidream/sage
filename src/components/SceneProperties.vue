@@ -23,7 +23,7 @@
     <v-divider />
     <v-list-subheader>General</v-list-subheader>
 
-    <v-text-field label="ID" v-bind:value="model.id" @change="scnIdUpdated"></v-text-field>
+    <v-text-field label="ID" :value="model.id" @input="scnIdUpdated"></v-text-field>
     <v-text-field label="ID2" v-model="model.id"></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
@@ -161,8 +161,8 @@ import { storeToRefs } from "pinia"
   const scnIdUpdated = (evt) => {
     console.log(">>> sceneId edited, so keep it 'current'")
     console.debug(evt)
-    model.value.id = srcElement.value
-    useWorldStore().currSceneId = srcElement.value
+    model.value.id = evt.target.value
+    useWorldStore().currSceneId = evt.target.value
   }
 
   const propSelected = (value: {
