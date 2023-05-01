@@ -24,7 +24,8 @@
     <v-list-subheader>General</v-list-subheader>
 
     <v-text-field label="ID" :value="model.id" @input="scnIdUpdated"></v-text-field>
-    <v-text-field label="ID2" v-model="model.id"></v-text-field>
+    <!-- <v-text-field label="ID2" :value="model.id" @input="model.id = $event.target.value"></v-text-field>
+    <v-text-field label="ID3" v-model="model.id"></v-text-field> -->
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
     <v-file-input
