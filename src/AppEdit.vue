@@ -33,11 +33,8 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-spacer />
-      <v-toolbar-title class="flex text-center" style="margin-inline-start: 0px"
-        >SAGE</v-toolbar-title
-      >
-      <v-spacer />
+      <!-- <v-toolbar-title><strong>SAGE</strong> - Simple Adventure Game Engine</v-toolbar-title> -->
+      <v-img src="/images/app-images/sage-logo-small.png"></v-img>
       <v-btn
         :size="$vuetify.display.mobile ? 'small' : 'default'"
         @click="playGame"
@@ -54,7 +51,6 @@
       >
         Export
       </v-btn>
-      <!-- <v-btn icon="mdi-plus"></v-btn> -->
       <!-- <v-btn icon="mdi-fullscreen" @click="Fullscreen.toggleFullScreen"></v-btn> -->
     </v-app-bar>
 
