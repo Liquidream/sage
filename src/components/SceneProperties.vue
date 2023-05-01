@@ -134,8 +134,9 @@ import { storeToRefs } from "pinia"
     // of the file in the v-model prop
     reader.readAsDataURL(e.target.files[0])
     reader.onload = () => {
+      // debugger
       imageData.value = reader.result
-      model.image = reader.result as string // added "as" to squash error/warn, ok?
+      model.value.image = reader.result as string // added "as" to squash error/warn, ok?
     }
   }
   const soundData: Ref<string | ArrayBuffer | null> = ref("")
