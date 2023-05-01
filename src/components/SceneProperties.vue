@@ -24,8 +24,6 @@
     <v-list-subheader>General</v-list-subheader>
 
     <v-text-field label="ID" :value="model.id" @input="scnIdUpdated" :dirty="true"></v-text-field>
-    <!-- <v-text-field label="ID2" :value="model.id" @input="model.id = $event.target.value"></v-text-field>
-    <v-text-field label="ID3" v-model="model.id"></v-text-field> -->
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
     <v-file-input
@@ -105,7 +103,7 @@
       rows="2"
     ></v-textarea>
 
-    <!-- <v-btn @click="loadBtnClicked" color="info" class="mt-2">Load</v-btn> -->
+    <v-btn @click="worldStore.deleteScene(model.id)" color="error" class="mt-2">Remove Scene</v-btn>
   </v-form>
 </template>
 

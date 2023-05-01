@@ -114,6 +114,9 @@
       hide-details
     ></v-switch>
 
+    <!-- Fair to assume location id is always a scene (in design?) -->
+    <scene-select label="Location" v-model="model.location_id" />
+
     <v-divider />
     <v-list-subheader
       ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader
@@ -126,7 +129,7 @@
       rows="2"
     ></v-textarea>
 
-    <!-- <v-btn @click="loadBtnClicked" color="info" class="mt-2">Load</v-btn> -->
+    <v-btn @click="doorStore.deleteDoor(model.id)" color="error" class="mt-2">Remove Door</v-btn>
   </v-form>
 </template>
 
@@ -138,8 +141,10 @@
   import type { DoorModel } from "@/models/DoorModel"
   import SceneSelect from "./SceneSelect.vue"
   import PropSelect from "./PropSelect.vue"
+  import { useDoorStore } from "@/stores/DoorStore"
 
   const worldStore = useWorldStore()
+  const doorStore = useDoorStore()
   const worldRefs = storeToRefs(worldStore)
   const model = worldRefs.getCurrentDoor || ({} as DoorModel)
   //const model = worldStore.getCurrentDoor || ({} as DoorModel)

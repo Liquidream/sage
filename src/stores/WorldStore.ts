@@ -65,9 +65,7 @@ export const useWorldStore = defineStore("worldStore", {
 
     updateScene(id: string, payload: SceneModel) {
       if (!id || !payload) return
-
       const index = this.findIndexById(id)
-
       if (index !== -1) {
         const sceneStore = useSceneStore()
         sceneStore.scenes[index] = payload
@@ -76,11 +74,13 @@ export const useWorldStore = defineStore("worldStore", {
 
     deleteScene(id: string) {
       const index = this.findIndexById(id)
-
       if (index === -1) return
-
       const sceneStore = useSceneStore()
       sceneStore.scenes.splice(index, 1)
+      // Clear selection (if applicable)
+      if (this.currSceneId === id) {
+        this.currSceneId = ""
+      }
     },
 
     findIndexById(id: string): number {

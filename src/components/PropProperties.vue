@@ -104,7 +104,7 @@
     </v-row>
 
     <!-- Fair to assume location id is always a scene (in design?) -->
-    <scene-select label="In Scene" v-model="model.location_id" />
+    <scene-select label="Location" v-model="model.location_id" />
 
     <v-divider />
     <v-list-subheader
@@ -126,7 +126,7 @@
       rows="2"
     ></v-textarea>
 
-    <!-- <v-btn @click="loadBtnClicked" color="info" class="mt-2">Load</v-btn> -->
+    <v-btn @click="propStore.deleteProp(model.id)" color="error" class="mt-2">Remove Prop</v-btn>
   </v-form>
 </template>
 
@@ -139,8 +139,10 @@
   import { BaseTexture } from "pixi.js"
   import SceneSelect from "./SceneSelect.vue"
   import type { PropModel } from "@/models/PropModel"
+  import { usePropStore } from "@/stores/PropStore"
 
   const worldStore = useWorldStore()
+  const propStore = usePropStore()
   // Make prop info react when selection changes
   const worldRefs = storeToRefs(worldStore)
   const model = worldRefs.getCurrentProp || ({} as PropModel)

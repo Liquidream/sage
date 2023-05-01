@@ -52,16 +52,10 @@
       :width="SAGEdit.navWidth"
     >
       <v-container id="mainContainer" class="pa-2">
-        <WorldProperties v-if="worldStore.currSceneId == ''" />
-        <SceneProperties
-          v-if="
-            worldStore.currSceneId != '' &&
-            worldStore.currPropId == '' &&
-            worldStore.currDoorId == ''
-          "
-        />
-        <PropProperties v-if="worldStore.currPropId != ''" />
-        <DoorProperties v-if="worldStore.currDoorId != ''" />
+        <DoorProperties v-if="worldRefs.currDoorId.value != ''" />
+        <PropProperties v-else-if="worldRefs.currPropId.value != ''" />
+        <SceneProperties v-else-if="worldRefs.currSceneId.value != ''" />
+        <WorldProperties v-else-if="worldRefs.currSceneId.value == ''" />
       </v-container>
     </v-navigation-drawer>
 
@@ -70,16 +64,10 @@
     <!-- Portrait/Mobile Layout (Start) =================== -->
 
     <v-container v-if="isPortrait" style="overflow-y: scroll">
-      <WorldProperties v-if="worldStore.currSceneId == ''" />
-      <SceneProperties
-        v-if="
-          worldStore.currSceneId != '' &&
-          worldStore.currPropId == '' &&
-          worldStore.currDoorId == ''
-        "
-      />
-      <PropProperties v-if="worldStore.currPropId != ''" />
       <DoorProperties v-if="worldStore.currDoorId != ''" />
+      <PropProperties v-else-if="worldStore.currPropId != ''" />
+      <SceneProperties v-else-if="worldStore.currSceneId != ''" />
+      <WorldProperties v-else-if="worldStore.currSceneId == ''" />
     </v-container>
 
     <!-- Portrait/Mobile Layout (End) ========================= -->
@@ -105,24 +93,52 @@
   import { useSageEditStore } from "./stores/SAGEditStore"
   import { usePlayerStore } from "./stores/PlayerStore"
   import type { SceneModel } from "./models/SceneModel"
+  import { LocationType, PropModel } from "./models/PropModel"
+  import { DoorModel } from "./models/DoorModel"
+import { storeToRefs } from "pinia"
 
   const addScene = () => {
     console.log(">> Add scene")
     const newScene: SceneModel = {
       id: "scn_",
       name: "New Scene",
+      image: "/images/scene-placeholder.png",
     }
     useWorldStore().createScene(newScene)
     // Now set it as current scene
     useWorldStore().currSceneId = newScene.id
-    // TODO: this will be issue if they then rename scene id
-    // (need to handle that in sceneId text field to keep it current!)
   }
   const addProp = () => {
-    console.log(">> TODO: Add prop")
+    console.log(">> Add prop")
+    const newProp: PropModel = {
+      id: "prp_",
+      name: "New Prop",
+      location_id: useWorldStore().currSceneId,
+      location_type: LocationType.Scene,
+      image: "/images/placeholder.png",
+      x: SAGEdit.width / 2,
+      y: SAGEdit.height / 2,
+      width: 256,
+      height: 256,
+    }
+    usePropStore().createProp(newProp)
+    // Now set it as current scene
+    useWorldStore().currPropId = newProp.id
   }
   const addDoor = () => {
-    console.log(">> TODO: Add door")
+    console.log(">> Add door")
+    const newDoor: DoorModel = {
+      id: "dor_",
+      name: "New Door",
+      location_id: useWorldStore().currSceneId,
+      x: SAGEdit.width / 2,
+      y: SAGEdit.height / 2,
+      width: 256,
+      height: 256,
+    }
+    useDoorStore().createDoor(newDoor)
+    // Now set it as current scene
+    useWorldStore().currDoorId = newDoor.id
   }
 
   console.log("start App.vue...")
@@ -130,7 +146,9 @@
   const gameWidth = 1920
   const gameHeight = 1080
   const display = ref(useDisplay())
+
   const worldStore = useWorldStore()
+  const worldRefs = storeToRefs(worldStore)
 
   const isPortrait = computed(() => {
     SAGEdit.resize()
