@@ -7,16 +7,17 @@
     <v-main :class="!isPortrait ? 'pt-8' : ''">
       <canvas :class="isPortrait ? 'mt-0 mb-0' : ''" id="pixi-canvas"></canvas>
     </v-main>
-
+    
     <v-app-bar :elevation="2">
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn
-            icon="mdi-plus"
-            v-bind="props"
-            color="info"
-            variant="tonal"
+           :size="$vuetify.display.mobile ? 'small' : 'auto'"
+           icon="mdi-plus"
+           v-bind="props"
+           color="info"
+           variant="tonal"
           ></v-btn>
         </template>
 
@@ -32,17 +33,18 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-toolbar-title>SAGE</v-toolbar-title>
-      <v-btn @click="playGame" color="info" prepend-icon="mdi-play">Play</v-btn>
       <v-spacer />
-      <v-btn @click="exportGame" color="info" prepend-icon="mdi-content-save"
-        >Export</v-btn
-      >
+      <v-toolbar-title class="flex text-center" style="margin-inline-start: 0px">SAGE</v-toolbar-title>
       <v-spacer />
+      <v-btn :size="$vuetify.display.mobile ? 'small' : 'auto'" @click="playGame" color="info" prepend-icon="mdi-play">Play</v-btn>
+      
+      <v-btn :size="$vuetify.display.mobile ? 'small' : 'auto'" @click="exportGame" color="info" prepend-icon="mdi-content-save">
+        Export
+      </v-btn>
       <!-- <v-btn icon="mdi-plus"></v-btn> -->
-      <v-btn icon="mdi-fullscreen" @click="Fullscreen.toggleFullScreen"></v-btn>
+      <!-- <v-btn icon="mdi-fullscreen" @click="Fullscreen.toggleFullScreen"></v-btn> -->
     </v-app-bar>
-
+    
     <!-- Landscape/Desktop Layout (Start) =============== -->
 
     <v-navigation-drawer
