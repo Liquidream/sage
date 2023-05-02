@@ -4,11 +4,16 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" href="/sage/favicon.ico" />
+  <link rel="manifest" href="/sage/manifest.webmanifest" />
   <meta id="viewport" name="viewport"
   content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes">
   
   <title>SAGE - Simple Adventure Game Engine</title>
+
+  <!-- <script>
+    window.sageDataId = "kingsRansom"
+  </script> -->
 
   <style>
 		html,
@@ -26,16 +31,18 @@
 		}
 	</style>
 
-  <script type="module" crossorigin src="/sage/assets/index-8478a8ec.js"></script>
-  <link rel="stylesheet" href="/sage/assets/index-5450ae3b.css">
+  <script type="module" crossorigin src="/sage/entry-index.js"></script>
+  <link rel="stylesheet" href="/sage/SAGE.css">
 </head>
 
 <body>
   <div id="app"></div>
   
+  <!-- Use this when building editor -->
   
-  <!-- <div id="pixi-content"><canvas id="pixi-canvas" /></div>
-  <script type="module" src="/src/test.ts"></script> -->
+
+  <!-- Use this when building release "engine" -->
+  <!-- <script type="module" src="/src/main-release.ts"></script> -->
 </body>
 
 </html>
