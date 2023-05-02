@@ -136,7 +136,9 @@
       height: 256,
     }
     usePropStore().createProp(newProp)
-    // Now set it as current scene
+    // Unset any other selection
+    useWorldStore().currDoorId = ""
+    // Now set it as current prop
     useWorldStore().currPropId = newProp.id
   }
   const addDoor = () => {
@@ -151,6 +153,8 @@
       height: 256,
     }
     useDoorStore().createDoor(newDoor)
+    // Unset any other selection
+    useWorldStore().currPropId = ""
     // Now set it as current scene
     useWorldStore().currDoorId = newDoor.id
   }
