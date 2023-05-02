@@ -72,7 +72,7 @@ const importPlayData = async (): Promise<void> => {
   // Import game data (but only on first run)
   if (worldStore.currSceneId === "") {
     console.log(">>> No saved data - so import release data...")
-    const response = await fetch("/sageData.json")
+    const response = await fetch("sageData.json")
     const sagePlayData = await response.json()
     console.log(">>> (finished retriving release data)")
 
