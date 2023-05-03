@@ -23,19 +23,31 @@
     <v-divider />
     <v-list-subheader>General</v-list-subheader>
 
-    <v-text-field label="ID" :value="model.id" @input="idUpdated" :dirty="true"></v-text-field>
+    <v-text-field
+      label="ID"
+      :value="model.id"
+      @input="idUpdated"
+      :dirty="true"
+    ></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
-    <v-file-input
-      v-model="chosenFile"
-      type="file"
-      @change="onImageFileChange"
-      label="Backdrop Image"
-      accept="image/png, image/jpeg, image/bmp"
-      placeholder="Pick a backdrop image"
-      prepend-icon="mdi-camera"
-    ></v-file-input>
-    <v-img :src="model.image" max-height="150" />
+    <v-row>
+      <v-col>
+        <v-file-input
+          v-model="chosenFile"
+          type="file"
+          @change="onImageFileChange"
+          label="Backdrop Image"
+          accept="image/png, image/jpeg, image/bmp"
+          placeholder="Pick a backdrop image"
+          prepend-icon="mdi-camera"
+          hide-details
+        ></v-file-input>
+      </v-col>
+      <v-col>
+        <v-img :src="model.image" max-height="60" hide-details />
+      </v-col>
+    </v-row>
 
     <!-- <v-text-field label="Sound" v-model="model.sound"></v-text-field> -->
     <v-file-input
@@ -103,7 +115,9 @@
       rows="2"
     ></v-textarea>
 
-    <v-btn @click="worldStore.deleteScene(model.id)" color="error" class="mt-2">Remove Scene</v-btn>
+    <v-btn @click="worldStore.deleteScene(model.id)" color="error" class="mt-2"
+      >Remove Scene</v-btn
+    >
   </v-form>
 </template>
 
@@ -114,7 +128,7 @@
   import type { SceneModel } from "@/models/SceneModel"
   import { usePropStore } from "@/stores/PropStore"
   import { useDoorStore } from "@/stores/DoorStore"
-import { storeToRefs } from "pinia"
+  import { storeToRefs } from "pinia"
 
   const worldStore = useWorldStore()
   const worldRefs = storeToRefs(worldStore)
