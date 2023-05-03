@@ -31,7 +31,20 @@
     ></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
-    <v-row>
+    <!-- <v-row>
+      <v-col>
+        ssssdf sdf sdf sdf s
+      </v-col>
+      <v-col>
+        
+        <v-img :src="model.image" max-height="60" hide-details />
+      </v-col>
+    </v-row> -->
+
+    <v-row align="center">
+      <v-col class="pl-5">
+        Backdrop image
+      </v-col>
       <v-col>
         <v-file-input
           v-model="chosenFile"
@@ -40,12 +53,11 @@
           label="Backdrop Image"
           accept="image/png, image/jpeg, image/bmp"
           placeholder="Pick a backdrop image"
-          prepend-icon="mdi-camera"
-          hide-details
+          id="uploader"
+          class="d-none"
         ></v-file-input>
-      </v-col>
-      <v-col>
-        <v-img :src="model.image" max-height="60" hide-details />
+          <img :src="model.image" height="50" hide-details @click="changeImage" />
+        <!-- </v-btn> -->
       </v-col>
     </v-row>
 
@@ -142,6 +154,9 @@
   let chosenFile: any
   const imageData: Ref<string | ArrayBuffer | null> = ref("")
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const changeImage = () => {
+    document.getElementById('uploader').click()
+  }
   const onImageFileChange = (e: any) => {
     const reader = new FileReader()
     // Use the javascript reader object to load the contents
