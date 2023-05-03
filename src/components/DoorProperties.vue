@@ -32,7 +32,12 @@
     <v-list-subheader
       ><v-icon icon="mdi-view-list-outline"></v-icon>General</v-list-subheader
     >
-    <v-text-field label="ID" :value="model.id" @input="idUpdated" :dirty="true"></v-text-field>
+    <v-text-field
+      label="ID"
+      :value="model.id"
+      @input="idUpdated"
+      :dirty="true"
+    ></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
     <v-textarea
       name="desc"
@@ -61,12 +66,20 @@
     ></v-select>
     <prop-select label="Key Prop" v-model="model.key_prop_id" hide-details />
 
-    <v-switch
-      label="Auto Unlock"
-      v-model="model.auto_unlock"
-      color="info"
-      hide-details
-    ></v-switch>
+    <v-tooltip
+      text="Auto-unlock if player has key prop in their inventory?"
+      location="bottom"
+    >
+      <template v-slot:activator="{ props }">
+        <v-switch
+          label="Auto Unlock"
+          v-model="model.auto_unlock"
+          color="info"
+          hide-details
+          v-bind="props"
+        ></v-switch>
+      </template>
+    </v-tooltip>
 
     <v-row>
       <v-col>
