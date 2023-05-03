@@ -105,6 +105,7 @@ export class SAGExport {
     const imgFolder = zip.folder("images")
     const sfxFolder = zip.folder("sfx")
 
+    debugger
     for (const scene of sceneState.scenes) {
       // Export image to zip & replace state data with new filename
 

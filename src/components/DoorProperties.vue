@@ -107,12 +107,20 @@
     ></v-file-input>
     <v-img :src="model.image" max-height="150" />
 
-    <v-switch
-      label="Play Sounds"
-      v-model="model.playSounds"
-      color="info"
-      hide-details
-    ></v-switch>
+    <v-tooltip
+      text="Whether to play door sfx (e.g. locked door, key turn) when interacted"
+      location="bottom"
+    >
+      <template v-slot:activator="{ props }">
+        <v-switch
+          label="Play Sounds"
+          v-model="model.playSounds"
+          color="info"
+          hide-details
+          v-bind="props"
+        ></v-switch>
+      </template>
+    </v-tooltip>
 
     <!-- Fair to assume location id is always a scene (in design?) -->
     <scene-select label="Location" v-model="model.location_id" />
@@ -129,7 +137,9 @@
       rows="2"
     ></v-textarea>
 
-    <v-btn @click="doorStore.deleteDoor(model.id)" color="error" class="mt-2">Remove Door</v-btn>
+    <v-btn @click="doorStore.deleteDoor(model.id)" color="error" class="mt-2"
+      >Remove Door</v-btn
+    >
   </v-form>
 </template>
 
@@ -142,7 +152,7 @@
   import SceneSelect from "./SceneSelect.vue"
   import PropSelect from "./PropSelect.vue"
   import { useDoorStore } from "@/stores/DoorStore"
-import { BaseTexture } from "pixi.js"
+  import { BaseTexture } from "pixi.js"
 
   const worldStore = useWorldStore()
   const doorStore = useDoorStore()

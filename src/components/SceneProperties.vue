@@ -147,8 +147,9 @@ import { storeToRefs } from "pinia"
     // of the file in the v-model prop
     reader.readAsDataURL(e.target.files[0])
     reader.onload = () => {
+      // debugger
       soundData.value = reader.result
-      model.sound = reader.result as string // added "as" to squash error/warn, ok?
+      model.value.sound = reader.result as string // added "as" to squash error/warn, ok?
     }
   }
   const backToWorldClicked = () => {

@@ -134,6 +134,8 @@
       y: SAGEdit.height / 2,
       width: 256,
       height: 256,
+      pickupable: true,
+      visible: true,
     }
     usePropStore().createProp(newProp)
     // Unset any other selection
@@ -151,6 +153,7 @@
       y: SAGEdit.height / 2,
       width: 256,
       height: 256,
+      playSounds: true,
     }
     useDoorStore().createDoor(newDoor)
     // Unset any other selection
