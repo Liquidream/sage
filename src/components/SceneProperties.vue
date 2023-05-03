@@ -23,7 +23,7 @@
     <v-divider />
     <v-list-subheader>General</v-list-subheader>
 
-    <v-text-field label="ID" :value="model.id" @input="scnIdUpdated" :dirty="true"></v-text-field>
+    <v-text-field label="ID" :value="model.id" @input="idUpdated" :dirty="true"></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
     <v-file-input
@@ -159,7 +159,7 @@ import { storeToRefs } from "pinia"
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }
 
-  const scnIdUpdated = (evt) => {
+  const idUpdated = (evt) => {
     console.log(">>> sceneId edited, so keep it 'current'")
     console.debug(evt)
     model.value.id = evt.target.value

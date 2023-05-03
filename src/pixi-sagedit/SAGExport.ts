@@ -105,7 +105,6 @@ export class SAGExport {
     const imgFolder = zip.folder("images")
     const sfxFolder = zip.folder("sfx")
 
-    debugger
     for (const scene of sceneState.scenes) {
       // Export image to zip & replace state data with new filename
 
@@ -116,10 +115,12 @@ export class SAGExport {
       scene.image = imgAssetName
 
       // Scene.Sound
-      const sfxAssetName = `${scene.id}-sound`
-      const soundDataUri = scene.sound || ""
-      SAGExport.exportData(sfxAssetName, soundDataUri, assets, sfxFolder)
-      scene.sound = sfxAssetName
+      if (scene.sound) {
+        const sfxAssetName = `${scene.id}-sound`
+        const soundDataUri = scene.sound || ""
+        SAGExport.exportData(sfxAssetName, soundDataUri, assets, sfxFolder)
+        scene.sound = sfxAssetName
+      }
     }
 
     return JSON.stringify(sceneState)

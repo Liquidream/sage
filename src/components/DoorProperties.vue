@@ -32,7 +32,7 @@
     <v-list-subheader
       ><v-icon icon="mdi-view-list-outline"></v-icon>General</v-list-subheader
     >
-    <v-text-field label="ID" v-model="model.id"></v-text-field>
+    <v-text-field label="ID" :value="model.id" @input="idUpdated" :dirty="true"></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
     <v-textarea
       name="desc"
@@ -202,5 +202,12 @@
     worldStore.currDoorId = ""
     // Force scroll to top of nav panel
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
+  }
+
+  const idUpdated = (evt) => {
+    console.log(">>> doorId edited, so keep it 'current'")
+    console.debug(evt)
+    model.value.id = evt.target.value
+    useWorldStore().currDoorId = evt.target.value
   }
 </script>
