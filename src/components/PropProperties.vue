@@ -32,9 +32,44 @@
     <v-list-subheader
       ><v-icon icon="mdi-view-list-outline"></v-icon>General</v-list-subheader
     >
-    <v-text-field label="ID" :value="model.id" @input="idUpdated" :dirty="true"></v-text-field>
+    <v-text-field
+      label="ID"
+      :value="model.id"
+      @input="idUpdated"
+      :dirty="true"
+    ></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
-    <v-file-input
+
+    <v-row align="center" class="mb-1">
+      <v-col class="pl-5">Prop image</v-col>
+      <v-col>
+        <v-file-input
+          v-model="chosenFile"
+          type="file"
+          @change="onImageFileChange"
+          label="Backdrop Image"
+          accept="image/png, image/jpeg, image/bmp"
+          placeholder="Pick a backdrop image"
+          id="uploader"
+          class="d-none"
+        ></v-file-input>
+        <v-img
+          :src="model.image"
+          height="50"
+          hide-details
+          @click="changeImage"
+          align="center"
+        >
+          <v-btn
+            class="mt-2 elevation-2"
+            icon="mdi-camera"
+            variant="outlined"
+            size="x-small"
+          ></v-btn>
+        </v-img>
+      </v-col>
+    </v-row>
+    <!-- <v-file-input
       v-model="chosenFile"
       type="file"
       @change="onFileChange"
@@ -43,7 +78,8 @@
       placeholder="Pick a backdrop image"
       prepend-icon="mdi-camera"
     ></v-file-input>
-    <v-img :src="model.image" max-height="150" />
+    <v-img :src="model.image" max-height="150" /> -->
+
     <v-textarea
       name="desc"
       v-model="model.desc"
@@ -152,9 +188,11 @@
   let chosenFile: any
   //let imageData: any = ""
   const imageData: Ref<string | ArrayBuffer | null> = ref("")
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onFileChange = (e: any) => {
+  const changeImage = () => {
+    document.getElementById('uploader').click()
+  }
+  const onImageFileChange = (e: any) => {
     const reader = new FileReader()
     // Use the javascript reader object to load the contents
     // of the file in the v-model prop
