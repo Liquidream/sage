@@ -1,7 +1,7 @@
 import type { DoorModel } from "@/models/DoorModel"
 import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
-import { Graphics, Sprite } from "pixi.js"
+import { BaseTexture, Graphics, Sprite, Texture } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"
 //import { DialogType } from "./Dialog"
 import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter"
@@ -12,8 +12,9 @@ export class DoorEdit {
   TOUCH_DURATION = 500
   DRAG_ALPHA = 0.75
 
-  public doorModel!: DoorModel
+  public data!: DoorModel
   public graphics!: Graphics
+  public sprite!: Sprite
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
   private doorInputEvents!: InputEventEmitter
@@ -22,36 +23,34 @@ export class DoorEdit {
   public constructor(doorModel: DoorModel) {
     //DoorData.IDoorData) {
     // Initialise from data object
-    this.doorModel = doorModel
-    const graphics = new Graphics()
-    const doorWidth = this.doorModel.width || 0,
-      doorHeight = this.doorModel.height || 0
+    this.data = doorModel
 
+    // ---------------------------------------
+    // Door Graphics
+    //
+    const graphics = new Graphics()
+    const doorWidth = doorModel.width || 0,
+      doorHeight = doorModel.height || 0
     // Set the fill color
     graphics.beginFill(0xffff00, 0.25) // light yellow
-
     // Selected Prop?
     const worldStore = useWorldStore()
-    if (worldStore.currDoorId === this.doorModel.id) {
+    if (worldStore.currDoorId === doorModel.id) {
       graphics.lineStyle(10, 0xff0000) // Red
     } else {
       graphics.lineStyle(10, 0x000000, 0) // "Invisible"
     }
-
     // Set Graphics "canvas" to correct pos/width
     // (So we can easily move it when "dragging")
-    graphics.x = this.doorModel.x || 0
-    graphics.y = this.doorModel.y || 0
+    graphics.x = doorModel.x || 0
+    graphics.y = doorModel.y || 0
     graphics.width = doorWidth
     graphics.height = doorHeight
-
     // Make a center point of origin (anchor)
     graphics.pivot.set(doorWidth / 2, doorHeight / 2)
-
     // Draw a rectangle
     // (graphics "canvas" are already in position/width)
     graphics.drawRoundedRect(0, 0, doorWidth, doorHeight, 30)
-
     // Applies fill to lines and shapes since the last call to beginFill.
     graphics.endFill()
 
@@ -65,8 +64,31 @@ export class DoorEdit {
     //
     graphics.on("pointerdown", this.onPointerDown, this)
     //SAGE.Events.on("scenehint", this.onSceneHint, this)
-
     this.graphics = graphics
+
+    // ---------------------------------------
+    // Door Sprite
+    //
+    let sprite = undefined
+    if (doorModel.image) {
+      const imgBase64 = doorModel.image
+      const base = new BaseTexture(imgBase64)
+      console.log(
+        `>> model dimensions: width=${doorModel.width} height=${doorModel.height}`
+      )
+      const texture = new Texture(base)
+      sprite = Sprite.from(texture)
+    } else {
+      sprite = new Sprite(Texture.EMPTY)
+      sprite.width = doorModel.width || 0
+      sprite.height = doorModel.height || 0
+    }
+    this.sprite = sprite
+    sprite.anchor.set(0.5)
+    sprite.x = doorModel.x || 0
+    sprite.y = doorModel.y || 0
+    // visible state
+    //this.sprite.visible = doorModel.visible || true
   }
 
   tidyUp() {
@@ -78,8 +100,8 @@ export class DoorEdit {
     // Show attract tween for this
     const attractShine: Sprite = Sprite.from("UI-Shine")
     attractShine.anchor.set(0.5)
-    attractShine.x = this.doorModel.x || 0
-    attractShine.y = this.doorModel.y || 0
+    attractShine.x = this.data.x || 0
+    attractShine.y = this.data.y || 0
     attractShine.alpha = 0
 
     this.graphics.parent.addChild(attractShine)
@@ -96,8 +118,7 @@ export class DoorEdit {
   }
 
   private onPointerOver() {
-    if (SAGEdit.debugMode)
-      console.log(`${this.doorModel.name}::onPointerOver()`)
+    if (SAGEdit.debugMode) console.log(`${this.data.name}::onPointerOver()`)
     //SAGE.Dialog.showMessage(this.data.name, DialogType.Caption, -1)
   }
 
@@ -111,7 +132,7 @@ export class DoorEdit {
   private onPointerDown() {
     // Select clicked door
     const worldStore = useWorldStore()
-    if (worldStore.currDoorId == this.doorModel.id) {
+    if (worldStore.currDoorId == this.data.id) {
       // Start of drag...
       this.dragging = true
       //debugger
@@ -123,13 +144,13 @@ export class DoorEdit {
   private onPrimaryAction() {
     if (SAGEdit.debugMode)
       console.log(
-        `door > target_scene_id: ${this.doorModel.target_scene_id}, state:${this.doorModel.state}`
+        `door > target_scene_id: ${this.data.target_scene_id}, state:${this.data.state}`
       )
 
     // Select clicked door
     const worldStore = useWorldStore()
-    if (worldStore.currDoorId != this.doorModel.id) {
-      worldStore.currDoorId = this.doorModel.id
+    if (worldStore.currDoorId != this.data.id) {
+      worldStore.currDoorId = this.data.id
       worldStore.currPropId = ""
     } else {
       //

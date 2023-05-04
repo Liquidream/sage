@@ -27,22 +27,6 @@ export class PropEdit {
       console.log(
         `>> model dimensions: width=${propModel.width} height=${propModel.height}`
       )
-      // base.on("loaded", () => {
-      //   console.log(
-      //     `>> base LOADED dimensions: width=${base.width} height=${base.height}`
-      //   )
-      // ##### don't do this here
-      // ##### instead, set at point of IMPORTING (to allow overriding)
-      // if (base.width > 0) {
-      //   propModel.width = base.width
-      //   propModel.height = base.height
-      // }
-      //})
-      // Do it here also, in case texture is cached (so loaded won't fire)
-      // if (base.width > 0) {
-      //   propModel.width = base.width
-      //   propModel.height = base.height
-      // }
       const texture = new Texture(base)
       sprite = Sprite.from(texture)
     } else {

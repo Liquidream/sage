@@ -200,6 +200,7 @@ export class SceneScreen extends Container {
       for (const doorModel of sceneDoorModels) {
         // Create new component obj (contains data + view)
         const door = new DoorEdit(doorModel)
+        this.addChild(door.sprite)
         this.addChild(door.graphics)
         this.doors.push(door)
       }
@@ -298,6 +299,8 @@ export class SceneScreen extends Container {
       // Update pos
       this.draggedDoor.graphics.x = _e.data.global.x
       this.draggedDoor.graphics.y = _e.data.global.y
+      this.draggedDoor.sprite.x = this.draggedDoor.graphics.x
+      this.draggedDoor.sprite.y = this.draggedDoor.graphics.y
       // Check for valid "drop"
       //this.checkDragCollisions()
     }
@@ -331,8 +334,10 @@ export class SceneScreen extends Container {
       // End Drag+Drop mode
       this.draggedDoor.dragging = false
       // Save final pos
-      this.draggedDoor.doorModel.x = Math.floor(this.draggedDoor.graphics.x)
-      this.draggedDoor.doorModel.y = Math.floor(this.draggedDoor.graphics.y)
+      this.draggedDoor.data.x = Math.floor(this.draggedDoor.graphics.x)
+      this.draggedDoor.data.y = Math.floor(this.draggedDoor.graphics.y)
+      this.draggedDoor.sprite.x = this.draggedDoor.data.x
+      this.draggedDoor.sprite.y = this.draggedDoor.data.y
 
       // Restore interaction to "dragged" Prop
       this.draggedDoor.graphics.interactive = true
