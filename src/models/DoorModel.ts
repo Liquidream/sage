@@ -14,6 +14,7 @@ export interface DoorModel {
   height?: number
   // in_scene_id?: string
   location_id?: string
+  visible?: boolean
 
   // Key-Value pair to allow properties to be set/read
   property?: { [key: string]: string | number | boolean }

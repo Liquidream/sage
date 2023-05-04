@@ -53,7 +53,10 @@ export class PropEdit {
     //SAGE.Events.on("scenehint", this.onSceneHint, this)
 
     // visible state
-    this.sprite.visible = propModel.visible || true
+    if (!propModel.visible) {
+      this.sprite.alpha = 0.5
+    }
+    //this.sprite.visible = propModel.visible // || true
   }
 
   tidyUp() {

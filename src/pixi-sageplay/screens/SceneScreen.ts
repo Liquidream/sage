@@ -398,6 +398,7 @@ export class SceneScreen extends Container implements IScreen {
       for (const doorData of this.scene.doors) {
         // Create new component obj (contains data + view)
         const door = new Door(doorData)
+        this.addChild(door.sprite)
         this.addChild(door.graphics)
         this.doors.push(door)
       }

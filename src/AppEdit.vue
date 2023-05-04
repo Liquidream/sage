@@ -154,6 +154,7 @@
       width: 256,
       height: 256,
       playSounds: true,
+      visible: true,
     }
     useDoorStore().createDoor(newDoor)
     // Unset any other selection

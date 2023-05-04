@@ -1,4 +1,4 @@
-import { Graphics, Sprite } from "pixi.js"
+import { BaseTexture, Graphics, Sprite, Texture } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"
 import { SAGE } from "./SAGEPlay"
 import { DialogType } from "./Dialog"
@@ -15,6 +15,7 @@ export class Door {
   //public data!: DoorData.IDoorData
   public model: DoorModel
   public graphics!: Graphics
+  public sprite!: Sprite
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
   private doorInputEvents!: InputEventEmitter
@@ -22,6 +23,10 @@ export class Door {
   public constructor(doorData: DoorModel) {
     // Initialise from data object
     this.model = doorData
+
+    // ---------------------------------------
+    // Door Graphics
+    //
     const graphics = new Graphics()
     // Make doors visible in debug
     if (SAGE.debugMode) {
@@ -61,6 +66,30 @@ export class Door {
     SAGE.Events.on("scenehint", this.onSceneHint, this)
 
     this.graphics = graphics
+
+    // ---------------------------------------
+    // Door Sprite
+    //
+    let sprite = undefined
+    if (this.model.image) {
+      const imgBase64 = this.model.image
+      const base = new BaseTexture(imgBase64)
+      console.log(
+        `>> model dimensions: width=${this.model.width} height=${this.model.height}`
+      )
+      const texture = new Texture(base)
+      sprite = Sprite.from(texture)
+    } else {
+      sprite = new Sprite(Texture.EMPTY)
+      sprite.width = this.model.width || 0
+      sprite.height = this.model.height || 0
+    }
+    this.sprite = sprite
+    sprite.anchor.set(0.5)
+    sprite.x = this.model.x || 0
+    sprite.y = this.model.y || 0
+    // visible state
+    this.sprite.visible = this.model.visible // || true
   }
 
   public unlockDoor() {

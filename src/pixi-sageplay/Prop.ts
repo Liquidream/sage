@@ -53,7 +53,7 @@ export class Prop {
     SAGE.Events.on("scenehint", this.onSceneHint, this)
 
     // visible state
-    this.sprite.visible = inModel.visible || true // default to visible, unless otherwise specified
+    this.sprite.visible = inModel.visible //|| true // default to visible, unless otherwise specified
   }
 
   tidyUp() {
