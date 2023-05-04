@@ -42,10 +42,10 @@
     </v-row> -->
 
     <v-row align="center">
-      <v-col class="pl-5">
+      <v-col class="pl-5" cols="8">
         Backdrop image
       </v-col>
-      <v-col>
+      <v-col cols="4">
         <v-file-input
           v-model="chosenFile"
           type="file"
@@ -56,8 +56,9 @@
           id="uploader"
           class="d-none"
         ></v-file-input>
-          <img :src="model.image" height="50" hide-details @click="changeImage" />
-        <!-- </v-btn> -->
+          <v-img :src="model.image" height="50" hide-details @click="changeImage">
+            <v-btn class="ml-8 mt-2 elevation-2" icon="mdi-camera" variant="outlined" size="x-small"></v-btn>
+          </v-img>
       </v-col>
     </v-row>
 
