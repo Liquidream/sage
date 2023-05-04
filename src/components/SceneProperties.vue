@@ -27,7 +27,7 @@
       label="ID"
       :value="model.id"
       @input="idUpdated"
-      :dirty="true"
+      dirty
     ></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
