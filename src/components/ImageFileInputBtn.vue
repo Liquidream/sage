@@ -10,9 +10,9 @@
     id="uploader"
     class="d-none"
   ></v-file-input>
-  <v-img :src="value" height="50" hide-details @click="changeImage">
+  <v-img :src="value" height="50" hide-details @click="changeImage" align="center">
     <v-btn
-      class="ml-8 mt-2 elevation-2"
+      class="mt-2 elevation-2"
       icon="mdi-camera"
       variant="outlined"
       size="x-small"

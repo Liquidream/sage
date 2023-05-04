@@ -42,32 +42,11 @@
     </v-row> -->
 
     <v-row align="center">
-      <v-col class="pl-5" cols="8">
+      <v-col class="pl-5">
         Backdrop image
       </v-col>
-      <v-col cols="4">
-        <v-file-input
-          v-model="chosenFile"
-          type="file"
-          @change="onImageFileChange"
-          label="Backdrop Image"
-          accept="image/png, image/jpeg, image/bmp"
-          placeholder="Pick a backdrop image"
-          id="uploader"
-          class="d-none"
-        ></v-file-input>
-          <v-img :src="model.image" height="50" hide-details @click="changeImage">
-            <v-btn class="ml-8 mt-2 elevation-2" icon="mdi-camera" variant="outlined" size="x-small"></v-btn>
-          </v-img>
-      </v-col>
-    </v-row>
-
-    <v-row align="center">
-      <v-col class="pl-5" cols="8">
-        Backdrop image 2
-      </v-col>
-      <v-col cols="4">
-        <ImageBtn v-model="model.image"></ImageBtn>
+      <v-col>
+        <ImageFileInputBtn v-model="model.image"></ImageFileInputBtn>
       </v-col>
     </v-row>
 
@@ -151,7 +130,7 @@
   import { usePropStore } from "@/stores/PropStore"
   import { useDoorStore } from "@/stores/DoorStore"
   import { storeToRefs } from "pinia"
-  import ImageBtn from "./ImageBtn.vue"
+  import ImageFileInputBtn from "./ImageFileInputBtn.vue"
 
   const worldStore = useWorldStore()
   const worldRefs = storeToRefs(worldStore)
