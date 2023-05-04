@@ -47,7 +47,6 @@
           v-model="chosenFile"
           type="file"
           @change="onImageFileChange"
-          label="Backdrop Image"
           accept="image/png, image/jpeg, image/bmp"
           placeholder="Pick a backdrop image"
           id="uploader"
@@ -69,16 +68,6 @@
         </v-img>
       </v-col>
     </v-row>
-    <!-- <v-file-input
-      v-model="chosenFile"
-      type="file"
-      @change="onFileChange"
-      label="Image"
-      accept="image/png, image/jpeg, image/bmp"
-      placeholder="Pick a backdrop image"
-      prepend-icon="mdi-camera"
-    ></v-file-input>
-    <v-img :src="model.image" max-height="150" /> -->
 
     <v-textarea
       name="desc"

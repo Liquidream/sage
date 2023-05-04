@@ -108,7 +108,36 @@
       </v-col>
     </v-row>
 
-    <v-file-input
+    <v-row align="center" class="mt-n5">
+      <v-col class="pl-5">Door image</v-col>
+      <v-col>
+        <v-file-input
+          v-model="chosenFile"
+          type="file"
+          @change="onImageFileChange"
+          accept="image/png, image/jpeg, image/bmp"
+          placeholder="Pick a backdrop image"
+          id="uploader"
+          class="d-none"
+        ></v-file-input>
+        <v-img
+          :src="model.image"
+          height="50"
+          hide-details
+          @click="changeImage"
+          align="center"
+        >
+          <v-btn
+            class="mt-2 elevation-2"
+            icon="mdi-camera"
+            variant="outlined"
+            size="x-small"
+          ></v-btn>
+        </v-img>
+      </v-col>
+    </v-row>
+
+    <!-- <v-file-input
       v-model="chosenFile"
       type="file"
       @change="onFileChange"
@@ -118,7 +147,7 @@
       prepend-icon="mdi-camera"
       hide-details
     ></v-file-input>
-    <v-img :src="model.image" max-height="150" />
+    <v-img :src="model.image" max-height="150" /> -->
 
     <v-tooltip
       text="Whether to play door sfx (e.g. locked door, key turn) when interacted"
@@ -176,7 +205,10 @@
   let chosenFile: any
   const imageData: Ref<string | ArrayBuffer | null> = ref("")
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onFileChange = (e: any) => {
+  const changeImage = () => {
+    document.getElementById('uploader').click()
+  }
+  const onImageFileChange = (e: any) => {
     const reader = new FileReader()
     // Use the javascript reader object to load the contents
     // of the file in the v-model prop
