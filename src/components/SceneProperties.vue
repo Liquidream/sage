@@ -62,6 +62,15 @@
       </v-col>
     </v-row>
 
+    <v-row align="center">
+      <v-col class="pl-5" cols="8">
+        Backdrop image 2
+      </v-col>
+      <v-col cols="4">
+        <ImageBtn v-model="model.image"></ImageBtn>
+      </v-col>
+    </v-row>
+
     <!-- <v-text-field label="Sound" v-model="model.sound"></v-text-field> -->
     <v-file-input
       class="mt-8"
@@ -142,6 +151,7 @@
   import { usePropStore } from "@/stores/PropStore"
   import { useDoorStore } from "@/stores/DoorStore"
   import { storeToRefs } from "pinia"
+  import ImageBtn from "./ImageBtn.vue"
 
   const worldStore = useWorldStore()
   const worldRefs = storeToRefs(worldStore)
