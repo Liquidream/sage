@@ -25,7 +25,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
       rollupOptions: {
         output: {
           assetFileNames: "SAGE.[ext]",
-          entryFileNames: 'entry-[name].js'
+          entryFileNames: "entry-[name].js",
         },
       },
     },
