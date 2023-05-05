@@ -9,7 +9,7 @@
     </div> -->
     <!-- <v-divider /> -->
 
-    <v-list-subheader>General</v-list-subheader>
+    <v-list-subheader><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader>
 
     <v-text-field label="Title" v-model="worldStore.title"></v-text-field>
 
@@ -41,7 +41,7 @@
     </v-list>
     
     <scene-select label="Starting Scene" v-model="worldStore.startingSceneId" />
-    
+
     <v-divider />
     <v-list-subheader><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader>
     <v-textarea
