@@ -88,8 +88,10 @@ export class DoorEdit {
     sprite.x = doorModel.x || 0
     sprite.y = doorModel.y || 0
     // visible state
-    //debugger
-    this.sprite.visible = doorModel.visible // || true
+    if (!doorModel.visible) {
+      this.sprite.alpha = 0.5
+    }
+    // this.sprite.visible = doorModel.visible // || true
   }
 
   tidyUp() {
