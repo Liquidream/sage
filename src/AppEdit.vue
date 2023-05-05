@@ -208,7 +208,7 @@
     //window.sagePlayDataJSON = JSON.stringify(playData)
 
     // Launch "Play" window
-    window.open("/?mode=play", "sagePlay")
+    window.open("?mode=play", "sagePlay")
   }
 
   const exportGame = () => {
