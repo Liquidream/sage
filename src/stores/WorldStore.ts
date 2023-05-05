@@ -122,6 +122,7 @@ export const useWorldStore = defineStore("worldStore", {
     resetToDemoData() {
       // Default world
       this.title = "King's Ransom"
+      this.id = "ransom"
       this.startingSceneId = "scn_bridge"
       this.on_start = "// TODO: Play intro"
 

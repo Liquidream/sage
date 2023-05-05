@@ -4,7 +4,7 @@ import { useSceneStore } from "@/stores/SceneStore"
 import { Constants } from "@/constants"
 import type { SagePlayData } from "@/pixi-sageplay/SagePlayData"
 import { useActorStore } from "@/stores/ActorStore"
-import { useDoorStore } from "@/stores/DoorStore"
+import { useDoorStore, type DoorState } from "@/stores/DoorStore"
 import { usePropStore, type PropState } from "@/stores/PropStore"
 import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneState } from "@/stores/SceneStore"
@@ -35,17 +35,19 @@ export class SAGExport {
     playData.version = Constants.APP_VERSION
     // TODO: This needs to be pulled somewhere from storage (prob playData store?)
     playData.id = useWorldStore().id
+    debugger
     // World
     playData.worldData = JSON.stringify(useWorldStore().$state)
     // Scenes
     const sceneState = SAGExport.cloneState(useSceneStore()) as SceneState
     playData.sceneData = SAGExport.exportSceneData(sceneState, assetsManifest, zip)
-    // playData.sceneData = JSON.stringify(useSceneStore().$state)
     // Props
     const propState = SAGExport.cloneState(usePropStore()) as PropState
     playData.propData = SAGExport.exportPropData(propState, assetsManifest, zip)
-    // playData.propData = JSON.stringify(usePropStore().$state)
-    playData.doorData = JSON.stringify(useDoorStore().$state)
+    // Doors
+    const doorState = SAGExport.cloneState(useDoorStore()) as DoorState
+    playData.doorData = SAGExport.exportDoorData(doorState, assetsManifest, zip)
+    //playData.doorData = JSON.stringify(useDoorStore().$state)
     playData.actorData = JSON.stringify(useActorStore().$state)
     playData.playerData = JSON.stringify(usePlayerStore().$state)
 
@@ -140,10 +142,37 @@ export class SAGExport {
       // Export image to zip & replace state data with new filename
 
       // Prop.Image
-      const imgAssetName = `${prop.id}-image`
-      const imgDataUri = prop.image || ""
-      SAGExport.exportData(imgAssetName, imgDataUri, assets, imgFolder)
-      prop.image = imgAssetName
+      if (prop.image) {
+        const imgAssetName = `${prop.id}-image`
+        const imgDataUri = prop.image || ""
+        SAGExport.exportData(imgAssetName, imgDataUri, assets, imgFolder)
+        prop.image = imgAssetName
+      }
+    }
+
+    return JSON.stringify(propState)
+  }
+
+  public static exportDoorData(
+    propState: DoorState,
+    assets: ResolverManifest,
+    zip: JSZip
+  ): string {
+    console.log("Exporting doors to zip...")
+
+    const imgFolder = zip.folder("images")
+    // const sfxFolder = zip.folder("sfx")
+
+    for (const door of propState.doors) {
+      // Export image to zip & replace state data with new filename
+
+      // Door.Image
+      if (door.image) {
+        const imgAssetName = `${door.id}-image`
+        const imgDataUri = door.image || ""
+        SAGExport.exportData(imgAssetName, imgDataUri, assets, imgFolder)
+        door.image = imgAssetName
+      }
     }
 
     return JSON.stringify(propState)

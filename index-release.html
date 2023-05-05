@@ -9,11 +9,11 @@
   content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes">
   
-  <title>SAGE - Simple Adventure Game Engine</title>
+  <title>{{title}}</title>
 
-  <!-- <script>
-    window.sageDataId = "kingsRansom"
-  </script> -->
+  <script>
+    window.sageDataId = "{{dataId}}"
+  </script>
 
   <style>
 		html,
@@ -35,8 +35,6 @@
 
 <body>
   <div id="app"></div>
-
-  <!-- Use this when building release "engine" -->
   <script type="module" src="/src/main-release.ts"></script>
 </body>
 

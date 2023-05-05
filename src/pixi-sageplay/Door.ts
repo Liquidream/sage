@@ -72,13 +72,7 @@ export class Door {
     //
     let sprite = undefined
     if (this.model.image) {
-      const imgBase64 = this.model.image
-      const base = new BaseTexture(imgBase64)
-      console.log(
-        `>> model dimensions: width=${this.model.width} height=${this.model.height}`
-      )
-      const texture = new Texture(base)
-      sprite = Sprite.from(texture)
+      sprite = Sprite.from(this.model.image)
     } else {
       sprite = new Sprite(Texture.EMPTY)
       sprite.width = this.model.width || 0
