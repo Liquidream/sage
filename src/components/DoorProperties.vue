@@ -30,7 +30,7 @@
 
     <v-divider />
     <v-list-subheader
-      ><v-icon icon="mdi-view-list-outline"></v-icon>General</v-list-subheader
+      ><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader
     >
     <v-text-field
       label="ID"
@@ -109,8 +109,7 @@
     </v-row>
 
     <v-row align="center" class="mt-n5">
-      <v-col class="pl-5">Door image</v-col>
-      <v-col>
+      <v-col cols="4">
         <v-file-input
           v-model="chosenFile"
           type="file"
@@ -135,8 +134,9 @@
           ></v-btn>
         </v-img>
       </v-col>
+      <v-col class="pl-5 text-medium-emphasis">Door image</v-col>
     </v-row>
-
+    
     <v-row class="mt-n5">
       <v-col>
         <v-tooltip
@@ -169,7 +169,7 @@
 
     <v-divider />
     <v-list-subheader
-      ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader
+      ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
     >
     <v-textarea
       name="on_action"

@@ -30,7 +30,7 @@
 
     <v-divider />
     <v-list-subheader
-      ><v-icon icon="mdi-view-list-outline"></v-icon>General</v-list-subheader
+      ><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader
     >
     <v-text-field
       label="ID"
@@ -41,12 +41,11 @@
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
     <v-row align="center" class="mb-1">
-      <v-col class="pl-5">Prop image</v-col>
-      <v-col>
+      <v-col cols="4">
         <v-file-input
-          v-model="chosenFile"
-          type="file"
-          @change="onImageFileChange"
+        v-model="chosenFile"
+        type="file"
+        @change="onImageFileChange"
           accept="image/png, image/jpeg, image/bmp"
           placeholder="Pick a backdrop image"
           id="uploader"
@@ -67,6 +66,7 @@
           ></v-btn>
         </v-img>
       </v-col>
+      <v-col class="pl-5 text-medium-emphasis">Prop image</v-col>
     </v-row>
 
     <v-textarea
@@ -133,7 +133,7 @@
 
     <v-divider />
     <v-list-subheader
-      ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader
+      ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
     >
     <v-textarea
       name="on_action"

@@ -21,7 +21,7 @@
     </div>
 
     <v-divider />
-    <v-list-subheader>General</v-list-subheader>
+    <v-list-subheader><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader>
 
     <v-text-field
       label="ID"
@@ -42,11 +42,11 @@
     </v-row> -->
 
     <v-row align="center">
-      <v-col class="pl-5">
-        Backdrop image
-      </v-col>
-      <v-col>
+      <v-col cols="4" class="pl-5">
         <ImageFileInputBtn v-model="model.image"></ImageFileInputBtn>
+      </v-col>
+      <v-col class="text-medium-emphasis">
+        Backdrop image
       </v-col>
     </v-row>
 
@@ -61,7 +61,7 @@
     ></v-file-input>
 
     <v-divider />
-    <v-list-subheader>Props</v-list-subheader>
+    <v-list-subheader><v-icon icon="mdi-trophy"></v-icon> Props</v-list-subheader>
     <!-- on click, replace panel with properties of Prop + select it in scene -->
     <v-list>
       <v-list-item
@@ -87,7 +87,7 @@
     ></v-list> -->
 
     <v-divider />
-    <v-list-subheader>Doors</v-list-subheader>
+    <v-list-subheader><v-icon icon="mdi-door"></v-icon> Doors</v-list-subheader>
 
     <!-- on click, replace panel with properties of Door + select it in scene -->
     <v-list
@@ -99,7 +99,7 @@
 
     <v-divider />
 
-    <v-list-subheader>Events</v-list-subheader>
+    <v-list-subheader><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader>
     <v-textarea
       name="on_enter"
       v-model="model.on_enter"

@@ -19,10 +19,9 @@
       hint="Unique reference for data storage"
     ></v-text-field>
 
-    <scene-select label="Starting Scene" v-model="worldStore.startingSceneId" />
-
+    
     <v-divider />
-    <v-list-subheader>Scenes</v-list-subheader>
+    <v-list-subheader><v-icon icon="mdi-filmstrip-box"></v-icon> Scenes</v-list-subheader>
     <!-- on click, replace panel with properties of Scene -->
     <v-list>
       <v-list-item
@@ -40,9 +39,11 @@
         </v-row>
       </v-list-item>
     </v-list>
-
+    
+    <scene-select label="Starting Scene" v-model="worldStore.startingSceneId" />
+    
     <v-divider />
-    <v-list-subheader>Events</v-list-subheader>
+    <v-list-subheader><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader>
     <v-textarea
       name="on_start"
       v-model="worldStore.on_start"
