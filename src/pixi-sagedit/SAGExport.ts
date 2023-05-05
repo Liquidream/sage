@@ -60,7 +60,7 @@ export class SAGExport {
 
     // Core runtime files
     //debugger
-    let htmlPage = await fetch("/index-release.html").then((response) =>
+    let htmlPage = await fetch("index-release.html").then((response) =>
       // When the page is loaded convert it to text
       response.text()
     )
@@ -68,7 +68,7 @@ export class SAGExport {
     htmlPage = htmlPage.replace("{{dataId}}", playData.id)
     zip.file("index.html", htmlPage)
     // zip.file("index.html", SAGExport.urlToPromise("/index-release.html"), { binary: true })
-    zip.file("entry-index-release.js", SAGExport.urlToPromise("/entry-index-release.js"), { binary: true })
+    zip.file("entry-index-release.js", SAGExport.urlToPromise("entry-index-release.js"), { binary: true })
     
     // Code GFX files
     zip.folder("images").file("debug.png", SAGExport.urlToPromise("images/debug.png"), { binary: true })
