@@ -35,7 +35,6 @@ export class SAGExport {
     playData.version = Constants.APP_VERSION
     // TODO: This needs to be pulled somewhere from storage (prob playData store?)
     playData.id = useWorldStore().id
-    debugger
     // World
     playData.worldData = JSON.stringify(useWorldStore().$state)
     // Scenes
