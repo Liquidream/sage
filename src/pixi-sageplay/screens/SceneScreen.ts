@@ -307,6 +307,8 @@ export class SceneScreen extends Container implements IScreen {
     sprite.anchor.set(0.5)
     sprite.x = SAGE.width / 2
     sprite.y = SAGE.height / 2
+    sprite.width = SAGE.width
+    sprite.height = SAGE.height
     this.addChild(sprite)
     this.backdrop = sprite
 

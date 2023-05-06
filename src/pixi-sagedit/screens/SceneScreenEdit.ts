@@ -21,6 +21,7 @@ import { useSceneStore } from "@/stores/SceneStore"
 import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
 import { InputEventEmitter } from "../../pixi-sageplay/screens/ui/InputEventEmitter"
+import { text } from "stream/consumers"
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null
@@ -165,6 +166,34 @@ export class SceneScreen extends Container {
       const base = new BaseTexture(this.scene.image)
       const texture = new Texture(base)
       sprite = Sprite.from(texture)
+      //
+      //-----
+      if (base.valid) {
+        const viewRatio = SAGEdit.width / SAGEdit.height
+        const imageRatio = sprite.width / sprite.height
+        if (imageRatio < viewRatio) {
+          sprite.width = SAGEdit.width
+          sprite.height = sprite.width * imageRatio
+        } else {
+          sprite.height = SAGEdit.height
+          sprite.width = sprite.height * imageRatio
+        }
+      } else {
+        // ...else grab dimensions one texture fully loaded
+        base.on("loaded", () => {
+          const viewRatio = SAGEdit.width / SAGEdit.height
+          const imageRatio = sprite.width / sprite.height
+          if (imageRatio < viewRatio) {
+            sprite.width = SAGEdit.width
+            sprite.height = sprite.width * imageRatio
+          } else {
+            sprite.height = SAGEdit.height
+            sprite.width = sprite.height * imageRatio
+          }
+        })
+      }
+
+      //-----
     } else {
       // console.log("<No scene backgdrop image specified>")
       sprite = new Sprite(Texture.EMPTY)
@@ -172,6 +201,15 @@ export class SceneScreen extends Container {
     sprite.anchor.set(0.5)
     sprite.x = SAGEdit.width / 2
     sprite.y = SAGEdit.height / 2
+
+    // sprite.height = SAGEdit.height
+    // sprite.scale.set(
+    //   Math.max(
+    //     SAGEdit.width / sprite.texture.width,
+    //     SAGEdit.height / sprite.texture.height
+    //   )
+    // )
+
     this.addChild(sprite)
     this.backdrop = sprite
 
