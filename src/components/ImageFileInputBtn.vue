@@ -11,7 +11,9 @@
   ></v-file-input>
   <v-img
     :src="value"
-    height="50"
+    max-height="50"
+    :aspect-ratio="16 / 9"
+    cover
     hide-details
     @click="changeImage"
     align="center"

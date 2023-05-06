@@ -13,7 +13,7 @@
         <v-col class="text-left">
           <img
             :src="item.raw.image"
-            style="width: 50px; height: 50px; object-fit: contain"
+            style="width: 53px; height: 30px; object-fit: cover"
           />
         </v-col>
         <v-col class="text-left mt-n2">
@@ -26,7 +26,7 @@
       <v-list-item v-bind="props" title="">
         <v-row align="center">
           <v-col cols="3">
-            <v-img :src="item.raw.image" max-height="50" />
+            <v-img :src="item.raw.image" max-height="50" :aspect-ratio="16/9" cover />
           </v-col>
           <v-col>
             {{ item.title }}
