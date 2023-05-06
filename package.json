@@ -22,9 +22,11 @@
     "pinia-plugin-persistedstate-2": "^2.0.14",
     "pixi-filters": "^5.2.1",
     "pixi.js": "^7.2.4",
+    "prismjs": "^1.29.0",
     "roboto-fontface": "*",
     "tweedle.js": "^2.1.0",
     "vue": "^3.2.47",
+    "vue-prism-editor": "^2.0.0-alpha.2",
     "vuetify": "^3.2.1",
     "webfontloader": "^1.6.28"
   },
