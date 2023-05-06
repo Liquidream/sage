@@ -307,8 +307,19 @@ export class SceneScreen extends Container implements IScreen {
     sprite.anchor.set(0.5)
     sprite.x = SAGE.width / 2
     sprite.y = SAGE.height / 2
-    sprite.width = SAGE.width
-    sprite.height = SAGE.height
+
+    const viewRatio = SAGE.width / SAGE.height //1.77
+    const imageRatio = sprite.width / sprite.height
+    if (imageRatio < viewRatio) {
+      sprite.width = SAGE.width
+      sprite.height = sprite.width / imageRatio
+    } else {
+      sprite.height = SAGE.height
+      sprite.width = sprite.height * imageRatio
+    }
+    // sprite.width = SAGE.width
+    // sprite.height = SAGE.height
+
     this.addChild(sprite)
     this.backdrop = sprite
 

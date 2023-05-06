@@ -169,11 +169,12 @@ export class SceneScreen extends Container {
       //
       //-----
       if (base.valid) {
-        const viewRatio = SAGEdit.width / SAGEdit.height
+        // (Only called if prev loaded image is re-loaded)
+        const viewRatio = SAGEdit.width / SAGEdit.height //1.77
         const imageRatio = sprite.width / sprite.height
         if (imageRatio < viewRatio) {
           sprite.width = SAGEdit.width
-          sprite.height = sprite.width * imageRatio
+          sprite.height = sprite.width / imageRatio
         } else {
           sprite.height = SAGEdit.height
           sprite.width = sprite.height * imageRatio
@@ -181,11 +182,12 @@ export class SceneScreen extends Container {
       } else {
         // ...else grab dimensions one texture fully loaded
         base.on("loaded", () => {
-          const viewRatio = SAGEdit.width / SAGEdit.height
+          // debugger
+          const viewRatio = SAGEdit.width / SAGEdit.height //1.77
           const imageRatio = sprite.width / sprite.height
           if (imageRatio < viewRatio) {
             sprite.width = SAGEdit.width
-            sprite.height = sprite.width * imageRatio
+            sprite.height = sprite.width / imageRatio
           } else {
             sprite.height = SAGEdit.height
             sprite.width = sprite.height * imageRatio
