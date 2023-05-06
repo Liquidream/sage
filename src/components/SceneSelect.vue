@@ -9,11 +9,11 @@
   >
     <template v-slot:selection="{ item }">
       <!-- item, index-->
-      <v-row align="center" class="mb-n5">
-        <v-col class="text-left">
+      <v-row align="center">
+        <v-col class="text-left" cols="3">
           <img
             :src="item.raw.image"
-            style="width: 53px; height: 30px; object-fit: cover"
+            style="max-width: 100%; aspect-ratio:16/9; object-fit: cover"
           />
         </v-col>
         <v-col class="text-left mt-n2">
@@ -26,7 +26,7 @@
       <v-list-item v-bind="props" title="">
         <v-row align="center">
           <v-col cols="3">
-            <v-img :src="item.raw.image" max-height="50" :aspect-ratio="16/9" cover />
+            <v-img :src="item.raw.image" :aspect-ratio="16/9" cover />
           </v-col>
           <v-col>
             {{ item.title }}

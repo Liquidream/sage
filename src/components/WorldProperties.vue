@@ -31,7 +31,7 @@
       >
         <v-row align="center">
           <v-col cols="3">
-            <v-img :src="scene.image" max-height="50" :aspect-ratio="16/9" cover />
+            <v-img :src="scene.image" :aspect-ratio="16/9" cover />
           </v-col>
           <v-col>
             <span class="text-no-wrap">{{ scene.name }}</span>
