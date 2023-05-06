@@ -230,22 +230,24 @@ export class SceneScreen extends Container {
       const propWidth = prop.data.width || 0,
         propHeight = prop.data.height || 0
       graphics.lineStyle(10, 0xff0000)
+      // Set Graphics "canvas" to correct pos/width
+      // (So we can easily move it when "dragging")
+      graphics.x = propModel.x || 0
+      graphics.y = propModel.y || 0
+      graphics.width = propWidth
+      graphics.height = propHeight
       graphics.pivot.set(propWidth / 2, propHeight / 2)
       // Need to handle diff for "non-image" sprites
       // (as Graphics scaling goes screwy if image dimensions are not really there)
-      if (prop.data.image) {
-        graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
-        prop.sprite.addChild(graphics)
-      } else {
-        graphics.drawRoundedRect(
-          prop.sprite.x,
-          prop.sprite.y,
-          prop.sprite.width,
-          prop.sprite.height,
-          30
-        )
-        this.addChild(graphics)
-      }
+      // if (prop.data.image) {
+      //   graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
+      //   prop.sprite.pa.addChild(graphics)
+      //   //prop.sprite.addChild(graphics)
+      // } else {
+      graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
+      prop.graphics = graphics
+      this.addChild(graphics)
+      //}
       graphics.endFill()
     }
   }
@@ -288,6 +290,8 @@ export class SceneScreen extends Container {
       // Temp remove interaction to "dragged" Prop
       this.draggedProp.sprite.interactive = false
       // Update pos
+      this.draggedProp.graphics.x = _e.data.global.x
+      this.draggedProp.graphics.y = _e.data.global.y
       this.draggedProp.sprite.x = _e.data.global.x
       this.draggedProp.sprite.y = _e.data.global.y
       // Check for valid "drop"

@@ -1,4 +1,4 @@
-import { BaseTexture, Sprite, Texture } from "pixi.js"
+import { BaseTexture, Graphics, Sprite, Texture } from "pixi.js"
 import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter"
 import type { PropModel } from "@/models/PropModel"
 import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
@@ -12,6 +12,7 @@ export class PropEdit {
   DRAG_ALPHA = 0.75
 
   public data!: PropModel
+  public graphics!: Graphics
   public sprite!: Sprite
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
@@ -31,11 +32,13 @@ export class PropEdit {
       sprite = Sprite.from(texture)
     } else {
       sprite = new Sprite(Texture.EMPTY)
-      sprite.width = propModel.width || 0
-      sprite.height = propModel.height || 0
     }
     this.data = propModel
     this.sprite = sprite
+
+    sprite.width = propModel.width || 0
+    sprite.height = propModel.height || 0
+
     sprite.anchor.set(0.5)
     sprite.x = propModel.x || 0
     sprite.y = propModel.y || 0
