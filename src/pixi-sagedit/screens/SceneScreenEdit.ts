@@ -163,7 +163,8 @@ export class SceneScreen extends Container {
     // Backdrop
     let sprite = undefined
     if (this.scene?.image) {
-      const base = new BaseTexture(this.scene.image)
+      // debugger
+      const base = new BaseTexture(this.scene.image) // e.g. "data:video/mp4;base64,xxxxxx"
       const texture = new Texture(base)
       sprite = Sprite.from(texture)
       //
