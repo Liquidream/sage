@@ -25,6 +25,7 @@
     "prismjs": "^1.29.0",
     "roboto-fontface": "*",
     "tweedle.js": "^2.1.0",
+    "vite-plugin-mkcert": "^1.15.0",
     "vue": "^3.2.47",
     "vue-prism-editor": "^2.0.0-alpha.2",
     "vuetify": "^3.2.1",

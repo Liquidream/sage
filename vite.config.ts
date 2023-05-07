@@ -7,6 +7,7 @@ import vue from "@vitejs/plugin-vue"
 import vuetify from "vite-plugin-vuetify"
 
 import { VitePWA } from "vite-plugin-pwa"
+import mkcert from "vite-plugin-mkcert"
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode, ssrBuild }) => {
@@ -39,6 +40,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
           ],
         },
       }),
+      mkcert(),
     ],
     // (This is now explicitly specified in separate npm build script)
     //base: command === "build" ? "/sage/" : "/",
@@ -50,6 +52,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
     // PN added to expose dev server to network ######
     server: {
       host: "0.0.0.0",
+      https: true,
     },
     build: {
       rollupOptions: {
