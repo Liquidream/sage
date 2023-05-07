@@ -8,6 +8,7 @@ import {
   Texture,
   FederatedPointerEvent,
   Point,
+  BaseTexture,
 } from "pixi.js" //filters
 
 import { SAGE, type IScreen } from "../SAGEPlay"
@@ -300,7 +301,37 @@ export class SceneScreen extends Container implements IScreen {
     // Backdrop
     let sprite = undefined
     if (this.scene.image) {
-      sprite = Sprite.from(this.scene.image)
+      const base = new BaseTexture(this.scene.image)
+      const texture = new Texture(base)
+      sprite = Sprite.from(texture)
+      //
+      //-----
+      if (base.valid) {
+        // (Only called if prev loaded image is re-loaded)
+        const viewRatio = SAGE.width / SAGE.height //1.77
+        const imageRatio = sprite.width / sprite.height
+        if (imageRatio < viewRatio) {
+          sprite.width = SAGE.width
+          sprite.height = sprite.width / imageRatio
+        } else {
+          sprite.height = SAGE.height
+          sprite.width = sprite.height * imageRatio
+        }
+      } else {
+        // ...else grab dimensions one texture fully loaded
+        base.on("loaded", () => {
+          // debugger
+          const viewRatio = SAGE.width / SAGE.height //1.77
+          const imageRatio = sprite.texture.width / sprite.texture.height
+          if (imageRatio < viewRatio) {
+            sprite.width = SAGE.width
+            sprite.height = sprite.width / imageRatio
+          } else {
+            sprite.height = SAGE.height
+            sprite.width = sprite.height * imageRatio
+          }
+        })
+      }
     } else {
       sprite = new Sprite(Texture.EMPTY)
     }
