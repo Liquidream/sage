@@ -50,8 +50,8 @@
       ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
     >
 
-    On Start
-    <CodeBlock>fdfg df gdfg </CodeBlock>
+    <span class="text-caption text-medium-emphasis">On Start</span>
+    <prism-editor name="on_start" v-model="worldStore.on_start"></prism-editor>
 
     <!-- <v-textarea
       name="on_start"
@@ -84,8 +84,14 @@
   import SceneSelect from "./SceneSelect.vue"
 
   // import { PrismEditor } from "vue-prism-editor"
-  //import PrismEditor from "./PrismEditor.vue"
-  import CodeBlock from "./CodeBlock.vue"
+  import PrismEditor from "./PrismEditor.vue"
+  //import CodeBlock from "./CodeBlock.vue"
+
+  // const code = "console.log('Hello World')"
+
+  // const highlighter = (code) => {
+  //   return highlight(code, languages.js) // languages.<insert language> to return html with markup
+  // }
 
   console.log("start WordProperties.vue...")
   const worldStore = useWorldStore()
