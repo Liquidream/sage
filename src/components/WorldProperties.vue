@@ -51,7 +51,7 @@
     >
 
     <span class="text-caption text-medium-emphasis">On Start</span>
-    <prism-editor name="on_start" v-model="worldStore.on_start"></prism-editor>
+    <prism-editor v-model="worldStore.on_start"></prism-editor>
 
     <!-- <v-textarea
       name="on_start"

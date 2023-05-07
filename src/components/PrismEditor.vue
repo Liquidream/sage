@@ -1,7 +1,8 @@
 <template>
   <prism-editor
     class="my-editor"
-    :value="modelValue"
+    :model-value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)"
     :highlight="highlighter"
   ></prism-editor>
 </template>
@@ -20,7 +21,7 @@
   defineProps(["modelValue"])
   defineEmits(["update:modelValue"])
 
-  const highlighter = (code: any) => {
+  const highlighter = (code) => {
     return highlight(code, languages.js) // languages.<insert language> to return html with markup
   }
 </script>
