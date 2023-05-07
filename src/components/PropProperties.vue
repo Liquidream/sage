@@ -135,21 +135,12 @@
     <v-list-subheader
       ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
     >
-    <v-textarea
-      name="on_action"
-      v-model="model.on_action"
-      label="On Action"
-      auto-grow
-      rows="2"
-    ></v-textarea>
 
-    <v-textarea
-      name="on_use"
-      v-model="model.on_use"
-      label="On Use"
-      auto-grow
-      rows="2"
-    ></v-textarea>
+    <prism-editor label="On Action" v-model="model.on_action" />
+
+    <prism-editor label="On Use" v-model="model.on_use" />
+
+    <v-divider />
 
     <v-btn @click="propStore.deleteProp(model.id)" color="error" class="mt-2"
       >Remove Prop</v-btn
@@ -167,6 +158,7 @@
   import SceneSelect from "./SceneSelect.vue"
   import type { PropModel } from "@/models/PropModel"
   import { usePropStore } from "@/stores/PropStore"
+  import PrismEditor from "./PrismEditor.vue"
 
   const worldStore = useWorldStore()
   const propStore = usePropStore()

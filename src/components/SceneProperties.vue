@@ -100,21 +100,12 @@
     <v-divider />
 
     <v-list-subheader><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader>
-    <v-textarea
-      name="on_enter"
-      v-model="model.on_enter"
-      label="On Enter"
-      auto-grow
-      rows="2"
-    ></v-textarea>
 
-    <v-textarea
-      name="on_exit"
-      v-model="model.on_exit"
-      label="On Exit"
-      auto-grow
-      rows="2"
-    ></v-textarea>
+    <prism-editor label="On Enter" v-model="model.on_enter" />
+
+    <prism-editor label="On Exit" v-model="model.on_exit" />
+
+    <v-divider />
 
     <v-btn @click="worldStore.deleteScene(model.id)" color="error" class="mt-2"
       >Remove Scene</v-btn
@@ -131,6 +122,7 @@
   import { useDoorStore } from "@/stores/DoorStore"
   import { storeToRefs } from "pinia"
   import ImageFileInputBtn from "./ImageFileInputBtn.vue"
+  import PrismEditor from "./PrismEditor.vue"
 
   const worldStore = useWorldStore()
   const worldRefs = storeToRefs(worldStore)

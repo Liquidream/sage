@@ -1,7 +1,7 @@
 <template>
   <span class="text-caption text-medium-emphasis">{{ label }}</span>
   <prism-editor
-    class="my-editor"
+    class="my-editor mb-3"
     :model-value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
     :highlight="highlighter"

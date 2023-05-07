@@ -52,6 +52,8 @@
 
     <prism-editor label="On Start" v-model="worldStore.on_start" />
 
+    <v-divider />
+
     <v-btn @click="worldStore.resetToDemoData" color="info" class="mt-2"
       >Reset Data</v-btn
     >
@@ -73,16 +75,7 @@
   // import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"
   import SceneSelect from "./SceneSelect.vue"
-
-  // import { PrismEditor } from "vue-prism-editor"
   import PrismEditor from "./PrismEditor.vue"
-  //import CodeBlock from "./CodeBlock.vue"
-
-  // const code = "console.log('Hello World')"
-
-  // const highlighter = (code) => {
-  //   return highlight(code, languages.js) // languages.<insert language> to return html with markup
-  // }
 
   console.log("start WordProperties.vue...")
   const worldStore = useWorldStore()

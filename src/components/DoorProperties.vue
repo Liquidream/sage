@@ -171,13 +171,18 @@
     <v-list-subheader
       ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
     >
-    <v-textarea
+
+    <prism-editor label="On Action" v-model="model.on_action" />
+
+    <!-- <v-textarea
       name="on_action"
       v-model="model.on_action"
       label="On Action"
       auto-grow
       rows="2"
-    ></v-textarea>
+    ></v-textarea> -->
+
+    <v-divider />
 
     <v-btn @click="doorStore.deleteDoor(model.id)" color="error" class="mt-2"
       >Remove Door</v-btn
@@ -195,6 +200,7 @@
   import PropSelect from "./PropSelect.vue"
   import { useDoorStore } from "@/stores/DoorStore"
   import { BaseTexture } from "pixi.js"
+  import PrismEditor from "./PrismEditor.vue"
 
   const worldStore = useWorldStore()
   const doorStore = useDoorStore()
