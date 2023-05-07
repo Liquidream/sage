@@ -50,16 +50,7 @@
       ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
     >
 
-    <span class="text-caption text-medium-emphasis">On Start</span>
-    <prism-editor v-model="worldStore.on_start"></prism-editor>
-
-    <!-- <v-textarea
-      name="on_start"
-      v-model="worldStore.on_start"
-      label="On Start"
-      auto-grow
-      rows="2"
-    ></v-textarea> -->
+    <prism-editor label="On Start" v-model="worldStore.on_start" />
 
     <v-btn @click="worldStore.resetToDemoData" color="info" class="mt-2"
       >Reset Data</v-btn

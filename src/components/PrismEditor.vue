@@ -1,4 +1,5 @@
 <template>
+  <span class="text-caption text-medium-emphasis">{{ label }}</span>
   <prism-editor
     class="my-editor"
     :model-value="modelValue"
@@ -18,7 +19,7 @@
   import "prismjs/components/prism-javascript"
   import "prismjs/themes/prism-tomorrow.min.css" // import syntax highlighting styles
 
-  defineProps(["modelValue"])
+  defineProps(["modelValue", "label"])
   defineEmits(["update:modelValue"])
 
   const highlighter = (code) => {
