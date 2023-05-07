@@ -34,7 +34,7 @@
         </v-list>
       </v-menu>
       <!-- <v-toolbar-title><strong>SAGE</strong> - Simple Adventure Game Engine</v-toolbar-title> -->
-      <v-img src="/images/app-images/sage-logo-small.png"></v-img>
+      <v-img src="images/app-images/sage-logo-small.png"></v-img>
       <v-btn
         :size="$vuetify.display.mobile ? 'small' : 'default'"
         @click="playGame"
