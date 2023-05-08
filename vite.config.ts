@@ -31,7 +31,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
           theme_color: "#002eb8",
           background_color: "#002eb8",
           display: "standalone",
-          orientation: "portrait",
+          //orientation: "portrait",
           // start_url: "/sage", // not needed, as pwa-vite plugin auto sets this for github build!
           icons: [
             {
