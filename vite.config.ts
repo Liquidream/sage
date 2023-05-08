@@ -8,6 +8,7 @@ import vuetify from "vite-plugin-vuetify"
 
 import { VitePWA } from "vite-plugin-pwa"
 import mkcert from "vite-plugin-mkcert"
+import replace from "@rollup/plugin-replace"
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode, ssrBuild }) => {
@@ -16,7 +17,8 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
       vue(),
       vuetify({ autoImport: true }),
       VitePWA({
-        // registerType: "autoUpdate",
+        // mode: "development",
+        registerType: "prompt", // default behaviour, but just to be explicit
         manifest: {
           name: "SAGE",
           short_name: "SAGE",
@@ -39,6 +41,9 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
             },
           ],
         },
+      }),
+      replace({
+        __DATE__: new Date().toISOString(),
       }),
       mkcert(),
     ],
