@@ -19,6 +19,11 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
       VitePWA({
         // mode: "development",
         registerType: "prompt", // default behaviour, but just to be explicit
+        workbox: {
+          // Need to bump up max cache size, as default max = 2MB
+          // (+currently the output index.js is over 4MB!)
+          maximumFileSizeToCacheInBytes: 9000000,
+        },
         manifest: {
           name: "SAGE",
           short_name: "SAGE",

@@ -67,7 +67,7 @@
         <PropProperties v-else-if="worldRefs.currPropId.value != ''" />
         <SceneProperties v-else-if="worldRefs.currSceneId.value != ''" />
         <WorldProperties v-else-if="worldRefs.currSceneId.value == ''" />
-        <p class="text-caption text-disabled text-right">SAGE Built: {{ timeAgo }}</p>
+        <p class="text-caption text-disabled text-right">SAGE built: {{ timeAgo }}</p>
       </v-container>
     </v-navigation-drawer>
 
@@ -80,7 +80,7 @@
       <PropProperties v-else-if="worldStore.currPropId != ''" />
       <SceneProperties v-else-if="worldStore.currSceneId != ''" />
       <WorldProperties v-else-if="worldStore.currSceneId == ''" />
-      <p class="text-caption text-disabled text-right">SAGE Built: {{ timeAgo }}</p>
+      <p class="text-caption text-disabled text-right">SAGE built: {{ timeAgo }}</p>
     </v-container>
 
     <!-- Portrait/Mobile Layout (End) ========================= -->
