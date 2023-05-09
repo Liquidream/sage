@@ -9,6 +9,7 @@ import {
   Texture,
   Text,
   BaseTexture,
+  VideoResource,
 } from "pixi.js"
 
 import { SAGEdit } from "../SAGEdit"
@@ -163,12 +164,19 @@ export class SceneScreen extends Container {
     // Backdrop
     let sprite = undefined
     if (this.scene?.image) {
-      // debugger
+      // video
+      // const resource = new VideoResource(this.scene.image)
+      // console.log(this.scene.image.length)
+      // const texture = Texture.from(resource)
+      // sprite = Sprite.from(texture)
+      // sprite.width = SAGEdit.width
+      // sprite.height = SAGEdit.height
+
+      // image
       const base = new BaseTexture(this.scene.image) // e.g. "data:video/mp4;base64,xxxxxx"
       const texture = new Texture(base)
       sprite = Sprite.from(texture)
-      //
-      //-----
+
       if (base.valid) {
         // (Only called if prev loaded image is re-loaded)
         const viewRatio = SAGEdit.width / SAGEdit.height //1.77
