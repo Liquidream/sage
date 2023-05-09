@@ -4,8 +4,9 @@
   "scripts": {
     "dev": "vite",
     "test:unit": "vitest --environment jsdom",
-    "serve": "vite preview",
-    "build": "vite build",
+    "build play": "vite build --config vite.config.play.ts --outDir dist-play",
+    "build edit": "vite build --outDir dist-edit",
+    "serve edit": "vite preview --outDir dist-edit",
     "build github": "vite build --base=/sage/",
     "deploy github": "gh-pages -d dist",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
