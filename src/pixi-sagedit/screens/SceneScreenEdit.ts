@@ -164,34 +164,26 @@ export class SceneScreen extends Container {
     // Backdrop
     let sprite = undefined
     if (this.scene?.image) {
-      // video
-      // const resource = new VideoResource(this.scene.image)
-      // console.log(this.scene.image.length)
-      // const texture = Texture.from(resource)
-      // sprite = Sprite.from(texture)
-      // sprite.width = SAGEdit.width
-      // sprite.height = SAGEdit.height
+      // Is it a video?
+      if (this.scene?.image.includes("data:video")) {
+        // Load video data
+        const element = document.createElement("video")
+        element.src = this.scene.image // e.g. "data:video/mp4;base64,xxxxxx"
+        element.preload = "auto"
 
-      // image
-      const base = new BaseTexture(this.scene.image) // e.g. "data:video/mp4;base64,xxxxxx"
-      const texture = new Texture(base)
-      sprite = Sprite.from(texture)
-
-      if (base.valid) {
-        // (Only called if prev loaded image is re-loaded)
-        const viewRatio = SAGEdit.width / SAGEdit.height //1.77
-        const imageRatio = sprite.width / sprite.height
-        if (imageRatio < viewRatio) {
-          sprite.width = SAGEdit.width
-          sprite.height = sprite.width / imageRatio
-        } else {
-          sprite.height = SAGEdit.height
-          sprite.width = sprite.height * imageRatio
-        }
+        const resource = new VideoResource(element)
+        const texture = Texture.from(resource)
+        sprite = Sprite.from(texture)
+        sprite.width = SAGEdit.width
+        sprite.height = SAGEdit.height
       } else {
-        // ...else grab dimensions one texture fully loaded
-        base.on("loaded", () => {
-          // debugger
+        // Load image data
+        const base = new BaseTexture(this.scene.image)
+        const texture = new Texture(base)
+        sprite = Sprite.from(texture)
+
+        if (base.valid) {
+          // (Only called if prev loaded image is re-loaded)
           const viewRatio = SAGEdit.width / SAGEdit.height //1.77
           const imageRatio = sprite.width / sprite.height
           if (imageRatio < viewRatio) {
@@ -201,9 +193,22 @@ export class SceneScreen extends Container {
             sprite.height = SAGEdit.height
             sprite.width = sprite.height * imageRatio
           }
-        })
+        } else {
+          // ...else grab dimensions one texture fully loaded
+          base.on("loaded", () => {
+            // debugger
+            const viewRatio = SAGEdit.width / SAGEdit.height //1.77
+            const imageRatio = sprite.width / sprite.height
+            if (imageRatio < viewRatio) {
+              sprite.width = SAGEdit.width
+              sprite.height = sprite.width / imageRatio
+            } else {
+              sprite.height = SAGEdit.height
+              sprite.width = sprite.height * imageRatio
+            }
+          })
+        }
       }
-
       //-----
     } else {
       // console.log("<No scene backgdrop image specified>")
@@ -212,14 +217,6 @@ export class SceneScreen extends Container {
     sprite.anchor.set(0.5)
     sprite.x = SAGEdit.width / 2
     sprite.y = SAGEdit.height / 2
-
-    // sprite.height = SAGEdit.height
-    // sprite.scale.set(
-    //   Math.max(
-    //     SAGEdit.width / sprite.texture.width,
-    //     SAGEdit.height / sprite.texture.height
-    //   )
-    // )
 
     this.addChild(sprite)
     this.backdrop = sprite

@@ -9,6 +9,7 @@ import {
   FederatedPointerEvent,
   Point,
   BaseTexture,
+  VideoResource,
 } from "pixi.js" //filters
 
 import { SAGE, type IScreen } from "../SAGEPlay"
@@ -305,27 +306,27 @@ export class SceneScreen extends Container implements IScreen {
 
     if (this.scene.image) {
       if (mode == "play") {
-        // When in play/test mode - need to handle non-preloaded images
-        const base = new BaseTexture(this.scene.image)
-        const texture = new Texture(base)
-        sprite = Sprite.from(texture)
-        //
-        //-----
-        if (base.valid) {
-          // (Only called if prev loaded image is re-loaded)
-          const viewRatio = SAGE.width / SAGE.height //1.77
-          const imageRatio = sprite.width / sprite.height
-          if (imageRatio < viewRatio) {
-            sprite.width = SAGE.width
-            sprite.height = sprite.width / imageRatio
-          } else {
-            sprite.height = SAGE.height
-            sprite.width = sprite.height * imageRatio
-          }
+        // Is it a video?
+        if (this.scene?.image.includes("data:video")) {
+          // Load video data
+          const element = document.createElement("video")
+          element.src = this.scene.image // e.g. "data:video/mp4;base64,xxxxxx"
+          element.preload = "auto"
+
+          const resource = new VideoResource(element)
+          const texture = Texture.from(resource)
+          sprite = Sprite.from(texture)
+          sprite.width = SAGE.width
+          sprite.height = SAGE.height
         } else {
-          // ...else grab dimensions one texture fully loaded
-          base.on("loaded", () => {
-            // debugger
+          // When in play/test mode - need to handle non-preloaded images
+          const base = new BaseTexture(this.scene.image)
+          const texture = new Texture(base)
+          sprite = Sprite.from(texture)
+          //
+          //-----
+          if (base.valid) {
+            // (Only called if prev loaded image is re-loaded)
             const viewRatio = SAGE.width / SAGE.height //1.77
             const imageRatio = sprite.width / sprite.height
             if (imageRatio < viewRatio) {
@@ -335,7 +336,21 @@ export class SceneScreen extends Container implements IScreen {
               sprite.height = SAGE.height
               sprite.width = sprite.height * imageRatio
             }
-          })
+          } else {
+            // ...else grab dimensions one texture fully loaded
+            base.on("loaded", () => {
+              // debugger
+              const viewRatio = SAGE.width / SAGE.height //1.77
+              const imageRatio = sprite.width / sprite.height
+              if (imageRatio < viewRatio) {
+                sprite.width = SAGE.width
+                sprite.height = sprite.width / imageRatio
+              } else {
+                sprite.height = SAGE.height
+                sprite.width = sprite.height * imageRatio
+              }
+            })
+          }
         }
       } else {
         // When in "release" mode, all images should've been preloaded, so go ahead

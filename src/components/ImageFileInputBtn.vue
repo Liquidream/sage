@@ -4,7 +4,7 @@
     v-model="chosenFile"
     type="file"
     @change="onImageFileChange"
-    accept="image/png, image/jpeg, image/bmp"
+    accept="image/png, image/jpeg, image/bmp, video/*"
     placeholder="Pick a backdrop image"
     id="uploader"
     class="d-none"
