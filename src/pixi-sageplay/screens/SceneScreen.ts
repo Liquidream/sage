@@ -312,6 +312,7 @@ export class SceneScreen extends Container implements IScreen {
           const element = document.createElement("video")
           element.src = this.scene.image // e.g. "data:video/mp4;base64,xxxxxx"
           element.preload = "auto"
+          element.loop = true
 
           const resource = new VideoResource(element)
           const texture = Texture.from(resource)
@@ -354,7 +355,26 @@ export class SceneScreen extends Container implements IScreen {
         }
       } else {
         // When in "release" mode, all images should've been preloaded, so go ahead
-        sprite = Sprite.from(this.scene.image)
+        // create a video texture from a path
+        const texture = Texture.from(this.scene.image)
+        // create a new Sprite using the video texture (yes it's that easy)
+        sprite = new Sprite(texture)
+        //sprite = Sprite.from(this.scene.image)
+
+        // Video?
+        if (texture.baseTexture?.resource?.autoPlay) {
+         texture.baseTexture.resource.source.loop = true
+        }
+
+        const viewRatio = SAGE.width / SAGE.height //1.77
+        const imageRatio = sprite.width / sprite.height
+        if (imageRatio < viewRatio) {
+          sprite.width = SAGE.width
+          sprite.height = sprite.width / imageRatio
+        } else {
+          sprite.height = SAGE.height
+          sprite.width = sprite.height * imageRatio
+        }
       }
     }
     sprite.anchor.set(0.5)

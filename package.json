@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "test:unit": "vitest --environment jsdom",
-    "build play": "vite build --config vite.config.play.ts --outDir dist-play",
+    "build play": "vite build --config vite.config.play.ts --outDir dist-play && copy /y \"dist-play\\entry-index_play.js\" \"public\"",
     "build edit": "vite build --outDir dist-edit",
     "serve edit": "vite preview --outDir dist-edit",
     "build github": "vite build --base=/sage/",

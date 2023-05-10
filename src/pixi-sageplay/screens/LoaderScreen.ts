@@ -1,5 +1,5 @@
 import { SAGE } from "@/pixi-sageplay/SAGEPlay"
-import { Container, Graphics, Assets } from "pixi.js"
+import { Container, Graphics, Assets, extensions, ExtensionType, Texture, utils } from "pixi.js"
 //import { assets } from "../../assets"
 //import { IScreen, SAGE } from "../Manager"
 import { Button } from "@/pixi-sageplay/screens/ui/Button"
@@ -52,6 +52,24 @@ export class LoaderScreen extends Container {
 
   private async initializeLoader(): Promise<void> {
     console.log("in initializeLoader()...")
+
+    // Add extension to handle video/mp4 files
+    const Mp4Asset = {
+      extension: ExtensionType.Asset,
+      detection: {
+        // TODO: replace this with browser detection
+        test: async () => true,
+        add: async (formats) => [...formats, "mp4"],
+        remove: async (formats) => formats.filter((format) => format !== "mp4"),
+      },
+      loader: {
+        test: (url) => utils.path.extname(url) === ".mp4",
+        load: async (url, asset) => Texture.fromURL(url, asset.data),
+        unload: async (asset) => asset.destroy(true),
+      },
+    }
+    extensions.add(Mp4Asset)
+
     // use .json file
     await Assets.init({ manifest: "assets.json" })
     //await Assets.init({ manifest: SAGE.playManifest })

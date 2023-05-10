@@ -170,9 +170,12 @@ export class SceneScreen extends Container {
         const element = document.createElement("video")
         element.src = this.scene.image // e.g. "data:video/mp4;base64,xxxxxx"
         element.preload = "auto"
+        element.loop = true
 
         const resource = new VideoResource(element)
         const texture = Texture.from(resource)
+        // https://github.com/pixijs/pixi.js/issues/6501 - SOLVED!!
+        //resource.source.loop = true
         sprite = Sprite.from(texture)
         sprite.width = SAGEdit.width
         sprite.height = SAGEdit.height
