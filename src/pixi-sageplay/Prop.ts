@@ -34,8 +34,9 @@ export class Prop {
       sprite.width = inModel.width || 0
       sprite.height = inModel.height || 0
     }
-    // this.data = propModel
     this.sprite = sprite
+    sprite.width = inModel.width || 0
+    sprite.height = inModel.height || 0
     sprite.anchor.set(0.5)
     sprite.x = inModel.x || 0
     sprite.y = inModel.y || 0
