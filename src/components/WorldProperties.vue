@@ -34,7 +34,10 @@
       >
         <v-row align="center">
           <v-col cols="3">
-            <v-img :src="scene.image" :aspect-ratio="16 / 9" cover />
+            <v-img v-if="scene.image.includes('image')" :src="scene.image" :aspect-ratio="16 / 9" cover />
+            <video v-else-if="scene.image.includes('video')" preload="metadata" style="display: block; width: inherit">
+              <source :src="scene.image" type="video/mp4" />
+            </video>
           </v-col>
           <v-col>
             <span class="text-no-wrap">{{ scene.name }}</span>

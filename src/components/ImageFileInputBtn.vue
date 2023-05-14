@@ -28,7 +28,7 @@
   </v-img>
 
   <div v-else-if="isVideo" class="video" style="position: relative" @click="changeImage">
-    <video height="50" preload="metadata" style="display: block">
+    <video height="50" preload="metadata" style="display: block;">
       <source :src="value" type="video/mp4" />
     </video>
     <v-btn

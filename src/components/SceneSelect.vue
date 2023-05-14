@@ -12,9 +12,13 @@
       <v-row align="center">
         <v-col class="text-left" cols="3">
           <img
+            v-if="item.raw?.image?.includes('image')"
             :src="item.raw.image"
             style="max-width: 100%; aspect-ratio:16/9; object-fit: cover"
           />
+          <video v-else-if="item.raw?.image?.includes('video')" preload="metadata" class="mb-2" style="display: block; width: inherit">
+            <source :src="item.raw.image" type="video/mp4" />
+          </video>
         </v-col>
         <v-col class="text-left mt-n2">
           <span class="text-no-wrap">{{ item.title }}</span>
@@ -26,7 +30,10 @@
       <v-list-item v-bind="props" title="">
         <v-row align="center">
           <v-col cols="3">
-            <v-img :src="item.raw.image" :aspect-ratio="16/9" cover />
+            <v-img v-if="item.raw.image.includes('image')" :src="item.raw.image" :aspect-ratio="16/9" cover />
+            <video v-else-if="item.raw.image.includes('video')" preload="metadata" class="mb-2" style="display: block; width: inherit">
+              <source :src="item.raw.image" type="video/mp4" />
+            </video>
           </v-col>
           <v-col>
             {{ item.title }}
