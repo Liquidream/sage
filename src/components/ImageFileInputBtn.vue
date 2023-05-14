@@ -10,6 +10,7 @@
     class="d-none"
   ></v-file-input>
   <v-img
+    v-if="isImage"
     :src="value"
     max-height="50"
     :aspect-ratio="16 / 9"
@@ -25,6 +26,19 @@
       size="x-small"
     ></v-btn>
   </v-img>
+
+  <div v-else-if="isVideo" class="video" style="position: relative" @click="changeImage">
+    <video height="50" preload="metadata" style="display: block">
+      <source :src="value" type="video/mp4" />
+    </video>
+    <v-btn
+      class="mb-2 ml-7 elevation-2"
+      icon="mdi-video"
+      variant="outlined"
+      size="x-small"
+      style="position: absolute; bottom: 0; z-index: 1; text-align: center"
+    ></v-btn>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -39,6 +53,14 @@
     set(value) {
       emit("update:modelValue", value)
     },
+  })
+
+  const isImage = computed(() => {
+    return props.modelValue.includes("image")
+  })
+
+  const isVideo = computed(() => {
+    return props.modelValue.includes("video")
   })
 
   let chosenFile: any

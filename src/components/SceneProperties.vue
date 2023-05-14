@@ -21,7 +21,9 @@
     </div>
 
     <v-divider />
-    <v-list-subheader><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader>
+    <v-list-subheader
+      ><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader
+    >
 
     <v-text-field
       label="ID"
@@ -31,23 +33,11 @@
     ></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
-    <!-- <v-row>
-      <v-col>
-        ssssdf sdf sdf sdf s
-      </v-col>
-      <v-col>
-        
-        <v-img :src="model.image" max-height="60" hide-details />
-      </v-col>
-    </v-row> -->
-
     <v-row align="center">
       <v-col cols="4" class="pl-5">
         <ImageFileInputBtn v-model="model.image"></ImageFileInputBtn>
       </v-col>
-      <v-col class="text-medium-emphasis">
-        Backdrop image
-      </v-col>
+      <v-col class="text-medium-emphasis">Backdrop image/video</v-col>
     </v-row>
 
     <!-- <v-text-field label="Sound" v-model="model.sound"></v-text-field> -->
@@ -61,7 +51,9 @@
     ></v-file-input>
 
     <v-divider />
-    <v-list-subheader><v-icon icon="mdi-trophy"></v-icon> Props</v-list-subheader>
+    <v-list-subheader
+      ><v-icon icon="mdi-trophy"></v-icon> Props</v-list-subheader
+    >
     <!-- on click, replace panel with properties of Prop + select it in scene -->
     <v-list>
       <v-list-item
@@ -99,7 +91,9 @@
 
     <v-divider />
 
-    <v-list-subheader><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader>
+    <v-list-subheader
+      ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader
+    >
 
     <prism-editor label="On Enter" v-model="model.on_enter" />
 
@@ -137,7 +131,7 @@
   const imageData: Ref<string | ArrayBuffer | null> = ref("")
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const changeImage = () => {
-    document.getElementById('uploader').click()
+    document.getElementById("uploader").click()
   }
   const onImageFileChange = (e: any) => {
     const reader = new FileReader()
