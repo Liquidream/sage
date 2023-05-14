@@ -14,9 +14,14 @@
           <img
             v-if="item.raw?.image?.includes('image')"
             :src="item.raw.image"
-            style="max-width: 100%; aspect-ratio:16/9; object-fit: cover"
+            style="max-width: 100%; aspect-ratio: 16/9; object-fit: cover"
           />
-          <video v-else-if="item.raw?.image?.includes('video')" preload="metadata" class="mb-2" style="display: block; width: inherit">
+          <video
+            v-else-if="item.raw?.image?.includes('video')"
+            preload="metadata"
+            class="mb-2"
+            style="display: block; width: inherit"
+          >
             <source :src="item.raw.image" type="video/mp4" />
           </video>
         </v-col>
@@ -30,9 +35,20 @@
       <v-list-item v-bind="props" title="">
         <v-row align="center">
           <v-col cols="3">
-            <v-img v-if="item.raw.image.includes('image')" :src="item.raw.image" :aspect-ratio="16/9" cover />
-            <video v-else-if="item.raw.image.includes('video')" preload="metadata" class="mb-2" style="display: block; width: inherit">
-              <source :src="item.raw.image" type="video/mp4" />
+            <v-img
+              v-if="item.raw.image.includes('image')"
+              :src="item.raw.image"
+              :aspect-ratio="16 / 9"
+              cover
+            />
+            <video
+              v-else-if="item.raw.image.includes('video')"
+              preload="metadata"
+              :style="
+                $vuetify.display.mobile
+                  ? 'display: block; width:inherit'
+                  : 'display: block; width:55px'">
+              <source :src="item.raw.image" type="video/mp4"/>
             </video>
           </v-col>
           <v-col>
