@@ -13,6 +13,7 @@ import { playAssets } from "@/pixi-sageplay/playAssets"
 // @ts-ignore
 import JSZipUtils from "jszip-utils"
 import { usePlayerStore } from "@/stores/PlayerStore"
+import { getActivePinia } from "pinia"
 
 export class FileUtils {
   private constructor() {
@@ -31,6 +32,10 @@ export class FileUtils {
 
   public static async performSave() {
     console.log("SAGExport:performSave()...")
+
+    debugger
+    const state = getActivePinia()?.state._rawValue
+    const jsonData = JSON.stringify(state)
   }
 
   public static async performExport() {
