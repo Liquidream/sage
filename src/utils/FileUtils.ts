@@ -30,12 +30,36 @@ export class FileUtils {
     console.log("SAGExport:performLoad()...")
   }
 
-  public static async performSave() {
+  public static performSave() {
     console.log("SAGExport:performSave()...")
 
-    debugger
-    const state = getActivePinia()?.state._rawValue
-    const jsonData = JSON.stringify(state)
+    const playData = {}
+    playData.version = Constants.APP_VERSION
+    // TODO: This needs to be pulled somewhere from storage (prob playData store?)
+    playData.id = useWorldStore().id
+    playData.worldData = useWorldStore().$state
+    playData.sceneData = useSceneStore().$state
+    playData.propData = usePropStore().$state
+    playData.doorData = useDoorStore().$state
+    playData.actorData = useActorStore().$state
+    playData.playerData = usePlayerStore().$state
+    const playDataJSON = JSON.stringify(playData, null, 2)
+
+    // const playData = {} as SagePlayData
+    // playData.version = Constants.APP_VERSION
+    // // TODO: This needs to be pulled somewhere from storage (prob playData store?)
+    // playData.id = useWorldStore().id
+    // playData.worldData = JSON.stringify(useWorldStore().$state)
+    // playData.sceneData = JSON.stringify(useSceneStore().$state)
+    // playData.propData = JSON.stringify(usePropStore().$state)
+    // playData.doorData = JSON.stringify(useDoorStore().$state)
+    // playData.actorData = JSON.stringify(useActorStore().$state)
+    // playData.playerData = JSON.stringify(usePlayerStore().$state)
+    // const playDataJSON = JSON.stringify(playData, null, 2)
+
+    console.log("saving file...")
+    const blob = new Blob([playDataJSON], { type: "text/plain;charset=utf-8" })
+    saveAs(blob, `${playData.id}-sageData.json`)
   }
 
   public static async performExport() {
@@ -52,14 +76,17 @@ export class FileUtils {
     playData.worldData = JSON.stringify(useWorldStore().$state)
     // Scenes
     const sceneState = FileUtils.cloneState(useSceneStore()) as SceneState
-    playData.sceneData = FileUtils.exportSceneData(sceneState, assetsManifest, zip)
+    playData.sceneData = FileUtils.exportSceneData(
+      sceneState,
+      assetsManifest,
+      zip
+    )
     // Props
     const propState = FileUtils.cloneState(usePropStore()) as PropState
     playData.propData = FileUtils.exportPropData(propState, assetsManifest, zip)
     // Doors
     const doorState = FileUtils.cloneState(useDoorStore()) as DoorState
     playData.doorData = FileUtils.exportDoorData(doorState, assetsManifest, zip)
-    //playData.doorData = JSON.stringify(useDoorStore().$state)
     playData.actorData = JSON.stringify(useActorStore().$state)
     playData.playerData = JSON.stringify(usePlayerStore().$state)
 
@@ -80,25 +107,78 @@ export class FileUtils {
     htmlPage = htmlPage.replace("{{title}}", useWorldStore().title)
     htmlPage = htmlPage.replace("{{dataId}}", playData.id)
     zip.file("index.html", htmlPage)
-    zip.file("entry-index-play.js", FileUtils.urlToPromise("entry-index_play.js"), { binary: true })
-    
+    zip.file(
+      "entry-index-play.js",
+      FileUtils.urlToPromise("entry-index_play.js"),
+      { binary: true }
+    )
+
     // Code GFX files
-    zip.folder("images").file("debug.png", FileUtils.urlToPromise("images/debug.png"), { binary: true })
-    zip.folder("images").folder("ui").file("shine.png", FileUtils.urlToPromise("images/ui/shine.png"), { binary: true })
-    zip.folder("images").folder("ui").file("settings.png", FileUtils.urlToPromise("images/ui/settings.png"), { binary: true })
-    zip.folder("images").folder("ui").file("inventory.png", FileUtils.urlToPromise("images/ui/inventory.png"), { binary: true })
+    zip
+      .folder("images")
+      .file("debug.png", FileUtils.urlToPromise("images/debug.png"), {
+        binary: true,
+      })
+    zip
+      .folder("images")
+      .folder("ui")
+      .file("shine.png", FileUtils.urlToPromise("images/ui/shine.png"), {
+        binary: true,
+      })
+    zip
+      .folder("images")
+      .folder("ui")
+      .file("settings.png", FileUtils.urlToPromise("images/ui/settings.png"), {
+        binary: true,
+      })
+    zip
+      .folder("images")
+      .folder("ui")
+      .file(
+        "inventory.png",
+        FileUtils.urlToPromise("images/ui/inventory.png"),
+        { binary: true }
+      )
 
     // Code SFX files
-    zip.folder("sfx").file("pick-up.mp3", FileUtils.urlToPromise("sfx/pick-up.mp3"), { binary: true })
-    zip.folder("sfx").file("door-locked.mp3", FileUtils.urlToPromise("sfx/door-locked.mp3"), { binary: true })
-    zip.folder("sfx").file("door-unlock.mp3", FileUtils.urlToPromise("sfx/door-unlock.mp3"), { binary: true })
-    zip.folder("sfx").file("game-won.mp3", FileUtils.urlToPromise("sfx/game-won.mp3"), { binary: true })
-    zip.folder("sfx").file("game-lost.mp3", FileUtils.urlToPromise("sfx/game-lost.mp3"), { binary: true })
+    zip
+      .folder("sfx")
+      .file("pick-up.mp3", FileUtils.urlToPromise("sfx/pick-up.mp3"), {
+        binary: true,
+      })
+    zip
+      .folder("sfx")
+      .file("door-locked.mp3", FileUtils.urlToPromise("sfx/door-locked.mp3"), {
+        binary: true,
+      })
+    zip
+      .folder("sfx")
+      .file("door-unlock.mp3", FileUtils.urlToPromise("sfx/door-unlock.mp3"), {
+        binary: true,
+      })
+    zip
+      .folder("sfx")
+      .file("game-won.mp3", FileUtils.urlToPromise("sfx/game-won.mp3"), {
+        binary: true,
+      })
+    zip
+      .folder("sfx")
+      .file("game-lost.mp3", FileUtils.urlToPromise("sfx/game-lost.mp3"), {
+        binary: true,
+      })
 
     // Other assets
-    zip.file("favicon.ico", FileUtils.urlToPromise("favicon.ico"), { binary: true })
+    zip.file("favicon.ico", FileUtils.urlToPromise("favicon.ico"), {
+      binary: true,
+    })
     //zip.file("SAGE.css", SAGExport.urlToPromise("SAGE.css"), { binary: true })
-    zip.folder("assets").file("webfontloader.js", FileUtils.urlToPromise("assets/webfontloader.js"), { binary: true })
+    zip
+      .folder("assets")
+      .file(
+        "webfontloader.js",
+        FileUtils.urlToPromise("assets/webfontloader.js"),
+        { binary: true }
+      )
 
     console.log("generating file...")
     zip.generateAsync({ type: "blob" }).then(function (content) {
@@ -211,7 +291,7 @@ export class FileUtils {
     // https://github.com/Stuk/jszip/issues/404
     const idx = dataUri.indexOf("base64,") + "base64,".length
     const data = dataUri.substring(idx)
-    const fileExt = dataUri.split(';')[0].split('/')[1]
+    const fileExt = dataUri.split(";")[0].split("/")[1]
     const filename = `${assetName}.${fileExt}`
     // TODO: Need to preserve original extensions
     zipFolder?.file(filename, data, { base64: true })
