@@ -10,6 +10,29 @@
 
     <v-app-bar :elevation="2">
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
+
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn
+            :size="$vuetify.display.mobile ? 'small' : 'default'"
+            icon="mdi-dots-vertical"
+            v-bind="props"
+          ></v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item prepend-icon="mdi-import" @click="loadGame">
+            Load Game
+          </v-list-item>
+          <v-list-item prepend-icon="mdi-content-save" @click="saveGame">
+            Save Game
+          </v-list-item>
+          <v-list-item prepend-icon="mdi-export" @click="exportGame">
+            Export Game
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn
@@ -33,8 +56,9 @@
           </v-list-item>
         </v-list>
       </v-menu>
+
       <!-- <v-toolbar-title><strong>SAGE</strong> - Simple Adventure Game Engine</v-toolbar-title> -->
-      <v-img src="images/app-images/sage-logo-small.png"></v-img>
+      <v-img class="ma-4" src="images/app-images/sage-logo-small.png"></v-img>
       <v-btn
         :size="$vuetify.display.mobile ? 'small' : 'default'"
         @click="playGame"
@@ -43,14 +67,14 @@
         >Play</v-btn
       >
 
-      <v-btn
+      <!-- <v-btn
         :size="$vuetify.display.mobile ? 'small' : 'default'"
         @click="exportGame"
         color="info"
         prepend-icon="mdi-content-save"
       >
         Export
-      </v-btn>
+      </v-btn> -->
       <!-- <v-btn icon="mdi-fullscreen" @click="Fullscreen.toggleFullScreen"></v-btn> -->
     </v-app-bar>
 
@@ -67,7 +91,9 @@
         <PropProperties v-else-if="worldRefs.currPropId.value != ''" />
         <SceneProperties v-else-if="worldRefs.currSceneId.value != ''" />
         <WorldProperties v-else-if="worldRefs.currSceneId.value == ''" />
-        <p class="text-caption text-disabled text-right">SAGE built: {{ timeAgo }}</p>
+        <p class="text-caption text-disabled text-right">
+          SAGE built: {{ timeAgo }}
+        </p>
       </v-container>
     </v-navigation-drawer>
 
@@ -80,7 +106,9 @@
       <PropProperties v-else-if="worldStore.currPropId != ''" />
       <SceneProperties v-else-if="worldStore.currSceneId != ''" />
       <WorldProperties v-else-if="worldStore.currSceneId == ''" />
-      <p class="text-caption text-disabled text-right">SAGE built: {{ timeAgo }}</p>
+      <p class="text-caption text-disabled text-right">
+        SAGE built: {{ timeAgo }}
+      </p>
     </v-container>
 
     <!-- Portrait/Mobile Layout (End) ========================= -->
@@ -103,7 +131,7 @@
   import { useDoorStore } from "./stores/DoorStore"
   import { usePropStore } from "./stores/PropStore"
   import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
-  import { SAGExport } from "./pixi-sagedit/SAGExport"
+  import { FileUtils } from "./utils/FileUtils"
   import { useSageEditStore } from "./stores/SAGEditStore"
   import { usePlayerStore } from "./stores/PlayerStore"
   import type { SceneModel } from "./models/SceneModel"
@@ -116,6 +144,21 @@
   // replaced dyanmicaly
   const date = "__DATE__"
   const timeAgo = useTimeAgo(date)
+
+  const loadGame = () => {
+    console.log(">> Load game")
+    FileUtils.performLoad()
+  }
+
+  const saveGame = () => {
+    console.log(">> Save game")
+    FileUtils.performSave()
+  }
+
+  const exportGame = () => {
+    console.log("in exportGame()...")
+    FileUtils.performExport()
+  }
 
   const addScene = () => {
     console.log(">> Add scene")
@@ -211,7 +254,7 @@
     playData.propData = JSON.stringify(usePropStore().$state)
     playData.doorData = JSON.stringify(useDoorStore().$state)
     playData.actorData = JSON.stringify(useActorStore().$state)
-    playData.playerData = JSON.stringify(usePlayerStore().$state)
+    FileUtilsplayerData = JSON.stringify(usePlayerStore().$state)
 
     window.sagePlayData = playData
 
@@ -220,12 +263,6 @@
 
     // Launch "Play" window
     window.open("?mode=play", "sagePlay")
-  }
-
-  const exportGame = () => {
-    console.log("in exportGame()...")
-
-    SAGExport.performExport()
   }
 </script>
 

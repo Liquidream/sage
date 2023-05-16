@@ -48,7 +48,7 @@
                 $vuetify.display.mobile
                   ? 'display: block; width:inherit'
                   : 'display: block; width:55px'">
-              <source :src="item.raw.image" type="video/mp4"/>
+              <source :src="item.raw.image" type="video/mp4" />
             </video>
           </v-col>
           <v-col>
