@@ -71,13 +71,13 @@ export class FileUtils {
       // Scene Data
       useSceneStore().$state = sageEditData.sceneData
       // Prop Data
-       usePropStore().$state = sageEditData.propData
+      usePropStore().$state = sageEditData.propData
       // // Door Data
-       useDoorStore().$state = sageEditData.doorData
+      useDoorStore().$state = sageEditData.doorData
       // // Actor Data
-       useActorStore().$state = sageEditData.actorData
+      useActorStore().$state = sageEditData.actorData
       // // Player Data
-       usePlayerStore().$state = sageEditData.playerData
+      usePlayerStore().$state = sageEditData.playerData
 
       console.log(">>> (finished importing data)")
     }
