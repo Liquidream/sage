@@ -64,24 +64,20 @@ export class FileUtils {
     reader.readAsText(jsonFile, "UTF-8")
     // here we tell the reader what to do when it's done reading...
     reader.onload = () => {
-      const content = reader.result // this is the content!
-      console.log(content.length)
-
-      //const sageEditData = await jsonString.json()
-      const sageEditData = JSON.parse(content)
-
+      const jsonContent = reader.result // this is the content!
+      const sageEditData = JSON.parse(jsonContent)
       // World Data
       useWorldStore().$state = sageEditData.worldData
       // Scene Data
-      useSceneStore.$state = sageEditData.sceneData
+      useSceneStore().$state = sageEditData.sceneData
       // Prop Data
-      usePropStore.$state = sageEditData.propData
-      // Door Data
-      useDoorStore.$state = sageEditData.doorData
-      // Actor Data
-      useActorStore.$state = sageEditData.actorData
-      // Player Data
-      usePlayerStore.$state = sageEditData.playerData
+       usePropStore().$state = sageEditData.propData
+      // // Door Data
+       useDoorStore().$state = sageEditData.doorData
+      // // Actor Data
+       useActorStore().$state = sageEditData.actorData
+      // // Player Data
+       usePlayerStore().$state = sageEditData.playerData
 
       console.log(">>> (finished importing data)")
     }
