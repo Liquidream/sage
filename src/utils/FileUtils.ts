@@ -26,40 +26,87 @@ export class FileUtils {
     console.log("SAGExport:initialize()...")
   }
 
+  /**
+   * Select file(s).
+   * @param {String} contentType The content type of files you wish to select. For instance, use "image/*" to select all types of images.
+   * @param {Boolean} multiple Indicates if the user can select multiple files.
+   * @returns {Promise<File|File[]>} A promise of a file or array of files in case the multiple parameter is true.
+   */
+  public static selectFile(contentType: string, multiple: boolean) {
+    return new Promise((resolve) => {
+      const input = document.createElement("input")
+      input.type = "file"
+      input.multiple = multiple
+      input.accept = contentType
+
+      input.onchange = () => {
+        const files = Array.from(input.files)
+        if (multiple) resolve(files)
+        else resolve(files[0])
+      }
+
+      input.click()
+    })
+  }
+
   public static async performLoad() {
+    // Import game "edit" data
     console.log("SAGExport:performLoad()...")
+
+    // TODO: Let user upload file (or enter URL?)
+
+    // const sageEditData = await response.json()
+    const jsonFile = await FileUtils.selectFile(".json", false)
+    // const jsonString = fs.readFileSync(sageEditData., 'utf-8');
+    //const jsonString = await jsonFile.text()
+    // setting up the reader
+    const reader = new FileReader()
+    reader.readAsText(jsonFile, "UTF-8")
+    // here we tell the reader what to do when it's done reading...
+    reader.onload = () => {
+      const content = reader.result // this is the content!
+      console.log(content.length)
+
+      //const sageEditData = await jsonString.json()
+      const sageEditData = JSON.parse(content)
+
+      // World Data
+      useWorldStore().$state = sageEditData.worldData
+      // Scene Data
+      useSceneStore.$state = sageEditData.sceneData
+      // Prop Data
+      usePropStore.$state = sageEditData.propData
+      // Door Data
+      useDoorStore.$state = sageEditData.doorData
+      // Actor Data
+      useActorStore.$state = sageEditData.actorData
+      // Player Data
+      usePlayerStore.$state = sageEditData.playerData
+
+      console.log(">>> (finished importing data)")
+    }
   }
 
   public static performSave() {
     console.log("SAGExport:performSave()...")
 
-    const playData = {}
-    playData.version = Constants.APP_VERSION
+    const sageEditData = {} as any
+    sageEditData.version = Constants.APP_VERSION
     // TODO: This needs to be pulled somewhere from storage (prob playData store?)
-    playData.id = useWorldStore().id
-    playData.worldData = useWorldStore().$state
-    playData.sceneData = useSceneStore().$state
-    playData.propData = usePropStore().$state
-    playData.doorData = useDoorStore().$state
-    playData.actorData = useActorStore().$state
-    playData.playerData = usePlayerStore().$state
-    const playDataJSON = JSON.stringify(playData, null, 2)
-
-    // const playData = {} as SagePlayData
-    // playData.version = Constants.APP_VERSION
-    // // TODO: This needs to be pulled somewhere from storage (prob playData store?)
-    // playData.id = useWorldStore().id
-    // playData.worldData = JSON.stringify(useWorldStore().$state)
-    // playData.sceneData = JSON.stringify(useSceneStore().$state)
-    // playData.propData = JSON.stringify(usePropStore().$state)
-    // playData.doorData = JSON.stringify(useDoorStore().$state)
-    // playData.actorData = JSON.stringify(useActorStore().$state)
-    // playData.playerData = JSON.stringify(usePlayerStore().$state)
-    // const playDataJSON = JSON.stringify(playData, null, 2)
+    sageEditData.id = useWorldStore().id
+    sageEditData.worldData = useWorldStore().$state
+    sageEditData.sceneData = useSceneStore().$state
+    sageEditData.propData = usePropStore().$state
+    sageEditData.doorData = useDoorStore().$state
+    sageEditData.actorData = useActorStore().$state
+    sageEditData.playerData = usePlayerStore().$state
+    const sageEditDataJSON = JSON.stringify(sageEditData, null, 4)
 
     console.log("saving file...")
-    const blob = new Blob([playDataJSON], { type: "text/plain;charset=utf-8" })
-    saveAs(blob, `${playData.id}-sageData.json`)
+    const blob = new Blob([sageEditDataJSON], {
+      type: "text/plain;charset=utf-8",
+    })
+    saveAs(blob, `${sageEditData.id}-sageData.json`)
   }
 
   public static async performExport() {
@@ -90,7 +137,7 @@ export class FileUtils {
     playData.actorData = JSON.stringify(useActorStore().$state)
     playData.playerData = JSON.stringify(usePlayerStore().$state)
 
-    const playDataJSON = JSON.stringify(playData, null, 2)
+    const playDataJSON = JSON.stringify(playData, null, 4)
     zip.file("sageData.json", playDataJSON)
 
     // debugger
