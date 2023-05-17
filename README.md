@@ -11,13 +11,24 @@ Create your own interactive narrative experiences, using a simple, web-based, mo
 - [x] Export your creations as a zip, self-contained, web export
 - [x] Mobile-friendly editor and play engine (touch, orientation, etc.)
 - [x] Supports voice-over dialog audio
+- [x] Animated (movie/gif) scene backgrounds
 
 ### 🏗 Planned Features
-- [ ] Support animated (movie/gif) scene backgrounds & props
+- [ ] Actors (Characters)
+- [ ]  **Dialog editor**
+    - [ ]  Unique id for recordings
+    - [ ]  Export to script
+    - [ ]  Branching support
+    - [ ]  Trigger Custom actions/code
+- [ ] Support for intro/menu (or have scene template for that?)
 - [ ] Styilistic filters (e.g. B&W, Retro, etc.)
-- [ ] Built-in Cinemagraph creation feature (record scene with mobile camera and "paint" the movement)
-- [ ] Built-in audio recorder/looper feature (for making looped background audio for scenes)
-- [ ] Built-in "cut-out prop from photo" feature
+- [ ] **Cinemagraph Editor**
+    - [ ] Record scene with mobile camera
+    - [ ] ...and "paint" the movement
+- [ ] **Audio recorder/looper Editor**
+    - [ ] Making seamless looped background audio for scenes
+- [ ] **Cut-out Editor**
+  - [ ] Built-in "cut-out prop from photo" feature
 - [ ] Camera effects (e.g. Depth of field blur when close-up on actors/props)
 
 ### 📦 Dependencies
