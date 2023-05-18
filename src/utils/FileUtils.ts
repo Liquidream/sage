@@ -54,6 +54,7 @@ export class FileUtils {
     console.log("SAGExport:performLoad()...")
 
     // TODO: Let user upload file (or enter URL?)
+    // TODO: Warn user if trying to load a version that's newer than editor (unlikely, but if not updated their copy?)
 
     // const sageEditData = await response.json()
     const jsonFile = await FileUtils.selectFile(".json", false)

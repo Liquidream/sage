@@ -57,7 +57,7 @@
 
     <v-divider />
 
-    <v-btn @click="worldStore.resetToDemoData" color="info" class="mt-2"
+    <v-btn @click="SampleData.resetToDemoData" color="info" class="mt-2"
       >Reset Data</v-btn
     >
     <!-- &nbsp;
@@ -74,9 +74,8 @@
 <script setup lang="ts">
   import type { SceneModel } from "@/models/SceneModel"
   import { SAGEdit } from "../pixi-sagedit/SAGEdit"
-  // import type { Ref } from "vue"
-  // import { ref } from "vue"
   import { useWorldStore } from "../stores/WorldStore"
+  import { SampleData } from "../stores/SampleData"
   import SceneSelect from "./SceneSelect.vue"
   import PrismEditor from "./PrismEditor.vue"
 

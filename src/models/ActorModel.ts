@@ -1,11 +1,16 @@
 export interface ActorModel {
-  id: string
+  id: string //also used for audio ref/prefix?
   name: string
   col?: string
-  desc?: string
+  desc?: string // Poss having diff desc's for each state?
   isPlayer: boolean
   location_id?: string
+  image?: string // Poss multiple, for each state?
+  state?: string
+  scene_x?: number
+  scene_y?: number
   // Key-Value pair to allow properties to be set/read
   property?: { [key: string]: string | number | boolean }
-  //audio ref/prefix?
+  // Poss. event actions
+  on_interact?: string
 }
