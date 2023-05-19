@@ -1,6 +1,7 @@
 import { Application, Container } from "pixi.js"
 import { SceneScreen } from "./screens/SceneScreenEdit"
 import { DialogEdit } from "./DialogEdit"
+import { EventsEdit } from "./EventsEdit"
 
 export class SAGEdit {
   private constructor() {
@@ -25,7 +26,7 @@ export class SAGEdit {
   public static Dialog: DialogEdit
   // public static Actions: Actions;
   // public static Script: Script;
-  //public static Events: Events
+  public static Events: EventsEdit
   // public static Sound: Sound;
   // public static UI_Overlay: UI_Overlay;
 
@@ -110,6 +111,9 @@ export class SAGEdit {
     - (Means that Prop will have to have a ref (id?) to Scene it's located in)
     - 
 */
+    // ...and events
+    SAGEdit.Events = new EventsEdit()
+
     // ...and dialog
     // (currently using it to display selected item name - not essential!)
     SAGEdit.Dialog = new DialogEdit()

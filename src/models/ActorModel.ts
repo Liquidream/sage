@@ -3,10 +3,9 @@ export interface ActorModel {
   name: string
   col?: string
   desc?: string // Poss having diff desc's for each state?
-  isPlayer: boolean
   location_id?: string
   image?: string // Poss multiple, for each state?
-  state?: string
+  state?: string // e.g. "happy", "dead", etc.
   scene_x?: number
   scene_y?: number
   // Key-Value pair to allow properties to be set/read

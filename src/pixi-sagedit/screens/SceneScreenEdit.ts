@@ -17,7 +17,7 @@ import { PropEdit } from "../PropEdit"
 import { DoorEdit } from "../DoorEdit"
 import type { SceneModel } from "@/models/SceneModel"
 import type { PropModel } from "@/models/PropModel"
-import { useWorldStore } from "@/stores/WorldStore"
+import { useWorldStore, type WorldState } from "@/stores/WorldStore"
 import { useSceneStore } from "@/stores/SceneStore"
 import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
@@ -41,16 +41,19 @@ export class SceneScreen extends Container {
 
   private backdropInputEvents!: InputEventEmitter
 
+  private lastWorldState: WorldState | undefined
+
   constructor() {
     super()
 
     // Subscribe to World state changes so that we refresh/recreate Pixi.js content
     const worldStore = useWorldStore()
     this.scene = worldStore.getCurrentScene
-    worldStore.$subscribe(() => {
-      // Current scene changed
+    worldStore.$subscribe((mutation, state) => {
+      // Current selection/scene changed
+      //if (mutation.events) // Can't do - is DEV only!
       SAGEdit.debugLog("World changed - so refresh scene model (pixi)")
-      this.scene = worldStore.getCurrentScene
+      //this.scene = worldStore.getCurrentScene
       this.refresh()
     })
 
@@ -58,6 +61,7 @@ export class SceneScreen extends Container {
     const sceneStore = useSceneStore()
     sceneStore.$subscribe(() => {
       // Scene changed
+      //debugger
       //if (this.scene?.id !== worldStore.currSceneId) {
       SAGEdit.debugLog("Scene changed - so refresh scene model (pixi)")
       this.refresh()
@@ -82,8 +86,30 @@ export class SceneScreen extends Container {
   }
 
   refresh() {
-    this.teardown()
-    this.setup()
+    // Determine what's changed to know how much to refresh
+    const newWorldState = useWorldStore().$state
+    // Has selected scene changed?
+    if (
+      this.scene === undefined ||
+      newWorldState.currSceneId != this.lastWorldState?.currSceneId) {
+      // Scene changed - complete re-do
+      this.scene = useWorldStore().getCurrentScene
+      this.teardown()
+      this.setup()
+    } else if (
+      newWorldState.currPropId != this.lastWorldState?.currPropId ||
+      newWorldState.currDoorId != this.lastWorldState?.currDoorId
+    ) {
+      // Current selection (Prop/Door) changed
+      // if (newWorldState.currPropId) {
+        //SAGEdit.Events.emit("selectionChanged", newWorldState.currPropId)
+      // } else if (newWorldState.currDoorId) {
+        SAGEdit.Events.emit("selectionChanged", newWorldState.currDoorId)
+      // }
+    }
+    // Remember...
+    this.lastWorldState = Object.assign({}, newWorldState)
+    //this.lastWorldState = newWorldState
   }
 
   setup() {

@@ -28,43 +28,49 @@ export class DoorEdit {
     // ---------------------------------------
     // Door Graphics
     //
-    const graphics = new Graphics()
+    this.graphics = new Graphics()
     const doorWidth = doorModel.width || 0,
       doorHeight = doorModel.height || 0
     // Set the fill color
-    graphics.beginFill(0xffff00, 0.25) // light yellow
+    this.graphics.beginFill(0xffff00, 0.25) // light yellow
     // Selected Prop?
-    const worldStore = useWorldStore()
-    if (worldStore.currDoorId === doorModel.id) {
-      graphics.lineStyle(10, 0xff0000) // Red
-    } else {
-      graphics.lineStyle(10, 0x000000, 0) // "Invisible"
-    }
+    this.updateSelectionState(useWorldStore().currDoorId === doorModel.id)
+    // if (worldStore.currDoorId === doorModel.id) {
+    //   graphics.lineStyle(10, 0xff0000) // Red
+    // } else {
+    //   graphics.lineStyle(10, 0x000000, 0) // "Invisible"
+    // }
     // Set Graphics "canvas" to correct pos/width
     // (So we can easily move it when "dragging")
-    graphics.x = doorModel.x || 0
-    graphics.y = doorModel.y || 0
-    graphics.width = doorWidth
-    graphics.height = doorHeight
+    this.graphics.x = doorModel.x || 0
+    this.graphics.y = doorModel.y || 0
+    this.graphics.width = doorWidth
+    this.graphics.height = doorHeight
     // Make a center point of origin (anchor)
-    graphics.pivot.set(doorWidth / 2, doorHeight / 2)
+    this.graphics.pivot.set(doorWidth / 2, doorHeight / 2)
     // Draw a rectangle
     // (graphics "canvas" are already in position/width)
-    graphics.drawRoundedRect(0, 0, doorWidth, doorHeight, 30)
+    this.graphics.drawRoundedRect(0, 0, doorWidth, doorHeight, 30)
     // Applies fill to lines and shapes since the last call to beginFill.
-    graphics.endFill()
+    this.graphics.endFill()
 
     // Events
-    this.doorInputEvents = new InputEventEmitter(graphics)
-    graphics.on("primaryaction", this.onPrimaryAction, this)
+    this.doorInputEvents = new InputEventEmitter(this.graphics)
+    this.graphics.on("primaryaction", this.onPrimaryAction, this)
     // graphics.on("secondaryaction", this.onSecondaryAction, this)
     // Hover (info)
-    graphics.on("pointerover", this.onPointerOver, this)
-    graphics.on("pointerout", this.onPointerOut, this)
+    this.graphics.on("pointerover", this.onPointerOver, this)
+    this.graphics.on("pointerout", this.onPointerOut, this)
     //
-    graphics.on("pointerdown", this.onPointerDown, this)
-    //SAGE.Events.on("scenehint", this.onSceneHint, this)
-    this.graphics = graphics
+    this.graphics.on("pointerdown", this.onPointerDown, this)
+
+    // Listen for selection changes
+    SAGEdit.Events.on("selectionChanged", (selectedId: string) => {
+        //debugger
+        this.updateSelectionState(selectedId == this.data.id)
+      }, 
+      this
+    )
 
     // ---------------------------------------
     // Door Sprite
@@ -97,6 +103,34 @@ export class DoorEdit {
   tidyUp() {
     // Unsubscribe from events, etc.
     this.graphics.removeAllListeners()
+  }
+
+  private updateSelectionState(isSelected: boolean) {
+    //debugger
+    this.graphics.clear()
+    // Draw a rectangle
+    // Set the fill color
+    this.graphics.beginFill(0xff0000, 0.25) // light yellow
+    // Set Graphics "canvas" to correct pos/width
+    // (So we can easily move it when "dragging")
+    this.graphics.x = this.data.x || 0
+    this.graphics.y = this.data.y || 0
+    const doorWidth = this.data.width || 0,
+      doorHeight = this.data.height || 0
+    this.graphics.width = doorWidth
+    this.graphics.height = doorHeight
+    // Make a center point of origin (anchor)
+    this.graphics.pivot.set(doorWidth / 2, doorHeight / 2)
+    if (isSelected) {
+      this.graphics.lineStyle(10, 0xff0000) // Red
+    } else {
+      this.graphics.lineStyle(10, 0x000000, 0) // "Invisible"
+    }
+    // (graphics "canvas" are already in position/width)
+    this.graphics.drawRoundedRect(0, 0, doorWidth, doorHeight, 30)
+
+    // Applies fill to lines and shapes since the last call to beginFill.
+    this.graphics.endFill()
   }
 
   private onSceneHint() {
