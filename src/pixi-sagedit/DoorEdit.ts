@@ -29,30 +29,7 @@ export class DoorEdit {
     // Door Graphics
     //
     this.graphics = new Graphics()
-    const doorWidth = doorModel.width || 0,
-      doorHeight = doorModel.height || 0
-    // Set the fill color
-    this.graphics.beginFill(0xffff00, 0.25) // light yellow
-    // Selected Prop?
     this.updateSelectionState(useWorldStore().currDoorId === doorModel.id)
-    // if (worldStore.currDoorId === doorModel.id) {
-    //   graphics.lineStyle(10, 0xff0000) // Red
-    // } else {
-    //   graphics.lineStyle(10, 0x000000, 0) // "Invisible"
-    // }
-    // Set Graphics "canvas" to correct pos/width
-    // (So we can easily move it when "dragging")
-    this.graphics.x = doorModel.x || 0
-    this.graphics.y = doorModel.y || 0
-    this.graphics.width = doorWidth
-    this.graphics.height = doorHeight
-    // Make a center point of origin (anchor)
-    this.graphics.pivot.set(doorWidth / 2, doorHeight / 2)
-    // Draw a rectangle
-    // (graphics "canvas" are already in position/width)
-    this.graphics.drawRoundedRect(0, 0, doorWidth, doorHeight, 30)
-    // Applies fill to lines and shapes since the last call to beginFill.
-    this.graphics.endFill()
 
     // Events
     this.doorInputEvents = new InputEventEmitter(this.graphics)
@@ -110,7 +87,7 @@ export class DoorEdit {
     this.graphics.clear()
     // Draw a rectangle
     // Set the fill color
-    this.graphics.beginFill(0xff0000, 0.25) // light yellow
+    this.graphics.beginFill(0xffff00, 0.25) // light yellow
     // Set Graphics "canvas" to correct pos/width
     // (So we can easily move it when "dragging")
     this.graphics.x = this.data.x || 0

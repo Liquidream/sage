@@ -101,15 +101,19 @@ export class SceneScreen extends Container {
       newWorldState.currDoorId != this.lastWorldState?.currDoorId
     ) {
       // Current selection (Prop/Door) changed
-      // if (newWorldState.currPropId) {
-        //SAGEdit.Events.emit("selectionChanged", newWorldState.currPropId)
-      // } else if (newWorldState.currDoorId) {
+      if (newWorldState.currPropId !== "") {
+        SAGEdit.Events.emit("selectionChanged", newWorldState.currPropId)
+      } else {
         SAGEdit.Events.emit("selectionChanged", newWorldState.currDoorId)
-      // }
+      }
     }
+    // Update dialog
+    if (this.dialogText) this.removeChild(this.dialogText)
+    this.buildDialogText()
+    
     // Remember...
     this.lastWorldState = Object.assign({}, newWorldState)
-    //this.lastWorldState = newWorldState
+    //this.lastWorldState = newWorldState // Can't do this, as it stores proxy to live data!
   }
 
   setup() {
@@ -124,32 +128,7 @@ export class SceneScreen extends Container {
     this.buildBackdrop()
     this.buildDoorways()
     this.buildProps()
-
-    // Create text
-    const styly: TextStyle = new TextStyle({
-      align: "center",
-      fill: "#fff",
-      fontSize: 47,
-      strokeThickness: 6,
-      lineJoin: "round",
-      wordWrap: true,
-      wordWrapWidth: 1280 / 2,
-    })
-    // Get selected "name"
-    let dialogText = this.scene?.name
-    if (worldStore.currPropId != "") {
-      dialogText = worldStore.getCurrentProp?.name
-    }
-    if (worldStore.currDoorId != "") {
-      dialogText = worldStore.getCurrentDoor?.name
-    }
-
-    this.dialogText = new Text(dialogText, styly) // Text supports unicode!
-    this.dialogText.x = SAGEdit.width / 2
-    this.dialogText.y = SAGEdit.height - this.dialogText.height / 2 - 80
-    this.dialogText.anchor.set(0.5)
-    // .text = "This is expensive to change, please do not abuse";
-    this.addChild(this.dialogText)
+    this.buildDialogText()
 
     // Drag+Drop support
     SAGEdit.app.stage.interactive = true
@@ -184,6 +163,35 @@ export class SceneScreen extends Container {
 
     // remove everything from stage
     this.removeChildren()
+  }
+
+  private buildDialogText() {
+    const worldStore = useWorldStore()
+    // Create text
+    const styly: TextStyle = new TextStyle({
+      align: "center",
+      fill: "#fff",
+      fontSize: 47,
+      strokeThickness: 6,
+      lineJoin: "round",
+      wordWrap: true,
+      wordWrapWidth: 1280 / 2,
+    })
+    // Get selected "name"
+    let dialogText = this.scene?.name
+    if (worldStore.currPropId != "") {
+      dialogText = worldStore.getCurrentProp?.name
+    }
+    if (worldStore.currDoorId != "") {
+      dialogText = worldStore.getCurrentDoor?.name
+    }
+
+    this.dialogText = new Text(dialogText, styly) // Text supports unicode!
+    this.dialogText.x = SAGEdit.width / 2
+    this.dialogText.y = SAGEdit.height - this.dialogText.height / 2 - 80
+    this.dialogText.anchor.set(0.5)
+    // .text = "This is expensive to change, please do not abuse";
+    this.addChild(this.dialogText)
   }
 
   private buildBackdrop() {
@@ -283,8 +291,10 @@ export class SceneScreen extends Container {
   }
 
   public addProp(propModel: PropModel, fadeIn = false) {
+    const graphics = new Graphics()
+    //prop.graphics = graphics
     // Create new component obj (contains data + view)
-    const prop = new PropEdit(propModel)
+    const prop = new PropEdit(propModel, graphics)
     this.addChild(prop.sprite)
     this.props.push(prop)
     // Don't add to scene.propdata here, as it likely already came from it?
@@ -298,10 +308,9 @@ export class SceneScreen extends Container {
       new Tween(prop.sprite).to({ alpha: 1 }, 500).start()
     }
 
+    const worldStore = useWorldStore()    
     // Selected Prop?
-    const worldStore = useWorldStore()
     if (worldStore.currPropId === propModel.id) {
-      const graphics = new Graphics()
       const propWidth = prop.data.width || 0,
         propHeight = prop.data.height || 0
       graphics.lineStyle(10, 0xff0000)
@@ -320,7 +329,6 @@ export class SceneScreen extends Container {
       //   //prop.sprite.addChild(graphics)
       // } else {
       graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
-      prop.graphics = graphics
       this.addChild(graphics)
       //}
       graphics.endFill()

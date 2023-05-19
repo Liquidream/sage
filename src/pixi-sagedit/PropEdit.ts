@@ -19,7 +19,7 @@ export class PropEdit {
   private propInputEvents!: InputEventEmitter
   public dragging = false
 
-  public constructor(propModel: PropModel) {
+  public constructor(propModel: PropModel, inGraphics: Graphics) {
     // Initialise from data object
     let sprite = undefined
     if (propModel.image) {
@@ -34,7 +34,10 @@ export class PropEdit {
       sprite = new Sprite(Texture.EMPTY)
     }
     this.data = propModel
+    this.graphics = inGraphics
     this.sprite = sprite
+
+    this.updateSelectionState(useWorldStore().currPropId === propModel.id)
 
     sprite.width = propModel.width || 0
     sprite.height = propModel.height || 0
@@ -52,8 +55,14 @@ export class PropEdit {
     this.sprite.on("pointerout", this.onPointerOut, this)
     // Drag+Drop
     this.sprite.on("pointerdown", this.onPointerDown, this)
-    //
-    //SAGE.Events.on("scenehint", this.onSceneHint, this)
+
+    // Listen for selection changes
+    SAGEdit.Events.on("selectionChanged", (selectedId: string) => {
+        //debugger
+        this.updateSelectionState(selectedId == this.data.id)
+      },
+      this
+    )
 
     // visible state
     if (!propModel.visible) {
@@ -74,6 +83,28 @@ export class PropEdit {
     //SAGEdit.currentScreen.removeProp(this, true)
     //   SAGE.World.currentScene.screen.removeProp(this, true)
     // }
+  }
+
+  private updateSelectionState(isSelected: boolean) {
+    //debugger
+    this.graphics.clear()
+    const propWidth = this.data.width || 0,
+      propHeight = this.data.height || 0
+    if (isSelected) {
+      this.graphics.lineStyle(10, 0xff0000) // Red
+    } else {
+      this.graphics.lineStyle(10, 0x000000, 0) // "Invisible"
+    }
+    // Set Graphics "canvas" to correct pos/width
+    // (So we can easily move it when "dragging")
+    // graphics.x = propModel.x || 0
+    // graphics.y = propModel.y || 0
+    // graphics.width = propWidth
+    // graphics.height = propHeight
+    // graphics.pivot.set(propWidth / 2, propHeight / 2)
+    this.graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
+    //}
+    this.graphics.endFill()
   }
 
   private onPointerDown() {
