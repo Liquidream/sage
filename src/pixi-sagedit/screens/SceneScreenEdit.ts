@@ -110,7 +110,7 @@ export class SceneScreen extends Container {
     // Update dialog
     if (this.dialogText) this.removeChild(this.dialogText)
     this.buildDialogText()
-    
+
     // Remember...
     this.lastWorldState = Object.assign({}, newWorldState)
     //this.lastWorldState = newWorldState // Can't do this, as it stores proxy to live data!
@@ -308,31 +308,31 @@ export class SceneScreen extends Container {
       new Tween(prop.sprite).to({ alpha: 1 }, 500).start()
     }
 
-    const worldStore = useWorldStore()    
+    const worldStore = useWorldStore()
     // Selected Prop?
-    if (worldStore.currPropId === propModel.id) {
-      const propWidth = prop.data.width || 0,
-        propHeight = prop.data.height || 0
-      graphics.lineStyle(10, 0xff0000)
-      // Set Graphics "canvas" to correct pos/width
-      // (So we can easily move it when "dragging")
-      graphics.x = propModel.x || 0
-      graphics.y = propModel.y || 0
-      graphics.width = propWidth
-      graphics.height = propHeight
-      graphics.pivot.set(propWidth / 2, propHeight / 2)
-      // Need to handle diff for "non-image" sprites
-      // (as Graphics scaling goes screwy if image dimensions are not really there)
-      // if (prop.data.image) {
-      //   graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
-      //   prop.sprite.pa.addChild(graphics)
-      //   //prop.sprite.addChild(graphics)
-      // } else {
-      graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
-      this.addChild(graphics)
-      //}
-      graphics.endFill()
-    }
+    // if (worldStore.currPropId === propModel.id) {
+    //   const propWidth = prop.data.width || 0,
+    //     propHeight = prop.data.height || 0
+    //   graphics.lineStyle(10, 0xff0000)
+    //   // Set Graphics "canvas" to correct pos/width
+    //   // (So we can easily move it when "dragging")
+    //   graphics.x = propModel.x || 0
+    //   graphics.y = propModel.y || 0
+    //   graphics.width = propWidth
+    //   graphics.height = propHeight
+    //   graphics.pivot.set(propWidth / 2, propHeight / 2)
+    //   // Need to handle diff for "non-image" sprites
+    //   // (as Graphics scaling goes screwy if image dimensions are not really there)
+    //   // if (prop.data.image) {
+    //   //   graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
+    //   //   prop.sprite.pa.addChild(graphics)
+    //   //   //prop.sprite.addChild(graphics)
+    //   // } else {
+    //   graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
+    //   //}
+    //   graphics.endFill()
+    // }
+    this.addChild(graphics)
   }
 
   /**

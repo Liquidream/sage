@@ -97,11 +97,11 @@ export class PropEdit {
     }
     // Set Graphics "canvas" to correct pos/width
     // (So we can easily move it when "dragging")
-    // graphics.x = propModel.x || 0
-    // graphics.y = propModel.y || 0
-    // graphics.width = propWidth
-    // graphics.height = propHeight
-    // graphics.pivot.set(propWidth / 2, propHeight / 2)
+    this.graphics.x = this.data.x || 0
+    this.graphics.y = this.data.y || 0
+    this.graphics.width = propWidth
+    this.graphics.height = propHeight
+    this.graphics.pivot.set(propWidth / 2, propHeight / 2)
     this.graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
     //}
     this.graphics.endFill()
