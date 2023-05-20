@@ -142,7 +142,7 @@
 
     <v-divider />
 
-    <v-btn @click="propStore.deleteProp(model.id)" color="error" class="mt-2"
+    <v-btn @click="removePropClicked" color="error" class="mt-2"
       >Remove Prop</v-btn
     >
   </v-form>
@@ -230,5 +230,10 @@
     console.debug(evt)
     model.value.id = evt.target.value
     useWorldStore().currPropId = evt.target.value
+  }
+
+  const removePropClicked = () => {
+    SAGEdit.Events.emit("propRemoved", model.value)
+    propStore.deleteProp(model.value.id)
   }
 </script>

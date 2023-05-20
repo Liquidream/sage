@@ -196,6 +196,8 @@
     useWorldStore().currDoorId = ""
     // Now set it as current prop
     useWorldStore().currPropId = newProp.id
+
+    SAGEdit.Events.emit("propAdded", newProp)
   }
   const addDoor = () => {
     console.log(">> Add door")
@@ -215,6 +217,8 @@
     useWorldStore().currPropId = ""
     // Now set it as current scene
     useWorldStore().currDoorId = newDoor.id
+
+    SAGEdit.Events.emit("doorAdded", newDoor)
   }
 
   console.log("start App.vue...")

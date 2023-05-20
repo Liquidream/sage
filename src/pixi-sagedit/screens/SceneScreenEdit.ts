@@ -75,6 +75,16 @@ export class SceneScreen extends Container {
     //   this.refresh()
     // })
 
+    
+    // Listen for Prop created
+    SAGEdit.Events.on(
+      "propAdded",
+      (newProp: PropModel) => {
+        this.addProp(newProp)
+      },
+      this
+    )
+
     // Listen for Prop updates
     SAGEdit.Events.on(
       "propUpdated",
@@ -95,12 +105,36 @@ export class SceneScreen extends Container {
       this
     )
 
+    // Listen for Prop removed
+    SAGEdit.Events.on(
+      "propRemoved",
+      (oldProp: PropModel) => {
+        // Find matching prop
+        const propToDel = this.props.find((obj) => {
+          return obj.data.id === oldProp.id
+        })
+        if (propToDel) {
+          this.removeProp(propToDel)
+        }
+      },
+      this
+    )
+
     // Subscribe to Door state changes so that we refresh/recreate Pixi.js content
     // const doorStore = useDoorStore()
     // doorStore.$subscribe(() => {
     //   SAGEdit.debugLog("Door changed - so refresh scene model (pixi)")
     //   this.refresh()
     // })
+
+    // Listen for Door created
+    SAGEdit.Events.on(
+      "doorAdded",
+      (newDoor: DoorModel) => {
+        this.addDoor(newDoor)
+      },
+      this
+    )
 
     // Listen for Prop updates
     SAGEdit.Events.on(
@@ -117,6 +151,21 @@ export class SceneScreen extends Container {
           this.removeDoor(doorToDel)
           // Now re-add prop
           this.addDoor(updatedDoor)
+        }
+      },
+      this
+    )
+
+    // Listen for Prop removed
+    SAGEdit.Events.on(
+      "doorRemoved",
+      (oldDoor: DoorModel) => {
+        // Find matching prop
+        const doorToDel = this.doors.find((obj) => {
+          return obj.data.id === oldDoor.id
+        })
+        if (doorToDel) {
+          this.removeDoor(doorToDel)
         }
       },
       this
@@ -356,7 +405,7 @@ export class SceneScreen extends Container {
    * Removes a Prop from a scene
    */
   removeProp(prop: PropEdit) {
-    this.removeChild(prop.sprite)
+    if (prop.sprite) this.removeChild(prop.sprite)
     this.removeChild(prop.graphics)
     const index = this.props.findIndex((item) => item.data.id === prop.data.id)
     if (index !== -1) this.props.splice(index, 1)

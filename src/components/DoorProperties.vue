@@ -184,7 +184,7 @@
 
     <v-divider />
 
-    <v-btn @click="doorStore.deleteDoor(model.id)" color="error" class="mt-2"
+    <v-btn @click="removeDoorClicked" color="error" class="mt-2"
       >Remove Door</v-btn
     >
   </v-form>
@@ -271,5 +271,10 @@
     console.debug(evt)
     model.value.id = evt.target.value
     useWorldStore().currDoorId = evt.target.value
+  }
+
+  const removeDoorClicked = () => {
+    SAGEdit.Events.emit("doorRemoved", model.value)
+    doorStore.deleteDoor(model.id)
   }
 </script>
