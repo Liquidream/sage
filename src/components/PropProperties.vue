@@ -43,9 +43,9 @@
     <v-row align="center" class="mb-1">
       <v-col cols="4">
         <v-file-input
-        v-model="chosenFile"
-        type="file"
-        @change="onImageFileChange"
+          v-model="chosenFile"
+          type="file"
+          @change="onImageFileChange"
           accept="image/png, image/jpeg, image/bmp"
           placeholder="Pick a backdrop image"
           id="uploader"
@@ -149,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { Ref } from "vue"
+  import { watch, type Ref } from "vue"
   import { ref } from "vue"
   import { storeToRefs } from "pinia"
   import { useWorldStore } from "../stores/WorldStore"
@@ -159,19 +159,30 @@
   import type { PropModel } from "@/models/PropModel"
   import { usePropStore } from "@/stores/PropStore"
   import PrismEditor from "./PrismEditor.vue"
+  import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
   const worldStore = useWorldStore()
   const propStore = usePropStore()
   // Make prop info react when selection changes
   const worldRefs = storeToRefs(worldStore)
   const model = worldRefs.getCurrentProp || ({} as PropModel)
+
+  watch(
+    () => model.value,
+    () => {
+      console.log("model changed")
+      SAGEdit.Events.emit("propUpdated", model.value)
+    },
+    { deep: true }
+  )
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any
   //let imageData: any = ""
   const imageData: Ref<string | ArrayBuffer | null> = ref("")
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const changeImage = () => {
-    document.getElementById('uploader').click()
+    document.getElementById("uploader").click()
   }
   const onImageFileChange = (e: any) => {
     const reader = new FileReader()

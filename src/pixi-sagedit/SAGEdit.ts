@@ -73,6 +73,13 @@ export class SAGEdit {
 
     // initialise stage "layers"
     SAGEdit.createLayers()
+
+    // ...and events
+    SAGEdit.Events = new EventsEdit()
+
+    // ...and dialog
+    // (currently using it to display selected item name - not essential!)
+    SAGEdit.Dialog = new DialogEdit()
   }
 
   static createLayers() {
@@ -111,12 +118,7 @@ export class SAGEdit {
     - (Means that Prop will have to have a ref (id?) to Scene it's located in)
     - 
 */
-    // ...and events
-    SAGEdit.Events = new EventsEdit()
-
-    // ...and dialog
-    // (currently using it to display selected item name - not essential!)
-    SAGEdit.Dialog = new DialogEdit()
+    
   }
 
   public static resize() {

@@ -74,6 +74,33 @@ export class SceneScreen extends Container {
       this.refresh()
     })
 
+    // Listen for Prop updates
+    SAGEdit.Events.on("propUpdated", (prop: PropModel) => {
+        //debugger
+        // Delete + recreate updated Prop
+
+        // ----------------------
+        // Unsubscribe from events, etc.
+        const propToDel = this.props.find((obj) => {
+          return obj.data.id === prop.id
+        })
+        if (propToDel) {
+          this.removeChild(propToDel.sprite)
+          this.removeChild(propToDel.graphics)
+          propToDel.tidyUp()
+          propToDel.destroy()
+        }
+        // Remove from props
+        const index = this.props.findIndex((item) => item.data.id === prop.id)
+        if (index > 0) this.props.splice(index, 1)
+
+        // ----------------------
+        // Now re-add prop
+        this.addProp(prop)
+      },
+      this
+    )
+
     // Subscribe to Door state changes so that we refresh/recreate Pixi.js content
     const doorStore = useDoorStore()
     doorStore.$subscribe(() => {
@@ -91,7 +118,8 @@ export class SceneScreen extends Container {
     // Has selected scene changed?
     if (
       this.scene === undefined ||
-      newWorldState.currSceneId != this.lastWorldState?.currSceneId) {
+      newWorldState.currSceneId != this.lastWorldState?.currSceneId
+    ) {
       // Scene changed - complete re-do
       this.scene = useWorldStore().getCurrentScene
       this.teardown()
@@ -107,6 +135,16 @@ export class SceneScreen extends Container {
         SAGEdit.Events.emit("selectionChanged", newWorldState.currDoorId)
       }
     }
+    // Add/Remove props
+    const newPropModels = usePropStore().findPropBySceneId(this.scene?.id || "")
+    //finish me ...
+    // for (const prop of this.props) {
+    //   prop.tidyUp()
+    //   prop.destroy()
+    // }
+    // for (const door of this.doors) {
+    //   door.tidyUp()
+    // }
     // Update dialog
     if (this.dialogText) this.removeChild(this.dialogText)
     this.buildDialogText()
