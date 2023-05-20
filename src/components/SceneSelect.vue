@@ -16,14 +16,17 @@
             :src="item.raw.image"
             style="max-width: 100%; aspect-ratio: 16/9; object-fit: cover"
           />
-          <video
+          <div v-else-if="item.raw?.image?.includes('video')" style="display: block; height:50px">
+            <v-icon class="mt-2 mr-15" icon="mdi-video"></v-icon>
+          </div>
+          <!-- <video
             v-else-if="item.raw?.image?.includes('video')"
             preload="metadata"
             class="mb-2"
             style="display: block; width: inherit"
           >
             <source :src="item.raw.image" type="video/mp4" />
-          </video>
+          </video> -->
         </v-col>
         <v-col class="text-left mt-n2">
           <span class="text-no-wrap">{{ item.title }}</span>
@@ -41,7 +44,13 @@
               :aspect-ratio="16 / 9"
               cover
             />
-            <video
+            <div v-else-if="item.raw.image.includes('video')" align="center" :style="
+                $vuetify.display.mobile
+                  ? 'display: block; width:inherit'
+                  : 'display: block; width:55px'">
+              <v-icon icon="mdi-video"></v-icon>
+            </div>
+            <!-- <video
               v-else-if="item.raw.image.includes('video')"
               preload="metadata"
               :style="
@@ -49,7 +58,7 @@
                   ? 'display: block; width:inherit'
                   : 'display: block; width:55px'">
               <source :src="item.raw.image" type="video/mp4" />
-            </video>
+            </video> -->
           </v-col>
           <v-col>
             {{ item.title }}

@@ -28,9 +28,10 @@
   </v-img>
 
   <div v-else-if="isVideo" class="video" style="position: relative" @click="changeImage">
-    <video height="50" preload="metadata" style="display: block;">
+    <div style="display: block; height:50px"></div>
+    <!-- <video height="50" preload="metadata" style="display: block">
       <source :src="value" type="video/mp4" />
-    </video>
+    </video> -->
     <v-btn
       class="mb-2 ml-7 elevation-2"
       icon="mdi-video"
