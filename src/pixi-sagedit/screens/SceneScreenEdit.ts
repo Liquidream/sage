@@ -77,29 +77,18 @@ export class SceneScreen extends Container {
     // Listen for Prop updates
     SAGEdit.Events.on(
       "propUpdated",
-      (prop: PropModel) => {
-        //debugger
+      (updatedProp: PropModel) => {
         // Delete + recreate updated Prop
-
-        // ----------------------
-        // Unsubscribe from events, etc.
+        // Find matching prop
         const propToDel = this.props.find((obj) => {
-          return obj.data.id === prop.id
+          return obj.data.id === updatedProp.id
         })
         if (propToDel) {
           console.log("delete and recreate 'pixi' prop")
-          this.removeChild(propToDel.sprite)
-          this.removeChild(propToDel.graphics)
-          propToDel.tidyUp()
-          propToDel.destroy()
-
-          // Remove from props
-          const index = this.props.findIndex((item) => item.data.id === prop.id)
-          if (index >= 0) this.props.splice(index, 1)
-
-          // ----------------------
+          // Delete prop
+          this.removeProp(propToDel)
           // Now re-add prop
-          this.addProp(prop)
+          this.addProp(updatedProp)
         }
       },
       this
@@ -332,9 +321,8 @@ export class SceneScreen extends Container {
     }
   }
 
-  public addProp(propModel: PropModel, fadeIn = false) {
+  public addProp(propModel: PropModel) {
     const graphics = new Graphics()
-    //prop.graphics = graphics
     // Create new component obj (contains data + view)
     const prop = new PropEdit(propModel, graphics)
     this.addChild(prop.sprite)
@@ -344,61 +332,18 @@ export class SceneScreen extends Container {
     // Force to be draggable now
     //propModel.draggable = true // Could use this to lock prop postions?
 
-    // Fade in?
-    if (fadeIn) {
-      prop.sprite.alpha = 0
-      new Tween(prop.sprite).to({ alpha: 1 }, 500).start()
-    }
-
-    const worldStore = useWorldStore()
-    // Selected Prop?
-    // if (worldStore.currPropId === propModel.id) {
-    //   const propWidth = prop.data.width || 0,
-    //     propHeight = prop.data.height || 0
-    //   graphics.lineStyle(10, 0xff0000)
-    //   // Set Graphics "canvas" to correct pos/width
-    //   // (So we can easily move it when "dragging")
-    //   graphics.x = propModel.x || 0
-    //   graphics.y = propModel.y || 0
-    //   graphics.width = propWidth
-    //   graphics.height = propHeight
-    //   graphics.pivot.set(propWidth / 2, propHeight / 2)
-    //   // Need to handle diff for "non-image" sprites
-    //   // (as Graphics scaling goes screwy if image dimensions are not really there)
-    //   // if (prop.data.image) {
-    //   //   graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
-    //   //   prop.sprite.pa.addChild(graphics)
-    //   //   //prop.sprite.addChild(graphics)
-    //   // } else {
-    //   graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
-    //   //}
-    //   graphics.endFill()
-    // }
     this.addChild(graphics)
   }
 
   /**
-   * Removes a Prop from a scene (default = fade out).
+   * Removes a Prop from a scene
    */
-  removeProp(prop: PropEdit, fadeOut = true, scaleAnim?: boolean) {
-    if (fadeOut) {
-      new Tween(prop.sprite)
-        .to({ alpha: 0 }, 500)
-        .start()
-        .onComplete(() => {
-          // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any
-          // remove when tween completes
-          this.removeChild(prop.sprite)
-          const index = this.props.findIndex(
-            (item) => item.data.id === prop.data.id
-          )
-          if (index !== -1) this.props.splice(index, 1)
-          prop.tidyUp()
-        })
-    }
-    if (scaleAnim) {
-      new Tween(prop.sprite.scale).to({ x: 1.5, y: 1.5 }, 500).start()
-    }
+  removeProp(prop: PropEdit) {
+    this.removeChild(prop.sprite)
+    this.removeChild(prop.graphics)
+    const index = this.props.findIndex((item) => item.data.id === prop.data.id)
+    if (index !== -1) this.props.splice(index, 1)
+    prop.tidyUp()
   }
 
   public update() {
