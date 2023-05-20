@@ -75,7 +75,9 @@ export class SceneScreen extends Container {
     })
 
     // Listen for Prop updates
-    SAGEdit.Events.on("propUpdated", (prop: PropModel) => {
+    SAGEdit.Events.on(
+      "propUpdated",
+      (prop: PropModel) => {
         //debugger
         // Delete + recreate updated Prop
 
@@ -85,18 +87,20 @@ export class SceneScreen extends Container {
           return obj.data.id === prop.id
         })
         if (propToDel) {
+          console.log("delete and recreate 'pixi' prop")
           this.removeChild(propToDel.sprite)
           this.removeChild(propToDel.graphics)
           propToDel.tidyUp()
           propToDel.destroy()
-        }
-        // Remove from props
-        const index = this.props.findIndex((item) => item.data.id === prop.id)
-        if (index > 0) this.props.splice(index, 1)
 
-        // ----------------------
-        // Now re-add prop
-        this.addProp(prop)
+          // Remove from props
+          const index = this.props.findIndex((item) => item.data.id === prop.id)
+          if (index >= 0) this.props.splice(index, 1)
+
+          // ----------------------
+          // Now re-add prop
+          this.addProp(prop)
+        }
       },
       this
     )
