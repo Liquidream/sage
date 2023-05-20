@@ -275,6 +275,6 @@
 
   const removeDoorClicked = () => {
     SAGEdit.Events.emit("doorRemoved", model.value)
-    doorStore.deleteDoor(model.id)
+    doorStore.deleteDoor(model.value.id)
   }
 </script>
