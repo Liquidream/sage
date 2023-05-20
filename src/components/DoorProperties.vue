@@ -191,7 +191,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { Ref } from "vue"
+  import { watch, type Ref } from "vue"
   import { ref } from "vue"
   import { storeToRefs } from "pinia"
   import { useWorldStore } from "../stores/WorldStore"
@@ -201,11 +201,22 @@
   import { useDoorStore } from "@/stores/DoorStore"
   import { BaseTexture } from "pixi.js"
   import PrismEditor from "./PrismEditor.vue"
+  import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
   const worldStore = useWorldStore()
   const doorStore = useDoorStore()
   const worldRefs = storeToRefs(worldStore)
   const model = worldRefs.getCurrentDoor || ({} as DoorModel)
+
+  watch(
+    () => model.value,
+    () => {
+      console.log("model changed")
+      SAGEdit.Events.emit("doorUpdated", model.value)
+    },
+    { deep: true }
+  )
+
   //const model = worldStore.getCurrentDoor || ({} as DoorModel)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any

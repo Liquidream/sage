@@ -23,6 +23,7 @@ import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
 import { InputEventEmitter } from "../../pixi-sageplay/screens/ui/InputEventEmitter"
 import { text } from "stream/consumers"
+import type { DoorModel } from "@/models/DoorModel"
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null
@@ -68,11 +69,11 @@ export class SceneScreen extends Container {
     })
 
     // Subscribe to Prop state changes so that we refresh/recreate Pixi.js content
-    const propStore = usePropStore()
-    propStore.$subscribe(() => {
-      SAGEdit.debugLog("Prop changed - so refresh scene model (pixi)")
-      this.refresh()
-    })
+    // const propStore = usePropStore()
+    // propStore.$subscribe(() => {
+    //   SAGEdit.debugLog("Prop changed - so refresh scene model (pixi)")
+    //   this.refresh()
+    // })
 
     // Listen for Prop updates
     SAGEdit.Events.on(
@@ -95,11 +96,31 @@ export class SceneScreen extends Container {
     )
 
     // Subscribe to Door state changes so that we refresh/recreate Pixi.js content
-    const doorStore = useDoorStore()
-    doorStore.$subscribe(() => {
-      SAGEdit.debugLog("Door changed - so refresh scene model (pixi)")
-      this.refresh()
-    })
+    // const doorStore = useDoorStore()
+    // doorStore.$subscribe(() => {
+    //   SAGEdit.debugLog("Door changed - so refresh scene model (pixi)")
+    //   this.refresh()
+    // })
+
+    // Listen for Prop updates
+    SAGEdit.Events.on(
+      "doorUpdated",
+      (updatedDoor: DoorModel) => {
+        // Delete + recreate updated Door
+        // Find matching door
+        const doorToDel = this.doors.find((obj) => {
+          return obj.data.id === updatedDoor.id
+        })
+        if (doorToDel) {
+          console.log("delete and recreate 'pixi' door")
+          // Delete door
+          this.removeDoor(doorToDel)
+          // Now re-add prop
+          this.addDoor(updatedDoor)
+        }
+      },
+      this
+    )
 
     // perform initial setup
     this.setup()
@@ -129,7 +150,7 @@ export class SceneScreen extends Container {
       }
     }
     // Add/Remove props
-    const newPropModels = usePropStore().findPropBySceneId(this.scene?.id || "")
+    //const newPropModels = usePropStore().findPropBySceneId(this.scene?.id || "")
     //finish me ...
     // for (const prop of this.props) {
     //   prop.tidyUp()
@@ -312,11 +333,7 @@ export class SceneScreen extends Container {
 
     if (sceneDoorModels.length > 0) {
       for (const doorModel of sceneDoorModels) {
-        // Create new component obj (contains data + view)
-        const door = new DoorEdit(doorModel)
-        this.addChild(door.sprite)
-        this.addChild(door.graphics)
-        this.doors.push(door)
+        this.addDoor(doorModel)
       }
     }
   }
@@ -344,6 +361,22 @@ export class SceneScreen extends Container {
     const index = this.props.findIndex((item) => item.data.id === prop.data.id)
     if (index !== -1) this.props.splice(index, 1)
     prop.tidyUp()
+  }
+
+  public addDoor(doorModel: DoorModel) {
+    // Create new component obj (contains data + view)
+    const door = new DoorEdit(doorModel)
+    this.addChild(door.sprite)
+    this.addChild(door.graphics)
+    this.doors.push(door)
+  }
+
+  removeDoor(door: DoorEdit) {
+    this.removeChild(door.sprite)
+    this.removeChild(door.graphics)
+    const index = this.doors.findIndex((item) => item.data.id === door.data.id)
+    if (index !== -1) this.doors.splice(index, 1)
+    door.tidyUp()
   }
 
   public update() {
