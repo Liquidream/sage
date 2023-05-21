@@ -43,6 +43,7 @@ export class SceneScreen extends Container {
   private backdropInputEvents!: InputEventEmitter
 
   private lastWorldState: WorldState | undefined
+  private lastSceneModel: SceneModel | undefined
 
   constructor() {
     super()
@@ -75,7 +76,6 @@ export class SceneScreen extends Container {
     //   this.refresh()
     // })
 
-    
     // Listen for Prop created
     SAGEdit.Events.on(
       "propAdded",
@@ -178,10 +178,12 @@ export class SceneScreen extends Container {
   refresh() {
     // Determine what's changed to know how much to refresh
     const newWorldState = useWorldStore().$state
+    //const newScene = useWorldStore().getCurrentScene
     // Has selected scene changed?
     if (
       this.scene === undefined ||
-      newWorldState.currSceneId != this.lastWorldState?.currSceneId
+      newWorldState.currSceneId !== this.lastWorldState?.currSceneId ||
+      this.scene.image !== this.lastSceneModel?.image
     ) {
       // Scene changed - complete re-do
       this.scene = useWorldStore().getCurrentScene
@@ -214,6 +216,7 @@ export class SceneScreen extends Container {
 
     // Remember...
     this.lastWorldState = Object.assign({}, newWorldState)
+    this.lastSceneModel = Object.assign({}, this.scene)
     //this.lastWorldState = newWorldState // Can't do this, as it stores proxy to live data!
   }
 

@@ -35,7 +35,7 @@
 
     <v-row align="center">
       <v-col cols="4" class="pl-5">
-        <ImageFileInputBtn v-model="model.image"></ImageFileInputBtn>
+        <ImageFileInputBtn v-model:model-value="model.image" v-model:thumbnail="model.thumbnail"></ImageFileInputBtn>
       </v-col>
       <v-col class="text-medium-emphasis">Backdrop image/video</v-col>
     </v-row>

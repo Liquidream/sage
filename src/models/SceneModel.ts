@@ -2,6 +2,7 @@
 export interface SceneModel {
   id: string
   image?: string
+  thumbnail?: string
   name: string
   sound?: string
   firstVisit?: boolean
