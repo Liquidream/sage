@@ -6,6 +6,11 @@
          canvas to v-center properly in landscape mode -->
     <v-main :class="!isPortrait ? 'pt-8' : ''">
       <canvas :class="isPortrait ? 'mt-0 mb-0' : ''" id="pixi-canvas"></canvas>
+
+      <v-container fluid class="pa-0 fill-height flex-column">
+        <v-spacer></v-spacer>
+        <SceneList v-model="selectedModelID" :show="true" />
+      </v-container>
     </v-main>
 
     <v-app-bar :elevation="2">
@@ -14,7 +19,7 @@
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn
-            :size="$vuetify.display.mobile ? 'small' : 'default'"
+            :size="mobile ? 'small' : 'default'"
             icon="mdi-dots-vertical"
             v-bind="props"
           ></v-btn>
@@ -36,7 +41,7 @@
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn
-            :size="$vuetify.display.mobile ? 'small' : 'default'"
+            :size="mobile ? 'small' : 'default'"
             icon="mdi-plus"
             v-bind="props"
             color="info"
@@ -60,7 +65,7 @@
       <!-- <v-toolbar-title><strong>SAGE</strong> - Simple Adventure Game Engine</v-toolbar-title> -->
       <v-img class="ma-4" src="images/app-images/sage-logo-small.png"></v-img>
       <v-btn
-        :size="$vuetify.display.mobile ? 'small' : 'default'"
+        :size="mobile ? 'small' : 'default'"
         @click="playGame"
         color="info"
         prepend-icon="mdi-play"
@@ -68,7 +73,7 @@
       >
 
       <!-- <v-btn
-        :size="$vuetify.display.mobile ? 'small' : 'default'"
+        :size="mobile ? 'small' : 'default'"
         @click="exportGame"
         color="info"
         prepend-icon="mdi-content-save"
@@ -140,10 +145,16 @@
   import { storeToRefs } from "pinia"
   import ReloadPrompt from "./components/ReloadPrompt.vue"
   import { useTimeAgo } from "@vueuse/core"
+  import SceneList from "@/components/SceneList.vue"
 
   // replaced dyanmicaly
   const date = "__DATE__"
   const timeAgo = useTimeAgo(date)
+
+  const { mobile } = useDisplay()
+
+  //const modelList: SceneList
+  let selectedModelID = 0
 
   const loadGame = () => {
     console.log(">> Load game")
