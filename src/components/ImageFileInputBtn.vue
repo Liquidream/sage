@@ -8,7 +8,7 @@
     class="d-none"
   />
   <v-img
-    v-if="isImage"
+    v-if="!thumbnail"
     :src="value"
     max-height="50"
     :aspect-ratio="16 / 9"
@@ -26,7 +26,7 @@
   </v-img>
 
   <v-img
-    v-else-if="isVideo"
+    v-else-if="thumbnail"
     :src="thumbnail"
     max-height="50"
     :aspect-ratio="16 / 9"
@@ -94,6 +94,8 @@
       // debugger
       imageData.value = dataUrlReader.result
       value.value = dataUrlReader.result as string // added "as" to squash error/warn, ok?
+      //clear thumbnail
+      thumbnail.value = ""
     }
     if (!file.type.match("image")) {
       thumbReader.onload = () => {

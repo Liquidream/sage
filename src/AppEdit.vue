@@ -258,7 +258,7 @@
     playData.propData = JSON.stringify(usePropStore().$state)
     playData.doorData = JSON.stringify(useDoorStore().$state)
     playData.actorData = JSON.stringify(useActorStore().$state)
-    FileUtilsplayerData = JSON.stringify(usePlayerStore().$state)
+    playData.playerData = JSON.stringify(usePlayerStore().$state)
 
     window.sagePlayData = playData
 

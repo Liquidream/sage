@@ -34,13 +34,8 @@
       >
         <v-row align="center">
           <v-col cols="3">
-            <v-img v-if="scene.image.includes('image')" :src="scene.image" :aspect-ratio="16 / 9" cover />
-            <div align="center" v-else-if="scene.image.includes('video')" style="display: block; height:50px">
-              <v-icon class="mt-3" icon="mdi-video"></v-icon>
-            </div>
-            <!-- <video v-else-if="scene.image.includes('video')" preload="metadata" style="display: block; width: inherit">
-              <source :src="scene.image" type="video/mp4" />
-            </video> -->
+            <v-img :src="(scene.thumbnail != '' && scene.thumbnail !== undefined) ? scene.thumbnail : scene.image" :aspect-ratio="16 / 9" cover />
+
           </v-col>
           <v-col>
             <span class="text-no-wrap">{{ scene.name }}</span>
