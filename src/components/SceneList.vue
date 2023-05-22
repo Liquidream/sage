@@ -32,35 +32,7 @@
 
 <script setup lang="ts">
   import { useWorldStore } from "@/stores/WorldStore"
-import { computed, ref } from "vue"
-
-  // import { computed } from "vue"
-  // import { useWorldStore } from "../stores/WorldStore"
-  // import { useDisplay } from "vuetify"
-  // import { storeToRefs } from "pinia"
-
-  // const { xl } = useDisplay()
-
-  //let model = ref(2)
-
-  // const worldStore = useWorldStore()
-  // const worldRefs = storeToRefs(worldStore)
-  // // const models = worldRefs.getScenes
-  // const models = worldStore.getScenes
-
-  // const paneHeight = computed(() => {
-  //   return xl ? 192 : 144
-  // })
-  // const selectedIndex = computed(() => {
-  //   return models.findIndex((model) => model.id === value.value)
-  // })
-
-  //let model = ref(2)
-
-  // const onCardClick = (n: number) => {
-  //   //model.value = n - 1
-  //   emit("update:modelValue", value)
-  // }
+  import { computed, ref } from "vue"
 
   const worldStore = useWorldStore()
   const scenes = worldStore.getScenes

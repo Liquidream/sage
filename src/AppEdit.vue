@@ -165,12 +165,19 @@
   const { mobile } = useDisplay()
 
   //const modelList: SceneList
-  const selectedModelID = ref(5)
+  const selectedModelID = ref(useWorldStore().currSceneId)
 
-  watch(selectedModelID, async (newSelectedModelID, oldSelectedModelID) => {
-    // debugger
-    console.log(`oldSelectedModelID=${oldSelectedModelID}, newSelectedModelID=${newSelectedModelID}`)
-  })
+  // Watch for changes to scene selection
+  watch(
+    selectedModelID,
+    async (newSelectedModel: SceneModel, oldSelectedModel: SceneModel) => {
+      // debugger
+      console.log(
+        `oldSelectedModelID=${oldSelectedModel.id}, newSelectedModelID=${newSelectedModel.id}`
+      )
+      useWorldStore().currSceneId = newSelectedModel.id
+    }
+  )
 
   const loadGame = () => {
     console.log(">> Load game")
