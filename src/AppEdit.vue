@@ -13,14 +13,7 @@
       </v-container> -->
     </v-main>
 
-    <v-app-bar
-      v-if="!isPortrait"
-      color="grey-lighten-2"
-      flat
-      height="75"
-      location="bottom"
-      order="1"
-    >
+    <v-app-bar v-if="!isPortrait" flat height="75" location="bottom" order="1">
       <SceneList v-model="useWorldStore().currSceneId" />
     </v-app-bar>
 
