@@ -122,7 +122,7 @@
 
     <!-- Portrait/Mobile Layout (End) ========================= -->
   </v-app>
-  <ReloadPrompt />
+  <ReloadPrompt style="z-index: 2000" />
 </template>
 
 <script setup lang="ts">
