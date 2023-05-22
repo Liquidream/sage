@@ -1,18 +1,23 @@
 <!-- https://vuejs.org/guide/components/v-model.html#component-v-model -->
 <template>
-  <v-sheet class="mx-auto" elevation="8" width="100%">
-    <v-slide-group v-model="value" class="pa-4" mandatory center-active show-arrows>
+  <v-sheet class="mx-auto" max-width="100%">
+    <v-slide-group v-model="value" mandatory center-active show-arrows>
       <v-slide-group-item
-        v-for="(scene, index) in scenes" :key="scene.id" :value="scene.id"
+        v-for="(scene, index) in scenes"
+        :key="scene.id"
+        :value="scene.id"
         v-slot="{ isSelected, toggle }"
       >
         <v-img
-        :src="(scene.thumbnail != '' && scene.thumbnail !== undefined) ? scene.thumbnail : scene.image" 
-        :aspect-ratio="16 / 9"
+          :src="
+            scene.thumbnail != '' && scene.thumbnail !== undefined
+              ? scene.thumbnail
+              : scene.image
+          "
           class="ma-4"
-          height="200"
           width="100"
           @click="toggle"
+          style="cursor: pointer"
         >
           <div class="d-flex fill-height align-center justify-center">
             <v-scale-transition>
@@ -24,6 +29,9 @@
               ></v-icon>
             </v-scale-transition>
           </div>
+          <v-tooltip activator="parent" location="top">{{
+            scene.name
+          }}</v-tooltip>
         </v-img>
       </v-slide-group-item>
     </v-slide-group>
