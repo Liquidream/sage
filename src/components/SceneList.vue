@@ -3,7 +3,7 @@
   <v-sheet class="mx-auto" elevation="8" max-width="100%">
     <v-slide-group v-model="value" class="pa-4" mandatory center-active show-arrows>
       <v-slide-group-item
-        v-for="(scene, index) in scenes" :key="scene.id" :value="scene"
+        v-for="(scene, index) in scenes" :key="scene.id" :value="scene.id"
         v-slot="{ isSelected, toggle }"
       >
         <v-img
@@ -47,7 +47,7 @@
       return props.modelValue
     },
     set(value) {
-      emit("update:modelValue", value.id)
+      emit("update:modelValue", value)
     },
   })
 </script>
