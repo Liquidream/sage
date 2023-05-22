@@ -3,12 +3,12 @@
   <v-sheet class="mx-auto" elevation="8" max-width="100%">
     <v-slide-group v-model="value" class="pa-4" mandatory center-active show-arrows>
       <v-slide-group-item
-        v-for="n in 15"
-        :key="n"
+        v-for="(scene, index) in scenes" :key="scene.id" :value="scene"
         v-slot="{ isSelected, toggle }"
       >
-        <v-card
-          :color="isSelected ? 'primary' : 'grey-lighten-1'"
+        <v-img
+        :src="(scene.thumbnail != '' && scene.thumbnail !== undefined) ? scene.thumbnail : scene.image" 
+        :aspect-ratio="16 / 9"
           class="ma-4"
           height="200"
           width="100"
@@ -20,18 +20,19 @@
                 v-if="isSelected"
                 color="white"
                 size="48"
-                icon="mdi-close-circle-outline"
+                icon="mdi-eye"
               ></v-icon>
             </v-scale-transition>
           </div>
-        </v-card>
+        </v-img>
       </v-slide-group-item>
     </v-slide-group>
   </v-sheet>
 </template>
 
 <script setup lang="ts">
-  import { computed, ref } from "vue"
+  import { useWorldStore } from "@/stores/WorldStore"
+import { computed, ref } from "vue"
 
   // import { computed } from "vue"
   // import { useWorldStore } from "../stores/WorldStore"
@@ -60,6 +61,9 @@
   //   //model.value = n - 1
   //   emit("update:modelValue", value)
   // }
+
+  const worldStore = useWorldStore()
+  const scenes = worldStore.getScenes
 
   const props = defineProps(["modelValue", "show"])
   const emit = defineEmits(["update:modelValue"])
