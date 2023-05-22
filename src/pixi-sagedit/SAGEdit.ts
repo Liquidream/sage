@@ -12,6 +12,8 @@ export class SAGEdit {
   public static enableFullscreen = false
 
   public static navWidth = 350
+  public static sceneListHeight = 75
+
   public static currentScreen: SceneScreen // was private (should it be?)
 
   private static _app: Application
@@ -144,7 +146,7 @@ export class SAGEdit {
     // uniform scale for our game
     const scale = Math.min(
       (screenWidth - (isMobile ? 0 : SAGEdit.navWidth)) / SAGEdit.width, // factor in the side-bar to make it fit 100%
-      (screenHeight - (isMobile ? 0 : toolbarHeight)) / SAGEdit.height
+      (screenHeight - (isMobile ? 0 : toolbarHeight + SAGEdit.sceneListHeight)) / SAGEdit.height
     )
 
     // console.log(`scale = ${scale}`)
@@ -167,9 +169,9 @@ export class SAGEdit {
 
       // center vertically ONLY if not in "mobile" mode
       if (!isMobile) {
-        SAGEdit._app.view.style.marginTop =
-          SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
-        SAGEdit._app.view.style.marginLeft = `${horizontalMargin}px`
+        // SAGEdit._app.view.style.marginTop =
+        //   SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
+        // SAGEdit._app.view.style.marginLeft = `${horizontalMargin}px`
       } else {
         SAGEdit._app.view.style.marginTop = `$0px`
         SAGEdit._app.view.style.marginLeft = `$0px`

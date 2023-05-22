@@ -4,14 +4,25 @@
 
     <!-- For some reason had to add some padding at top to get 
          canvas to v-center properly in landscape mode -->
-    <v-main :class="!isPortrait ? 'pt-8' : ''">
+    <v-main :class="!isPortrait ? 'd-flex justify-center align-center' : ''">
       <canvas :class="isPortrait ? 'mt-0 mb-0' : ''" id="pixi-canvas"></canvas>
 
-      <v-container fluid class="pa-0 fill-height flex-column">
+      <!-- <v-container height="75" fluid class="pa-0 flex-column">
         <v-spacer></v-spacer>
         <SceneList v-model="selectedModelID" :show="true" />
-      </v-container>
+      </v-container> -->
     </v-main>
+
+    <v-app-bar
+      v-if="!isPortrait"
+      color="grey-lighten-2"
+      flat
+      height="75"
+      location="bottom"
+      order="1"
+    >
+      <SceneList v-model="selectedModelID" />
+    </v-app-bar>
 
     <v-app-bar :elevation="2">
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
@@ -154,7 +165,7 @@
   const { mobile } = useDisplay()
 
   //const modelList: SceneList
-  let selectedModelID = 0
+  let selectedModelID: number
 
   const loadGame = () => {
     console.log(">> Load game")
