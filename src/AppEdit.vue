@@ -133,7 +133,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, onMounted } from "vue"
+  import { computed, ref, onMounted, watch } from "vue"
   import { useDisplay } from "vuetify"
   import { Fullscreen } from "./utils/Fullscreen"
   import { SAGEdit } from "./pixi-sagedit/SAGEdit"
@@ -166,6 +166,11 @@
 
   //const modelList: SceneList
   const selectedModelID = ref(null)
+
+  watch(selectedModelID, async (newSelectedModelID, oldSelectedModelID) => {
+    // debugger
+    console.log(`oldSelectedModelID=${oldSelectedModelID}, newSelectedModelID=${newSelectedModelID}`)
+  })
 
   const loadGame = () => {
     console.log(">> Load game")

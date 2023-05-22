@@ -54,6 +54,13 @@
   //   return models.findIndex((model) => model.id === value.value)
   // })
 
+  //let model = ref(2)
+
+  // const onCardClick = (n: number) => {
+  //   //model.value = n - 1
+  //   emit("update:modelValue", value)
+  // }
+
   const props = defineProps(["modelValue", "show"])
   const emit = defineEmits(["update:modelValue"])
 
