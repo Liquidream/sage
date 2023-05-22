@@ -165,7 +165,7 @@
   const { mobile } = useDisplay()
 
   //const modelList: SceneList
-  let selectedModelID: number
+  const selectedModelID = ref(null)
 
   const loadGame = () => {
     console.log(">> Load game")

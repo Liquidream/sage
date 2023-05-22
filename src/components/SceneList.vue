@@ -1,7 +1,7 @@
 <!-- https://vuejs.org/guide/components/v-model.html#component-v-model -->
 <template>
   <v-sheet class="mx-auto" elevation="8" max-width="100%">
-    <v-slide-group v-model="model" class="pa-4" center-active show-arrows>
+    <v-slide-group v-model="value" class="pa-4" center-active show-arrows>
       <v-slide-group-item
         v-for="n in 15"
         :key="n"
@@ -40,7 +40,7 @@
 
   // const { xl } = useDisplay()
 
-  let model = ref(2)
+  //let model = ref(2)
 
   // const worldStore = useWorldStore()
   // const worldRefs = storeToRefs(worldStore)
@@ -54,15 +54,15 @@
   //   return models.findIndex((model) => model.id === value.value)
   // })
 
-  //const props = defineProps(["modelValue", "show"])
-  //const emit = defineEmits(["update:modelValue"])
+  const props = defineProps(["modelValue", "show"])
+  const emit = defineEmits(["update:modelValue"])
 
-  // const value = computed({
-  //   get() {
-  //     return props.modelValue
-  //   },
-  //   set(value) {
-  //     emit("update:modelValue", value)
-  //   },
-  // })
+  const value = computed({
+    get() {
+      return props.modelValue
+    },
+    set(value) {
+      emit("update:modelValue", value)
+    },
+  })
 </script>
