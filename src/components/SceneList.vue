@@ -1,7 +1,7 @@
 <!-- https://vuejs.org/guide/components/v-model.html#component-v-model -->
 <template>
   <v-sheet class="mx-auto" elevation="8" max-width="100%">
-    <v-slide-group v-model="value" class="pa-4" center-active show-arrows>
+    <v-slide-group v-model="value" class="pa-4" mandatory center-active show-arrows>
       <v-slide-group-item
         v-for="n in 15"
         :key="n"

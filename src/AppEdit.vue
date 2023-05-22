@@ -165,7 +165,7 @@
   const { mobile } = useDisplay()
 
   //const modelList: SceneList
-  const selectedModelID = ref(null)
+  const selectedModelID = ref(5)
 
   watch(selectedModelID, async (newSelectedModelID, oldSelectedModelID) => {
     // debugger
