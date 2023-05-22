@@ -33,9 +33,11 @@
 <script setup lang="ts">
   import { useWorldStore } from "@/stores/WorldStore"
   import { computed, ref } from "vue"
+  import { storeToRefs } from "pinia"
 
   const worldStore = useWorldStore()
-  const scenes = worldStore.getScenes
+  const worldRefs = storeToRefs(worldStore)
+  const scenes = worldRefs.getScenes
 
   const props = defineProps(["modelValue", "show"])
   const emit = defineEmits(["update:modelValue"])
