@@ -21,7 +21,7 @@
       location="bottom"
       order="1"
     >
-      <SceneList v-model="selectedModelID" />
+      <SceneList v-model="useWorldStore().currSceneId" />
     </v-app-bar>
 
     <v-app-bar :elevation="2">
@@ -165,19 +165,19 @@
   const { mobile } = useDisplay()
 
   //const modelList: SceneList
-  const selectedModelID = ref(useWorldStore().currSceneId)
+  //const selectedModelID = ref(useWorldStore().currSceneId)
 
   // Watch for changes to scene selection
-  watch(
-    selectedModelID,
-    async (newSelectedModel: SceneModel, oldSelectedModel: SceneModel) => {
-      // debugger
-      console.log(
-        `oldSelectedModelID=${oldSelectedModel.id}, newSelectedModelID=${newSelectedModel.id}`
-      )
-      useWorldStore().currSceneId = newSelectedModel.id
-    }
-  )
+  // watch(
+  //   selectedModelID,
+  //   async (newSelectedModel: SceneModel, oldSelectedModel: SceneModel) => {
+  //     // debugger
+  //     console.log(
+  //       `oldSelectedModelID=${oldSelectedModel.id}, newSelectedModelID=${newSelectedModel.id}`
+  //     )
+  //     useWorldStore().currSceneId = newSelectedModel.id
+  //   }
+  // )
 
   const loadGame = () => {
     console.log(">> Load game")
