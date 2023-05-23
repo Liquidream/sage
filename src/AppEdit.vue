@@ -156,7 +156,7 @@
   import ReloadPrompt from "./components/ReloadPrompt.vue"
   import { useTimeAgo } from "@vueuse/core"
   import SceneList from "@/components/SceneList.vue"
-import { ActorLocationType, type ActorModel } from "./models/ActorModel"
+  import { ActorLocationType, type ActorModel } from "./models/ActorModel"
 
   // replaced dyanmicaly
   const date = "__DATE__"
@@ -164,20 +164,11 @@ import { ActorLocationType, type ActorModel } from "./models/ActorModel"
 
   const { mobile } = useDisplay()
 
-  //const modelList: SceneList
-  //const selectedModelID = ref(useWorldStore().currSceneId)
-
-  // Watch for changes to scene selection
-  // watch(
-  //   selectedModelID,
-  //   async (newSelectedModel: SceneModel, oldSelectedModel: SceneModel) => {
-  //     // debugger
-  //     console.log(
-  //       `oldSelectedModelID=${oldSelectedModel.id}, newSelectedModelID=${newSelectedModel.id}`
-  //     )
-  //     useWorldStore().currSceneId = newSelectedModel.id
-  //   }
-  // )
+  const worldStore = useWorldStore()
+  const worldRefs = storeToRefs(worldStore)
+  const propStore = usePropStore()
+  const doorStore = useDoorStore()
+  const actorStore = useActorStore()
 
   const loadGame = () => {
     console.log(">> Load game")
@@ -287,10 +278,6 @@ import { ActorLocationType, type ActorModel } from "./models/ActorModel"
   const gameWidth = 1920
   const gameHeight = 1080
   const display = ref(useDisplay())
-
-  const worldStore = useWorldStore()
-  const worldRefs = storeToRefs(worldStore)
-
   const isPortrait = computed(() => {
     SAGEdit.resize()
     const currPort = display.value.height > display.value.width
@@ -301,10 +288,28 @@ import { ActorLocationType, type ActorModel } from "./models/ActorModel"
   onMounted(() => {
     console.log(`the component is now mounted.`)
 
+    // Only proceed once ALL stores have fully loaded
+    // (takes longer with IndexedDB)
+    Promise.all([
+      worldStore.$persistedState.isReady(),
+      propStore.$persistedState.isReady(),
+      doorStore.$persistedState.isReady(),
+      actorStore.$persistedState.isReady(),
+    ]).then(() => {
+      console.log("All stores hydrated, now initialise SAGE/Pixi")
+      SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
+      SAGEdit.loadWorld()
+    })
+
     // Initialise Pixi (with a "black" default bg color)
-    SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
-    SAGEdit.loadWorld()
+    //SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
+    //SAGEdit.loadWorld()
   })
+
+  // worldStore.$persistedState.isReady().then(() => {
+  //   SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
+  //   SAGEdit.loadWorld()
+  // })
 
   const playGame = () => {
     console.log("in playGame()...")

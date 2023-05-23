@@ -51,14 +51,36 @@ export class SceneScreen extends Container {
   private lastWorldState: WorldState | undefined
   private lastSceneModel: SceneModel | undefined
 
+  private worldStore = useWorldStore()
+  private propStore = useSceneStore()
+  private sceneStore = usePropStore()
+  private doorStore = useDoorStore()
+  private actorStore = useActorStore()
+
   constructor() {
     super()
 
-    // Subscribe to World state/Editor changes so that we refresh/recreate Pixi.js content
-    this.subscribeToEvents()
+    // Only proceed once ALL stores have fully loaded
+    // (takes longer with IndexedDB)
+    Promise.all([
+      this.worldStore.$persistedState.isReady(),
+      this.propStore.$persistedState.isReady(),
+      this.doorStore.$persistedState.isReady(),
+      this.actorStore.$persistedState.isReady(),
+    ]).then(() => {
+      console.log("All stores hydrated, now initialise SceneScreen")
+      // Subscribe to World state/Editor changes so that we refresh/recreate Pixi.js content
+      this.subscribeToEvents()
 
-    // perform initial setup
-    this.setup()
+      // perform initial setup
+      this.setup()
+    })
+
+    // // Subscribe to World state/Editor changes so that we refresh/recreate Pixi.js content
+    // this.subscribeToEvents()
+
+    // // perform initial setup
+    // this.setup()
   }
 
   subscribeToEvents() {
@@ -66,13 +88,13 @@ export class SceneScreen extends Container {
     // World related
     {
       // Subscribe to World state changes so that we refresh/recreate Pixi.js content
-      const worldStore = useWorldStore()
-      //this.scene = worldStore.getCurrentScene
-      worldStore.$subscribe((mutation, state) => {
+      //const worldStore = useWorldStore()
+      this.scene = this.worldStore.getCurrentScene
+      this.worldStore.$subscribe((mutation, state) => {
         // Current selection/scene changed
         //if (mutation.events) // Can't do - is DEV only!
         SAGEdit.debugLog("World changed - so refresh scene model (pixi)")
-        //this.scene = worldStore.getCurrentScene
+        this.scene = this.worldStore.getCurrentScene
         this.refresh()
       })
     }
@@ -81,8 +103,8 @@ export class SceneScreen extends Container {
     // Scene related
     {
       // Subscribe to Scene state changes so that we refresh/recreate Pixi.js content
-      const sceneStore = useSceneStore()
-      sceneStore.$subscribe(() => {
+      //const sceneStore = useSceneStore()
+      this.sceneStore.$subscribe(() => {
         // Scene changed
         //debugger
         //if (this.scene?.id !== worldStore.currSceneId) {
@@ -305,7 +327,7 @@ export class SceneScreen extends Container {
     const worldStore = useWorldStore()
     this.scene = worldStore.getCurrentScene
 
-    if (this.scene) {
+    if (worldStore.currSceneId !== "") {
       // Construct scene from data
       this.buildBackdrop()
       this.buildProps()
