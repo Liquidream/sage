@@ -118,6 +118,8 @@ export class SceneScreen extends Container {
             this.removeProp(propToDel)
             // Now re-add prop
             this.addProp(updatedProp)
+            // refresh dialog (and anything else?)
+            this.refresh()
           }
         },
         this
@@ -166,6 +168,8 @@ export class SceneScreen extends Container {
             this.removeDoor(doorToDel)
             // Now re-add door
             this.addDoor(updatedDoor)
+            // refresh dialog (and anything else?)
+            this.refresh()
           }
         },
         this
@@ -214,6 +218,9 @@ export class SceneScreen extends Container {
             this.removeActor(actorToDel)
             // Now re-add actor
             this.addActor(updatedActor)
+            // refresh dialog (and anything else?)
+            if (this.dialogText) this.removeChild(this.dialogText)
+            this.buildDialogText()
           }
         },
         this
@@ -232,6 +239,8 @@ export class SceneScreen extends Container {
           if (actorToDel) {
             this.removeActor(actorToDel)
           }
+          // refresh dialog (and anything else?)
+          this.refresh()
         },
         this
       )
@@ -296,12 +305,17 @@ export class SceneScreen extends Container {
     const worldStore = useWorldStore()
     this.scene = worldStore.getCurrentScene
 
-    // Construct scene from data
-    this.buildBackdrop()
-    this.buildProps()
-    this.buildDoorways()
-    this.buildActors()
-    this.buildDialogText()
+    if (this.scene) {
+      // Construct scene from data
+      this.buildBackdrop()
+      this.buildProps()
+      this.buildDoorways()
+      this.buildActors()
+      this.buildDialogText()
+    } else if (worldStore.currActorId !== "") {
+      this.buildActors()
+      this.buildDialogText()
+    }
 
     // Drag+Drop support
     SAGEdit.app.stage.interactive = true
@@ -368,6 +382,9 @@ export class SceneScreen extends Container {
     if (worldStore.currDoorId != "") {
       dialogText = worldStore.getCurrentDoor?.name
     }
+    if (worldStore.currActorId != "") {
+      dialogText = worldStore.getCurrentActor?.name
+    }
 
     this.dialogText = new Text(dialogText, styly) // Text supports unicode!
     this.dialogText.x = SAGEdit.width / 2
@@ -397,7 +414,6 @@ export class SceneScreen extends Container {
         sprite = Sprite.from(texture)
         sprite.width = SAGEdit.width
         sprite.height = SAGEdit.height
-
       } else {
         // Load image data
         const base = new BaseTexture(this.scene.image)
@@ -459,7 +475,7 @@ export class SceneScreen extends Container {
       }
     }
   }
-  
+
   private buildDoorways() {
     const doorStore = useDoorStore()
     const sceneDoorModels = doorStore.findDoorBySceneId(this.scene?.id || "")
@@ -473,12 +489,20 @@ export class SceneScreen extends Container {
 
   private buildActors() {
     const actorStore = useActorStore()
-    const sceneActorModels = actorStore.findActorBySceneId(this.scene?.id || "")
-
-    if (sceneActorModels.length > 0) {
-      for (const actorModel of sceneActorModels) {
-        this.addActor(actorModel)
+    // Scene mode?
+    if (useWorldStore().currSceneId !== "") {
+      const sceneActorModels = actorStore.findActorBySceneId(
+        this.scene?.id || ""
+      )
+      if (sceneActorModels.length > 0) {
+        for (const actorModel of sceneActorModels) {
+          this.addActor(actorModel)
+        }
       }
+    } else {
+      // Actor-only Edit mode
+      const actorModel = useWorldStore().getCurrentActor
+      this.addActor(actorModel)
     }
   }
 
@@ -538,7 +562,9 @@ export class SceneScreen extends Container {
   removeActor(actor: ActorEdit) {
     if (actor.sprite) this.removeChild(actor.sprite)
     this.removeChild(actor.graphics)
-    const index = this.actors.findIndex((item) => item.data.id === actor.data.id)
+    const index = this.actors.findIndex(
+      (item) => item.data.id === actor.data.id
+    )
     if (index !== -1) this.actors.splice(index, 1)
     actor.tidyUp()
   }

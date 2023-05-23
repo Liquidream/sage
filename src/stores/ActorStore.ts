@@ -32,6 +32,8 @@ export const useActorStore = defineStore({
         useWorldStore().currActorId = ""
       }
     },
+
+    
   },
 
   //persist: true, // Save to localStorage

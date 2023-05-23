@@ -7,8 +7,8 @@
     @click="backToWorldClicked"
     >World</v-btn
   >
-  <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn
+  <v-icon v-if="worldRefs.currSceneId.value !== ''" icon="mdi-chevron-right"></v-icon>
+  <v-btn v-if="worldRefs.currSceneId.value !== ''"
     variant="plain"
     size="small"
     prepend-icon="mdi-filmstrip-box"
@@ -127,9 +127,14 @@
 
     <v-divider />
 
-    <v-btn @click="removeActorlicked" color="error" class="mt-2"
-      >Remove Actor From Scene</v-btn
-    >
+    <v-btn @click="removeActorClicked" color="error" class="mt-2">
+      <span v-if="worldRefs.currSceneId.value !== ''">
+        Remove Actor From Scene
+      </span>
+      <span v-else="worldRefs.currSceneId.value !== ''">
+        Remove Actor
+      </span>
+    </v-btn>
   </v-form>
 </template>
 
@@ -217,11 +222,18 @@ import type { ActorModel } from "@/models/ActorModel"
     useWorldStore().currActorId = evt.target.value
   }
 
-  const removeActorlicked = () => {
+  const removeActorClicked = () => {
     // TODO: Remove Actor from scene - don't delete, 
     //       as likely to have lots of scripts associated!
     model.value.location_id = ""
     SAGEdit.Events.emit("actorRemoved", model.value)
-    //propStore.deleteProp(model.value.id)
+
+    if (useWorldStore().currSceneId !== "") {
+      // In a scene, just remove actor from scene
+      useWorldStore().currActorId = ""
+    } else {
+      // Ok, now delete actor from store
+      actorStore.deleteActor(model.value.id)
+    }
   }
 </script>
