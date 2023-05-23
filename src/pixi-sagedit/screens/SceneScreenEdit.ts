@@ -1,4 +1,4 @@
-import { Group, Tween } from "tweedle.js" //Easing
+//import { Group, Tween } from "tweedle.js" //Easing
 import {
   Container,
   Graphics,
@@ -41,6 +41,7 @@ export class SceneScreen extends Container {
   public touchTarget!: any // Could be Prop or Door
 
   private backdropInputEvents!: InputEventEmitter
+  private videoElement: HTMLMediaElement
 
   private lastWorldState: WorldState | undefined
   private lastSceneModel: SceneModel | undefined
@@ -251,6 +252,14 @@ export class SceneScreen extends Container {
     if (this.backdrop) {
       SAGEdit.app.stage.removeChild(this.backdrop)
       this.backdrop.destroy()
+      // Now remove video element
+      //const videoElement = document.getElementById("tempVideo")
+      if (this.videoElement) {
+        this.videoElement.pause()
+        this.videoElement.removeAttribute("src") // empty source
+        this.videoElement.load()
+      }
+      //document.getElementById("tempVideo")?.remove()
     }
     // Unsubscribe from events, etc.
     for (const prop of this.props) {
@@ -305,18 +314,20 @@ export class SceneScreen extends Container {
       // Is it a video?
       if (this.scene?.image.includes("data:video")) {
         // Load video data
-        const element = document.createElement("video")
-        element.src = this.scene.image // e.g. "data:video/mp4;base64,xxxxxx"
-        element.preload = "auto"
-        element.loop = true
+        this.videoElement = document.createElement("video")
+        this.videoElement.id = "tempVideo"
+        this.videoElement.src = this.scene.image // e.g. "data:video/mp4;base64,xxxxxx"
+        this.videoElement.preload = "auto"
+        this.videoElement.loop = true
 
-        const resource = new VideoResource(element)
+        const resource = new VideoResource(this.videoElement)
         const texture = Texture.from(resource)
         // https://github.com/pixijs/pixi.js/issues/6501 - SOLVED!!
         //resource.source.loop = true
         sprite = Sprite.from(texture)
         sprite.width = SAGEdit.width
         sprite.height = SAGEdit.height
+
       } else {
         // Load image data
         const base = new BaseTexture(this.scene.image)
@@ -434,9 +445,8 @@ export class SceneScreen extends Container {
   public update() {
     //{(_framesPassed: number): void {
     // Do any movement here...
-
     //You need to update a group for the tweens to do something!
-    Group.shared.update()
+    //Group.shared.update()
   }
 
   private onPointerMove(_e: FederatedPointerEvent) {

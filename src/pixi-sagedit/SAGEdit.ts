@@ -64,7 +64,9 @@ export class SAGEdit {
       height: height,
     })
 
-    SAGEdit._app.ticker.add(SAGEdit.update)
+    // (REMOVED, as not being used in editor, currently)
+    // Update time-based things, like tweens
+    //SAGEdit._app.ticker.add(SAGEdit.update)
 
     // (REMOVED: Now using Vuetify useDisplay() reactive property)
     // listen for the browser telling us that the screen size changed
@@ -186,14 +188,15 @@ export class SAGEdit {
   }
 
   // This update will be called by a pixi ticker and tell the scene that a tick happened
-  private static update() {
+  //private static update() {
     //framesPassed: number) {
     // Let the current scene know that we updated it...
     // Just for funzies, sanity check that it exists first.
-    if (SAGEdit.currentScreen) {
-      SAGEdit.currentScreen.update() //framesPassed)
-    }
+    // if (SAGEdit.currentScreen) {
+    //   // Update anything that's time-base (e.g. tweens)
+    //   SAGEdit.currentScreen.update() //framesPassed)
+    // }
 
     // as I said before, I HATE the "frame passed" approach. I would rather use `Manager.app.ticker.deltaMS`
-  }
+  //}
 }
