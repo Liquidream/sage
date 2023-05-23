@@ -255,9 +255,11 @@ export class SceneScreen extends Container {
       // Now remove video element
       //const videoElement = document.getElementById("tempVideo")
       if (this.videoElement) {
+        // https://stackoverflow.com/questions/3258587/how-to-properly-unload-destroy-a-video-element
         this.videoElement.pause()
         this.videoElement.removeAttribute("src") // empty source
         this.videoElement.load()
+        this.videoElement.remove() // for good measure!
       }
       //document.getElementById("tempVideo")?.remove()
     }
