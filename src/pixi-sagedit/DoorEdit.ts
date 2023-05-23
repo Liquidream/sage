@@ -166,6 +166,7 @@ export class DoorEdit {
     if (worldStore.currDoorId != this.data.id) {
       worldStore.currDoorId = this.data.id
       worldStore.currPropId = ""
+      worldStore.currActorId = ""
     } else {
       //
     }

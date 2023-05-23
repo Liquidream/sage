@@ -12,7 +12,7 @@ export interface PropModel {
   single_use?: boolean
   visible?: boolean
   // in_scene_id?: string
-  location_type?: LocationType
+  location_type?: PropLocationType
   location_id?: string
 
   // Key-Value pair to allow properties to be set/read
@@ -22,7 +22,7 @@ export interface PropModel {
   on_use?: string
 }
 
-export enum LocationType {
+export enum PropLocationType {
   Unknown = "UNKNOWN",
   Scene = "SCENE",
   Inventory = "INVENTORY",

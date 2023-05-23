@@ -3,13 +3,25 @@ export interface ActorModel {
   name: string
   col?: string
   desc?: string // Poss having diff desc's for each state?
-  location_id?: string
+  x?: number
+  y?: number
+  width?: number
+  height?: number
   image?: string // Poss multiple, for each state?
   state?: string // e.g. "happy", "dead", etc.
-  scene_x?: number
-  scene_y?: number
+  visible?: boolean
+  // in_scene_id?: string
+  location_type?: ActorLocationType
+  location_id?: string
+
   // Key-Value pair to allow properties to be set/read
   property?: { [key: string]: string | number | boolean }
   // Poss. event actions
   on_interact?: string
+}
+
+export enum ActorLocationType {
+  Unknown = "UNKNOWN",
+  Scene = "SCENE",
+  CloseUp = "CLOSEUP", // Do we want this?
 }

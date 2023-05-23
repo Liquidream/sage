@@ -6,7 +6,7 @@ import { SAGE } from "./SAGEPlay"
 import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneModel } from "@/models/SceneModel"
 import { usePropStore } from "@/stores/PropStore"
-import { LocationType } from "@/models/PropModel"
+import { PropLocationType } from "@/models/PropModel"
 
 export class World implements IWorldData {
   //}, Serialization<World> {
@@ -137,7 +137,7 @@ export class World implements IWorldData {
     if (propModel) {
       let sourceSceneId = ""
       // Remove prop from its current scene...
-      if (propModel.location_type === LocationType.Scene) {
+      if (propModel.location_type === PropLocationType.Scene) {
         sourceSceneId = propModel.location_id || ""
         // If prop is in current scene (e.g. being displayed)
         if (sourceSceneId === this.currentScene.id) {

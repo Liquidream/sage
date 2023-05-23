@@ -2,7 +2,7 @@ import { SAGE } from "./SAGEPlay"
 import type { Serialization } from "../utils/Serialization"
 import { Prop } from "./Prop"
 //import * as PropData from "./data/PropData"
-import { LocationType, type PropModel } from "@/models/PropModel"
+import { PropLocationType, type PropModel } from "@/models/PropModel"
 import { usePlayerStore } from "@/stores/PlayerStore"
 
 export class Player implements IPlayerData, Serialization<Player> {
@@ -29,7 +29,7 @@ export class Player implements IPlayerData, Serialization<Player> {
 
   /** Remove (and return) the specified prop, if present */
   public addToInventory(propData: PropModel) {
-    propData.location_type = LocationType.Inventory
+    propData.location_type = PropLocationType.Inventory
     propData.location_id = ""
     SAGE.World.player.inventory.push(propData)
     SAGE.invScreen.addProp(new Prop(propData))

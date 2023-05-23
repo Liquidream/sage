@@ -1,17 +1,17 @@
 import { BaseTexture, Graphics, Sprite, Texture } from "pixi.js"
 import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter"
-import type { PropModel } from "@/models/PropModel"
+import type { ActorModel } from "@/models/ActorModel"
 import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
 
-export class PropEdit {
+export class ActorEdit {
   // "constants"
   // (perhaps overridable in config?)
   TOUCH_DURATION = 500
   DRAG_SENSDIST = 25
   DRAG_ALPHA = 0.75
 
-  public data!: PropModel
+  public data!: ActorModel
   public graphics!: Graphics
   public sprite!: Sprite
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -19,32 +19,32 @@ export class PropEdit {
   private propInputEvents!: InputEventEmitter
   public dragging = false
 
-  public constructor(propModel: PropModel, inGraphics: Graphics) {
+  public constructor(actorModel: ActorModel, inGraphics: Graphics) {
     // Initialise from data object
     let sprite = undefined
-    if (propModel.image) {
-      const imgBase64 = propModel.image
+    if (actorModel.image) {
+      const imgBase64 = actorModel.image
       const base = new BaseTexture(imgBase64)
       console.log(
-        `>> model dimensions: width=${propModel.width} height=${propModel.height}`
+        `>> model dimensions: width=${actorModel.width} height=${actorModel.height}`
       )
       const texture = new Texture(base)
       sprite = Sprite.from(texture)
     } else {
       sprite = new Sprite(Texture.EMPTY)
     }
-    this.data = propModel
+    this.data = actorModel
     this.graphics = inGraphics
     this.sprite = sprite
 
-    this.updateSelectionState(useWorldStore().currPropId === propModel.id)
+    this.updateSelectionState(useWorldStore().currActorId === actorModel.id)
 
-    sprite.width = propModel.width || 0
-    sprite.height = propModel.height || 0
+    sprite.width = actorModel.width || 0
+    sprite.height = actorModel.height || 0
 
     sprite.anchor.set(0.5)
-    sprite.x = propModel.x || 0
-    sprite.y = propModel.y || 0
+    sprite.x = actorModel.x || 0
+    sprite.y = actorModel.y || 0
 
     // Events
     this.propInputEvents = new InputEventEmitter(this.sprite)
@@ -65,7 +65,7 @@ export class PropEdit {
     )
 
     // visible state
-    if (!propModel.visible) {
+    if (!actorModel.visible) {
       this.sprite.alpha = 0.5
     }
     //this.sprite.visible = propModel.visible // || true
@@ -86,10 +86,9 @@ export class PropEdit {
   }
 
   private updateSelectionState(isSelected: boolean) {
-    //debugger
     this.graphics.clear()
-    const propWidth = this.data.width || 0,
-      propHeight = this.data.height || 0
+    const actorWidth = this.data.width || 0,
+      actorHeight = this.data.height || 0
     if (isSelected) {
       this.graphics.lineStyle(10, 0xff0000) // Red
     } else {
@@ -99,26 +98,26 @@ export class PropEdit {
     // (So we can easily move it when "dragging")
     this.graphics.x = this.data.x || 0
     this.graphics.y = this.data.y || 0
-    this.graphics.width = propWidth
-    this.graphics.height = propHeight
-    this.graphics.pivot.set(propWidth / 2, propHeight / 2)
-    this.graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
+    this.graphics.width = actorWidth
+    this.graphics.height = actorHeight
+    this.graphics.pivot.set(actorWidth / 2, actorHeight / 2)
+    this.graphics.drawRoundedRect(0, 0, actorWidth, actorHeight, 30)
     //}
     this.graphics.endFill()
   }
 
   private onPointerDown() {
-    // Select clicked prop
+    // Select clicked actor
     const worldStore = useWorldStore()
-    if (worldStore.currPropId != this.data.id) {
-      worldStore.currPropId = this.data.id
+    if (worldStore.currActorId != this.data.id) {
+      worldStore.currActorId = this.data.id
+      worldStore.currPropId = ""
       worldStore.currDoorId = ""
-      worldStore.currActorId = ""
     } else {
       // Start of drag...
       this.dragging = true
       //debugger
-      SAGEdit.currentScreen.draggedProp = this
+      SAGEdit.currentScreen.draggedActor = this
       this.sprite.alpha = this.DRAG_ALPHA
     }
   }

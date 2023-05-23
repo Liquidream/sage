@@ -6,6 +6,7 @@ import { defineStore } from "pinia"
 import { useDoorStore } from "./DoorStore"
 import { usePropStore } from "./PropStore"
 import { useActorStore } from "./ActorStore"
+import type { ActorModel } from "@/models/ActorModel"
 
 export interface WorldState {
   id: string
@@ -15,6 +16,7 @@ export interface WorldState {
   currSceneId: string
   currPropId: string
   currDoorId: string
+  currActorId: string
   // Key-Value pair to allow properties to be set/read
   property?: { [key: string]: string | number | boolean }
 }
@@ -32,6 +34,7 @@ export const useWorldStore = defineStore("worldStore", {
     currSceneId: "",
     currPropId: "",
     currDoorId: "",
+    currActorId: "",
   }),
 
   getters: {
@@ -53,6 +56,16 @@ export const useWorldStore = defineStore("worldStore", {
     getCurrentDoor(state): DoorModel | undefined {
       const doorStore = useDoorStore()
       return doorStore.doors.find((item) => item.id === state.currDoorId)
+    },
+
+    getActors(): ActorModel[] {
+      const actorStore = useActorStore()
+      return actorStore.actors
+    },
+
+    getCurrentActor(state): ActorModel | undefined {
+      const actorStore = useActorStore()
+      return actorStore.actors.find((item) => item.id === state.currActorId)
     },
   },
 

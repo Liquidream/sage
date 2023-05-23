@@ -24,6 +24,9 @@ import { useDoorStore } from "@/stores/DoorStore"
 import { InputEventEmitter } from "../../pixi-sageplay/screens/ui/InputEventEmitter"
 import { text } from "stream/consumers"
 import type { DoorModel } from "@/models/DoorModel"
+import type { ActorModel } from "@/models/ActorModel"
+import { ActorEdit } from "../ActorEdit"
+import { useActorStore } from "@/stores/ActorStore"
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null
@@ -32,16 +35,18 @@ export class SceneScreen extends Container {
   private backdrop!: Sprite
   private props: Array<PropEdit> = []
   private doors: Array<DoorEdit> = []
+  private actors: Array<ActorEdit> = []
 
   public draggedProp!: PropEdit | undefined
   public draggedDoor!: DoorEdit | undefined
+  public draggedActor!: ActorEdit | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public dragTarget!: any // Could be Prop or Door
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public touchTarget!: any // Could be Prop or Door
 
   private backdropInputEvents!: InputEventEmitter
-  private videoElement: HTMLMediaElement
+  private videoElement: HTMLMediaElement | undefined
 
   private lastWorldState: WorldState | undefined
   private lastSceneModel: SceneModel | undefined
@@ -49,131 +54,188 @@ export class SceneScreen extends Container {
   constructor() {
     super()
 
-    // Subscribe to World state changes so that we refresh/recreate Pixi.js content
-    const worldStore = useWorldStore()
-    this.scene = worldStore.getCurrentScene
-    worldStore.$subscribe((mutation, state) => {
-      // Current selection/scene changed
-      //if (mutation.events) // Can't do - is DEV only!
-      SAGEdit.debugLog("World changed - so refresh scene model (pixi)")
-      //this.scene = worldStore.getCurrentScene
-      this.refresh()
-    })
-
-    // Subscribe to Scene state changes so that we refresh/recreate Pixi.js content
-    const sceneStore = useSceneStore()
-    sceneStore.$subscribe(() => {
-      // Scene changed
-      //debugger
-      //if (this.scene?.id !== worldStore.currSceneId) {
-      SAGEdit.debugLog("Scene changed - so refresh scene model (pixi)")
-      this.refresh()
-    })
-
-    // Subscribe to Prop state changes so that we refresh/recreate Pixi.js content
-    // const propStore = usePropStore()
-    // propStore.$subscribe(() => {
-    //   SAGEdit.debugLog("Prop changed - so refresh scene model (pixi)")
-    //   this.refresh()
-    // })
-
-    // Listen for Prop created
-    SAGEdit.Events.on(
-      "propAdded",
-      (newProp: PropModel) => {
-        this.addProp(newProp)
-      },
-      this
-    )
-
-    // Listen for Prop updates
-    SAGEdit.Events.on(
-      "propUpdated",
-      (updatedProp: PropModel) => {
-        // Delete + recreate updated Prop
-        // Find matching prop
-        const propToDel = this.props.find((obj) => {
-          return obj.data.id === updatedProp.id
-        })
-        if (propToDel) {
-          console.log("delete and recreate 'pixi' prop")
-          // Delete prop
-          this.removeProp(propToDel)
-          // Now re-add prop
-          this.addProp(updatedProp)
-        }
-      },
-      this
-    )
-
-    // Listen for Prop removed
-    SAGEdit.Events.on(
-      "propRemoved",
-      (oldProp: PropModel) => {
-        // Find matching prop
-        const propToDel = this.props.find((obj) => {
-          return obj.data.id === oldProp.id
-        })
-        if (propToDel) {
-          this.removeProp(propToDel)
-        }
-      },
-      this
-    )
-
-    // Subscribe to Door state changes so that we refresh/recreate Pixi.js content
-    // const doorStore = useDoorStore()
-    // doorStore.$subscribe(() => {
-    //   SAGEdit.debugLog("Door changed - so refresh scene model (pixi)")
-    //   this.refresh()
-    // })
-
-    // Listen for Door created
-    SAGEdit.Events.on(
-      "doorAdded",
-      (newDoor: DoorModel) => {
-        this.addDoor(newDoor)
-      },
-      this
-    )
-
-    // Listen for Prop updates
-    SAGEdit.Events.on(
-      "doorUpdated",
-      (updatedDoor: DoorModel) => {
-        // Delete + recreate updated Door
-        // Find matching door
-        const doorToDel = this.doors.find((obj) => {
-          return obj.data.id === updatedDoor.id
-        })
-        if (doorToDel) {
-          console.log("delete and recreate 'pixi' door")
-          // Delete door
-          this.removeDoor(doorToDel)
-          // Now re-add prop
-          this.addDoor(updatedDoor)
-        }
-      },
-      this
-    )
-
-    // Listen for Prop removed
-    SAGEdit.Events.on(
-      "doorRemoved",
-      (oldDoor: DoorModel) => {
-        // Find matching prop
-        const doorToDel = this.doors.find((obj) => {
-          return obj.data.id === oldDoor.id
-        })
-        if (doorToDel) {
-          this.removeDoor(doorToDel)
-        }
-      },
-      this
-    )
+    // Subscribe to World state/Editor changes so that we refresh/recreate Pixi.js content
+    this.subscribeToEvents()
 
     // perform initial setup
     this.setup()
+  }
+
+  subscribeToEvents() {
+    // ------------------------------
+    // World related
+    {
+      // Subscribe to World state changes so that we refresh/recreate Pixi.js content
+      const worldStore = useWorldStore()
+      //this.scene = worldStore.getCurrentScene
+      worldStore.$subscribe((mutation, state) => {
+        // Current selection/scene changed
+        //if (mutation.events) // Can't do - is DEV only!
+        SAGEdit.debugLog("World changed - so refresh scene model (pixi)")
+        //this.scene = worldStore.getCurrentScene
+        this.refresh()
+      })
+    }
+
+    // ------------------------------
+    // Scene related
+    {
+      // Subscribe to Scene state changes so that we refresh/recreate Pixi.js content
+      const sceneStore = useSceneStore()
+      sceneStore.$subscribe(() => {
+        // Scene changed
+        //debugger
+        //if (this.scene?.id !== worldStore.currSceneId) {
+        SAGEdit.debugLog("Scene changed - so refresh scene model (pixi)")
+        this.refresh()
+      })
+    }
+
+    // ------------------------------
+    // Prop related
+    {
+      // Listen for Prop created
+      SAGEdit.Events.on(
+        "propAdded",
+        (newProp: PropModel) => {
+          this.addProp(newProp)
+        },
+        this
+      )
+
+      // Listen for Prop updates
+      SAGEdit.Events.on(
+        "propUpdated",
+        (updatedProp: PropModel) => {
+          // Delete + recreate updated Prop
+          // Find matching prop
+          const propToDel = this.props.find((obj) => {
+            return obj.data.id === updatedProp.id
+          })
+          if (propToDel) {
+            console.log("delete and recreate 'pixi' prop")
+            // Delete prop
+            this.removeProp(propToDel)
+            // Now re-add prop
+            this.addProp(updatedProp)
+          }
+        },
+        this
+      )
+
+      // Listen for Prop removed
+      SAGEdit.Events.on(
+        "propRemoved",
+        (oldProp: PropModel) => {
+          // Find matching prop
+          const propToDel = this.props.find((obj) => {
+            return obj.data.id === oldProp.id
+          })
+          if (propToDel) {
+            this.removeProp(propToDel)
+          }
+        },
+        this
+      )
+    }
+
+    // ------------------------------
+    // Door related
+    {
+      // Listen for Door created
+      SAGEdit.Events.on(
+        "doorAdded",
+        (newDoor: DoorModel) => {
+          this.addDoor(newDoor)
+        },
+        this
+      )
+
+      // Listen for Door updates
+      SAGEdit.Events.on(
+        "doorUpdated",
+        (updatedDoor: DoorModel) => {
+          // Delete + recreate updated Door
+          // Find matching door
+          const doorToDel = this.doors.find((obj) => {
+            return obj.data.id === updatedDoor.id
+          })
+          if (doorToDel) {
+            console.log("delete and recreate 'pixi' door")
+            // Delete door
+            this.removeDoor(doorToDel)
+            // Now re-add door
+            this.addDoor(updatedDoor)
+          }
+        },
+        this
+      )
+
+      // Listen for Door removed
+      SAGEdit.Events.on(
+        "doorRemoved",
+        (oldDoor: DoorModel) => {
+          // Find matching door
+          const doorToDel = this.doors.find((obj) => {
+            return obj.data.id === oldDoor.id
+          })
+          if (doorToDel) {
+            this.removeDoor(doorToDel)
+          }
+        },
+        this
+      )
+    }
+
+    // ------------------------------
+    // Actor related
+    {
+      // Listen for Actor created
+      SAGEdit.Events.on(
+        "actorAdded",
+        (newActor: ActorModel) => {
+          this.addActor(newActor)
+        },
+        this
+      )
+
+      // Listen for Actor updates
+      SAGEdit.Events.on(
+        "actorUpdated",
+        (updatedActor: ActorModel) => {
+          // Delete + recreate updated Actor
+          // Find matching actor
+          const actorToDel = this.actors.find((obj) => {
+            return obj.data.id === updatedActor.id
+          })
+          if (actorToDel) {
+            console.log("delete and recreate 'pixi' actor")
+            // Delete actor
+            this.removeActor(actorToDel)
+            // Now re-add actor
+            this.addActor(updatedActor)
+          }
+        },
+        this
+      )
+
+      // Listen for Actor removed
+      SAGEdit.Events.on(
+        "actorRemoved",
+        (oldActor: ActorModel) => {
+          // TODO: Remove Actor from scene - don't delete from store,
+          //       as likely to have lots of scripts associated!
+          // Find matching actor
+          const actorToDel = this.actors.find((obj) => {
+            return obj.data.id === oldActor.id
+          })
+          if (actorToDel) {
+            this.removeActor(actorToDel)
+          }
+        },
+        this
+      )
+    }
   }
 
   refresh() {
@@ -192,13 +254,18 @@ export class SceneScreen extends Container {
       this.setup()
     } else if (
       newWorldState.currPropId != this.lastWorldState?.currPropId ||
-      newWorldState.currDoorId != this.lastWorldState?.currDoorId
+      newWorldState.currDoorId != this.lastWorldState?.currDoorId ||
+      newWorldState.currActorId != this.lastWorldState?.currActorId
     ) {
       // Current selection (Prop/Door) changed
       if (newWorldState.currPropId !== "") {
         SAGEdit.Events.emit("selectionChanged", newWorldState.currPropId)
-      } else {
+      } else if (newWorldState.currDoorId !== "") {
         SAGEdit.Events.emit("selectionChanged", newWorldState.currDoorId)
+      } else if (newWorldState.currActorId !== "") {
+        SAGEdit.Events.emit("selectionChanged", newWorldState.currActorId)
+      } else {
+        SAGEdit.Events.emit("selectionChanged", "")
       }
     }
     // Add/Remove props
@@ -231,8 +298,9 @@ export class SceneScreen extends Container {
 
     // Construct scene from data
     this.buildBackdrop()
-    this.buildDoorways()
     this.buildProps()
+    this.buildDoorways()
+    this.buildActors()
     this.buildDialogText()
 
     // Drag+Drop support
@@ -391,7 +459,7 @@ export class SceneScreen extends Container {
       }
     }
   }
-
+  
   private buildDoorways() {
     const doorStore = useDoorStore()
     const sceneDoorModels = doorStore.findDoorBySceneId(this.scene?.id || "")
@@ -399,6 +467,17 @@ export class SceneScreen extends Container {
     if (sceneDoorModels.length > 0) {
       for (const doorModel of sceneDoorModels) {
         this.addDoor(doorModel)
+      }
+    }
+  }
+
+  private buildActors() {
+    const actorStore = useActorStore()
+    const sceneActorModels = actorStore.findActorBySceneId(this.scene?.id || "")
+
+    if (sceneActorModels.length > 0) {
+      for (const actorModel of sceneActorModels) {
+        this.addActor(actorModel)
       }
     }
   }
@@ -444,6 +523,26 @@ export class SceneScreen extends Container {
     door.tidyUp()
   }
 
+  public addActor(actorModel: ActorModel) {
+    const graphics = new Graphics()
+    // Create new component obj (contains data + view)
+    const actor = new ActorEdit(actorModel, graphics)
+    this.addChild(actor.sprite)
+    this.actors.push(actor)
+    this.addChild(graphics)
+  }
+
+  /**
+   * Removes an Actor from a scene
+   */
+  removeActor(actor: ActorEdit) {
+    if (actor.sprite) this.removeChild(actor.sprite)
+    this.removeChild(actor.graphics)
+    const index = this.actors.findIndex((item) => item.data.id === actor.data.id)
+    if (index !== -1) this.actors.splice(index, 1)
+    actor.tidyUp()
+  }
+
   public update() {
     //{(_framesPassed: number): void {
     // Do any movement here...
@@ -475,6 +574,17 @@ export class SceneScreen extends Container {
       // Check for valid "drop"
       //this.checkDragCollisions()
     }
+    if (this.draggedActor) {
+      // Temp remove interaction to "dragged" Prop
+      this.draggedActor.graphics.interactive = false
+      // Update pos
+      this.draggedActor.graphics.x = _e.data.global.x
+      this.draggedActor.graphics.y = _e.data.global.y
+      this.draggedActor.sprite.x = this.draggedActor.graphics.x
+      this.draggedActor.sprite.y = this.draggedActor.graphics.y
+      // Check for valid "drop"
+      //this.checkDragCollisions()
+    }
   }
 
   private onPrimaryAction() {
@@ -482,6 +592,7 @@ export class SceneScreen extends Container {
     const worldStore = useWorldStore()
     worldStore.currPropId = ""
     worldStore.currDoorId = ""
+    worldStore.currActorId = ""
   }
 
   private onPointerUp() {
@@ -514,6 +625,22 @@ export class SceneScreen extends Container {
       this.draggedDoor.graphics.interactive = true
       this.draggedDoor.graphics.alpha = 1
       this.draggedDoor = undefined
+      // Update inventory (in case it was an inventory prop)
+      //      SAGE.invScreen.update()
+    }
+    if (this.draggedActor) {
+      // End Drag+Drop mode
+      this.draggedActor.dragging = false
+      // Save final pos
+      this.draggedActor.data.x = Math.floor(this.draggedActor.graphics.x)
+      this.draggedActor.data.y = Math.floor(this.draggedActor.graphics.y)
+      this.draggedActor.sprite.x = this.draggedActor.data.x
+      this.draggedActor.sprite.y = this.draggedActor.data.y
+
+      // Restore interaction to "dragged" Prop
+      this.draggedActor.graphics.interactive = true
+      this.draggedActor.graphics.alpha = 1
+      this.draggedActor = undefined
       // Update inventory (in case it was an inventory prop)
       //      SAGE.invScreen.update()
     }

@@ -26,7 +26,7 @@
       ><v-icon icon="mdi-filmstrip-box"></v-icon> Scenes</v-list-subheader
     >
     <!-- on click, replace panel with properties of Scene -->
-    <v-list>
+    <v-list class="pt-0">
       <v-list-item
         @click="onClickScene(scene)"
         v-for="scene in worldStore.getScenes"
@@ -45,6 +45,29 @@
     </v-list>
 
     <scene-select label="Starting Scene" v-model="worldStore.startingSceneId" />
+
+    <v-divider />
+    <v-list-subheader
+      ><v-icon icon="mdi-account"></v-icon> Actors</v-list-subheader
+    >
+    <!-- on click, replace panel with properties of Scene -->
+    <v-list class="pt-0">
+      <v-list-item
+        @click="onClickActor(actor)"
+        v-for="actor in worldStore.getActors"
+        :key="actor.id"
+      >
+        <v-row align="center">
+          <v-col cols="3">
+            <v-img :src="(actor.thumbnail != '' && actor.thumbnail !== undefined) ? actor.thumbnail : actor.image" :aspect-ratio="16 / 9" cover />
+
+          </v-col>
+          <v-col>
+            <span class="text-no-wrap">{{ actor.name }}</span>
+          </v-col>
+        </v-row>
+      </v-list-item>
+    </v-list>
 
     <v-divider />
     <v-list-subheader
@@ -76,6 +99,7 @@
   import { SampleData } from "../stores/SampleData"
   import SceneSelect from "./SceneSelect.vue"
   import PrismEditor from "./PrismEditor.vue"
+import type { ActorModel } from "@/models/ActorModel"
 
   console.log("start WordProperties.vue...")
   const worldStore = useWorldStore()
@@ -85,6 +109,14 @@
     SAGEdit.debugLog(scene.name)
 
     worldStore.currSceneId = scene.id
+  }
+
+  const onClickActor = (actor: ActorModel) => {
+    SAGEdit.debugLog("onClickActor()...")
+    SAGEdit.debugLog(actor.name)
+
+    // TODO: Need to have a way to edit actor WITHOUT being in a scene
+    worldStore.currActorId = actor.id
   }
 
   //const loadBtnClicked = () => {
