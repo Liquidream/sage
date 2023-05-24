@@ -15,18 +15,17 @@ import {
 import { SAGEdit } from "../SAGEdit"
 import { PropEdit } from "../PropEdit"
 import { DoorEdit } from "../DoorEdit"
+import { ActorEdit } from "../ActorEdit"
 import type { SceneModel } from "@/models/SceneModel"
 import type { PropModel } from "@/models/PropModel"
+import type { DoorModel } from "@/models/DoorModel"
+import type { ActorModel } from "@/models/ActorModel"
 import { useWorldStore, type WorldState } from "@/stores/WorldStore"
 import { useSceneStore } from "@/stores/SceneStore"
 import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
-import { InputEventEmitter } from "../../pixi-sageplay/screens/ui/InputEventEmitter"
-import { text } from "stream/consumers"
-import type { DoorModel } from "@/models/DoorModel"
-import type { ActorModel } from "@/models/ActorModel"
-import { ActorEdit } from "../ActorEdit"
 import { useActorStore } from "@/stores/ActorStore"
+import { InputEventEmitter } from "../../pixi-sageplay/screens/ui/InputEventEmitter"
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null

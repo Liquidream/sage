@@ -19,12 +19,15 @@ import { Collision } from "../../utils/Collision"
 import { Prop } from "../Prop"
 import { Door } from "../Door"
 import type { PropModel } from "@/models/PropModel"
+import { Actor } from "../Actor"
+import type { ActorModel } from "@/models/ActorModel"
 
 export class SceneScreen extends Container implements IScreen {
   private scene: Scene
   private backdrop!: Sprite
   private props: Array<Prop> = []
   private doors: Array<Door> = []
+  private actors: Array<Actor> = []
 
   public draggedProp!: Prop | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,6 +49,7 @@ export class SceneScreen extends Container implements IScreen {
     this.buildBackdrop()
     this.buildDoorways()
     this.buildProps()
+    this.buildActors()
 
     // Fade in scene music
     if (this.scene.sound) {
@@ -363,7 +367,7 @@ export class SceneScreen extends Container implements IScreen {
 
         // Video?
         if (texture.baseTexture?.resource?.autoPlay) {
-         texture.baseTexture.resource.source.loop = true
+          texture.baseTexture.resource.source.loop = true
         }
 
         const viewRatio = SAGE.width / SAGE.height //1.77
@@ -478,6 +482,83 @@ export class SceneScreen extends Container implements IScreen {
       }
     }
     SAGE.Dialog.clearMessage()
+  }
+
+  private buildActors() {
+    if (this.scene.actors.length > 0) {
+      for (const actorData of this.scene.actors) {
+        this.addActor(actorData)
+      }
+    }
+
+    SAGE.Dialog.clearMessage()
+  }
+
+  public addActor(model: ActorModel, fadeIn = false) {
+    // Create new component obj (contains data + view)
+    const actor = new Actor(model)
+    this.addChild(actor.sprite)
+    this.actors.push(actor)
+    // Don't add to scene.propdata here, as it likely already came from it?
+
+    // Fade in?
+    if (fadeIn) {
+      actor.sprite.alpha = 0
+      new Tween(actor.sprite).to({ alpha: 1 }, 500).start()
+    }
+
+    // DEBUG?
+    if (SAGE.debugMode) {
+      console.log(`actor.model.width = ${actor.model.width}`)
+      const graphics = new Graphics()
+      const actorWidth = actor.model.width || 0,
+        actorHeight = actor.model.height || 0
+      graphics.beginFill(0xe74c3c, 125) // Red
+      graphics.lineStyle(10, 0xff0000)
+      graphics.pivot.set(actorWidth / 2, actorHeight / 2)
+      // Need to handle diff for "non-image" sprites
+      // (as Graphics scaling goes screwy if image dimensions are not really there)
+      if (actor.model.image) {
+        graphics.drawRoundedRect(0, 0, actorWidth, actorHeight, 30)
+        actor.sprite.addChild(graphics)
+      } else {
+        graphics.drawRoundedRect(
+          actor.model.x || 0,
+          actor.model.y || 0,
+          actorWidth,
+          actorHeight,
+          30
+        )
+        this.addChild(graphics)
+      }
+      graphics.endFill()
+    }
+  }
+
+  /**
+   * Removes an Actor from a scene (default = fade out).
+   */
+  removeActor(actor: Actor, fadeOut = true, scaleAnim?: boolean) {
+    if (fadeOut) {
+      new Tween(actor.sprite)
+        .to({ alpha: 0 }, 500)
+        .start()
+        .onComplete(() => {
+          // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any
+          // remove when tween completes
+          this.removeChild(actor.sprite)
+          const index = this.actors.findIndex(
+            (item) => item.model.id === actor.model.id
+          )
+          if (index !== -1) this.actors.splice(index, 1)
+          actor.tidyUp()
+          // remove from game data
+          this.scene.removeActorModelById(actor.model.id)
+        })
+    }
+    if (scaleAnim) {
+      new Tween(actor.sprite.scale).to({ x: 1.5, y: 1.5 }, 500).start()
+    }
   }
 
   private onPrimaryAction() {

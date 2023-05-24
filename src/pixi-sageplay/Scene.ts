@@ -9,6 +9,8 @@ import { usePropStore } from "@/stores/PropStore"
 import type { DoorModel } from "@/models/DoorModel"
 import { useDoorStore } from "@/stores/DoorStore"
 import { useWorldStore } from "@/stores/WorldStore"
+import type { ActorModel } from "@/models/ActorModel"
+import { useActorStore } from "@/stores/ActorStore"
 
 export class Scene implements SceneModel {
   //implements ISceneData, Serialization<Scene> {
@@ -72,6 +74,12 @@ export class Scene implements SceneModel {
     return doorStore.findDoorBySceneId(this.id)
   }
 
+  //public doors: Array<DoorData.DoorData> = []
+  public get actors(): Array<ActorModel> {
+    const actorStore = useActorStore()
+    return actorStore.findActorBySceneId(this.id)
+  }
+
   screen!: SceneScreen
 
   // public initialize(): void {
@@ -132,6 +140,12 @@ export class Scene implements SceneModel {
     // Remove data from prop list (no DisplayObject changes)
     const index = this.props.findIndex((item) => item.id === propId)
     if (index !== -1) this.props.splice(index, 1)
+  }
+
+  removeActorModelById(actorId: string) {
+    // Remove data from actor list (no DisplayObject changes)
+    const index = this.actors.findIndex((item) => item.id === actorId)
+    if (index !== -1) this.actors.splice(index, 1)
   }
 
   // fromJSON(input: ISceneData) {
