@@ -170,8 +170,10 @@
   watch(
     () => model.value,
     () => {
-      console.log("model changed")
-      SAGEdit.Events.emit("propUpdated", model.value)
+      console.log("prop model changed")
+      if (model.value !== undefined) {
+        SAGEdit.Events.emit("propUpdated", model.value)
+      }
     },
     { deep: true }
   )

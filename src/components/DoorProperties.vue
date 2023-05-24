@@ -211,8 +211,10 @@
   watch(
     () => model.value,
     () => {
-      console.log("model changed")
-      SAGEdit.Events.emit("doorUpdated", model.value)
+      console.log("door model changed")
+      if (model.value !== undefined) {
+        SAGEdit.Events.emit("doorUpdated", model.value)
+      }
     },
     { deep: true }
   )

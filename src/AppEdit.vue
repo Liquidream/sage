@@ -14,7 +14,7 @@
     </v-main>
 
     <v-app-bar v-if="!isPortrait" flat height="75" location="bottom" order="1">
-      <SceneList v-model="useWorldStore().currSceneId" />
+      <SceneList v-model="selectedModelID" />
     </v-app-bar>
 
     <v-app-bar :elevation="2">
@@ -166,9 +166,26 @@
 
   const worldStore = useWorldStore()
   const worldRefs = storeToRefs(worldStore)
-  const propStore = usePropStore()
-  const doorStore = useDoorStore()
-  const actorStore = useActorStore()
+
+  // Used for scene-switching (as also need to change other values)
+  const selectedModelID = worldRefs.currSceneId
+
+  // Watch for changes to scene selection (+set other values)
+  watch(
+    selectedModelID,
+    async (newSelectedModel: string, oldSelectedModel: string) => {
+      // debugger
+      console.log(
+        `oldSelectedModel=${oldSelectedModel}, newSelectedModel=${newSelectedModel}`
+      )
+      // Set new scene
+      worldStore.currSceneId = newSelectedModel
+      // Deselect anything else
+      worldStore.currPropId = ""
+      worldStore.currDoorId = ""
+      worldStore.currActorId = ""
+    }
+  )
 
   const loadGame = () => {
     console.log(">> Load game")

@@ -160,8 +160,10 @@ import type { ActorModel } from "@/models/ActorModel"
   watch(
     () => model.value,
     () => {
-      console.log("model changed")
-      SAGEdit.Events.emit("actorUpdated", model.value)
+      console.log("actor model changed")
+      if (model.value !== undefined) {
+        SAGEdit.Events.emit("actorUpdated", model.value)
+      }
     },
     { deep: true }
   )
