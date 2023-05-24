@@ -351,11 +351,13 @@ export class SceneScreen extends Container {
 
     if (this.dialogText) {
       SAGEdit.app.stage.removeChild(this.dialogText)
-      this.dialogText.destroy()
+      // Seems to throw errors when going scene > actor mode
+      if (this.dialogText.texture) this.dialogText.destroy()
     }
     if (this.backdrop) {
       SAGEdit.app.stage.removeChild(this.backdrop)
-      this.backdrop.destroy()
+      // Seems to throw errors when going scene > actor mode
+      if (this.backdrop.texture) this.backdrop.destroy()
       // Now remove video element
       //const videoElement = document.getElementById("tempVideo")
       if (this.videoElement) {
