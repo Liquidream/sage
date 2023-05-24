@@ -288,22 +288,9 @@
   onMounted(() => {
     console.log(`the component is now mounted.`)
 
-    // Only proceed once ALL stores have fully loaded
-    // (takes longer with IndexedDB)
-    Promise.all([
-      worldStore.$persistedState.isReady(),
-      propStore.$persistedState.isReady(),
-      doorStore.$persistedState.isReady(),
-      actorStore.$persistedState.isReady(),
-    ]).then(() => {
-      console.log("All stores hydrated, now initialise SAGE/Pixi")
-      SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
-      SAGEdit.loadWorld()
-    })
-
     // Initialise Pixi (with a "black" default bg color)
-    //SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
-    //SAGEdit.loadWorld()
+    SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
+    SAGEdit.loadWorld()
   })
 
   // worldStore.$persistedState.isReady().then(() => {
