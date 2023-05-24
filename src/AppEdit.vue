@@ -114,15 +114,20 @@
 
     <!-- Portrait/Mobile Layout (Start) =================== -->
 
-    <v-container v-if="isPortrait" style="overflow-y: scroll">
-      <ActorProperties v-if="worldRefs.currActorId.value != ''" />
-      <DoorProperties v-else-if="worldRefs.currDoorId.value != ''" />
-      <PropProperties v-else-if="worldStore.currPropId != ''" />
-      <SceneProperties v-else-if="worldStore.currSceneId != ''" />
-      <WorldProperties v-else-if="worldStore.currSceneId == ''" />
-      <p class="text-caption text-disabled text-right">
-        SAGE built: {{ timeAgo }}
-      </p>
+    <v-container v-if="isPortrait" style="overflow-y: scroll" class="pa-0">
+      <v-container class="pa-0">
+        <SceneList v-model="selectedModelID" />
+      </v-container>
+      <v-container class="pa-4">
+        <ActorProperties v-if="worldRefs.currActorId.value != ''" />
+        <DoorProperties v-else-if="worldRefs.currDoorId.value != ''" />
+        <PropProperties v-else-if="worldStore.currPropId != ''" />
+        <SceneProperties v-else-if="worldStore.currSceneId != ''" />
+        <WorldProperties v-else-if="worldStore.currSceneId == ''" />
+        <p class="text-caption text-disabled text-right">
+          SAGE built: {{ timeAgo }}
+        </p>
+      </v-container>
     </v-container>
 
     <!-- Portrait/Mobile Layout (End) ========================= -->
