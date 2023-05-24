@@ -369,14 +369,22 @@ export class SceneScreen extends Container {
       }
       //document.getElementById("tempVideo")?.remove()
     }
-    // Unsubscribe from events, etc.
+    // Unload, Unsubscribe from events, etc.
     for (const prop of this.props) {
       prop.tidyUp()
       prop.destroy()
     }
+    this.props = []
+
     for (const door of this.doors) {
       door.tidyUp()
     }
+    this.doors = []
+
+    for (const actor of this.actors) {
+      actor.tidyUp()
+    }
+    this.actors = []
 
     SAGEdit.app.stage.off("pointermove", this.onPointerMove, this)
     SAGEdit.app.stage.off("pointerup", this.onPointerUp, this)
