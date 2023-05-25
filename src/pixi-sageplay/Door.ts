@@ -178,7 +178,8 @@ export class Door {
     }
     // Custom action?
     else if (this.model.on_action) {
-      Function(this.model.on_action)()
+      SAGE.Script.safeExecFunc(this.model.on_action)
+      //Function(this.model.on_action)()
       return
     } else {
       SAGE.Dialog.showErrorMessage(

@@ -158,7 +158,8 @@ export class Actor {
     SAGE.debugLog(`You interacted with an actor! (${this.model.name})`)
     // Custom action?
     if (this.model.on_interact) {
-      Function(this.model.on_interact)()
+      SAGE.Script.safeExecFunc(this.model.on_interact)
+      //Function(this.model.on_interact)()
       return
     }
     // Can prop be picked up?

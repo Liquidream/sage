@@ -160,7 +160,8 @@ export class Prop {
     SAGE.debugLog(`You interacted with a prop! (${this.model.name})`)
     // Custom action?
     if (this.model.on_action) {
-      Function(this.model.on_action)()
+      SAGE.Script.safeExecFunc(this.model.on_action)
+      //Function(this.model.on_action)()
       return
     }
     // Can prop be picked up?
