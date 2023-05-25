@@ -129,7 +129,11 @@
     </v-row>
 
     <!-- Fair to assume location id is always a scene (in design?) -->
-    <scene-select label="Location" v-model="model.location_id" />
+    <scene-select
+      label="Location"
+      v-model="model.location_id"
+      @update:model-value="propLocationUpdated"
+    />
 
     <v-divider />
     <v-list-subheader
@@ -177,6 +181,14 @@
     },
     { deep: true }
   )
+
+  const propLocationUpdated = (newValue) => {
+    // Check to see whether prop moved OUT of current scene
+    if (model.value !== worldRefs.currSceneId.value) {
+      // Deselect prop
+      worldRefs.currPropId.value = ""
+    }
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any

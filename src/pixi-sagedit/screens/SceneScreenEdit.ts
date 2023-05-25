@@ -138,8 +138,10 @@ export class SceneScreen extends Container {
             console.log("delete and recreate 'pixi' prop")
             // Delete prop
             this.removeProp(propToDel)
-            // Now re-add prop
-            this.addProp(updatedProp)
+            // Now re-add prop (if still in scene)
+            if (updatedProp.location_id === this.scene?.id) {
+              this.addProp(updatedProp)
+            }
             // refresh dialog (and anything else?)
             this.refresh()
           }
