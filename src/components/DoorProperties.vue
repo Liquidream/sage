@@ -214,6 +214,12 @@
       console.log("door model changed")
       if (model.value !== undefined) {
         SAGEdit.Events.emit("doorUpdated", model.value)
+        // Check to see whether door moved OUT of current scene
+        // (didn't want to do it here, but the deep watch means I can't do listen to property change)
+        if (model.value.id !== worldRefs.currSceneId.value) {
+          // Deselect door
+          worldStore.currDoorId = ""
+        }
       }
     },
     { deep: true }

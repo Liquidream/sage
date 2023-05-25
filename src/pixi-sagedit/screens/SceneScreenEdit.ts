@@ -190,8 +190,11 @@ export class SceneScreen extends Container {
             console.log("delete and recreate 'pixi' door")
             // Delete door
             this.removeDoor(doorToDel)
-            // Now re-add door
-            this.addDoor(updatedDoor)
+            // Now re-add door (if still in scene)
+            if (updatedDoor.location_id === this.scene?.id) {
+              // Now re-add door
+              this.addDoor(updatedDoor)
+            }
             // refresh dialog (and anything else?)
             this.refresh()
           }
@@ -240,8 +243,11 @@ export class SceneScreen extends Container {
             console.log("delete and recreate 'pixi' actor")
             // Delete actor
             this.removeActor(actorToDel)
-            // Now re-add actor
-            this.addActor(updatedActor)
+            // Now re-add actor (if still in scene)
+            if (updatedActor.location_id === this.scene?.id) {
+              // Now re-add actor
+              this.addActor(updatedActor)
+            }
             // refresh dialog (and anything else?)
             if (this.dialogText) this.removeChild(this.dialogText)
             this.buildDialogText()
