@@ -51,8 +51,8 @@ export class SceneScreen extends Container {
   private lastSceneModel: SceneModel | undefined
 
   private worldStore = useWorldStore()
-  private propStore = useSceneStore()
-  private sceneStore = usePropStore()
+  private propStore = usePropStore()
+  private sceneStore = useSceneStore()
   private doorStore = useDoorStore()
   private actorStore = useActorStore()
 
@@ -63,6 +63,7 @@ export class SceneScreen extends Container {
     // (takes longer with IndexedDB)
     Promise.all([
       this.worldStore.$persistedState.isReady(),
+      this.sceneStore.$persistedState.isReady(),
       this.propStore.$persistedState.isReady(),
       this.doorStore.$persistedState.isReady(),
       this.actorStore.$persistedState.isReady(),
@@ -323,17 +324,20 @@ export class SceneScreen extends Container {
 
     // Moved re-getting store here to try to resolve rendering issue
     // (when jump straight to scene/selection on reload)
-    const worldStore = useWorldStore()
-    this.scene = worldStore.getCurrentScene
+    //const worldStore = useWorldStore()
+    this.scene = this.worldStore.getCurrentScene
+    // Store initial states for ref
+    this.lastWorldState = Object.assign({}, this.worldStore.$state)
+    this.lastSceneModel = Object.assign({}, this.scene)
 
-    if (worldStore.currSceneId !== "") {
+    if (this.worldStore.currSceneId !== "") {
       // Construct scene from data
       this.buildBackdrop()
       this.buildProps()
       this.buildDoorways()
       this.buildActors()
       this.buildDialogText()
-    } else if (worldStore.currActorId !== "") {
+    } else if (this.worldStore.currActorId !== "") {
       this.buildActors()
       this.buildDialogText()
     }
@@ -521,7 +525,7 @@ export class SceneScreen extends Container {
   private buildActors() {
     const actorStore = useActorStore()
     // Scene mode?
-    if (useWorldStore().currSceneId !== "") {
+    if (this.worldStore.currSceneId !== "") {
       const sceneActorModels = actorStore.findActorBySceneId(
         this.scene?.id || ""
       )
@@ -532,7 +536,7 @@ export class SceneScreen extends Container {
       }
     } else {
       // Actor-only Edit mode
-      const actorModel = useWorldStore().getCurrentActor
+      const actorModel = this.worldStore.getCurrentActor
       this.addActor(actorModel)
     }
   }
