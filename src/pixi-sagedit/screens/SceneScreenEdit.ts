@@ -271,7 +271,7 @@ export class SceneScreen extends Container {
 
   refresh() {
     // Determine what's changed to know how much to refresh
-    const newWorldState = useWorldStore().$state
+    const newWorldState = this.worldStore.$state
     //const newScene = useWorldStore().getCurrentScene
     // Has selected scene changed?
     if (
@@ -280,7 +280,7 @@ export class SceneScreen extends Container {
       this.scene.image !== this.lastSceneModel?.image
     ) {
       // Scene changed - complete re-do
-      this.scene = useWorldStore().getCurrentScene
+      this.scene = this.worldStore.getCurrentScene
       this.teardown()
       this.setup()
     } else if (
@@ -398,7 +398,7 @@ export class SceneScreen extends Container {
   }
 
   private buildDialogText() {
-    const worldStore = useWorldStore()
+    //const worldStore = useWorldStore()
     // Create text
     const styly: TextStyle = new TextStyle({
       align: "center",
@@ -411,14 +411,14 @@ export class SceneScreen extends Container {
     })
     // Get selected "name"
     let dialogText = this.scene?.name
-    if (worldStore.currPropId != "") {
-      dialogText = worldStore.getCurrentProp?.name
+    if (this.worldStore.currPropId != "") {
+      dialogText = this.worldStore.getCurrentProp?.name
     }
-    if (worldStore.currDoorId != "") {
-      dialogText = worldStore.getCurrentDoor?.name
+    if (this.worldStore.currDoorId != "") {
+      dialogText = this.worldStore.getCurrentDoor?.name
     }
-    if (worldStore.currActorId != "") {
-      dialogText = worldStore.getCurrentActor?.name
+    if (this.worldStore.currActorId != "") {
+      dialogText = this.worldStore.getCurrentActor?.name
     }
 
     this.dialogText = new Text(dialogText, styly) // Text supports unicode!
@@ -501,8 +501,8 @@ export class SceneScreen extends Container {
   }
 
   private buildProps() {
-    const propStore = usePropStore()
-    const scenePropModels = propStore.findPropBySceneId(this.scene?.id || "")
+    //const propStore = usePropStore()
+    const scenePropModels = this.propStore.findPropBySceneId(this.scene?.id || "")
 
     if (scenePropModels.length > 0) {
       for (const propModel of scenePropModels) {
@@ -512,8 +512,8 @@ export class SceneScreen extends Container {
   }
 
   private buildDoorways() {
-    const doorStore = useDoorStore()
-    const sceneDoorModels = doorStore.findDoorBySceneId(this.scene?.id || "")
+    //const doorStore = useDoorStore()
+    const sceneDoorModels = this.doorStore.findDoorBySceneId(this.scene?.id || "")
 
     if (sceneDoorModels.length > 0) {
       for (const doorModel of sceneDoorModels) {
@@ -523,10 +523,10 @@ export class SceneScreen extends Container {
   }
 
   private buildActors() {
-    const actorStore = useActorStore()
+    //const actorStore = useActorStore()
     // Scene mode?
     if (this.worldStore.currSceneId !== "") {
-      const sceneActorModels = actorStore.findActorBySceneId(
+      const sceneActorModels = this.actorStore.findActorBySceneId(
         this.scene?.id || ""
       )
       if (sceneActorModels.length > 0) {
@@ -650,10 +650,10 @@ export class SceneScreen extends Container {
 
   private onPrimaryAction() {
     // Deselect all (only scene)
-    const worldStore = useWorldStore()
-    worldStore.currPropId = ""
-    worldStore.currDoorId = ""
-    worldStore.currActorId = ""
+    //const worldStore = useWorldStore()
+    this.worldStore.currPropId = ""
+    this.worldStore.currDoorId = ""
+    this.worldStore.currActorId = ""
   }
 
   private onPointerUp() {

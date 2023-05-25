@@ -17,7 +17,7 @@
       <SceneList v-model="selectedModelID" />
     </v-app-bar>
 
-    <v-app-bar :elevation="2" :density="!isPortrait ? 'normal' : 'compact'">
+    <v-app-bar :elevation="2" :density="!isPortrait ? 'default' : 'compact'">
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
       <v-menu>
