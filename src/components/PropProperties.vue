@@ -132,7 +132,6 @@
     <scene-select
       label="Location"
       v-model="model.location_id"
-      @update:model-value="propLocationUpdated"
     />
 
     <v-divider />
@@ -177,18 +176,16 @@
       console.log("prop model changed")
       if (model.value !== undefined) {
         SAGEdit.Events.emit("propUpdated", model.value)
+        // Check to see whether prop moved OUT of current scene
+        // (didn't want to do it here, but the deep watch means I can't do listen to property change)
+        if (model.value.id !== worldRefs.currSceneId.value) {
+          // Deselect prop
+          worldStore.currPropId = ""
+        }
       }
     },
     { deep: true }
   )
-
-  const propLocationUpdated = (newValue) => {
-    // Check to see whether prop moved OUT of current scene
-    if (model.value !== worldRefs.currSceneId.value) {
-      // Deselect prop
-      worldRefs.currPropId.value = ""
-    }
-  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any
