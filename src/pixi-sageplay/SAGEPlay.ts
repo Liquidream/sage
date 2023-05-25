@@ -139,8 +139,10 @@ export class SAGE {
 
     // ...and dialog
     SAGE.Dialog = new Dialog()
+    // This seems wrong, but not sure how else to expose type at top-level
+    window.DialogChoice = DialogChoice
     // (Not ideal, would rather expose as "DialogChoice" as shorter)
-    SAGE.DialogChoice = DialogChoice
+    //SAGE.DialogChoice = DialogChoice
 
     // ...and script
     SAGE.Script = new Script()
