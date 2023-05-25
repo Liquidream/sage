@@ -1,6 +1,6 @@
 import { Application, Container, DisplayObject, filters } from "pixi.js"
 import { Tween } from "tweedle.js"
-import { Dialog } from "./Dialog"
+import { Dialog, DialogChoice } from "./Dialog"
 import { Events } from "./Events"
 import { Actions } from "./gameactions"
 import { Script } from "./Script"
@@ -139,6 +139,8 @@ export class SAGE {
 
     // ...and dialog
     SAGE.Dialog = new Dialog()
+    // (Not ideal, would rather expose as "DialogChoice" as shorter)
+    SAGE.DialogChoice = DialogChoice
 
     // ...and script
     SAGE.Script = new Script()
