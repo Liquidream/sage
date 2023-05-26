@@ -6,8 +6,8 @@
     <v-col align="end">
       <v-dialog
         v-model="dialog"
+        persistent
         scrollable
-        width="auto"
         :fullscreen="mobile"
         :scrim="!mobile"
         transition="dialog-bottom-transition"
@@ -26,10 +26,7 @@
           <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
             <v-toolbar-title class="text-h6">{{ label }}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn
-              @click="onPlayClicked"
-              color="info"
-              prepend-icon="mdi-play"
+            <v-btn @click="onPlayClicked" color="info" prepend-icon="mdi-play"
               >Play</v-btn
             >
           </v-toolbar>
@@ -40,7 +37,7 @@
           ></prism-editor>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="info" @click="dialog = false"> Close </v-btn>
+            <v-btn color="info" @click="onCloseClicked">Close</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -90,6 +87,13 @@
     emit("update:modelValue", code.value)
     // Play game
     SAGEdit.playGame()
+  }
+
+  const onCloseClicked = () => {
+    // Update state
+    emit("update:modelValue", code.value)
+    // Play game
+    dialog.value = false
   }
 </script>
 
