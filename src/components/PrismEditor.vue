@@ -6,7 +6,8 @@
     <v-col align="end">
       <v-dialog
         v-model="dialog"
-        width="800"
+        scrollable
+        width="auto"
         :fullscreen="mobile"
         :scrim="!mobile"
         transition="dialog-bottom-transition"
