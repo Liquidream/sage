@@ -42,6 +42,7 @@
   </v-row>
   <prism-editor
     class="my-editor mb-3"
+    style="max-height: 240px"
     :model-value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
     :highlight="highlighter"
