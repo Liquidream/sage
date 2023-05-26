@@ -27,7 +27,7 @@
             <v-toolbar-title class="text-h6">{{ label }}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn
-              @click="SAGEdit.playGame"
+              @click="onPlayClicked"
               color="info"
               prepend-icon="mdi-play"
               >Play</v-btn
@@ -35,8 +35,7 @@
           </v-toolbar>
           <prism-editor
             class="my-editor"
-            :model-value="modelValue"
-            @input="$emit('update:modelValue', $event.target.value)"
+            v-model="code"
             :highlight="highlighter"
           ></prism-editor>
           <v-card-actions>
@@ -67,18 +66,30 @@
   import "prismjs/components/prism-clike"
   import "prismjs/components/prism-javascript"
   import "prismjs/themes/prism-tomorrow.min.css" // import syntax highlighting styles
-  import { ref } from "vue"
+  import { reactive, ref } from "vue"
   import { useDisplay } from "vuetify"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
-  defineProps(["modelValue", "label"])
-  defineEmits(["update:modelValue"])
+  const props = defineProps(["modelValue", "label"])
+  const data = reactive({ ...props })
+  const emit = defineEmits(["update:modelValue"])
 
+  const code = ref("")
   const dialog = ref(false)
   const { mobile } = useDisplay()
 
+  // Set code initially
+  code.value = data.modelValue
+
   const highlighter = (code) => {
     return highlight(code, languages.js) // languages.<insert language> to return html with markup
+  }
+
+  const onPlayClicked = () => {
+    // Update state
+    emit("update:modelValue", code.value)
+    // Play game
+    SAGEdit.playGame()
   }
 </script>
 
