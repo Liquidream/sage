@@ -73,7 +73,7 @@
       <v-img class="ma-4" src="images/app-images/sage-logo-small.png"></v-img>
       <v-btn
         :size="mobile ? 'small' : 'default'"
-        @click="playGame"
+        @click="SAGEdit.playGame"
         color="info"
         prepend-icon="mdi-play"
         >Play</v-btn
@@ -320,29 +320,29 @@
   //   SAGEdit.loadWorld()
   // })
 
-  const playGame = () => {
-    console.log("in playGame()...")
-    // Get the current "edit" data
-    const editStore = useSageEditStore()
-    const playData = {} as SagePlayData
-    playData.version = editStore.version
-    // TODO: This needs to be pulled somewhere from storage (prob playData store?)
-    playData.id = editStore.gameId
-    playData.worldData = JSON.stringify(useWorldStore().$state)
-    playData.sceneData = JSON.stringify(useSceneStore().$state)
-    playData.propData = JSON.stringify(usePropStore().$state)
-    playData.doorData = JSON.stringify(useDoorStore().$state)
-    playData.actorData = JSON.stringify(useActorStore().$state)
-    playData.playerData = JSON.stringify(usePlayerStore().$state)
+  // const playGame = () => {
+  //   console.log("in playGame()...")
+  //   // Get the current "edit" data
+  //   const editStore = useSageEditStore()
+  //   const playData = {} as SagePlayData
+  //   playData.version = editStore.version
+  //   // TODO: This needs to be pulled somewhere from storage (prob playData store?)
+  //   playData.id = editStore.gameId
+  //   playData.worldData = JSON.stringify(useWorldStore().$state)
+  //   playData.sceneData = JSON.stringify(useSceneStore().$state)
+  //   playData.propData = JSON.stringify(usePropStore().$state)
+  //   playData.doorData = JSON.stringify(useDoorStore().$state)
+  //   playData.actorData = JSON.stringify(useActorStore().$state)
+  //   playData.playerData = JSON.stringify(usePlayerStore().$state)
 
-    window.sagePlayData = playData
+  //   window.sagePlayData = playData
 
-    //navigator.clipboard.writeText(JSON.stringify(playData))
-    //window.sagePlayDataJSON = JSON.stringify(playData)
+  //   //navigator.clipboard.writeText(JSON.stringify(playData))
+  //   //window.sagePlayDataJSON = JSON.stringify(playData)
 
-    // Launch "Play" window
-    window.open("?mode=play", "sagePlay")
-  }
+  //   // Launch "Play" window
+  //   window.open("?mode=play", "sagePlay")
+  // }
 </script>
 
 <style>

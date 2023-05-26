@@ -2,6 +2,14 @@ import { Application, Container } from "pixi.js"
 import { SceneScreen } from "./screens/SceneScreenEdit"
 import { DialogEdit } from "./DialogEdit"
 import { EventsEdit } from "./EventsEdit"
+import { useSageEditStore } from "@/stores/SAGEditStore"
+import type { SagePlayData } from "@/pixi-sageplay/SagePlayData"
+import { useWorldStore } from "@/stores/WorldStore"
+import { useSceneStore } from "@/stores/SceneStore"
+import { usePropStore } from "@/stores/PropStore"
+import { useDoorStore } from "@/stores/DoorStore"
+import { useActorStore } from "@/stores/ActorStore"
+import { usePlayerStore } from "@/stores/PlayerStore"
 
 export class SAGEdit {
   private constructor() {
@@ -185,6 +193,30 @@ export class SAGEdit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static debugLog(message: any) {
     if (SAGEdit.debugMode) console.debug(message)
+  }
+
+  /**
+   * Play test the game
+   */
+  public static playGame() {
+    console.log("in playGame()...")
+    // Get the current "edit" data
+    const editStore = useSageEditStore()
+    const playData = {} as SagePlayData
+    playData.version = editStore.version
+    // TODO: This needs to be pulled somewhere from storage (prob playData store?)
+    playData.id = editStore.gameId
+    playData.worldData = JSON.stringify(useWorldStore().$state)
+    playData.sceneData = JSON.stringify(useSceneStore().$state)
+    playData.propData = JSON.stringify(usePropStore().$state)
+    playData.doorData = JSON.stringify(useDoorStore().$state)
+    playData.actorData = JSON.stringify(useActorStore().$state)
+    playData.playerData = JSON.stringify(usePlayerStore().$state)
+
+    window.sagePlayData = playData
+
+    // Launch "Play" window
+    window.open("?mode=play", "sagePlay")
   }
 
   // This update will be called by a pixi ticker and tell the scene that a tick happened

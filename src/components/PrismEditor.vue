@@ -23,9 +23,16 @@
           </v-btn>
         </template>
         <v-card>
-          <v-card-title>
-            <span class="text-h6">{{ label }}</span>
-          </v-card-title>
+          <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
+            <v-toolbar-title class="text-h6">{{ label }}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn
+              @click="SAGEdit.playGame"
+              color="info"
+              prepend-icon="mdi-play"
+              >Play</v-btn
+            >
+          </v-toolbar>
           <prism-editor
             class="my-editor"
             :model-value="modelValue"
@@ -62,6 +69,7 @@
   import "prismjs/themes/prism-tomorrow.min.css" // import syntax highlighting styles
   import { ref } from "vue"
   import { useDisplay } from "vuetify"
+  import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
   defineProps(["modelValue", "label"])
   defineEmits(["update:modelValue"])
