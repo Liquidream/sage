@@ -87,26 +87,44 @@ export class Scene implements SceneModel {
 
   public closeUpOn(objectName: string) {
     //debugger
-    let object: ActorModel | PropModel
     // try actor first
-    object = SAGE.World.getActorById(objectName)
-    if (object === undefined) {
-      // ok, try Prop then
-      object = SAGE.World.getPropById(objectName)
-    }
-    // Did we find something?
-    if (object !== undefined) {
+    const actorModel = SAGE.World.getActorById(objectName)
+    if (actorModel !== undefined) {
       this.screen.setDepthOfField(true)
-      SAGE.midLayer.addChild(object.image_closeup)
-    } else {
-      SAGE.Dialog.showErrorMessage(
-        `No actor or prop found with id: ${objectName}`
-      )
+      this.screen.addActorCloseup(actorModel, true)
+      return
     }
+    // ok, try Prop then
+    const propModel = SAGE.World.getPropById(objectName)
+    if (propModel !== undefined) {
+      this.screen.setDepthOfField(true)
+      this.screen.addPropCloseup(propModel, true)
+      return
+    } 
+    //If got here, then didn't find something...    
+    SAGE.Dialog.showErrorMessage(`No actor or prop found with id: ${objectName}`)
   }
+  
 
-  public stopCloseUp() {
-    this.screen.setDepthOfField(false)
+  public stopCloseUp(objectName: string) {
+    // try actor first
+    const actorModel = SAGE.World.getActorById(objectName)
+    if (actorModel !== undefined) {
+      const actor = this.screen.actorsCloseups.filter((a) => a.model.id === actorModel.id)[0]
+      this.screen.removeActorCloseup(actor, true)
+    }
+    // ok, try Prop then
+    const propModel = SAGE.World.getPropById(objectName)
+    if (propModel !== undefined) {
+      const prop = this.screen.actorsCloseups.filter((a) => a.model.id === actorModel.id)[0]
+      this.screen.removePropCloseup(prop, true)
+    }
+    // If last close-up object, then auto-reset depth of field
+    if (this.screen.actorsCloseups.length ===0
+      /// && this.screen.actorsCloseups.length == 0
+      ) {
+        this.screen.setDepthOfField(false)
+      }
   }
 
   // public initialize(): void {

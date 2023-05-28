@@ -27,8 +27,10 @@ export class SceneScreen extends Container implements IScreen {
   private scene: Scene
   private backdrop!: Sprite
   private props: Array<Prop> = []
+  private propsCloseups: Array<Actor> = []
   private doors: Array<Door> = []
   private actors: Array<Actor> = []
+  private actorsCloseups: Array<Actor> = []
 
   public draggedProp!: Prop | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -581,6 +583,74 @@ export class SceneScreen extends Container implements IScreen {
     }
     if (scaleAnim) {
       new Tween(actor.sprite.scale).to({ x: 1.5, y: 1.5 }, 500).start()
+    }
+  }
+
+  public addActorCloseup(model: ActorModel, fadeIn = false) {
+    // Create new component obj (contains data + view)
+    const actor = new Actor(model)
+    SAGE.midLayer.addChild(actor.sprite_closeup)
+    this.actorsCloseups.push(actor)
+
+    // Fade in?
+    if (fadeIn) {
+      actor.sprite_closeup.alpha = 0
+      //const blurTween = new Tween(this.blurFilter).to({ blur: 8 }, 500).start()
+      new Tween(actor.sprite_closeup).to({ alpha: 1 }, 500).start()
+    }
+  }
+
+  /**
+   * Removes an Actor from closeup (default = fade out).
+   */
+  removeActorCloseup(actor: Actor, fadeOut = true) {
+    // Remove from list first (so can exit depth of field if last one)
+    const index = this.actorsCloseups.findIndex(
+      (item) => item.model.id === actor.model.id
+    )
+    if (index !== -1) this.actorsCloseups.splice(index, 1)
+    //
+    if (fadeOut) {
+      new Tween(actor.sprite_closeup)
+        .to({ alpha: 0 }, 500)
+        .start()
+        .onComplete(() => {
+          SAGE.midLayer.removeChild(actor.sprite_closeup)
+        })
+    }
+  }
+
+  public addPropCloseup(model: PropModel, fadeIn = false) {
+    // Create new component obj (contains data + view)
+    const prop = new Prop(model)
+    SAGE.midLayer.addChild(prop.sprite_closeup)
+    this.propsCloseups.push(prop)
+
+    // Fade in?
+    if (fadeIn) {
+      prop.sprite_closeup.alpha = 0
+      //const blurTween = new Tween(this.blurFilter).to({ blur: 8 }, 500).start()
+      new Tween(prop.sprite_closeup).to({ alpha: 1 }, 500).start()
+    }
+  }
+
+  /**
+   * Removes an Prop from closeup (default = fade out).
+   */
+  removePropCloseup(prop: Prop, fadeOut = true) {
+    if (fadeOut) {
+      new Tween(prop.sprite_closeup)
+        .to({ alpha: 0 }, 500)
+        .start()
+        .onComplete(() => {
+          // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any
+          // remove when tween completes
+          SAGE.midLayer.removeChild(prop.sprite_closeup)
+          const index = this.propsCloseups.findIndex(
+            (item) => item.model.id === prop.model.id
+          )
+          if (index !== -1) this.propsCloseups.splice(index, 1)
+        })
     }
   }
 

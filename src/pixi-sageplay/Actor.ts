@@ -21,6 +21,9 @@ export class Actor {
   private actorInputEvents!: InputEventEmitter
   public dragging = false
 
+  // Filters
+  //private blurFilter: BlurFilter
+
   public constructor(inModel: ActorModel) {
     // Initialise from data object
     this.model = inModel
@@ -58,6 +61,11 @@ export class Actor {
     this.sprite.on("pointerdown", this.onPointerDown, this)
     //
     SAGE.Events.on("scenehint", this.onSceneHint, this)
+
+    // Setup filters
+    // this.blurFilter = new BlurFilter(0) // 8 = default strength
+    // // default to NO blur
+    // this.spr.filters = [this.blurFilter]
 
     // visible state
     this.sprite.visible = inModel.visible //|| true // default to visible, unless otherwise specified
