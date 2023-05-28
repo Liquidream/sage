@@ -118,19 +118,10 @@ export class SAGEdit {
   public static loadWorld(): void {
     //scene.name = "Test"
     SAGEdit.currentScreen = new SceneScreen()
-    SAGEdit.midLayer.addChild(SAGEdit.currentScreen)
-
-    /* Thought
-    - Split store to many files (they are basically composables)
-    - Split them logcally - think we'll have:
-       > SceneStore
-       > PropStore
-       > PlayerStore
-       > etc.
-    - (Means that Prop will have to have a ref (id?) to Scene it's located in)
-    - 
-*/
-    
+    // Moved main gameplay to back layer
+    // so we can blur/lock it when talking/examining objects
+    SAGEdit.backLayer.addChild(SAGEdit.currentScreen)
+    //SAGEdit.midLayer.addChild(SAGEdit.currentScreen)
   }
 
   public static resize() {

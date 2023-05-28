@@ -165,7 +165,7 @@ import type { ActorModel } from "@/models/ActorModel"
         SAGEdit.Events.emit("actorUpdated", model.value)
         // Check to see whether actor moved OUT of current scene
         // (didn't want to do it here, but the deep watch means I can't do listen to property change)
-        if (model.value.id !== worldRefs.currSceneId.value) {
+        if (model.value.location_id !== worldRefs.currSceneId.value) {
           // Deselect actor
           worldStore.currActorId = ""
         }

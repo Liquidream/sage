@@ -294,15 +294,18 @@ export class SAGE {
         // Remove and destroy old scene... if we had one..
         if (oldScreen) {
           // remove all event subscriptions
-          SAGE.midLayer.removeChild(oldScreen)
+          SAGE.backLayer.removeChild(oldScreen)
+          //SAGE.midLayer.removeChild(oldScreen)
           //SAGE._app.stage.removeChild(oldScreen);
           oldScreen.destroy()
         }
       })
 
     SAGE.currentScreen = newScene
-    SAGE.midLayer.addChild(newScene)
-    //SAGE._app.stage.addChild(newScene);
+    // Moved main gameplay to back layer
+    // so we can blur/lock it when talking/examining objects
+    SAGE.backLayer.addChild(newScene)
+    //SAGE.midLayer.addChild(newScene)
 
     // Start the fade out+in animation
     fadeOutTween.chain(fadeInTween).start()

@@ -69,10 +69,6 @@ export class SceneScreen extends Container implements IScreen {
     SAGE.app.stage.on("pointermove", this.onPointerMove, this)
     SAGE.app.stage.on("pointerup", this.onPointerUp, this)
     SAGE.app.stage.on("touchmove", this.onTouchMove, this)
-
-    // Test blur
-    const blurFilter = new BlurFilter()
-    SAGE.backLayer.filters = [blurFilter]
   }
 
   public update() {
@@ -99,6 +95,17 @@ export class SceneScreen extends Container implements IScreen {
     // Fade out scene music
     if (this.scene.sound) {
       SAGE.Sound.stop(this.scene.sound, !restartGame)
+    }
+  }
+
+  public setDepthOfField(isEnabled: boolean) {
+    if (isEnabled) {
+      // Make backdrop "unfocused"
+      const blurFilter = new BlurFilter()
+      SAGE.backLayer.filters = [blurFilter]
+    } else {
+      // Remove blur (re-focus backdrop)
+      SAGE.backLayer.filters = []
     }
   }
 

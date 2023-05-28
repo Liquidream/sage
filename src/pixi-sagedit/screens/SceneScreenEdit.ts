@@ -10,6 +10,7 @@ import {
   Text,
   BaseTexture,
   VideoResource,
+  BlurFilter,
 } from "pixi.js"
 
 import { SAGEdit } from "../SAGEdit"
@@ -328,7 +329,7 @@ export class SceneScreen extends Container {
   }
 
   setup() {
-    SAGEdit.debugLog("SceneScreen : setup()...")
+    SAGEdit.debugLog("SceneScreenEdit : setup()...")
 
     // Moved re-getting store here to try to resolve rendering issue
     // (when jump straight to scene/selection on reload)
@@ -355,6 +356,11 @@ export class SceneScreen extends Container {
     SAGEdit.app.stage.on("pointermove", this.onPointerMove, this)
     SAGEdit.app.stage.on("pointerup", this.onPointerUp, this)
     SAGEdit.app.stage.on("touchmove", this.onTouchMove, this)
+
+
+    // Test blur
+    // const blurFilter = new BlurFilter()
+    // SAGEdit.backLayer.filters = [blurFilter]
   }
 
   teardown() {
