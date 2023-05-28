@@ -40,6 +40,9 @@ export class SceneScreen extends Container implements IScreen {
   // @ts-ignore (ignore the "declared but never used" for now)
   private backdropInputEvents!: InputEventEmitter
 
+  // Filters
+  private blurFilter: BlurFilter
+
   constructor(scene: Scene) {
     super()
 
@@ -58,6 +61,11 @@ export class SceneScreen extends Container implements IScreen {
     this.buildDoorways()
     this.buildProps()
     this.buildActors()
+
+    // Setup filters
+    this.blurFilter = new BlurFilter(0) // 8 = default strength
+    // default to NO blur
+    SAGE.backLayer.filters = [this.blurFilter]
 
     // Fade in scene music
     if (this.scene.sound) {
@@ -101,11 +109,11 @@ export class SceneScreen extends Container implements IScreen {
   public setDepthOfField(isEnabled: boolean) {
     if (isEnabled) {
       // Make backdrop "unfocused"
-      const blurFilter = new BlurFilter()
-      SAGE.backLayer.filters = [blurFilter]
+      //debugger
+      const blurTween = new Tween(this.blurFilter).to({ blur: 8 }, 500).start()
     } else {
       // Remove blur (re-focus backdrop)
-      SAGE.backLayer.filters = []
+      const blurTween = new Tween(this.blurFilter).to({ blur: 0 }, 500).start()
     }
   }
 
