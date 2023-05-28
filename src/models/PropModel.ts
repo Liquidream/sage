@@ -2,6 +2,7 @@ export interface PropModel {
   id: string
   name: string
   image?: string
+  image_closeup?: string // Poss multiple, for each state?
   desc?: string
   x?: number
   y?: number

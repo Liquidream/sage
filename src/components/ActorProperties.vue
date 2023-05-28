@@ -68,6 +68,34 @@
       <v-col class="pl-5 text-medium-emphasis">Actor image</v-col>
     </v-row>
 
+    <v-row align="center" class="mb-1">
+      <v-col cols="4">
+        <v-file-input
+          v-model="chosenFile"
+          type="file"
+          @change="onImageCloseupFileChange"
+          accept="image/png, image/jpeg, image/bmp"
+          id="uploaderCloseup"
+          class="d-none"
+        ></v-file-input>
+        <v-img
+          :src="model.image_closeup"
+          height="50"
+          hide-details
+          @click="changeImageCloseup"
+          align="center"
+        >
+          <v-btn
+            class="mt-2 elevation-2"
+            icon="mdi-camera"
+            variant="outlined"
+            size="x-small"
+          ></v-btn>
+        </v-img>
+      </v-col>
+      <v-col class="pl-5 text-medium-emphasis">Actor close-up image</v-col>
+    </v-row>
+
     <v-textarea
       name="desc"
       v-model="model.desc"
@@ -206,6 +234,37 @@ import type { ActorModel } from "@/models/ActorModel"
             }
           })
         }
+      }
+    }
+  }
+  // Close-up image
+  const changeImageCloseup = () => {
+    document.getElementById("uploaderCloseup").click()
+  }
+  const onImageCloseupFileChange = (e: any) => {
+    const reader = new FileReader()
+    // Use the javascript reader object to load the contents
+    // of the file in the v-model prop
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = () => {
+      imageData.value = reader.result
+      if (model.value) {
+        model.value.image_closeup = reader.result as string // added "as" to squash error/warn, ok?
+        // Now do a test load into Pixi texture to get dimensions
+        // const base = new BaseTexture(model.value.image)
+        // // If previously cached texture, get dimensions immediately
+        // if (base.valid) {
+        //   model.value.width = base.width
+        //   model.value.height = base.height
+        // } else {
+        //   // ...else grab dimensions one texture fully loaded
+        //   base.on("loaded", () => {
+        //     if (model.value) {
+        //       model.value.width = base.width
+        //       model.value.height = base.height
+        //     }
+        //   })
+        // }
       }
     }
   }

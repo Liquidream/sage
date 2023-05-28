@@ -7,6 +7,7 @@ import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneModel } from "@/models/SceneModel"
 import { usePropStore } from "@/stores/PropStore"
 import { PropLocationType } from "@/models/PropModel"
+import { useActorStore } from "@/stores/ActorStore"
 
 export class World implements IWorldData {
   //}, Serialization<World> {
@@ -98,16 +99,12 @@ export class World implements IWorldData {
     const propStore = usePropStore()
     const propModel = propStore.getProps.filter((c) => c.id === propId)[0]
     return propModel
+  }
 
-    // // First, find scene that contains prop...
-    // const scene = this.scenes.filter(
-    //   (e) => e.props.filter((c) => c.id === propId)[0]
-    // )[0]
-    // // Then get the propdata...
-    // const propData = scene
-    //   ? scene.props.filter((c) => c.id === propId)[0]
-    //   : null
-    // return propData
+  getActorById(actorId: string) {
+    const actorStore = useActorStore()
+    const propModel = actorStore.getActors.filter((c) => c.id === actorId)[0]
+    return propModel
   }
 
   // ### REMOVED for now - as perhaps should move to Void instead? (once gone, can't come back)

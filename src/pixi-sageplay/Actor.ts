@@ -15,6 +15,7 @@ export class Actor {
   public model: ActorModel
 
   public sprite!: Sprite
+  public sprite_closeup!: Sprite
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
   private actorInputEvents!: InputEventEmitter
@@ -23,8 +24,9 @@ export class Actor {
   public constructor(inModel: ActorModel) {
     // Initialise from data object
     this.model = inModel
-
     let sprite = undefined
+
+    // Load main image(s)
     if (inModel.image) {
       sprite = Sprite.from(inModel.image)
     } else {
@@ -32,12 +34,18 @@ export class Actor {
       sprite.width = inModel.width || 0
       sprite.height = inModel.height || 0
     }
-    this.sprite = sprite
     sprite.width = inModel.width || 0
     sprite.height = inModel.height || 0
     sprite.anchor.set(0.5)
     sprite.x = inModel.x || 0
     sprite.y = inModel.y || 0
+    this.sprite = sprite
+
+    // Close-up image(s)
+    if (inModel.image_closeup) {
+      sprite = Sprite.from(inModel.image_closeup)
+      this.sprite_closeup = sprite
+    }
 
     // Events
     this.actorInputEvents = new InputEventEmitter(this.sprite)

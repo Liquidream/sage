@@ -23,6 +23,7 @@ export class Scene implements SceneModel {
   }
 
   private sceneModel: SceneModel
+  private screen!: SceneScreen
 
   // public id = ""
   public get id(): string {
@@ -84,7 +85,29 @@ export class Scene implements SceneModel {
     this.screen.setDepthOfField(isEnabled)
   }
 
-  screen!: SceneScreen
+  public closeUpOn(objectName: string) {
+    //debugger
+    let object: ActorModel | PropModel
+    // try actor first
+    object = SAGE.World.getActorById(objectName)
+    if (object === undefined) {
+      // ok, try Prop then
+      object = SAGE.World.getPropById(objectName)
+    }
+    // Did we find something?
+    if (object !== undefined) {
+      this.screen.setDepthOfField(true)
+      SAGE.midLayer.addChild(object.image_closeup)
+    } else {
+      SAGE.Dialog.showErrorMessage(
+        `No actor or prop found with id: ${objectName}`
+      )
+    }
+  }
+
+  public stopCloseUp() {
+    this.screen.setDepthOfField(false)
+  }
 
   // public initialize(): void {
   //     // Anything?
@@ -151,5 +174,4 @@ export class Scene implements SceneModel {
     const index = this.actors.findIndex((item) => item.id === actorId)
     if (index !== -1) this.actors.splice(index, 1)
   }
-
 }

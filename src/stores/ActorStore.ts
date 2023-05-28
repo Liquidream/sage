@@ -13,6 +13,15 @@ export const useActorStore = defineStore({
     actors: [],
   }),
 
+  getters: {
+    getActors(): ActorModel[] {
+      return this.actors
+    },
+    // getCurrentScene(state) {
+    //   return state.scenes.find((item) => item.id === state.currSceneId)
+    // },
+  },
+
   actions: {
     createActor(prop: ActorModel) {
       this.actors.push(prop)
