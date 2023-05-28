@@ -10,6 +10,7 @@ import {
   Point,
   BaseTexture,
   VideoResource,
+  BlurFilter,
 } from "pixi.js" //filters
 
 import { SAGE, type IScreen } from "../SAGEPlay"
@@ -45,6 +46,13 @@ export class SceneScreen extends Container implements IScreen {
     // Ref to scene data
     this.scene = scene
 
+    // perform initial setup
+    this.setup()
+  }
+
+  private setup() {
+    SAGE.debugLog("SceneScreen : setup()...")
+
     // Construct scene from data
     this.buildBackdrop()
     this.buildDoorways()
@@ -61,6 +69,10 @@ export class SceneScreen extends Container implements IScreen {
     SAGE.app.stage.on("pointermove", this.onPointerMove, this)
     SAGE.app.stage.on("pointerup", this.onPointerUp, this)
     SAGE.app.stage.on("touchmove", this.onTouchMove, this)
+
+    // Test blur
+    const blurFilter = new BlurFilter()
+    SAGE.backLayer.filters = [blurFilter]
   }
 
   public update() {
@@ -70,10 +82,6 @@ export class SceneScreen extends Container implements IScreen {
     //You need to update a group for the tweens to do something!
     Group.shared.update()
   }
-
-  // public resize(_screenWidth: number, _screenHeight: number): void {
-  //     // Anything?
-  // }
 
   public tidyUp(restartGame?: boolean) {
     SAGE.debugLog(`>> SceneScreen tidyUp()`)
