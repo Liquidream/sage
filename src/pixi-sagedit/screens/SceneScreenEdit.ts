@@ -29,7 +29,6 @@ import { useActorStore } from "@/stores/ActorStore"
 import { InputEventEmitter } from "../../pixi-sageplay/screens/ui/InputEventEmitter"
 import type { AdjustableDataObject } from "@/pixi-sageplay/screens/ui/AdjustableDataObject"
 
-
 export class SceneScreen extends Container {
   private dialogText!: Text | null
 
@@ -667,9 +666,7 @@ export class SceneScreen extends Container {
       // Update scale
       const newWidth = (this.draggedResizeObj.resizeSprite.x - this.draggedResizeObj.data.x) * 2
       const newHeight = (this.draggedResizeObj.resizeSprite.y - this.draggedResizeObj.data.y) * 2
-      if (this.draggedResizeObj instanceof DoorEdit) {
-        this.draggedResizeObj.updateSize(newWidth, newHeight)
-      }
+      this.draggedResizeObj.updateSelectionSize(newWidth, newHeight)
       this.draggedResizeObj.sprite.width = newWidth
       this.draggedResizeObj.sprite.height = newHeight
       // Check for valid "drop"

@@ -23,7 +23,7 @@ export class DoorEdit extends AdjustableDataObject {
 
   public constructor(doorModel: DoorModel) {
     super(doorModel)
-    
+
     // Initialise from data object
     this.data = doorModel
 
@@ -47,7 +47,7 @@ export class DoorEdit extends AdjustableDataObject {
     SAGEdit.Events.on("selectionChanged", (selectedId: string) => {
         //debugger
         this.updateSelectionState(selectedId == this.data.id)
-      }, 
+      },
       this
     )
 
@@ -76,9 +76,6 @@ export class DoorEdit extends AdjustableDataObject {
     if (!doorModel.visible) {
       this.sprite.alpha = 0.5
     }
-    // this.sprite.visible = doorModel.visible // || true
-
-    
   }
 
   tidyUp() {
@@ -116,32 +113,6 @@ export class DoorEdit extends AdjustableDataObject {
 
     // Other UI
     if (this.resizeSprite) this.resizeSprite.visible = isSelected
-  }
-
-  public updateSize(doorWidth: number, doorHeight: number) {
-    //debugger
-    this.graphics.clear()
-    // Draw a rectangle
-    // Set the fill color
-    this.graphics.beginFill(0xffff00, 0.25) // light yellow
-    // Set Graphics "canvas" to correct pos/width
-    // (So we can easily move it when "dragging")
-    this.graphics.x = this.data.x || 0
-    this.graphics.y = this.data.y || 0
-    this.graphics.width = doorWidth
-    this.graphics.height = doorHeight
-    // Make a center point of origin (anchor)
-    this.graphics.pivot.set(doorWidth / 2, doorHeight / 2)
-    if (this.selected) {
-      this.graphics.lineStyle(10, 0xff0000) // Red
-    } else {
-      this.graphics.lineStyle(10, 0x000000, 0) // "Invisible"
-    }
-    // (graphics "canvas" are already in position/width)
-    this.graphics.drawRoundedRect(0, 0, doorWidth, doorHeight, 30)
-
-    // Applies fill to lines and shapes since the last call to beginFill.
-    this.graphics.endFill()
   }
 
   private onSceneHint() {
