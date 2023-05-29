@@ -116,13 +116,14 @@ export class Scene implements SceneModel {
     // ok, try Prop then
     const propModel = SAGE.World.getPropById(objectName)
     if (propModel !== undefined) {
-      const prop = this.screen.actorsCloseups.filter((a) => a.model.id === actorModel.id)[0]
+      const prop = this.screen.propsCloseups.filter((p) => p.model.id === propModel.id)[0]
       this.screen.removePropCloseup(prop, true)
     }
     // If last close-up object, then auto-reset depth of field
-    if (this.screen.actorsCloseups.length ===0
-      /// && this.screen.actorsCloseups.length == 0
-      ) {
+    if (
+      this.screen.actorsCloseups.length === 0 &&
+      this.screen.propsCloseups.length == 0
+    ) {
         this.screen.setDepthOfField(false)
       }
   }

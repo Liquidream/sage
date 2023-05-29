@@ -30,7 +30,7 @@ export class Prop {
     // Initialise from data object
     this.model = inModel
     let sprite = undefined
-    
+
     // Load main image(s)
     if (inModel.image) {
       sprite = Sprite.from(inModel.image)
@@ -39,20 +39,22 @@ export class Prop {
       sprite.width = inModel.width || 0
       sprite.height = inModel.height || 0
     }
+    sprite.width = inModel.width || 0
+    sprite.height = inModel.height || 0
+    sprite.anchor.set(0.5)
+    sprite.x = inModel.x || 0
+    sprite.y = inModel.y || 0
     this.sprite = sprite
 
     // Close-up image(s)
     if (inModel.image_closeup) {
       sprite = Sprite.from(inModel.image_closeup)
       this.sprite_closeup = sprite
+    } else {
+      // Use main image for close-up (even if never called upon)
+      sprite = Sprite.from(inModel.image)
+      this.sprite_closeup = sprite
     }
-
-    sprite.width = inModel.width || 0
-    sprite.height = inModel.height || 0
-    sprite.anchor.set(0.5)
-    sprite.x = inModel.x || 0
-    sprite.y = inModel.y || 0
-
     // Events
     this.propInputEvents = new InputEventEmitter(this.sprite)
     this.sprite.on("primaryaction", this.onPrimaryAction, this)

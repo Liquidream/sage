@@ -633,7 +633,7 @@ export class SceneScreen extends Container implements IScreen {
   public addPropCloseup(model: PropModel, fadeIn = false) {
     // Check to see whether prop already exists in scene
     let prop: Prop
-    const existingProp = this.props.filter((a) => a.model.id === model.id)[0]
+    const existingProp = this.props.filter((p) => p.model.id === model.id)[0]
     if (existingProp) {
       prop = existingProp
     } else {
@@ -655,6 +655,12 @@ export class SceneScreen extends Container implements IScreen {
    * Removes an Prop from closeup (default = fade out).
    */
   removePropCloseup(prop: Prop, fadeOut = true) {
+    // Remove from list first (so can exit depth of field if last one)
+    const index = this.propsCloseups.findIndex(
+      (item) => item.model.id === prop.model.id
+    )
+    if (index !== -1) this.propsCloseups.splice(index, 1)
+    //
     if (fadeOut) {
       new Tween(prop.sprite_closeup)
         .to({ alpha: 0 }, 500)
@@ -663,10 +669,6 @@ export class SceneScreen extends Container implements IScreen {
           // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any
           // remove when tween completes
           SAGE.midLayer.removeChild(prop.sprite_closeup)
-          const index = this.propsCloseups.findIndex(
-            (item) => item.model.id === prop.model.id
-          )
-          if (index !== -1) this.propsCloseups.splice(index, 1)
         })
     }
   }
