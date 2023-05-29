@@ -587,8 +587,16 @@ export class SceneScreen extends Container implements IScreen {
   }
 
   public addActorCloseup(model: ActorModel, fadeIn = false) {
-    // Create new component obj (contains data + view)
-    const actor = new Actor(model)
+    // Check to see whether actor already exists in scene
+    let actor: Actor
+    const existingActor = this.actors.filter((a) => a.model.id === model.id)[0]
+    if (existingActor) {
+      actor = existingActor
+    } else {
+      // Create new component obj (contains data + view)
+      actor = new Actor(model)
+    }
+
     SAGE.midLayer.addChild(actor.sprite_closeup)
     this.actorsCloseups.push(actor)
 
@@ -596,8 +604,7 @@ export class SceneScreen extends Container implements IScreen {
     if (fadeIn) {
       actor.sprite_closeup.alpha = 0
       //const blurTween = new Tween(this.blurFilter).to({ blur: 8 }, 500).start()
-      actor.sprite.alpha = 0
-      //new Tween(actor.sprite).to({ alpha: 0 }, 500).start()
+      new Tween(actor.sprite).to({ alpha: 0 }, 500).start()
       new Tween(actor.sprite_closeup).to({ alpha: 1 }, 500).start()
     }
   }
@@ -624,17 +631,14 @@ export class SceneScreen extends Container implements IScreen {
   }
 
   public addPropCloseup(model: PropModel, fadeIn = false) {
-    // Create new component obj (contains data + view)
-    const prop = new Prop(model)
+    //const prop = new Prop(model)
     SAGE.midLayer.addChild(prop.sprite_closeup)
     this.propsCloseups.push(prop)
 
     // Fade in?
     if (fadeIn) {
       prop.sprite_closeup.alpha = 0
-      //const blurTween = new Tween(this.blurFilter).to({ blur: 8 }, 500).start()
       new Tween(prop.sprite_closeup).to({ alpha: 1 }, 500).start()
-      // NOTE: Can't fade out main sprite here, as it's a separate sprite instance (bad code!)
     }
   }
 
