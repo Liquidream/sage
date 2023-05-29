@@ -570,6 +570,7 @@ export class SceneScreen extends Container {
    */
   removeProp(prop: PropEdit) {
     if (prop.sprite) this.removeChild(prop.sprite)
+    if (prop.resizeSprite) this.removeChild(prop.resizeSprite)
     this.removeChild(prop.graphics)
     const index = this.props.findIndex((item) => item.data.id === prop.data.id)
     if (index !== -1) this.props.splice(index, 1)
@@ -631,6 +632,9 @@ export class SceneScreen extends Container {
       this.draggedProp.graphics.y = _e.data.global.y
       this.draggedProp.sprite.x = _e.data.global.x
       this.draggedProp.sprite.y = _e.data.global.y
+      // UI
+      this.draggedProp.resizeSprite.x = _e.data.global.x + this.draggedProp.data.width / 2
+      this.draggedProp.resizeSprite.y = _e.data.global.y + this.draggedProp.data.height / 2
       // Check for valid "drop"
       //this.checkDragCollisions()
     }
@@ -679,9 +683,9 @@ export class SceneScreen extends Container {
       // Restore interaction to "dragged" Prop
       this.draggedProp.sprite.interactive = true
       this.draggedProp.sprite.alpha = 1
+      // UI
+      this.draggedProp.resizeSprite.interactive = true
       this.draggedProp = undefined
-      // Update inventory (in case it was an inventory prop)
-      //      SAGE.invScreen.update()
     }
     if (this.draggedDoor) {
       // End Drag+Drop mode
