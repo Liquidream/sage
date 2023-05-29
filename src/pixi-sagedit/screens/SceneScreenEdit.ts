@@ -596,6 +596,8 @@ export class SceneScreen extends Container {
     this.addChild(actor.sprite)
     this.actors.push(actor)
     this.addChild(graphics)
+    // UI
+    this.addChild(actor.resizeSprite)
   }
 
   /**
@@ -603,6 +605,7 @@ export class SceneScreen extends Container {
    */
   removeActor(actor: ActorEdit) {
     if (actor.sprite) this.removeChild(actor.sprite)
+    if (actor.resizeSprite) this.removeChild(actor.resizeSprite)
     this.removeChild(actor.graphics)
     const index = this.actors.findIndex(
       (item) => item.data.id === actor.data.id
@@ -631,8 +634,6 @@ export class SceneScreen extends Container {
       // UI
       this.draggedProp.resizeSprite.x = _e.data.global.x + this.draggedProp.data.width / 2
       this.draggedProp.resizeSprite.y = _e.data.global.y + this.draggedProp.data.height / 2
-      // Check for valid "drop"
-      //this.checkDragCollisions()
     }
     if (this.draggedDoor) {
       // Temp remove interaction to "dragged" Prop
@@ -654,8 +655,9 @@ export class SceneScreen extends Container {
       this.draggedActor.graphics.y = _e.data.global.y
       this.draggedActor.sprite.x = this.draggedActor.graphics.x
       this.draggedActor.sprite.y = this.draggedActor.graphics.y
-      // Check for valid "drop"
-      //this.checkDragCollisions()
+      // UI
+      this.draggedActor.resizeSprite.x = _e.data.global.x + this.draggedActor.data.width / 2
+      this.draggedActor.resizeSprite.y = _e.data.global.y + this.draggedActor.data.height / 2
     }
     if (this.draggedResizeObj) {
       // Temp remove interaction to "dragged" Prop

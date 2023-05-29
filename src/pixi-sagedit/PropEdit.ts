@@ -93,6 +93,7 @@ export class PropEdit extends AdjustableDataObject {
   tidyUp() {
     // Unsubscribe from events, etc.
     this.sprite.removeAllListeners()
+    this.resizeSprite.removeAllListeners()
   }
 
   public destroy() {

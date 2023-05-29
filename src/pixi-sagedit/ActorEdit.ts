@@ -3,8 +3,9 @@ import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter
 import type { ActorModel } from "@/models/ActorModel"
 import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
+import { AdjustableDataObject } from "@/pixi-sageplay/screens/ui/AdjustableDataObject"
 
-export class ActorEdit {
+export class ActorEdit extends AdjustableDataObject {
   // "constants"
   // (perhaps overridable in config?)
   TOUCH_DURATION = 500
@@ -20,6 +21,8 @@ export class ActorEdit {
   public dragging = false
 
   public constructor(actorModel: ActorModel, inGraphics: Graphics) {
+    super(actorModel)
+
     // Initialise from data object
     let sprite = undefined
     if (actorModel.image) {
@@ -74,6 +77,7 @@ export class ActorEdit {
   tidyUp() {
     // Unsubscribe from events, etc.
     this.sprite.removeAllListeners()
+    this.resizeSprite.removeAllListeners()
   }
 
   public destroy() {
@@ -86,6 +90,7 @@ export class ActorEdit {
   }
 
   private updateSelectionState(isSelected: boolean) {
+    this.selected = isSelected
     this.graphics.clear()
     const actorWidth = this.data.width || 0,
       actorHeight = this.data.height || 0
@@ -104,6 +109,8 @@ export class ActorEdit {
     this.graphics.drawRoundedRect(0, 0, actorWidth, actorHeight, 30)
     //}
     this.graphics.endFill()
+    // Other UI
+    if (this.resizeSprite) this.resizeSprite.visible = isSelected
   }
 
   private onPointerDown() {

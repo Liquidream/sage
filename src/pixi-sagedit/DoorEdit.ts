@@ -81,6 +81,7 @@ export class DoorEdit extends AdjustableDataObject {
   tidyUp() {
     // Unsubscribe from events, etc.
     this.graphics.removeAllListeners()
+    this.resizeSprite.removeAllListeners()
   }
 
   private updateSelectionState(isSelected: boolean) {
