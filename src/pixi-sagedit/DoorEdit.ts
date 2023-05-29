@@ -5,23 +5,25 @@ import { BaseTexture, Graphics, Sprite, Texture } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"
 //import { DialogType } from "./Dialog"
 import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter"
+import { AdjustableDataObject } from "@/pixi-sageplay/screens/ui/AdjustableDataObject"
 
-export class DoorEdit {
+export class DoorEdit extends AdjustableDataObject{
   // "constants"
   // (perhaps overridable in config?)
-  TOUCH_DURATION = 500
-  DRAG_ALPHA = 0.75
+  // TOUCH_DURATION = 500
+  // DRAG_ALPHA = 0.75
 
-  public data!: DoorModel
-  public graphics!: Graphics
-  public sprite!: Sprite
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore (ignore the "declared but never used" for now)
-  private doorInputEvents!: InputEventEmitter
-  public dragging = false
+  // public data!: DoorModel
+  // public graphics!: Graphics
+  // public sprite!: Sprite
+  // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // // @ts-ignore (ignore the "declared but never used" for now)
+  // private doorInputEvents!: InputEventEmitter
+  // public dragging = false
 
   public constructor(doorModel: DoorModel) {
-    //DoorData.IDoorData) {
+    super(doorModel)
+    
     // Initialise from data object
     this.data = doorModel
 
@@ -32,7 +34,7 @@ export class DoorEdit {
     this.updateSelectionState(useWorldStore().currDoorId === doorModel.id)
 
     // Events
-    this.doorInputEvents = new InputEventEmitter(this.graphics)
+    this.inputEvents = new InputEventEmitter(this.graphics)
     this.graphics.on("primaryaction", this.onPrimaryAction, this)
     // graphics.on("secondaryaction", this.onSecondaryAction, this)
     // Hover (info)
@@ -75,6 +77,8 @@ export class DoorEdit {
       this.sprite.alpha = 0.5
     }
     // this.sprite.visible = doorModel.visible // || true
+
+    
   }
 
   tidyUp() {
@@ -108,6 +112,9 @@ export class DoorEdit {
 
     // Applies fill to lines and shapes since the last call to beginFill.
     this.graphics.endFill()
+
+    // Other UI
+    if (this.resizeSprite) this.resizeSprite.visible = isSelected
   }
 
   private onSceneHint() {

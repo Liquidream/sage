@@ -27,6 +27,8 @@ import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
 import { useActorStore } from "@/stores/ActorStore"
 import { InputEventEmitter } from "../../pixi-sageplay/screens/ui/InputEventEmitter"
+import type { AdjustableDataObject } from "@/pixi-sageplay/screens/ui/AdjustableDataObject"
+
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null
@@ -40,7 +42,7 @@ export class SceneScreen extends Container {
   public draggedProp!: PropEdit | undefined
   public draggedDoor!: DoorEdit | undefined
   public draggedActor!: ActorEdit | undefined
-  public draggedResizeObj: any
+  public draggedResizeObj: AdjustableDataObject | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public dragTarget!: any // Could be Prop or Door
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -350,11 +352,6 @@ export class SceneScreen extends Container {
     SAGEdit.app.stage.on("pointermove", this.onPointerMove, this)
     SAGEdit.app.stage.on("pointerup", this.onPointerUp, this)
     SAGEdit.app.stage.on("touchmove", this.onTouchMove, this)
-
-
-    // Test blur
-    // const blurFilter = new BlurFilter()
-    // SAGEdit.backLayer.filters = [blurFilter]
   }
 
   teardown() {
@@ -557,10 +554,6 @@ export class SceneScreen extends Container {
     this.props.push(prop)
     // Don't add to scene.propdata here, as it likely already came from it?
 
-    
-    // Force to be draggable now
-    //propModel.draggable = true // Could use this to lock prop postions?
-    
     // UI
     this.addChild(graphics)
     this.addChild(prop.resizeSprite)
@@ -584,11 +577,14 @@ export class SceneScreen extends Container {
     this.addChild(door.sprite)
     this.addChild(door.graphics)
     this.doors.push(door)
+    // UI
+    this.addChild(door.resizeSprite)
   }
 
   removeDoor(door: DoorEdit) {
-    this.removeChild(door.sprite)
-    this.removeChild(door.graphics)
+    if (door.sprite) this.removeChild(door.sprite)
+    if (door.graphics) this.removeChild(door.graphics)
+    if (door.resizeSprite) this.removeChild(door.resizeSprite)
     const index = this.doors.findIndex((item) => item.data.id === door.data.id)
     if (index !== -1) this.doors.splice(index, 1)
     door.tidyUp()
@@ -668,11 +664,13 @@ export class SceneScreen extends Container {
       this.draggedResizeObj.resizeSprite.x = _e.data.global.x
       this.draggedResizeObj.resizeSprite.y = _e.data.global.y
       // Update scale
-      //debugger
       const newWidth = (this.draggedResizeObj.resizeSprite.x - this.draggedResizeObj.data.x) * 2
       const newHeight = (this.draggedResizeObj.resizeSprite.y - this.draggedResizeObj.data.y) * 2
-      // this.draggedResizeObj.data.width = newWidth
-      // this.draggedResizeObj.data.height = newHeight
+      if (this.draggedResizeObj instanceof DoorEdit) {
+        this.draggedResizeObj.data.width = newWidth
+        this.draggedResizeObj.data.height = newHeight
+        this.draggedResizeObj.updateSelectionState(true)
+      }
       this.draggedResizeObj.sprite.width = newWidth
       this.draggedResizeObj.sprite.height = newHeight
       // Check for valid "drop"
@@ -744,17 +742,11 @@ export class SceneScreen extends Container {
       // Save final pos
       this.draggedResizeObj.data.width = this.draggedResizeObj.sprite.width
       this.draggedResizeObj.data.height = this.draggedResizeObj.sprite.height
-      // this.draggedActor.data.x = Math.floor(this.draggedActor.graphics.x)
-      // this.draggedActor.data.y = Math.floor(this.draggedActor.graphics.y)
-      // this.draggedActor.sprite.x = this.draggedActor.data.x
-      // this.draggedActor.sprite.y = this.draggedActor.data.y
 
       // Restore interaction to "dragged" sprite
       this.draggedResizeObj.resizeSprite.interactive = true
       // this.draggedActor.graphics.alpha = 1
       this.draggedResizeObj = undefined
-      // Update inventory (in case it was an inventory prop)
-      //      SAGE.invScreen.update()
     }
   }
 
