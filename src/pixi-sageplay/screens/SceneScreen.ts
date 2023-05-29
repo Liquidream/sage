@@ -594,15 +594,21 @@ export class SceneScreen extends Container implements IScreen {
     // Check to see whether actor already exists in scene
     let actor: Actor
     const existingActor = this.actors.filter((a) => a.model.id === model.id)[0]
-    if (existingActor) {
+    const existingCloseupActor = this.actorsCloseups.filter((a) => a.model.id === model.id)[0]
+    if (existingCloseupActor) {
+      actor = existingCloseupActor
+    } else if (existingActor) {
       actor = existingActor
     } else {
       // Create new component obj (contains data + view)
       actor = new Actor(model)
     }
 
-    SAGE.midLayer.addChild(actor.sprite_closeup)
-    this.actorsCloseups.push(actor)
+    // Only add to closeups if not already there
+    if (existingCloseupActor === undefined) {
+      SAGE.midLayer.addChild(actor.sprite_closeup)
+      this.actorsCloseups.push(actor)
+    }
 
     // Fade in?
     if (fadeIn) {
