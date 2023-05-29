@@ -63,7 +63,7 @@
   import "prismjs/components/prism-clike"
   import "prismjs/components/prism-javascript"
   import "prismjs/themes/prism-tomorrow.min.css" // import syntax highlighting styles
-  import { isProxy, reactive, ref, toRaw } from "vue"
+  import { reactive, ref } from "vue"
   import { useDisplay } from "vuetify"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
@@ -76,20 +76,18 @@
   const { mobile } = useDisplay()
 
   //debugger
+
   // Set code initially
-  if (isProxy(data.modelValue)) {
-    //this If() block is not really necessary
-    code.value = toRaw(data.modelValue)
-    //const rawObject = toRaw(proxyObject)
-  } else {
-    code.value = data.modelValue
-  }
-  // but also listen for code-changes to keep in sync
+  // (## REMOVED ##) - was causing a nesting of data, for some reason
+  // code.value = data.modelValue
+
+  // listen for code-changes to keep in sync
   const onCodeChange = (event) => {
     //debugger
     code.value = event.target.value
     emit("update:modelValue", event.target.value)
-    //$emit('update:modelValue', $event.target.value)
+    //emit("update:modelValue", event.data)
+  //   //$emit('update:modelValue', $event.target.value)
   }
 
   const highlighter = (code) => {

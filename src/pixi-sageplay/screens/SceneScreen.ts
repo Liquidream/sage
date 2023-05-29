@@ -596,6 +596,7 @@ export class SceneScreen extends Container implements IScreen {
     if (fadeIn) {
       actor.sprite_closeup.alpha = 0
       //const blurTween = new Tween(this.blurFilter).to({ blur: 8 }, 500).start()
+      new Tween(actor.sprite).to({ alpha: 0 }, 500).start()
       new Tween(actor.sprite_closeup).to({ alpha: 1 }, 500).start()
     }
   }
@@ -617,6 +618,7 @@ export class SceneScreen extends Container implements IScreen {
         .onComplete(() => {
           SAGE.midLayer.removeChild(actor.sprite_closeup)
         })
+      new Tween(actor.sprite).to({ alpha: 1 }, 500).start()
     }
   }
 
