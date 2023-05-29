@@ -656,6 +656,7 @@ export class SceneScreen extends Container implements IScreen {
 
     // Only add to closeups if not already there
     if (existingCloseupProp === undefined) {
+      // Add to stage
       SAGE.midLayer.addChild(prop.sprite_closeup)
       this.propsCloseups.push(prop)
     }
