@@ -631,7 +631,16 @@ export class SceneScreen extends Container implements IScreen {
   }
 
   public addPropCloseup(model: PropModel, fadeIn = false) {
-    //const prop = new Prop(model)
+    // Check to see whether prop already exists in scene
+    let prop: Prop
+    const existingProp = this.props.filter((a) => a.model.id === model.id)[0]
+    if (existingProp) {
+      prop = existingProp
+    } else {
+      // Create new component obj (contains data + view)
+      prop = new Prop(model)
+    }
+
     SAGE.midLayer.addChild(prop.sprite_closeup)
     this.propsCloseups.push(prop)
 

@@ -71,7 +71,8 @@
   const data = reactive({ ...props })
   const emit = defineEmits(["update:modelValue"])
 
-  const code = ref("")
+  const code = ref(props.modelValue)
+  //const code = ref("")
   const dialog = ref(false)
   const { mobile } = useDisplay()
 
