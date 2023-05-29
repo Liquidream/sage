@@ -113,9 +113,13 @@ export class SceneScreen extends Container implements IScreen {
       // Make backdrop "unfocused"
       //debugger
       const blurTween = new Tween(this.blurFilter).to({ blur: 8 }, 500).start()
+      // Disable interaction for backdrop/scene objects while in close-up mode
+      SAGE.backLayer.interactiveChildren = false
     } else {
       // Remove blur (re-focus backdrop)
       const blurTween = new Tween(this.blurFilter).to({ blur: 0 }, 500).start()
+      // Restore interaction for backdrop/scene objects
+      SAGE.backLayer.interactiveChildren = true
     }
   }
 
@@ -634,15 +638,21 @@ export class SceneScreen extends Container implements IScreen {
     // Check to see whether prop already exists in scene
     let prop: Prop
     const existingProp = this.props.filter((p) => p.model.id === model.id)[0]
-    if (existingProp) {
+    const existingCloseupProp = this.propsCloseups.filter((p) => p.model.id === model.id)[0]
+    if (existingCloseupProp) {
+      prop = existingCloseupProp
+    } else if (existingProp) {
       prop = existingProp
     } else {
       // Create new component obj (contains data + view)
       prop = new Prop(model)
     }
 
-    SAGE.midLayer.addChild(prop.sprite_closeup)
-    this.propsCloseups.push(prop)
+    // Only add to closeups if not already there
+    if (existingCloseupProp === undefined) {
+      SAGE.midLayer.addChild(prop.sprite_closeup)
+      this.propsCloseups.push(prop)
+    }
 
     // Fade in?
     if (fadeIn) {
