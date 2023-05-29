@@ -177,7 +177,7 @@
   import PrismEditor from "./PrismEditor.vue"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
   import { useActorStore } from "@/stores/ActorStore"
-import type { ActorModel } from "@/models/ActorModel"
+  import type { ActorModel } from "@/models/ActorModel"
 
   const worldStore = useWorldStore()
   const actorStore = useActorStore()

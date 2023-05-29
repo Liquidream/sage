@@ -47,7 +47,7 @@
     class="my-editor mb-3"
     style="max-height: 240px"
     :model-value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
+    @input="onCodeChange"
     :highlight="highlighter"
   >
   </prism-editor>
@@ -63,7 +63,7 @@
   import "prismjs/components/prism-clike"
   import "prismjs/components/prism-javascript"
   import "prismjs/themes/prism-tomorrow.min.css" // import syntax highlighting styles
-  import { reactive, ref } from "vue"
+  import { isProxy, reactive, ref, toRaw } from "vue"
   import { useDisplay } from "vuetify"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
@@ -75,8 +75,22 @@
   const dialog = ref(false)
   const { mobile } = useDisplay()
 
+  //debugger
   // Set code initially
-  code.value = data.modelValue
+  if (isProxy(data.modelValue)) {
+    //this If() block is not really necessary
+    code.value = toRaw(data.modelValue)
+    //const rawObject = toRaw(proxyObject)
+  } else {
+    code.value = data.modelValue
+  }
+  // but also listen for code-changes to keep in sync
+  const onCodeChange = (event) => {
+    //debugger
+    code.value = event.target.value
+    emit("update:modelValue", event.target.value)
+    //$emit('update:modelValue', $event.target.value)
+  }
 
   const highlighter = (code) => {
     return highlight(code, languages.js) // languages.<insert language> to return html with markup
