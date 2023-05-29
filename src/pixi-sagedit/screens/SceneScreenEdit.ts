@@ -40,6 +40,7 @@ export class SceneScreen extends Container {
   public draggedProp!: PropEdit | undefined
   public draggedDoor!: DoorEdit | undefined
   public draggedActor!: ActorEdit | undefined
+  public draggedResizeObj: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public dragTarget!: any // Could be Prop or Door
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -660,6 +661,17 @@ export class SceneScreen extends Container {
       // Check for valid "drop"
       //this.checkDragCollisions()
     }
+    if (this.draggedResizeObj) {
+      // Temp remove interaction to "dragged" Prop
+      this.draggedResizeObj.interactive = false
+      // Update pos
+      this.draggedResizeObj.x = _e.data.global.x
+      this.draggedResizeObj.y = _e.data.global.y
+      // Update scale
+      //this.cur
+      // Check for valid "drop"
+      //this.checkDragCollisions()
+    }
   }
 
   private onPrimaryAction() {
@@ -716,6 +728,23 @@ export class SceneScreen extends Container {
       this.draggedActor.graphics.interactive = true
       this.draggedActor.graphics.alpha = 1
       this.draggedActor = undefined
+      // Update inventory (in case it was an inventory prop)
+      //      SAGE.invScreen.update()
+    }
+    // Resizing?
+    if (this.draggedResizeObj) {
+      // End Drag+Drop mode
+      this.draggedResizeObj.resizing = false
+      // Save final pos
+      // this.draggedActor.data.x = Math.floor(this.draggedActor.graphics.x)
+      // this.draggedActor.data.y = Math.floor(this.draggedActor.graphics.y)
+      // this.draggedActor.sprite.x = this.draggedActor.data.x
+      // this.draggedActor.sprite.y = this.draggedActor.data.y
+
+      // Restore interaction to "dragged" sprite
+      this.draggedResizeObj.interactive = true
+      // this.draggedActor.graphics.alpha = 1
+      this.draggedResizeObj = undefined
       // Update inventory (in case it was an inventory prop)
       //      SAGE.invScreen.update()
     }
