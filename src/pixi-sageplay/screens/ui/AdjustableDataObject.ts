@@ -21,6 +21,7 @@ export class AdjustableDataObject {
   protected inputEvents!: InputEventEmitter
   public dragging = false
   public resizing = false
+  public selected = false
 
   public constructor(model: PropModel | DoorModel | ActorModel) {
     this.data = model

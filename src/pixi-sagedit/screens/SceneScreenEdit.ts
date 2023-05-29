@@ -667,9 +667,7 @@ export class SceneScreen extends Container {
       const newWidth = (this.draggedResizeObj.resizeSprite.x - this.draggedResizeObj.data.x) * 2
       const newHeight = (this.draggedResizeObj.resizeSprite.y - this.draggedResizeObj.data.y) * 2
       if (this.draggedResizeObj instanceof DoorEdit) {
-        this.draggedResizeObj.data.width = newWidth
-        this.draggedResizeObj.data.height = newHeight
-        this.draggedResizeObj.updateSelectionState(true)
+        this.draggedResizeObj.updateSize(newWidth, newHeight)
       }
       this.draggedResizeObj.sprite.width = newWidth
       this.draggedResizeObj.sprite.height = newHeight
