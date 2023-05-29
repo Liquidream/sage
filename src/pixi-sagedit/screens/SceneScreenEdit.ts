@@ -556,10 +556,13 @@ export class SceneScreen extends Container {
     this.props.push(prop)
     // Don't add to scene.propdata here, as it likely already came from it?
 
+    
     // Force to be draggable now
     //propModel.draggable = true // Could use this to lock prop postions?
-
+    
+    // UI
     this.addChild(graphics)
+    this.addChild(prop.resizeSprite)
   }
 
   /**

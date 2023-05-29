@@ -14,6 +14,7 @@ export class PropEdit {
   public data!: PropModel
   public graphics!: Graphics
   public sprite!: Sprite
+  public resizeSprite!: Sprite
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
   private propInputEvents!: InputEventEmitter
@@ -41,10 +42,19 @@ export class PropEdit {
 
     sprite.width = propModel.width || 0
     sprite.height = propModel.height || 0
-
     sprite.anchor.set(0.5)
     sprite.x = propModel.x || 0
     sprite.y = propModel.y || 0
+
+    // Resize sprite
+    sprite = Sprite.from("/images/ui/icon-resize.png")
+    sprite.width = 64
+    sprite.height = 64
+    // debugger
+    sprite.x = propModel.x + propModel.width/2
+    sprite.y = propModel.y + propModel.height/2
+    sprite.interactive = true
+    this.resizeSprite = sprite
 
     // Events
     this.propInputEvents = new InputEventEmitter(this.sprite)
@@ -55,6 +65,13 @@ export class PropEdit {
     this.sprite.on("pointerout", this.onPointerOut, this)
     // Drag+Drop
     this.sprite.on("pointerdown", this.onPointerDown, this)
+
+    // Resize
+    this.resizeSprite.on("pointerdown", () => {
+      console.log("resize clicked!!")
+      },
+      this
+    )
 
     // Listen for selection changes
     SAGEdit.Events.on("selectionChanged", (selectedId: string) => {
