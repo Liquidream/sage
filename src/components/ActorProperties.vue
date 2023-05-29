@@ -40,7 +40,7 @@
     ></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
-    <v-row align="center" class="mb-1">
+    <v-row align="center" class="mb-0">
       <v-col cols="4">
         <v-file-input
           v-model="chosenFile"
@@ -68,7 +68,7 @@
       <v-col class="pl-5 text-medium-emphasis">Actor image</v-col>
     </v-row>
 
-    <v-row align="center" class="mb-1">
+    <v-row align="center" class="mb-1 mt-0">
       <v-col cols="4">
         <v-file-input
           v-model="chosenFile"
@@ -250,21 +250,6 @@
       imageData.value = reader.result
       if (model.value) {
         model.value.image_closeup = reader.result as string // added "as" to squash error/warn, ok?
-        // Now do a test load into Pixi texture to get dimensions
-        // const base = new BaseTexture(model.value.image)
-        // // If previously cached texture, get dimensions immediately
-        // if (base.valid) {
-        //   model.value.width = base.width
-        //   model.value.height = base.height
-        // } else {
-        //   // ...else grab dimensions one texture fully loaded
-        //   base.on("loaded", () => {
-        //     if (model.value) {
-        //       model.value.width = base.width
-        //       model.value.height = base.height
-        //     }
-        //   })
-        // }
       }
     }
   }
