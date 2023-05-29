@@ -643,8 +643,9 @@ export class SceneScreen extends Container {
       this.draggedDoor.graphics.y = _e.data.global.y
       this.draggedDoor.sprite.x = this.draggedDoor.graphics.x
       this.draggedDoor.sprite.y = this.draggedDoor.graphics.y
-      // Check for valid "drop"
-      //this.checkDragCollisions()
+      // UI
+      this.draggedDoor.resizeSprite.x = _e.data.global.x + this.draggedDoor.data.width / 2
+      this.draggedDoor.resizeSprite.y = _e.data.global.y + this.draggedDoor.data.height / 2
     }
     if (this.draggedActor) {
       // Temp remove interaction to "dragged" Prop

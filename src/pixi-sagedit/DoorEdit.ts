@@ -7,7 +7,7 @@ import { Easing, Tween } from "tweedle.js"
 import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter"
 import { AdjustableDataObject } from "@/pixi-sageplay/screens/ui/AdjustableDataObject"
 
-export class DoorEdit extends AdjustableDataObject{
+export class DoorEdit extends AdjustableDataObject {
   // "constants"
   // (perhaps overridable in config?)
   // TOUCH_DURATION = 500
