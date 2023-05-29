@@ -175,22 +175,26 @@
   // Used for scene-switching (as also need to change other values)
   const selectedModelID = worldRefs.currSceneId
 
-  // Watch for changes to scene selection (+set other values)
-  watch(
-    selectedModelID,
-    async (newSelectedModel: string, oldSelectedModel: string) => {
-      // debugger
-      console.log(
-        `oldSelectedModel=${oldSelectedModel}, newSelectedModel=${newSelectedModel}`
-      )
-      // Set new scene
-      worldStore.currSceneId = newSelectedModel
-      // Deselect anything else
-      worldStore.currPropId = ""
-      worldStore.currDoorId = ""
-      worldStore.currActorId = ""
-    }
-  )
+  // Once worldStore fully loaded...
+  worldStore.$persistedState.isReady().then(() => {
+    // ...watch for changes to scene selection
+    // (+set other values)
+    watch(
+      selectedModelID,
+      async (newSelectedModel: string, oldSelectedModel: string) => {
+        //debugger
+        console.log(
+          `oldSelectedModel=${oldSelectedModel}, newSelectedModel=${newSelectedModel}`
+        )
+        // Set new scene
+        worldStore.currSceneId = newSelectedModel
+        // Deselect anything else
+        worldStore.currPropId = ""
+        worldStore.currDoorId = ""
+        worldStore.currActorId = ""
+      }
+    )
+  })
 
   const loadGame = () => {
     console.log(">> Load game")

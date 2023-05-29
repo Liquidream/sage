@@ -72,16 +72,9 @@ export class SceneScreen extends Container {
       console.log("All stores hydrated, now initialise SceneScreen")
       // Subscribe to World state/Editor changes so that we refresh/recreate Pixi.js content
       this.subscribeToEvents()
-
       // perform initial setup
       this.setup()
     })
-
-    // // Subscribe to World state/Editor changes so that we refresh/recreate Pixi.js content
-    // this.subscribeToEvents()
-
-    // // perform initial setup
-    // this.setup()
   }
 
   subscribeToEvents() {
@@ -664,7 +657,7 @@ export class SceneScreen extends Container {
 
   private onPrimaryAction() {
     // Deselect all (only scene)
-    //const worldStore = useWorldStore()
+    console.log("onPrimaryAction() > deselect all")
     this.worldStore.currPropId = ""
     this.worldStore.currDoorId = ""
     this.worldStore.currActorId = ""
