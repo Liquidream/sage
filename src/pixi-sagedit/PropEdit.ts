@@ -154,7 +154,7 @@ export class PropEdit {
       // Start of drag...
       this.resizing = true
       //debugger
-      SAGEdit.currentScreen.draggedResizeObj = this.resizeSprite
+      SAGEdit.currentScreen.draggedResizeObj = this
       this.sprite.alpha = this.DRAG_ALPHA
     //}
   }

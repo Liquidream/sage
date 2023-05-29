@@ -663,12 +663,18 @@ export class SceneScreen extends Container {
     }
     if (this.draggedResizeObj) {
       // Temp remove interaction to "dragged" Prop
-      this.draggedResizeObj.interactive = false
+      this.draggedResizeObj.resizeSprite.interactive = false
       // Update pos
-      this.draggedResizeObj.x = _e.data.global.x
-      this.draggedResizeObj.y = _e.data.global.y
+      this.draggedResizeObj.resizeSprite.x = _e.data.global.x
+      this.draggedResizeObj.resizeSprite.y = _e.data.global.y
       // Update scale
-      //this.cur
+      //debugger
+      const newWidth = (this.draggedResizeObj.resizeSprite.x - this.draggedResizeObj.data.x) * 2
+      const newHeight = (this.draggedResizeObj.resizeSprite.y - this.draggedResizeObj.data.y) * 2
+      // this.draggedResizeObj.data.width = newWidth
+      // this.draggedResizeObj.data.height = newHeight
+      this.draggedResizeObj.sprite.width = newWidth
+      this.draggedResizeObj.sprite.height = newHeight
       // Check for valid "drop"
       //this.checkDragCollisions()
     }
@@ -736,13 +742,15 @@ export class SceneScreen extends Container {
       // End Drag+Drop mode
       this.draggedResizeObj.resizing = false
       // Save final pos
+      this.draggedResizeObj.data.width = this.draggedResizeObj.sprite.width
+      this.draggedResizeObj.data.height = this.draggedResizeObj.sprite.height
       // this.draggedActor.data.x = Math.floor(this.draggedActor.graphics.x)
       // this.draggedActor.data.y = Math.floor(this.draggedActor.graphics.y)
       // this.draggedActor.sprite.x = this.draggedActor.data.x
       // this.draggedActor.sprite.y = this.draggedActor.data.y
 
       // Restore interaction to "dragged" sprite
-      this.draggedResizeObj.interactive = true
+      this.draggedResizeObj.resizeSprite.interactive = true
       // this.draggedActor.graphics.alpha = 1
       this.draggedResizeObj = undefined
       // Update inventory (in case it was an inventory prop)
