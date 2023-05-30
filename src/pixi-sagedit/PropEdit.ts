@@ -3,7 +3,7 @@ import type { PropModel } from "@/models/PropModel"
 import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
 import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter"
-import { AdjustableDataObject } from "@/pixi-sageplay/screens/ui/AdjustableDataObject"
+import { AdjustableDataObject } from "@/pixi-sagedit/screens/ui/AdjustableDataObject"
 
 export class PropEdit extends AdjustableDataObject {
   // "constants"

@@ -118,14 +118,14 @@
           type="number"
         ></v-text-field>
         <v-switch
-          label="Pickupable"
-          v-model="model.pickupable"
+          label="Keep Aspect?"
+          v-model="model.preserve_aspect"
           color="info"
           hide-details
         ></v-switch>
         <v-switch
-          label="Single Use"
-          v-model="model.single_use"
+          label="Pickupable"
+          v-model="model.pickupable"
           color="info"
           hide-details
         ></v-switch>
@@ -150,6 +150,12 @@
         <v-switch
           label="Visible"
           v-model="model.visible"
+          color="info"
+          hide-details
+        ></v-switch>
+        <v-switch
+          label="Single Use"
+          v-model="model.single_use"
           color="info"
           hide-details
         ></v-switch>

@@ -3,7 +3,7 @@ import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter
 import type { ActorModel } from "@/models/ActorModel"
 import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
-import { AdjustableDataObject } from "@/pixi-sageplay/screens/ui/AdjustableDataObject"
+import { AdjustableDataObject } from "@/pixi-sagedit/screens/ui/AdjustableDataObject"
 
 export class ActorEdit extends AdjustableDataObject {
   // "constants"

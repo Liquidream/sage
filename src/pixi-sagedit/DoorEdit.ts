@@ -5,7 +5,7 @@ import { BaseTexture, Graphics, Sprite, Texture } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"
 //import { DialogType } from "./Dialog"
 import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter"
-import { AdjustableDataObject } from "@/pixi-sageplay/screens/ui/AdjustableDataObject"
+import { AdjustableDataObject } from "@/pixi-sagedit/screens/ui/AdjustableDataObject"
 
 export class DoorEdit extends AdjustableDataObject {
   // "constants"

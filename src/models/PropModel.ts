@@ -8,6 +8,8 @@ export interface PropModel {
   y?: number
   width?: number
   height?: number
+  scale?: number
+  preserve_aspect?: boolean
   pickupable?: boolean
   draggable?: boolean
   single_use?: boolean

@@ -239,6 +239,8 @@
       y: SAGEdit.height / 2,
       width: 256,
       height: 256,
+      scale: 1,
+      preserve_aspect: true,
       pickupable: true,
       visible: true,
     }
@@ -261,6 +263,8 @@
       y: SAGEdit.height / 2,
       width: 256,
       height: 256,
+      scale: 1,
+      preserve_aspect: false,
       playSounds: true,
       visible: true,
     }
@@ -287,6 +291,8 @@
       y: SAGEdit.height / 2,
       width: 256,
       height: 256,
+      scale: 1,
+      preserve_aspect: true,
       visible: true,
     }
     useActorStore().createActor(newActor)

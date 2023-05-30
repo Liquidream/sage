@@ -27,7 +27,7 @@ import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
 import { useActorStore } from "@/stores/ActorStore"
 import { InputEventEmitter } from "../../pixi-sageplay/screens/ui/InputEventEmitter"
-import type { AdjustableDataObject } from "@/pixi-sageplay/screens/ui/AdjustableDataObject"
+import type { AdjustableDataObject } from "@/pixi-sagedit/screens/ui/AdjustableDataObject"
 
 export class SceneScreen extends Container {
   private dialogText!: Text | null
@@ -662,17 +662,27 @@ export class SceneScreen extends Container {
     if (this.draggedResizeObj) {
       // Temp remove interaction to "dragged" Prop
       this.draggedResizeObj.resizeSprite.interactive = false
-      // Update pos
-      this.draggedResizeObj.resizeSprite.x = _e.data.global.x
-      this.draggedResizeObj.resizeSprite.y = _e.data.global.y
-      // Update scale
-      const newWidth = (this.draggedResizeObj.resizeSprite.x - this.draggedResizeObj.data.x) * 2
-      const newHeight = (this.draggedResizeObj.resizeSprite.y - this.draggedResizeObj.data.y) * 2
-      this.draggedResizeObj.updateSelectionSize(newWidth, newHeight)
-      this.draggedResizeObj.sprite.width = newWidth
-      this.draggedResizeObj.sprite.height = newHeight
-      // Check for valid "drop"
-      //this.checkDragCollisions()
+      let newWidth: number
+      let newHeight: number
+      if (this.draggedResizeObj.data.preserve_aspect) {
+        // Update scale
+        const newX = _e.data.global.x
+        newWidth = Math.max((newX - this.draggedResizeObj.data.x) * 2, 50)
+        const newScale = newWidth / this.draggedResizeObj.data.width
+        newHeight = this.draggedResizeObj.data.height * newScale
+        this.draggedResizeObj.updateSelectionSize(newWidth, newHeight)
+        this.draggedResizeObj.sprite.width = newWidth
+        this.draggedResizeObj.sprite.height = newHeight
+      } else {
+        newWidth = (_e.data.global.x - this.draggedResizeObj.data.x) * 2
+        newHeight = (_e.data.global.y - this.draggedResizeObj.data.y) * 2      
+        this.draggedResizeObj.updateSelectionSize(newWidth, newHeight)
+        this.draggedResizeObj.sprite.width = newWidth
+        this.draggedResizeObj.sprite.height = newHeight
+      }
+      // Update resize icon pos
+      this.draggedResizeObj.resizeSprite.x = this.draggedResizeObj.sprite.x + newWidth / 2
+      this.draggedResizeObj.resizeSprite.y = this.draggedResizeObj.sprite.y + newHeight / 2
     }
   }
 
