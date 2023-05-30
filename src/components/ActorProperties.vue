@@ -231,16 +231,34 @@
         const base = new BaseTexture(model.value.image)
         // If previously cached texture, get dimensions immediately
         if (base.valid) {
-          model.value.width = base.width
-          model.value.height = base.height
+          const aspect = base.width / base.height
+          if (base.width > SAGEdit.width - 64) {
+            model.value.width = SAGEdit.width - 64
+            model.value.height = model.value.width / aspect
+          } else if (base.height > SAGEdit.height - 64) {
+            model.value.height = SAGEdit.height - 64
+            model.value.width = model.value.height * aspect
+          } else {
+            model.value.width = base.width
+            model.value.height = base.height
+          }
           model.value.orig_width = base.width
           model.value.orig_height = base.height
         } else {
           // ...else grab dimensions one texture fully loaded
           base.on("loaded", () => {
             if (model.value) {
-              model.value.width = base.width
-              model.value.height = base.height
+              const aspect = base.width / base.height
+              if (base.width > SAGEdit.width - 64) {
+                model.value.width = SAGEdit.width - 64
+                model.value.height = model.value.width / aspect
+              } else if (base.height > SAGEdit.height - 64) {
+                model.value.height = SAGEdit.height - 64
+                model.value.width = model.value.height * aspect
+              } else {
+                model.value.width = base.width
+                model.value.height = base.height
+              }
               model.value.orig_width = base.width
               model.value.orig_height = base.height
             }
