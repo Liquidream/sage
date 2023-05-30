@@ -668,8 +668,8 @@ export class SceneScreen extends Container {
         // Update scale
         const newX = _e.data.global.x
         newWidth = Math.max((newX - this.draggedResizeObj.data.x) * 2, 50)
-        const newScale = newWidth / this.draggedResizeObj.data.width
-        newHeight = this.draggedResizeObj.data.height * newScale
+        const newScale = newWidth / this.draggedResizeObj.data.orig_width
+        newHeight = this.draggedResizeObj.data.orig_height * newScale
         this.draggedResizeObj.updateSelectionSize(newWidth, newHeight)
         this.draggedResizeObj.sprite.width = newWidth
         this.draggedResizeObj.sprite.height = newHeight
@@ -748,8 +748,8 @@ export class SceneScreen extends Container {
       // End Drag+Drop mode
       this.draggedResizeObj.resizing = false
       // Save final pos
-      this.draggedResizeObj.data.width = this.draggedResizeObj.sprite.width
-      this.draggedResizeObj.data.height = this.draggedResizeObj.sprite.height
+      this.draggedResizeObj.data.width = Math.ceil(this.draggedResizeObj.sprite.width)
+      this.draggedResizeObj.data.height = Math.ceil(this.draggedResizeObj.sprite.height)
 
       // Restore interaction to "dragged" sprite
       this.draggedResizeObj.resizeSprite.interactive = true

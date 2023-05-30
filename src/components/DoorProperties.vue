@@ -92,7 +92,14 @@
           label="Width"
           v-model.number="model.width"
           type="number"
+          hide-details
         ></v-text-field>
+        <v-switch
+          label="Keep Aspect?"
+          v-model="model.preserve_aspect"
+          color="info"
+          hide-details
+        ></v-switch>
       </v-col>
       <v-col>
         <v-text-field
@@ -248,12 +255,16 @@
         if (base.valid) {
           model.value.width = base.width
           model.value.height = base.height
+          model.value.orig_width = base.width
+          model.value.orig_height = base.height
         } else {
           // ...else grab dimensions one texture fully loaded
           base.on("loaded", () => {
             if (model.value) {
               model.value.width = base.width
               model.value.height = base.height
+              model.value.orig_width = base.width
+              model.value.orig_height = base.height
             }
           })
         }

@@ -12,6 +12,8 @@ export interface DoorModel {
   y?: number
   width?: number
   height?: number
+  orig_width?: number
+  orig_height?: number
   scale?: number
   preserve_aspect?: boolean
   // in_scene_id?: string

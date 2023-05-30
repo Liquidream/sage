@@ -7,6 +7,8 @@ export interface ActorModel {
   y?: number
   width?: number
   height?: number
+  orig_width?: number
+  orig_height?: number
   scale?: number
   preserve_aspect?: boolean
   image?: string // Poss multiple, for each state?
