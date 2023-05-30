@@ -665,7 +665,7 @@ export class SceneScreen extends Container {
       let newWidth: number
       let newHeight: number
       if (this.draggedResizeObj.data.preserve_aspect) {
-        // Update scale
+        // Update scale (maintain aspect ratio)
         const newX = _e.data.global.x
         newWidth = Math.max((newX - this.draggedResizeObj.data.x) * 2, 50)
         const newScale = newWidth / this.draggedResizeObj.data.orig_width
@@ -674,8 +674,9 @@ export class SceneScreen extends Container {
         this.draggedResizeObj.sprite.width = newWidth
         this.draggedResizeObj.sprite.height = newHeight
       } else {
-        newWidth = (_e.data.global.x - this.draggedResizeObj.data.x) * 2
-        newHeight = (_e.data.global.y - this.draggedResizeObj.data.y) * 2      
+        // Freeform resizing
+        newWidth = Math.max((_e.data.global.x - this.draggedResizeObj.data.x) * 2, 50)
+        newHeight = Math.max((_e.data.global.y - this.draggedResizeObj.data.y) * 2, 50)
         this.draggedResizeObj.updateSelectionSize(newWidth, newHeight)
         this.draggedResizeObj.sprite.width = newWidth
         this.draggedResizeObj.sprite.height = newHeight
