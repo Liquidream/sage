@@ -13,6 +13,8 @@ export interface ActorModel {
   preserve_aspect?: boolean
   image?: string // Poss multiple, for each state?
   image_closeup?: string // Poss multiple, for each state?
+  // closeup_width?: number
+  // closeup_height?: number
   state?: string // e.g. "happy", "dead", etc.
   visible?: boolean
   // in_scene_id?: string

@@ -3,7 +3,7 @@ import JSZip from "jszip"
 import { useSceneStore } from "@/stores/SceneStore"
 import { Constants } from "@/constants"
 import type { SagePlayData } from "@/pixi-sageplay/SagePlayData"
-import { useActorStore } from "@/stores/ActorStore"
+import { useActorStore, type ActorState } from "@/stores/ActorStore"
 import { useDoorStore, type DoorState } from "@/stores/DoorStore"
 import { usePropStore, type PropState } from "@/stores/PropStore"
 import { useWorldStore } from "@/stores/WorldStore"
@@ -131,7 +131,10 @@ export class FileUtils {
     // Doors
     const doorState = FileUtils.cloneState(useDoorStore()) as DoorState
     playData.doorData = FileUtils.exportDoorData(doorState, assetsManifest, zip)
-    playData.actorData = JSON.stringify(useActorStore().$state)
+    // Actors
+    const actorState = FileUtils.cloneState(useActorStore()) as ActorState
+    playData.actorData = FileUtils.exportActorData(actorState, assetsManifest, zip)
+    //playData.actorData = JSON.stringify(useActorStore().$state)
     playData.playerData = JSON.stringify(usePlayerStore().$state)
 
     const playDataJSON = JSON.stringify(playData, null, 4)
@@ -283,6 +286,14 @@ export class FileUtils {
         FileUtils.exportData(imgAssetName, imgDataUri, assets, imgFolder)
         prop.image = imgAssetName
       }
+
+      // Prop.ImageCloseup
+      if (prop.image_closeup) {
+        const imgAssetName = `${prop.id}-image_closeup`
+        const imgDataUri = prop.image_closeup || ""
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, imgFolder)
+        prop.image_closeup = imgAssetName
+      }
     }
 
     return JSON.stringify(propState)
@@ -311,6 +322,39 @@ export class FileUtils {
     }
 
     return JSON.stringify(propState)
+  }
+
+  public static exportActorData(
+    actorState: ActorState,
+    assets: ResolverManifest,
+    zip: JSZip
+  ): string {
+    console.log("Exporting actors to zip...")
+
+    const imgFolder = zip.folder("images")
+    // const sfxFolder = zip.folder("sfx")
+
+    for (const actor of actorState.actors) {
+      // Export image to zip & replace state data with new filename
+
+      // Actor.Image
+      if (actor.image) {
+        const imgAssetName = `${actor.id}-image`
+        const imgDataUri = actor.image || ""
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, imgFolder)
+        actor.image = imgAssetName
+      }
+
+      // Actor.ImageCloseup
+      if (actor.image_closeup) {
+        const imgAssetName = `${actor.id}-image_closeup`
+        const imgDataUri = actor.image_closeup || ""
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, imgFolder)
+        actor.image_closeup = imgAssetName
+      }
+    }
+
+    return JSON.stringify(actorState)
   }
 
   public static urlToPromise(url: string) {
