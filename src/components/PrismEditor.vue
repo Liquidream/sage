@@ -71,8 +71,9 @@
   //const data = reactive({ ...props })
   const emit = defineEmits(["update:modelValue"])
 
+  // Need "code" to be reactive to get changes made in editor
   const code = ref("")
-  // set to initial value
+  // Also need to set to initial value (e.g. on first load)
   code.value = props.modelValue
 
   //--- prev failed attempts -----------------------------------
@@ -85,6 +86,7 @@
   // ------------------------------------------------------------
 
   // Watch prop for changes and replace code editor contents
+  // This seems to cover for cases where incoming data changes (e.g. scene change)
   // (one-way update, as don't want to delay editor by always pushing down)
   // (I'm sure this could be written better to perform the same, perhaps with ":"?)
   // https://stackoverflow.com/a/72661017/574415
@@ -110,7 +112,7 @@
   const onCodeChange = (event) => {
     //debugger
     //console.log("onCodeChange()")
-    code.value = event.target.value
+    //code.value = event.target.value // was unnecessary, as now watching prop
     emit("update:modelValue", event.target.value)
   }
 
