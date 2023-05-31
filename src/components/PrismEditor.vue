@@ -63,7 +63,7 @@
   import "prismjs/components/prism-clike"
   import "prismjs/components/prism-javascript"
   import "prismjs/themes/prism-tomorrow.min.css" // import syntax highlighting styles
-  import { reactive, ref, toRef, toRefs } from "vue"
+  import { reactive, ref, toRef, toRefs, watch } from "vue"
   import { useDisplay } from "vuetify"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
@@ -71,10 +71,27 @@
   //const data = reactive({ ...props })
   const emit = defineEmits(["update:modelValue"])
 
+  const code = ref("")
+  // set to initial value
+  code.value = props.modelValue
+  //const inCode = toRef(props, "modelValue")
+
   // reactive AND synced with props.modelValue (https://stackoverflow.com/a/75298330/574415)
-  const code = toRef(props, "modelValue")
+  //const code = toRef(props, "modelValue")
+
   //const code = ref(props.modelValue)
-  //const code = ref("")
+
+  // Final piece - watch prop for changes and replace code editor contents
+  // (one-way update, as don't want to delay editor by always pushing down)
+  // (I'm sure this could be written better to perform the same, perhaps with ":"?)
+  // https://stackoverflow.com/a/72661017/574415
+  watch(
+    () => props.modelValue,
+    (newValue, oldValue) => {
+      console.log("prop value changed", newValue)
+      code.value = newValue
+    }
+  )
 
   const dialog = ref(false)
   const { mobile } = useDisplay()
@@ -86,8 +103,10 @@
   // code.value = data.modelValue
 
   // listen for code-changes to keep in sync
+  // (small > large editor, and to storage)
   const onCodeChange = (event) => {
     //debugger
+    console.log("onCodeChange()")
     code.value = event.target.value
     emit("update:modelValue", event.target.value)
     //emit("update:modelValue", event.data)
