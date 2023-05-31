@@ -63,16 +63,19 @@
   import "prismjs/components/prism-clike"
   import "prismjs/components/prism-javascript"
   import "prismjs/themes/prism-tomorrow.min.css" // import syntax highlighting styles
-  import { reactive, ref } from "vue"
+  import { reactive, ref, toRef, toRefs } from "vue"
   import { useDisplay } from "vuetify"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
   const props = defineProps(["modelValue", "label"])
-  const data = reactive({ ...props })
+  //const data = reactive({ ...props })
   const emit = defineEmits(["update:modelValue"])
 
-  const code = ref(props.modelValue)
+  // reactive AND synced with props.modelValue (https://stackoverflow.com/a/75298330/574415)
+  const code = toRef(props, "modelValue")
+  //const code = ref(props.modelValue)
   //const code = ref("")
+
   const dialog = ref(false)
   const { mobile } = useDisplay()
 
