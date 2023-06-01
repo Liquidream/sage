@@ -135,14 +135,10 @@ export class SAGE {
     SAGE.invScreen = new InventoryScreen(SAGE.topLayer)
 
     // ...and game actions
-    SAGE.Actions = new Actions()
+    //SAGE.Actions = new Actions()
 
     // ...and dialog
     SAGE.Dialog = new Dialog()
-    // This seems wrong, but not sure how else to expose type at top-level
-    window.DialogChoice = DialogChoice
-    // (Not ideal, would rather expose as "DialogChoice" as shorter)
-    //SAGE.DialogChoice = DialogChoice
 
     // ...and script
     SAGE.Script = new Script()
@@ -152,6 +148,35 @@ export class SAGE {
     SAGE.Sound = new Sound()
     // Load and convert byte64 data to sounds
     this.loadSounds()
+
+    // Expose the SAGE API to the window in order to make it easier to write script
+    // (this will eventually be replaced if/when using Ink scripting, but for now...)
+    this.shortenAPI()
+  }
+
+  private static shortenAPI() {
+    // -------------------------------
+    // Types
+    // -------------------------------
+    // This seems wrong, but not sure how else to expose type at top-level
+    window.World = SAGE.World
+    window.Events = SAGE.Events
+    window.Dialog = SAGE.Dialog
+    window.DialogChoice = DialogChoice
+    window.Script = SAGE.Script
+    window.Sound = SAGE.Sound
+    // (Not ideal, would rather expose as "DialogChoice" as shorter)
+    //SAGE.DialogChoice = DialogChoice
+
+    // -------------------------------
+    // Functions
+    // -------------------------------
+    // window.closeUpOn = (objName) => {
+    //   SAGE.World.currentScene.closeUpOn(objName)
+    // }
+    // window.stopCloseUp = (objName) => {
+    //   SAGE.World.currentScene.stopCloseUp(objName)
+    // }
   }
 
   private static loadSounds() {

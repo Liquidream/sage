@@ -46,6 +46,7 @@ export class Script {
     param2?: any
   ): any {
     try {
+      // TODO: Need to find out how to do this dynamically (not using Actions file!)
       return (<any>SAGE.Actions)[strFunc](param1, param2)
     } catch (e: unknown) {
       if (e instanceof Error) {

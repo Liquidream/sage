@@ -1,3 +1,4 @@
+/*
 import { SAGE } from "./SAGEPlay"
 import type { Door } from "./Door"
 import type { Prop } from "./Prop"
@@ -127,3 +128,4 @@ export class Actions {
     )
   }
 }
+*/
