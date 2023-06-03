@@ -31,6 +31,10 @@ export const useActorStore = defineStore({
       return this.actors.filter((actor) => actor.location_id === scene_id)
     },
 
+    findActorById(id: string): ActorModel {
+      return this.actors.filter((actor) => actor.id === id)[0]
+    },
+
     deleteActor(actorId: string) {
       const index = this.actors.findIndex((item) => item.id === actorId)
       if (index === -1) return

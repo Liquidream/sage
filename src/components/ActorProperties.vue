@@ -44,11 +44,11 @@
     ></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
-    <v-row align="center" >
-      <v-col cols="4">
+    <v-row align="center">
+      <v-col cols="4" align="center">
         <v-menu>
           <template v-slot:activator="{ props }">
-            <v-btn :color="model.col" v-bind="props">{{ model.col }}</v-btn>
+            <v-btn :color="model.col" v-bind="props"></v-btn>
           </template>
           <v-color-picker
             v-model="model.col"
@@ -234,11 +234,16 @@
 
   const swatches = [
     ["#FFFFFF"],
-    ["#FF5252"],
-    ["#FFEA00"],
-    ["#00C853"],
+    ["#FF5722"],
+    ["#FFFF00"],
+    ["#00E676"],
     ["#00E5FF"],
-    //["#2979FF"],
+    // darker
+    // ["#FFFFFF"],
+    // ["#FF5252"],
+    // ["#FFEA00"],
+    // ["#00C853"],
+    // ["#00B0FF"],
   ]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any

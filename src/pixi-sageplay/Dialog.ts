@@ -1,5 +1,6 @@
 import { Container, Graphics, Text, TextStyle } from "pixi.js"
 import { SAGE } from "./SAGEPlay"
+import { useActorStore } from "@/stores/ActorStore"
 
 export class DialogChoice {
   message: string
@@ -33,7 +34,9 @@ export class Dialog {
   BACKGROUND_MARGIN = 20
   CHOICE_MARGIN = 5
 
-  private speakerCols: { [id: string]: string } = {}
+  private actorStore = useActorStore()
+
+  //private speakerCols: { [id: string]: string } = {}
   private dialogContainer!: Container | null
   private dialogBackground!: Graphics | null
   private dialogText!: Text | null
@@ -224,12 +227,19 @@ export class Dialog {
   }
 
   public async say(
-    speaker: string,
+    actorId: string,
     message: string,
-    speakerCol?: string,
     soundName?: string,
     durationInSecs?: number
   ): Promise<void> {
+    let speaker!: string
+    let speakerCol!: string
+    // Get actor details
+    const actor = this.actorStore.findActorById(actorId)
+    if (actor) {
+      speaker = actor.name
+      speakerCol = actor.col
+    }
     // Show dialog for speaker
     return this.showMessageCore({
       type: DialogType.DialogExt,
@@ -240,6 +250,23 @@ export class Dialog {
       durationInSecs: durationInSecs,
     })
   }
+  // public async say(
+  //   speaker: string,
+  //   message: string,
+  //   speakerCol?: string,
+  //   soundName?: string,
+  //   durationInSecs?: number
+  // ): Promise<void> {
+  //   // Show dialog for speaker
+  //   return this.showMessageCore({
+  //     type: DialogType.DialogExt,
+  //     speaker: speaker,
+  //     message: message,
+  //     col: speakerCol,
+  //     soundName: soundName,
+  //     durationInSecs: durationInSecs,
+  //   })
+  // }
 
   public async showMessage(
     message: string,
@@ -309,20 +336,20 @@ export class Dialog {
     // https://bbc.github.io/subtitle-guidelines/
 
     // if both speaker AND col passed...
-    if (options.col && options.speaker) {
-      // ...remember for future use!
-      this.speakerCols[options.speaker.toUpperCase()] = options.col
-    }
+    // if (options.col && options.speaker) {
+    //   // ...remember for future use!
+    //   this.speakerCols[options.speaker.toUpperCase()] = options.col
+    // }
 
     // if speaker col wasn't passed...
     // ...see whether it's been prev defined
-    if (
-      options.col === undefined &&
-      options.speaker &&
-      this.speakerCols[options.speaker.toUpperCase()]
-    ) {
-      options.col = this.speakerCols[options.speaker.toUpperCase()]
-    }
+    // if (
+    //   options.col === undefined &&
+    //   options.speaker &&
+    //   this.speakerCols[options.speaker.toUpperCase()]
+    // ) {
+    //   options.col = this.speakerCols[options.speaker.toUpperCase()]
+    // }
 
     // Subtitle/caption/speech
     const styly: TextStyle = new TextStyle({
