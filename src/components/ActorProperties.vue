@@ -7,8 +7,12 @@
     @click="backToWorldClicked"
     >World</v-btn
   >
-  <v-icon v-if="worldRefs.currSceneId.value !== ''" icon="mdi-chevron-right"></v-icon>
-  <v-btn v-if="worldRefs.currSceneId.value !== ''"
+  <v-icon
+    v-if="worldRefs.currSceneId.value !== ''"
+    icon="mdi-chevron-right"
+  ></v-icon>
+  <v-btn
+    v-if="worldRefs.currSceneId.value !== ''"
     variant="plain"
     size="small"
     prepend-icon="mdi-filmstrip-box"
@@ -39,6 +43,21 @@
       dirty
     ></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
+
+    <v-menu>
+      <template v-slot:activator="{ props }">
+        <v-btn :color="model.col" v-bind="props">Actor Color</v-btn>
+      </template>
+      <v-color-picker
+        v-model="model.col"
+        hide-canvas
+        hide-inputs
+        hide-sliders
+        :swatches="swatches"
+        show-swatches
+        class="mx-auto"
+      ></v-color-picker>
+    </v-menu>
 
     <v-row align="center" class="mb-0">
       <v-col cols="4">
@@ -167,9 +186,7 @@
       <span v-if="worldRefs.currSceneId.value !== ''">
         Remove Actor From Scene
       </span>
-      <span v-else="worldRefs.currSceneId.value !== ''">
-        Remove Actor
-      </span>
+      <span v-else="worldRefs.currSceneId.value !== ''"> Remove Actor </span>
     </v-btn>
   </v-form>
 </template>
@@ -210,6 +227,13 @@
     { deep: true }
   )
 
+  const swatches = [
+    ["#FF0000"],
+    ["#FFFF00"],
+    ["#00FF00"],
+    ["#00FFFF"],
+    ["#0000FF"],
+  ]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any
   //let imageData: any = ""
@@ -305,7 +329,7 @@
   }
 
   const removeActorClicked = () => {
-    // TODO: Remove Actor from scene - don't delete, 
+    // TODO: Remove Actor from scene - don't delete,
     //       as likely to have lots of scripts associated!
     model.value.location_id = ""
     SAGEdit.Events.emit("actorRemoved", model.value)
