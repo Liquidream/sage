@@ -44,20 +44,25 @@
     ></v-text-field>
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
-    <v-menu>
-      <template v-slot:activator="{ props }">
-        <v-btn :color="model.col" v-bind="props">Actor Color</v-btn>
-      </template>
-      <v-color-picker
-        v-model="model.col"
-        hide-canvas
-        hide-inputs
-        hide-sliders
-        :swatches="swatches"
-        show-swatches
-        class="mx-auto"
-      ></v-color-picker>
-    </v-menu>
+    <v-row align="center" >
+      <v-col cols="4">
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn :color="model.col" v-bind="props">{{ model.col }}</v-btn>
+          </template>
+          <v-color-picker
+            v-model="model.col"
+            hide-canvas
+            hide-inputs
+            hide-sliders
+            :swatches="swatches"
+            show-swatches
+            class="mx-auto"
+          ></v-color-picker>
+        </v-menu>
+      </v-col>
+      <v-col class="pl-5 text-medium-emphasis">Actor Colour</v-col>
+    </v-row>
 
     <v-row align="center" class="mb-0">
       <v-col cols="4">
@@ -228,11 +233,12 @@
   )
 
   const swatches = [
-    ["#FF0000"],
-    ["#FFFF00"],
-    ["#00FF00"],
-    ["#00FFFF"],
-    ["#0000FF"],
+    ["#FFFFFF"],
+    ["#FF5252"],
+    ["#FFEA00"],
+    ["#00C853"],
+    ["#00E5FF"],
+    //["#2979FF"],
   ]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any
