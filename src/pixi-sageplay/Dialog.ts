@@ -166,7 +166,7 @@ export class Dialog {
             )
           }
         }
-        // Remove "used" choice
+        // Remove "used" choice (unless "sticky")
         const index = this.dialogChoices?.findIndex(
           (dChoice) => dChoice.message === choice.message
         )
