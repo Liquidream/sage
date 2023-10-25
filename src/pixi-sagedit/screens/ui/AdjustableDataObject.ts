@@ -2,7 +2,7 @@ import type { ActorModel } from "@/models/ActorModel"
 import type { DoorModel } from "@/models/DoorModel"
 import type { PropModel } from "@/models/PropModel"
 import { Graphics, Sprite } from "pixi.js"
-import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter"
+import { InputEventEmitter } from "@/pixi-sageplay/screens/ui/InputEventEmitter"
 import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
 export class AdjustableDataObject {
