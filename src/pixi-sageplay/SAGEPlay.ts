@@ -10,6 +10,8 @@ import { InventoryScreen } from "./screens/ui/InventoryPanel"
 import { UI_Overlay } from "./screens/ui/UI_Overlay"
 import { playAssets } from "./playAssets"
 
+import { Story, Compiler } from "inkjs"
+
 //import gamedataJSON from "./gamedata.json"
 //const gamedata: IWorldData = (<unknown>gamedataJSON) as IWorldData
 
@@ -47,11 +49,15 @@ export class SAGE {
 
   public static World: World
   public static Dialog: Dialog
-  public static Actions: Actions
+  //public static Actions: Actions
   public static Script: Script
   public static Events: Events
   public static Sound: Sound
   public static UI_Overlay: UI_Overlay
+
+  // Initialise InkJS (this might not be the right place...)
+  private static inkStory: InstanceType<typeof Story>
+  private static inkCompiler: InstanceType<typeof Compiler>
 
   // public static invScreen: InventoryScreen;
   public static get width(): number {
@@ -152,6 +158,40 @@ export class SAGE {
     // Expose the SAGE API to the window in order to make it easier to write script
     // (this will eventually be replaced if/when using Ink scripting, but for now...)
     this.shortenAPI()
+
+    // Ink test
+    // SAGE.inkStory = new Story(storyJson)
+    // SAGE.continueStory()
+    // // Auto-select Stagecoach branch/knot
+    // SAGE.inkStory.ChooseChoiceIndex(0)
+    // SAGE.continueStory()
+
+    fetch("story.json")
+      .then(function (response) {
+        return response.text()
+      })
+      .then(function (storyContent) {
+        SAGE.inkStory = new Story(storyContent)
+        SAGE.continueStory()
+
+        // HACK: Auto-select Stagecoach branch/knot
+        SAGE.inkStory.ChooseChoiceIndex(0)
+        SAGE.continueStory()
+      })
+  }
+
+  private static continueStory() {
+    debugger;
+    // Generate story text - loop through available content
+    while (SAGE.inkStory.canContinue) {
+      // Get ink to generate the next paragraph
+      let paragraphText = SAGE.inkStory.Continue()
+
+      // Create paragraph element
+      console.debug(paragraphText)
+    }
+
+    console.debug(SAGE.inkStory.currentChoices)
   }
 
   private static shortenAPI() {
