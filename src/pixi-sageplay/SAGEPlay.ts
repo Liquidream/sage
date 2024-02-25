@@ -159,19 +159,22 @@ export class SAGE {
     // (this will eventually be replaced if/when using Ink scripting, but for now...)
     this.shortenAPI()
 
-    // Ink test
-    // SAGE.inkStory = new Story(storyJson)
-    // SAGE.continueStory()
-    // // Auto-select Stagecoach branch/knot
-    // SAGE.inkStory.ChooseChoiceIndex(0)
-    // SAGE.continueStory()
-
+    // ...and ink
     fetch("story.json")
       .then(function (response) {
         return response.text()
       })
       .then(function (storyContent) {
         SAGE.inkStory = new Story(storyContent)
+
+        // Setup error handling
+        SAGE.inkStory.onError = (msg, type) => { // https://github.com/y-lohse/inkjs/issues/1033
+          debugger
+          if( type == Ink.ErrorType.Warning )
+              Debug.LogWarning(msg)
+          else
+              Debug.LogError(msg)
+        }
         SAGE.continueStory()
 
         // HACK: Auto-select Stagecoach branch/knot
