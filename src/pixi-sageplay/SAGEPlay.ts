@@ -177,8 +177,8 @@ export class SAGE {
         SAGE.continueStory()
 
         // HACK: Auto-select Stagecoach branch/knot
-        SAGE.inkStory.ChooseChoiceIndex(0)
-        SAGE.continueStory()
+        // SAGE.inkStory.ChooseChoiceIndex(0)
+        // SAGE.continueStory()
       })
   }
 
@@ -190,11 +190,29 @@ export class SAGE {
       let paragraphText = SAGE.inkStory.Continue()
 
       // Create paragraph element
-      console.debug(paragraphText)
-      await SAGE.Dialog.say("", paragraphText ?? "")
+      //console.debug(paragraphText)
+      if (paragraphText) {
+        await SAGE.Dialog.say("", paragraphText)
+      }
     }
 
-    console.debug(SAGE.inkStory.currentChoices)
+    // Dialog choices..?
+    if (SAGE.inkStory.currentChoices.length > 0) {
+      debugger
+      console.debug(SAGE.inkStory.currentChoices)
+      const dialogChoices: DialogChoice[] = []
+      for (const choice of SAGE.inkStory.currentChoices) {
+        dialogChoices.push(
+          new DialogChoice(choice.text, async () => {
+            SAGE.inkStory.ChooseChoiceIndex(choice.index)
+            await SAGE.Dialog.end()
+            SAGE.inkStory.Continue()
+          })
+        )
+      }
+
+      await SAGE.Dialog.showChoices(dialogChoices)
+    }
   }
 
   private static shortenAPI() {
