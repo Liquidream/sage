@@ -11,6 +11,7 @@ import { UI_Overlay } from "./screens/ui/UI_Overlay"
 import { playAssets } from "./playAssets"
 
 import { Story, Compiler } from "inkjs"
+import { ErrorType } from "inkjs/engine/Error"
 
 //import gamedataJSON from "./gamedata.json"
 //const gamedata: IWorldData = (<unknown>gamedataJSON) as IWorldData
@@ -170,10 +171,8 @@ export class SAGE {
         // Setup error handling
         SAGE.inkStory.onError = (msg, type) => { // https://github.com/y-lohse/inkjs/issues/1033
           debugger
-          if( type == Ink.ErrorType.Warning )
-              Debug.LogWarning(msg)
-          else
-              Debug.LogError(msg)
+          if (type == ErrorType.Warning) console.warn(msg)
+          else console.error(msg)
         }
         SAGE.continueStory()
 
@@ -183,7 +182,7 @@ export class SAGE {
       })
   }
 
-  private static continueStory() {
+  private static async continueStory() {
     debugger;
     // Generate story text - loop through available content
     while (SAGE.inkStory.canContinue) {
@@ -192,6 +191,7 @@ export class SAGE {
 
       // Create paragraph element
       console.debug(paragraphText)
+      await SAGE.Dialog.say("", paragraphText ?? "")
     }
 
     console.debug(SAGE.inkStory.currentChoices)
