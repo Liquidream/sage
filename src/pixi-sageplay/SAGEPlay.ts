@@ -170,7 +170,6 @@ export class SAGE {
 
         // Setup error handling
         SAGE.inkStory.onError = (msg, type) => { // https://github.com/y-lohse/inkjs/issues/1033
-          debugger
           if (type == ErrorType.Warning) console.warn(msg)
           else console.error(msg)
         }
@@ -183,32 +182,42 @@ export class SAGE {
   }
 
   private static async continueStory() {
-    debugger;
     // Generate story text - loop through available content
     while (SAGE.inkStory.canContinue) {
       // Get ink to generate the next paragraph
       let paragraphText = SAGE.inkStory.Continue()
+      if (paragraphText == null) {
+        break // No more story text (for now)
+      }
+      // ----------------------------------
+      // Parse current story line...
+      //
       // remove trailing line break (likely to be present)
-      if (paragraphText?.endsWith("\n")) {
+      if (paragraphText.endsWith("\n")) {
         paragraphText = paragraphText.slice(0, -2)
       }
+      // Actor specified?
+      let actorId = ""
+      if (paragraphText.indexOf(": ") > 0) {
+        const dialogArray = paragraphText.split(": ")
+        actorId = dialogArray[0]
+        paragraphText = dialogArray[1]
+      }
+      // -----------------------------------
 
-      // Create paragraph element
       //console.debug(paragraphText)
       if (paragraphText) {
-        await SAGE.Dialog.say("", paragraphText)
+        await SAGE.Dialog.say(actorId, paragraphText)
       }
     }
 
     // Dialog choices..?
     if (SAGE.inkStory.currentChoices.length > 0) {
-      debugger
       console.debug(SAGE.inkStory.currentChoices)
       const dialogChoices: DialogChoice[] = []
       for (const choice of SAGE.inkStory.currentChoices) {
         dialogChoices.push(
           new DialogChoice(choice.text, async () => {
-            debugger
             SAGE.inkStory.ChooseChoiceIndex(choice.index)
             SAGE.Dialog.end()
             SAGE.continueStory()
