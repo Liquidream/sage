@@ -78,6 +78,7 @@ export class Dialog {
     choiceList: Array<DialogChoice>,
     options?: { col?: string; suppressChoiceSelectRepeat?: boolean }
   ): Promise<void> {
+    debugger
     // Are we already displaying something?
     if (this.dialogBackground) {
       // clear existing message

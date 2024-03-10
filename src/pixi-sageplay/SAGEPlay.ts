@@ -188,6 +188,10 @@ export class SAGE {
     while (SAGE.inkStory.canContinue) {
       // Get ink to generate the next paragraph
       let paragraphText = SAGE.inkStory.Continue()
+      // remove trailing line break (likely to be present)
+      if (paragraphText?.endsWith("\n")) {
+        paragraphText = paragraphText.slice(0, -2)
+      }
 
       // Create paragraph element
       //console.debug(paragraphText)
@@ -204,9 +208,10 @@ export class SAGE {
       for (const choice of SAGE.inkStory.currentChoices) {
         dialogChoices.push(
           new DialogChoice(choice.text, async () => {
+            debugger
             SAGE.inkStory.ChooseChoiceIndex(choice.index)
-            await SAGE.Dialog.end()
-            SAGE.inkStory.Continue()
+            SAGE.Dialog.end()
+            SAGE.continueStory()
           })
         )
       }
