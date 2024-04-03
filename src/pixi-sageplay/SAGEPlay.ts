@@ -173,13 +173,14 @@ export class SAGE {
           if (type == ErrorType.Warning) console.warn(msg)
           else console.error(msg)
         }
-        // Initial story step to get initial choices
+
+        // Performn a story "step" to get initial choices
         SAGE.inkStory.Continue()
         //SAGE.continueStory()
 
         // HACK: Auto-select starting branch/knot
-         SAGE.inkStory.ChooseChoiceIndex(2)
-         SAGE.continueStory()
+        SAGE.inkStory.ChooseChoiceIndex(2)
+        SAGE.continueStory()
       })
   }
 
