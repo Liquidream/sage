@@ -179,7 +179,7 @@ export class SAGE {
         //SAGE.continueStory()
 
         // HACK: Auto-select starting branch/knot
-        SAGE.inkStory.ChooseChoiceIndex(2)
+        SAGE.inkStory.ChooseChoiceIndex(3)
         SAGE.continueStory()
       })
   }

@@ -178,7 +178,8 @@ export class Actor {
       //SAGE.Script.safeExecFunc(this.model.on_interact)
       
       // v2 - ink method
-      SAGE.inkStory.ChoosePathString("Prisoner.main_jail")
+      SAGE.inkStory.ChoosePathString(this.model.id + ".start")
+      //SAGE.inkStory.ChoosePathString("Prisoner.main_jail")
       SAGE.continueStory()
       return
     }
