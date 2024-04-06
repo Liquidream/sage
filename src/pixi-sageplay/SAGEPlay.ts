@@ -126,7 +126,7 @@ export class SAGE {
     SAGE.topLayer.removeChildren()
   }
 
-  public static loadWorld(): void {
+  public static async loadWorld(): void {
     // Initialise UI
     SAGE.UI_Overlay = new UI_Overlay(SAGE.topLayer)
 
@@ -161,7 +161,7 @@ export class SAGE {
     this.shortenAPI()
 
     // ...and ink
-    fetch("story.json")
+    await fetch("story.json")
       .then(function (response) {
         return response.text()
       })
@@ -179,58 +179,79 @@ export class SAGE {
         //SAGE.continueStory()
 
         // HACK: Auto-select starting branch/knot
-        SAGE.inkStory.ChooseChoiceIndex(3)
-        SAGE.continueStory()
+        //SAGE.inkStory.ChooseChoiceIndex(3)
+        //SAGE.continueStory()
       })
+
+      console.debug("<<<<<<<<<<<<<<<")
   }
 
-  private static async continueStory() {
-    // Generate story text - loop through available content
-    while (SAGE.inkStory.canContinue) {
-      // Get ink to generate the next paragraph
-      let paragraphText = SAGE.inkStory.Continue()
-      if (paragraphText == null) {
-        break // No more story text (for now)
-      }
-      // ----------------------------------
-      // Parse current story line...
-      //
-      // remove trailing line break (likely to be present)
-      if (paragraphText.endsWith("\n")) {
-        paragraphText = paragraphText.slice(0, -2)
-      }
-      // Actor specified?
-      let actorId = ""
-      if (paragraphText.indexOf(": ") > 0) {
-        const dialogArray = paragraphText.split(": ")
-        actorId = dialogArray[0]
-        paragraphText = dialogArray[1]
-      }
-      // -----------------------------------
-
-      //console.debug(paragraphText)
-      if (paragraphText) {
-        await SAGE.Dialog.say(actorId, paragraphText)
-      }
+  /**
+   * Continues the ink story (if it can)
+   */
+  public static async chooseStoryPath(path: string) {
+    try {
+      SAGE.inkStory.ChoosePathString(path)
+      //SAGE.inkStory.ChoosePathString("Prisoner.main_jail")
+      SAGE.continueStory()
+    } catch (error) {
+      console.error(`>>> Error choosing story path (${path}): ` + error)
     }
+  }
 
-    // Dialog choices..?
-    if (SAGE.inkStory.currentChoices.length > 0) {
-      console.debug(SAGE.inkStory.currentChoices)
-      const dialogChoices: DialogChoice[] = []
-      for (const choice of SAGE.inkStory.currentChoices) {
-        dialogChoices.push(
-          new DialogChoice(choice.text, async () => {
-            SAGE.inkStory.ChooseChoiceIndex(choice.index)
-            SAGE.Dialog.end()
-            SAGE.continueStory()
-          })
-        )
+  /**
+   * Continues the ink story (if it can)
+   */
+  public static async continueStory() {
+    try {
+      // Generate story text - loop through available content
+      while (SAGE.inkStory.canContinue) {
+        // Get ink to generate the next paragraph
+        let paragraphText = SAGE.inkStory.Continue()
+        if (paragraphText == null) {
+          break // No more story text (for now)
+        }
+        // ----------------------------------
+        // Parse current story line...
+        //
+        // remove trailing line break (likely to be present)
+        paragraphText = paragraphText.trim()
+        // Actor specified?
+        let actorId = ""
+        if (paragraphText.indexOf(": ") > 0) {
+          const dialogArray = paragraphText.split(": ")
+          actorId = dialogArray[0]
+          paragraphText = dialogArray[1]
+        }
+        // -----------------------------------
+
+        //console.debug(paragraphText)
+        if (paragraphText) {
+          console.debug(paragraphText)
+          await SAGE.Dialog.say(actorId, paragraphText)
+        }
       }
 
-      await SAGE.Dialog.showChoices(dialogChoices, {
-        suppressChoiceSelectRepeat: true, // Let ink syntax handle this!
-      })
+      // Dialog choices..?
+      if (SAGE.inkStory.currentChoices.length > 0) {
+        console.debug(SAGE.inkStory.currentChoices)
+        const dialogChoices: DialogChoice[] = []
+        for (const choice of SAGE.inkStory.currentChoices) {
+          dialogChoices.push(
+            new DialogChoice(choice.text, async () => {
+              SAGE.inkStory.ChooseChoiceIndex(choice.index)
+              SAGE.Dialog.end()
+              SAGE.continueStory()
+            })
+          )
+        }
+
+        await SAGE.Dialog.showChoices(dialogChoices, {
+          suppressChoiceSelectRepeat: true, // Let ink syntax handle this!
+        })
+      }
+    } catch (error) {
+      console.error(">>> Error choosing story path: " + error)
     }
   }
 

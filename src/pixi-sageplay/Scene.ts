@@ -163,10 +163,21 @@ export class Scene implements SceneModel {
     // DEBUG
     //console.log(SAGE.World.serialize());
 
+    // v1 - JS method
     // Run any OnEnter action?
-    if (this.on_enter) {
-      SAGE.Script.safeExecFunc(this.on_enter)
-    }
+    // if (this.on_enter) {
+    //   SAGE.Script.safeExecFunc(this.on_enter)
+    // }
+
+    // v2 - ink method
+    // SAGE.inkStory.ResolvePath
+    // SAGE.inkStory.ChoosePathString
+    //try {
+      SAGE.chooseStoryPath(this.sceneModel.id + ".start")
+      //SAGE.continueStory()
+    // } catch (error) {
+    //   //console.error()
+    // }
   }
 
   teardown() {

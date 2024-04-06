@@ -85,14 +85,14 @@ export class LoaderScreen extends Container {
     this.loaderBarFill.scale.x = progressRatio
   }
 
-  private gameLoaded() {
+  private async gameLoaded() {
     console.log("gameLoaded()...")
     // Remove loading bar
     this.removeChild(this.loaderBar)
 
     if (SAGE.enableFullscreen) this.showStartButton()
     else {
-      SAGE.loadWorld()
+      await SAGE.loadWorld()
       SAGE.startGame()
     }
   }
