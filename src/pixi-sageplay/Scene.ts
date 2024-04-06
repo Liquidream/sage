@@ -146,10 +146,15 @@ export class Scene implements SceneModel {
     // Create and switch to new "screen"
     this.screen = new SceneScreen(this)
 
+    const onComplete = () => {
+      SAGE.chooseStoryPath(this.sceneModel.id + ".start")
+    }
+
     if (!skipFade) {
-      SAGE.changeScreenFade(this.screen)
+      SAGE.changeScreenFade(this.screen, onComplete)
     } else {
       SAGE.changeScreen(this.screen)
+      onComplete()
     }
 
     // Remember the new scene
@@ -173,7 +178,7 @@ export class Scene implements SceneModel {
     // SAGE.inkStory.ResolvePath
     // SAGE.inkStory.ChoosePathString
     //try {
-      SAGE.chooseStoryPath(this.sceneModel.id + ".start")
+      //SAGE.chooseStoryPath(this.sceneModel.id + ".start")
       //SAGE.continueStory()
     // } catch (error) {
     //   //console.error()

@@ -399,7 +399,7 @@ export class SAGE {
     //SAGE._app.stage.addChild(SAGE.currentScreen);
   }
 
-  public static changeScreenFade(newScene: IScreen) {
+  public static changeScreenFade(newScene: IScreen, func: () => void) {
     const oldScreen = SAGE.currentScreen
     // Fade out
     // https://github.com/pixijs/pixijs/issues/4334
@@ -416,7 +416,8 @@ export class SAGE {
     const fadeInTween = new Tween(fadeInAlphaMatrix)
       .to({ alpha: 1 }, 500)
       .onComplete(() => {
-        // Add the new one
+        // call callback function when fade complete
+        func()
         // Remove and destroy old scene... if we had one..
         if (oldScreen) {
           // remove all event subscriptions
