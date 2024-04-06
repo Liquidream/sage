@@ -228,7 +228,9 @@ export class SAGE {
         )
       }
 
-      await SAGE.Dialog.showChoices(dialogChoices)
+      await SAGE.Dialog.showChoices(dialogChoices, {
+        suppressChoiceSelectRepeat: true, // Let ink syntax handle this!
+      })
     }
   }
 
