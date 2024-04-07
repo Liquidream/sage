@@ -49,6 +49,9 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
       }),
       replace({
         __DATE__: new Date().toISOString(),
+        // Added below due to following compiler warning:
+        // "'preventAssignment' currently defaults to false. It is recommended to set this option to `true`, as the next major version will default this option to `true`."
+        preventAssignment: true,
       }),
       mkcert(),
     ],
