@@ -12,6 +12,7 @@ import { playAssets } from "./playAssets"
 
 import { Story, Compiler } from "inkjs"
 import { ErrorType } from "inkjs/engine/Error"
+import { Scene } from "./Scene"
 
 //import gamedataJSON from "./gamedata.json"
 //const gamedata: IWorldData = (<unknown>gamedataJSON) as IWorldData
@@ -171,8 +172,26 @@ export class SAGE {
         // Setup error handling
         SAGE.inkStory.onError = (msg, type) => { // https://github.com/y-lohse/inkjs/issues/1033
           if (type == ErrorType.Warning) console.warn(msg)
-          else console.error(msg)
+            else console.error(msg)
         }
+
+        // Listen for branch changes (+change scene accordingly)
+        // SAGE.inkStory.onChoosePathString = (path: string, arg2: any[]) => {
+        //   debugger
+        //   let targetSceneId = path
+        //   if (targetSceneId.includes(".")) {
+        //     targetSceneId = targetSceneId.split(".")[0]
+        //   }
+        //   // Find the target scene
+        //   const targetSceneModel = SAGE.World.scenes.find((obj) => {
+        //     // TODO: prob have to parse this, as could contain a stitch, etc.
+        //     return obj.id === targetSceneId //this.model.target_scene_id
+        //   })
+        //   if (targetSceneModel) {
+        //     const targetScene: Scene = new Scene(targetSceneModel)
+        //     targetScene.show()
+        //   }
+        // }
 
         // Performn a story "step" to get initial choices
         SAGE.inkStory.Continue()
@@ -223,11 +242,34 @@ export class SAGE {
           actorId = dialogArray[0]
           paragraphText = dialogArray[1]
         }
+        // do we have tags?
+        if (SAGE.inkStory.currentTags?.length > 0) {
+          const tags = SAGE.inkStory.currentTags
+          console.debug(tags)
+          //tags.forEach(async (tag, index) => {
+          for (let tag of tags) {
+            // -------------------------------------------
+            // Scene?
+            if (tag.startsWith("scene")) {
+              // Get target scene name (same as knot - but Ink doesn't expose that!)
+              let target_scene_id = tag.split(":")[1]
+              const targetSceneModel = SAGE.World.getSceneById(target_scene_id)
+              if (targetSceneModel) {
+                const targetScene: Scene = new Scene(targetSceneModel)
+                console.debug("::1")
+                await targetScene.show()
+                console.debug("::2")
+              }
+            }
+            // TODO: other tags...
+          }
+        }
         // -----------------------------------
 
         //console.debug(paragraphText)
         if (paragraphText) {
           console.debug(paragraphText)
+          console.debug("::3")
           await SAGE.Dialog.say(actorId, paragraphText)
         }
       }
@@ -399,46 +441,49 @@ export class SAGE {
     //SAGE._app.stage.addChild(SAGE.currentScreen);
   }
 
-  public static changeScreenFade(newScene: IScreen, func: () => void) {
-    const oldScreen = SAGE.currentScreen
-    // Fade out
-    // https://github.com/pixijs/pixijs/issues/4334
-    const fadeOutAlphaMatrix = new filters.AlphaFilter()
-    fadeOutAlphaMatrix.alpha = 1
-    oldScreen.filters = [fadeOutAlphaMatrix]
+  public static changeScreenFade(newScene: IScreen): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const oldScreen = SAGE.currentScreen
+      // Fade out
+      // https://github.com/pixijs/pixijs/issues/4334
+      const fadeOutAlphaMatrix = new filters.AlphaFilter()
+      fadeOutAlphaMatrix.alpha = 1
+      oldScreen.filters = [fadeOutAlphaMatrix]
 
-    const fadeOutTween = new Tween(fadeOutAlphaMatrix).to({ alpha: 0 }, 500)
+      const fadeOutTween = new Tween(fadeOutAlphaMatrix).to({ alpha: 0 }, 500)
 
-    // Fade in
-    const fadeInAlphaMatrix = new filters.AlphaFilter()
-    fadeInAlphaMatrix.alpha = 0
-    newScene.filters = [fadeInAlphaMatrix]
-    const fadeInTween = new Tween(fadeInAlphaMatrix)
-      .to({ alpha: 1 }, 500)
-      .onComplete(() => {
-        // call callback function when fade complete
-        func()
-        // Remove and destroy old scene... if we had one..
-        if (oldScreen) {
-          // remove all event subscriptions
-          SAGE.backLayer.removeChild(oldScreen)
-          //SAGE.midLayer.removeChild(oldScreen)
-          //SAGE._app.stage.removeChild(oldScreen);
-          oldScreen.destroy()
-        }
-      })
+      // Fade in
+      const fadeInAlphaMatrix = new filters.AlphaFilter()
+      fadeInAlphaMatrix.alpha = 0
+      newScene.filters = [fadeInAlphaMatrix]
+      const fadeInTween = new Tween(fadeInAlphaMatrix)
+        .to({ alpha: 1 }, 500)
+        .onComplete(() => {
+          // call callback function when fade complete
+          //func()
+          // Remove and destroy old scene... if we had one..
+          if (oldScreen) {
+            // remove all event subscriptions
+            SAGE.backLayer.removeChild(oldScreen)
+            //SAGE.midLayer.removeChild(oldScreen)
+            //SAGE._app.stage.removeChild(oldScreen);
+            oldScreen.destroy()
+          }
+          resolve()
+        })
 
-    SAGE.currentScreen = newScene
-    // Moved main gameplay to back layer
-    // so we can blur/lock it when talking/examining objects
-    SAGE.backLayer.addChild(newScene)
-    //SAGE.midLayer.addChild(newScene)
+      SAGE.currentScreen = newScene
+      // Moved main gameplay to back layer
+      // so we can blur/lock it when talking/examining objects
+      SAGE.backLayer.addChild(newScene)
+      //SAGE.midLayer.addChild(newScene)
 
-    // Start the fade out+in animation
-    fadeOutTween.chain(fadeInTween).start()
+      // Start the fade out+in animation
+      fadeOutTween.chain(fadeInTween).start()
 
-    // If inventory open, auto-collapse it
-    if (SAGE.invScreen.isOpen) SAGE.invScreen.close()
+      // If inventory open, auto-collapse it
+      if (SAGE.invScreen.isOpen) SAGE.invScreen.close()
+    })
   }
 
   // Conditional console.log (if debugMode is true)

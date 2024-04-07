@@ -63,20 +63,24 @@ export class World implements IWorldData {
       SAGE.Script.safeExecFunc(this.on_start)
     }
 
+    // V1 ------------------------------------
     // Find the starting scene...
-    const startingSceneData = this.scenes.find((obj) => {
-      return obj.id === this.startingSceneId
-    })
+    // const startingSceneData = this.scenes.find((obj) => {
+    //   return obj.id === this.startingSceneId
+    // })
 
-    // ...and show it
-    if (startingSceneData) {
-      const startingScene: Scene.Scene = new Scene.Scene(startingSceneData)
-      startingScene.show()
-    } else {
-      SAGE.Dialog.showErrorMessage(
-        `Error: Scene with ID '${this.startingSceneId}' is invalid`
-      )
-    }
+    // // ...and show it
+    // if (startingSceneData) {
+    //   const startingScene: Scene.Scene = new Scene.Scene(startingSceneData)
+    //   startingScene.show()
+    // } else {
+    //   SAGE.Dialog.showErrorMessage(
+    //     `Error: Scene with ID '${this.startingSceneId}' is invalid`
+    //   )
+    // }
+
+    // V2 ink ------------------------------
+    SAGE.chooseStoryPath(this.startingSceneId + ".start")
   }
 
   stop() {

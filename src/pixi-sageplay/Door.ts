@@ -165,27 +165,30 @@ export class Door {
       }
     }
 
+    // V1 ---------------------------------------
     // TODO: Find the target door/scene
-    // const first: {id: number; language: string;} | undefined
-    const targetSceneModel = SAGE.World.scenes.find((obj) => {
-      return obj.id === this.model.target_scene_id
-    })
+    // const targetSceneModel = SAGE.World.scenes.find((obj) => {
+    //   return obj.id === this.model.target_scene_id
+    // })
 
-    if (targetSceneModel) {
-      // Change scene to the game scene!
-      const targetScene: Scene = new Scene(targetSceneModel)
-      targetScene.show()
-    }
-    // Custom action?
-    else if (this.model.on_action) {
-      SAGE.Script.safeExecFunc(this.model.on_action)
-      //Function(this.model.on_action)()
-      return
-    } else {
-      SAGE.Dialog.showErrorMessage(
-        `Error: Scene with ID '${this.model.target_scene_id}' is invalid`
-      )
-    }
+    // if (targetSceneModel) {
+    //   // Change scene to the game scene!
+    //   const targetScene: Scene = new Scene(targetSceneModel)
+    //   targetScene.show()
+    // }
+    // // Custom action?
+    // else if (this.model.on_action) {
+    //   SAGE.Script.safeExecFunc(this.model.on_action)
+    //   //Function(this.model.on_action)()
+    //   return
+    // } else {
+    //   SAGE.Dialog.showErrorMessage(
+    //     `Error: Scene with ID '${this.model.target_scene_id}' is invalid`
+    //   )
+    // }
+
+    // V2 ink ---------------------------------------
+    SAGE.chooseStoryPath(this.model.target_scene_id + ".start")
   }
 
   private onSecondaryAction() {

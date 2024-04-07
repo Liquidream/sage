@@ -137,7 +137,7 @@ export class Scene implements SceneModel {
    *
    * (also destroy/release previous screen objects)
    */
-  show(skipFade = false) {
+  public async show(skipFade = false) {
     console.log("in Scene.show()...")
     // Teardown current scene
     SAGE.World.currentScene?.teardown()
@@ -146,15 +146,15 @@ export class Scene implements SceneModel {
     // Create and switch to new "screen"
     this.screen = new SceneScreen(this)
 
-    const onComplete = () => {
-      SAGE.chooseStoryPath(this.sceneModel.id + ".start")
-    }
+    // const onComplete = () => {
+    //   SAGE.chooseStoryPath(this.sceneModel.id + ".start")
+    // }
 
     if (!skipFade) {
-      SAGE.changeScreenFade(this.screen, onComplete)
+      await SAGE.changeScreenFade(this.screen) //, onComplete)
     } else {
       SAGE.changeScreen(this.screen)
-      onComplete()
+      //onComplete()
     }
 
     // Remember the new scene
@@ -174,12 +174,12 @@ export class Scene implements SceneModel {
     //   SAGE.Script.safeExecFunc(this.on_enter)
     // }
 
-    // v2 - ink method
+    // v2 - ink method (see above "onComplete")
     // SAGE.inkStory.ResolvePath
     // SAGE.inkStory.ChoosePathString
-    //try {
-      //SAGE.chooseStoryPath(this.sceneModel.id + ".start")
-      //SAGE.continueStory()
+    // try {
+    //   SAGE.chooseStoryPath(this.sceneModel.id + ".start")
+    //   //SAGE.continueStory() // DONT DO THIS (already being done in above call)
     // } catch (error) {
     //   //console.error()
     // }
