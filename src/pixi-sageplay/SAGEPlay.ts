@@ -250,18 +250,26 @@ export class SAGE {
           for (let tag of tags) {
             // -------------------------------------------
             // Scene?
-            if (tag.startsWith("scene")) {
+            if (tag.toUpperCase().startsWith("SCENE")) {
               // Get target scene name (same as knot - but Ink doesn't expose that!)
-              let target_scene_id = tag.split(":")[1]
+              let target_scene_id = tag.split(":")[1].trim()
               const targetSceneModel = SAGE.World.getSceneById(target_scene_id)
               if (targetSceneModel) {
                 const targetScene: Scene = new Scene(targetSceneModel)
-                console.debug("::1")
                 await targetScene.show()
-                console.debug("::2")
               }
             }
             // TODO: other tags...
+            if (tag.startsWith("CLOSEUP_ON")) {
+              // Get target actor/object name
+              let target_id = tag.split(":")[1].trim()
+              SAGE.World.currentScene.closeUpOn(target_id)
+            }
+            if (tag.startsWith("CLOSEUP_OFF")) {
+              // Get target actor/object name
+              let target_id = tag.split(":")[1].trim()
+              SAGE.World.currentScene.stopCloseUp(target_id)
+            }
           }
         }
         // -----------------------------------
@@ -269,7 +277,6 @@ export class SAGE {
         //console.debug(paragraphText)
         if (paragraphText) {
           console.debug(paragraphText)
-          console.debug("::3")
           await SAGE.Dialog.say(actorId, paragraphText)
         }
       }
