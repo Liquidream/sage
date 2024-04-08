@@ -8,4 +8,5 @@ export interface SagePlayData {
   doorData: string
   actorData: string
   playerData: string
+  scriptData: string
 }

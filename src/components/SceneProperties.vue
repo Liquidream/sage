@@ -92,12 +92,16 @@
     <v-divider />
 
     <v-list-subheader
-      ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader
+      ><v-icon icon="mdi-script-text"></v-icon> Script</v-list-subheader
     >
+    <prism-editor label="On Enter" v-model="model.script" />
+    
+    <!-- <v-list-subheader
+      ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader
+    > -->
+    <!-- <prism-editor label="On Enter" v-model="model.on_enter" />
 
-    <prism-editor label="On Enter" v-model="model.on_enter" />
-
-    <prism-editor label="On Exit" v-model="model.on_exit" />
+    <prism-editor label="On Exit" v-model="model.on_exit" /> -->
 
     <v-divider />
 

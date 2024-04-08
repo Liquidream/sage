@@ -162,47 +162,41 @@ export class SAGE {
     this.shortenAPI()
 
     // ...and ink
-    await fetch("story.json")
-      .then(function (response) {
-        return response.text()
-      })
-      .then(function (storyContent) {
-        SAGE.inkStory = new Story(storyContent)
+    // ------------------------------------------
+    // v1 - loading from compiled .json
+    // ------------------------------------------
+    // await fetch("story.json")
+    //   .then(function (response) {
+    //     return response.text()
+    //   })
+    //   .then(function (storyContent) {
+    //     SAGE.inkStory = new Story(storyContent)
 
-        // Setup error handling
-        SAGE.inkStory.onError = (msg, type) => { // https://github.com/y-lohse/inkjs/issues/1033
-          if (type == ErrorType.Warning) console.warn(msg)
-            else console.error(msg)
-        }
+    //  ... (setup onError, continueStory() etc.)
 
-        // Listen for branch changes (+change scene accordingly)
-        // SAGE.inkStory.onChoosePathString = (path: string, arg2: any[]) => {
-        //   debugger
-        //   let targetSceneId = path
-        //   if (targetSceneId.includes(".")) {
-        //     targetSceneId = targetSceneId.split(".")[0]
-        //   }
-        //   // Find the target scene
-        //   const targetSceneModel = SAGE.World.scenes.find((obj) => {
-        //     // TODO: prob have to parse this, as could contain a stitch, etc.
-        //     return obj.id === targetSceneId //this.model.target_scene_id
-        //   })
-        //   if (targetSceneModel) {
-        //     const targetScene: Scene = new Scene(targetSceneModel)
-        //     targetScene.show()
-        //   }
-        // }
+    // HACK: Auto-select starting branch/knot
+    //  SAGE.inkStory.ChooseChoiceIndex(3)
+    //  SAGE.continueStory()
+    //})
 
-        // Performn a story "step" to get initial choices
-        SAGE.inkStory.Continue()
-        //SAGE.continueStory()
+    // --------------------------------------------
+    // v2 - loading + compiling script from editor
+    // --------------------------------------------
+    const sagePlayData = window.opener.sagePlayData
+    const scriptData = sagePlayData.scriptData
+    SAGE.inkStory = new Compiler(scriptData).Compile()
+    // story is an inkjs.Story that can be played right away
 
-        // HACK: Auto-select starting branch/knot
-        //SAGE.inkStory.ChooseChoiceIndex(3)
-        //SAGE.continueStory()
-      })
+    // Setup error handling
+    SAGE.inkStory.onError = (msg, type) => { // https://github.com/y-lohse/inkjs/issues/1033
+      if (type == ErrorType.Warning) console.warn(msg)
+      else console.error(msg)
+    }
 
-      console.debug("<<<<<<<<<<<<<<<")
+    // Performn a story "step" to get initial choices
+    SAGE.inkStory.Continue()
+
+    console.debug("<<<<<<<<<<<<<<<")
   }
 
   /**

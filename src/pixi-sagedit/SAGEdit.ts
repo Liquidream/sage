@@ -203,11 +203,53 @@ export class SAGEdit {
     playData.doorData = JSON.stringify(useDoorStore().$state)
     playData.actorData = JSON.stringify(useActorStore().$state)
     playData.playerData = JSON.stringify(usePlayerStore().$state)
+    playData.scriptData = SAGEdit.generateInkScript()
 
     window.sagePlayData = playData
 
     // Launch "Play" window
     window.open("?mode=play", "sagePlay")
+  }
+
+  /**
+   * Loop through all the game elements and build a single ink script (+compile it)
+   */
+  private static generateInkScript(): string {
+    let inkScript = ""
+    for (const scene of useSceneStore().scenes) {
+      inkScript += `
+=== ${scene.id} ===
+# SCENE: ${scene.id}
+{! }
+`
+      if (scene.script) {
+        inkScript += scene.script
+      } else {
+        inkScript += "-> DONE\n"
+      }
+      inkScript += "\n"
+    }
+
+    for (const actor of useActorStore().actors) {
+      inkScript += `
+=== ${actor.id} ===
+
+= init
+// TODO: setup stuff here?
+- ->DONE
+
+= start
+`
+      if (actor.script) {
+        inkScript += actor.script
+      } else {
+        inkScript += "-> DONE\n"
+      }
+      inkScript += "\n"
+    }
+
+    //debugger
+    return inkScript
   }
 
   // This update will be called by a pixi ticker and tell the scene that a tick happened

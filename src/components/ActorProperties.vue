@@ -179,11 +179,17 @@
     <scene-select label="Location" v-model="model.location_id" />
 
     <v-divider />
+
     <v-list-subheader
+      ><v-icon icon="mdi-script-text"></v-icon> Script</v-list-subheader
+    >
+    <prism-editor label="On Action" v-model="model.script" />
+
+    <!-- <v-list-subheader
       ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
     >
 
-    <prism-editor label="On Action" v-model="model.on_interact" />
+    <prism-editor label="On Action" v-model="model.on_interact" /> -->
 
     <v-divider />
 
