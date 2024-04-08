@@ -114,12 +114,14 @@ export class SceneScreen extends Container implements IScreen {
       //debugger
       const blurTween = new Tween(this.blurFilter).to({ blur: 8 }, 500).start()
       // Disable interaction for backdrop/scene objects while in close-up mode
-      SAGE.backLayer.interactiveChildren = false
+      // (UPDATE: Not necessary now, as we have a 2nd blocker for close-ups, which still detects clicks)
+      //SAGE.backLayer.interactiveChildren = false
     } else {
       // Remove blur (re-focus backdrop)
       const blurTween = new Tween(this.blurFilter).to({ blur: 0 }, 500).start()
       // Restore interaction for backdrop/scene objects
-      SAGE.backLayer.interactiveChildren = true
+      // (UPDATE: Not necessary now, as we have a 2nd blocker for close-ups, which still detects clicks
+      //SAGE.backLayer.interactiveChildren = true
     }
   }
 

@@ -188,7 +188,8 @@ export class Door {
     // }
 
     // V2 ink ---------------------------------------
-    SAGE.chooseStoryPath(this.model.target_scene_id + ".start")
+    SAGE.chooseStoryPath(this.model.target_scene_id + "")
+    //SAGE.chooseStoryPath(this.model.target_scene_id + ".start")
   }
 
   private onSecondaryAction() {

@@ -98,15 +98,18 @@ export class Dialog {
 
       // Add "blocker" for all other input except dialog choices
       // (only do this once, per dialog choice menu init)
-      this.blocker = new Graphics()
-      this.blocker.beginFill(0xccc, 0.00000000000001) // "Invisible"
-      this.blocker.drawRect(0, 0, SAGE.width, SAGE.height)
-      this.blocker.interactive = true
-      this.blocker.on("pointertap", () => {
-        SAGE.debugLog("Blocker was clicked/tapped")
-        SAGE.Events.emit("sceneinteract")
-      })
-      SAGE.app.stage.addChild(this.blocker)
+      this.setInteractionBlocker(true)
+      // this.blocker = new Graphics()
+      // this.blocker.beginFill(0x0)
+      // this.blocker.alpha = 0.6
+      // //this.blocker.beginFill(0xccc, 0.00000000000001) // "Invisible"
+      // this.blocker.drawRect(0, 0, SAGE.width, SAGE.height)
+      // this.blocker.interactive = true
+      // this.blocker.on("pointertap", () => {
+      //   SAGE.debugLog("Blocker was clicked/tapped")
+      //   SAGE.Events.emit("sceneinteract")
+      // })
+      // SAGE.app.stage.addChild(this.blocker)
     }
 
     // Create interactive Pixi Text objects + handle events!
@@ -218,14 +221,18 @@ export class Dialog {
     // Tidy up any existing message on display
     this.clearMessage()
     // Tidy up any dialog choice related content
-    if (this.blocker) {
-      this.blocker.interactive = false
-      SAGE.app.stage.removeChild(this.blocker)
-      this.blocker.destroy()
-      this.blocker = null
-    }
+    this.setInteractionBlocker(false)
+    // if (this.blocker) {
+    //   this.blocker.interactive = false
+    //   SAGE.app.stage.removeChild(this.blocker)
+    //   this.blocker.destroy()
+    //   this.blocker = null
+    // }
     this._dialogChoices = null
   }
+
+
+  
 
   public async say(
     actorId: string,
@@ -453,6 +460,33 @@ export class Dialog {
       await SAGE.Script.wait(0.5)
     }
   }
+
+  // Annoyingly, functionality needs to be duplicated as dialog/close-up are not mutually exclusive
+  private setInteractionBlocker(isEnabled: boolean) {
+    if (isEnabled) {
+      // Add "blocker" for all other input except dialog choices
+      // (only do this once, per dialog choice menu init)
+      this.blocker = new Graphics()
+      //this.blocker.beginFill(0x0) // "Visible"...
+      //this.blocker.alpha = 0.6    //  (...for debugging)
+      this.blocker.beginFill(0xccc, 0.00000000000001) // "Invisible"
+      this.blocker.drawRect(0, 0, SAGE.width, SAGE.height)
+      this.blocker.interactive = true
+      this.blocker.on("pointertap", () => {
+        SAGE.debugLog("Blocker was clicked/tapped")
+        SAGE.Events.emit("sceneinteract")
+      })
+      SAGE.app.stage.addChild(this.blocker)
+    } else {
+      if (this.blocker) {
+        this.blocker.interactive = false
+        SAGE.app.stage.removeChild(this.blocker)
+        this.blocker.destroy()
+        this.blocker = null
+      }
+    }
+  }
+
 }
 
 export enum DialogType {

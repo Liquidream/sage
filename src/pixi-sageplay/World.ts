@@ -80,7 +80,8 @@ export class World implements IWorldData {
     // }
 
     // V2 ink ------------------------------
-    SAGE.chooseStoryPath(this.startingSceneId + ".start")
+    SAGE.chooseStoryPath(this.startingSceneId + "")
+    //SAGE.chooseStoryPath(this.startingSceneId + ".start")
   }
 
   stop() {

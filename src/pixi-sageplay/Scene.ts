@@ -11,6 +11,7 @@ import { useDoorStore } from "@/stores/DoorStore"
 import { useWorldStore } from "@/stores/WorldStore"
 import type { ActorModel } from "@/models/ActorModel"
 import { useActorStore } from "@/stores/ActorStore"
+import { Graphics } from "pixi.js"
 
 export class Scene implements SceneModel {
   //implements ISceneData, Serialization<Scene> {
@@ -24,6 +25,7 @@ export class Scene implements SceneModel {
 
   private sceneModel: SceneModel
   private screen!: SceneScreen
+  private blocker!: Graphics | null
 
   // public id = ""
   public get id(): string {
@@ -92,6 +94,9 @@ export class Scene implements SceneModel {
     if (actorModel !== undefined) {
       this.screen.setDepthOfField(true)
       this.screen.addActorCloseup(actorModel, true)
+      // Add "blocker" for all other input except dialog choices
+      // (only do this once, per dialog choice menu init)
+      this.setInteractionBlocker(true)
       return
     }
     // ok, try Prop then
@@ -125,6 +130,7 @@ export class Scene implements SceneModel {
       this.screen.propsCloseups.length == 0
     ) {
         this.screen.setDepthOfField(false)
+        this.setInteractionBlocker(false)
       }
   }
 
@@ -191,6 +197,32 @@ export class Scene implements SceneModel {
       SAGE.Script.safeExecFunc(this.on_exit)
     }
     if (this.firstVisit) this.firstVisit = false
+  }
+
+  // Annoyingly, functionality needs to be duplicated as dialog/close-up are not mutually exclusive
+  private setInteractionBlocker(isEnabled: boolean) {
+    if (isEnabled) {
+      // Add "blocker" for all other input except dialog choices
+      // (only do this once, per dialog choice menu init)
+      this.blocker = new Graphics()
+      //this.blocker.beginFill(0x0) // "Visible"...
+      //this.blocker.alpha = 0.6    //  (...for debugging)
+      this.blocker.beginFill(0xccc, 0.00000000000001) // "Invisible"
+      this.blocker.drawRect(0, 0, SAGE.width, SAGE.height)
+      this.blocker.interactive = true
+      this.blocker.on("pointertap", () => {
+        SAGE.debugLog("Blocker was clicked/tapped")
+        SAGE.Events.emit("sceneinteract")
+      })
+      SAGE.app.stage.addChild(this.blocker)
+    } else {
+      if (this.blocker) {
+        this.blocker.interactive = false
+        SAGE.app.stage.removeChild(this.blocker)
+        this.blocker.destroy()
+        this.blocker = null
+      }
+    }
   }
 
   addPropModel(propModel: PropModel) {
