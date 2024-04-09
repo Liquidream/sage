@@ -17,6 +17,7 @@
     "@pixi/sound": "^5.1.2",
     "@rollup/plugin-replace": "^5.0.2",
     "@vueuse/core": "^10.1.2",
+    "ace-builds": "^1.32.9",
     "file-saver": "^2.0.5",
     "inkjs": "^2.2.2",
     "jszip": "^3.10.1",
@@ -32,6 +33,7 @@
     "vite-plugin-mkcert": "^1.15.0",
     "vue": "^3.2.47",
     "vue-prism-editor": "^2.0.0-alpha.2",
+    "vue3-ace-editor": "^2.2.4",
     "vuetify": "^3.2.1",
     "webfontloader": "^1.6.28"
   },

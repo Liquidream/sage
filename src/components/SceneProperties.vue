@@ -94,6 +94,13 @@
     <v-list-subheader
       ><v-icon icon="mdi-script-text"></v-icon> Script</v-list-subheader
     >
+    <v-ace-editor
+      v-model:value="model.script"
+      lang="ink"
+      theme="monokai"
+      min-lines="3"
+      max-lines="15"
+    />
     <prism-editor label="On Enter" v-model="model.script" />
     
     <!-- <v-list-subheader
@@ -120,7 +127,16 @@
   import { useDoorStore } from "@/stores/DoorStore"
   import { storeToRefs } from "pinia"
   import ImageFileInputBtn from "./ImageFileInputBtn.vue"
+  
   import PrismEditor from "./PrismEditor.vue"
+
+  import { VAceEditor } from "vue3-ace-editor"
+  //const { InkMode } = require("./assets/ace/ace-ink.js")
+  import "../assets/acesrc/mode-ink"
+  import "../assets/acesrc/theme-monokai"
+  //import "ace-builds/src-noconflict/mode-javascript"    // Load the language definition file used below
+  //import "ace-builds/src-noconflict/theme-monokai" // Load the theme definition file used below
+
 
   const worldStore = useWorldStore()
   const worldRefs = storeToRefs(worldStore)
