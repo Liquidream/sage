@@ -98,8 +98,15 @@
       v-model:value="model.script"
       lang="ink"
       theme="monokai"
-      min-lines="3"
-      max-lines="15"
+      :options="{ 
+        minLines: 3, 
+        maxLines: 15, 
+        showGutter: false, 
+        highlightActiveLine: false,
+        highlightGutterLine: false,
+        highlightIndentGuides: false,
+        highlightSelectedWord: false
+      }"
     />
     <prism-editor label="On Enter" v-model="model.script" />
     
