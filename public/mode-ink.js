@@ -1,127 +1,5 @@
-ace.define("ace/mode/jsdoc_comment_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(require, exports, module){"use strict";
-var oop = require("../lib/oop");
-var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
-var JsDocCommentHighlightRules = function () {
-    this.$rules = {
-        "start": [
-            {
-                token: ["comment.doc.tag", "comment.doc.text", "lparen.doc"],
-                regex: "(@(?:param|member|typedef|property|namespace|var|const|callback))(\\s*)({)",
-                push: [
-                    {
-                        token: "lparen.doc",
-                        regex: "{",
-                        push: [
-                            {
-                                include: "doc-syntax"
-                            }, {
-                                token: "rparen.doc",
-                                regex: "}|(?=$)",
-                                next: "pop"
-                            }
-                        ]
-                    }, {
-                        token: ["rparen.doc", "text.doc", "variable.parameter.doc", "lparen.doc", "variable.parameter.doc", "rparen.doc"],
-                        regex: /(})(\s*)(?:([\w=:\/\.]+)|(?:(\[)([\w=:\/\.]+)(\])))/,
-                        next: "pop"
-                    }, {
-                        token: "rparen.doc",
-                        regex: "}|(?=$)",
-                        next: "pop"
-                    }, {
-                        include: "doc-syntax"
-                    }, {
-                        defaultToken: "text.doc"
-                    }
-                ]
-            }, {
-                token: ["comment.doc.tag", "text.doc", "lparen.doc"],
-                regex: "(@(?:returns?|yields|type|this|suppress|public|protected|private|package|modifies|"
-                    + "implements|external|exception|throws|enum|define|extends))(\\s*)({)",
-                push: [
-                    {
-                        token: "lparen.doc",
-                        regex: "{",
-                        push: [
-                            {
-                                include: "doc-syntax"
-                            }, {
-                                token: "rparen.doc",
-                                regex: "}|(?=$)",
-                                next: "pop"
-                            }
-                        ]
-                    }, {
-                        token: "rparen.doc",
-                        regex: "}|(?=$)",
-                        next: "pop"
-                    }, {
-                        include: "doc-syntax"
-                    }, {
-                        defaultToken: "text.doc"
-                    }
-                ]
-            }, {
-                token: ["comment.doc.tag", "text.doc", "variable.parameter.doc"],
-                regex: "(@(?:alias|memberof|instance|module|name|lends|namespace|external|this|template|"
-                    + "requires|param|implements|function|extends|typedef|mixes|constructor|var|"
-                    + "memberof\\!|event|listens|exports|class|constructs|interface|emits|fires|"
-                    + "throws|const|callback|borrows|augments))(\\s+)(\\w[\\w#\.:\/~\"\\-]*)?"
-            }, {
-                token: ["comment.doc.tag", "text.doc", "variable.parameter.doc"],
-                regex: "(@method)(\\s+)(\\w[\\w\.\\(\\)]*)"
-            }, {
-                token: "comment.doc.tag",
-                regex: "@access\\s+(?:private|public|protected)"
-            }, {
-                token: "comment.doc.tag",
-                regex: "@kind\\s+(?:class|constant|event|external|file|function|member|mixin|module|namespace|typedef)"
-            }, {
-                token: "comment.doc.tag",
-                regex: "@\\w+(?=\\s|$)"
-            },
-            JsDocCommentHighlightRules.getTagRule(),
-            {
-                defaultToken: "comment.doc",
-                caseInsensitive: true
-            }
-        ],
-        "doc-syntax": [{
-                token: "operator.doc",
-                regex: /[|:]/
-            }, {
-                token: "paren.doc",
-                regex: /[\[\]]/
-            }]
-    };
-    this.normalizeRules();
-};
-oop.inherits(JsDocCommentHighlightRules, TextHighlightRules);
-JsDocCommentHighlightRules.getTagRule = function (start) {
-    return {
-        token: "comment.doc.tag.storage.type",
-        regex: "\\b(?:TODO|FIXME|XXX|HACK)\\b"
-    };
-};
-JsDocCommentHighlightRules.getStartRule = function (start) {
-    return {
-        token: "comment.doc", // doc comment
-        regex: "\\/\\*(?=\\*)",
-        next: start
-    };
-};
-JsDocCommentHighlightRules.getEndRule = function (start) {
-    return {
-        token: "comment.doc", // closing comment
-        regex: "\\*\\/",
-        next: start
-    };
-};
-exports.JsDocCommentHighlightRules = JsDocCommentHighlightRules;
 
-});
-
-// === INK higlight rules (from line 10 - )
+// === INK higlight rules (from line 10 - 540)
 
 //===
 
@@ -132,7 +10,7 @@ var DocCommentHighlightRules = require("./jsdoc_comment_highlight_rules").JsDocC
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var identifierRe = "[a-zA-Z\\$_\u00a1-\uffff][a-zA-Z\\d\\$_\u00a1-\uffff]*";
 
-var inkHighlightRules = function (options) {
+var inkHighlightRules = function () {
     // regexp must not have capturing parentheses. Use (?:) instead.
     // regexps are ordered -> the first match is used
 
@@ -1558,10 +1436,29 @@ oop.inherits(inkFoldingRules, BaseFoldMode);
 
 }).call(inkFoldingRules.prototype);
 
+// Provide Ink Keywords for Auto-Completer
+const keywords = [
+  "CONST",
+  "CHOICE_COUNT",
+  "DONE",
+  "END",
+  "INCLUDE",
+  "LIST",
+  "LIST_ALL",
+  "LIST_COUNT",
+  "LIST_INVERT",
+  "LIST_MAX",
+  "LIST_MIN",
+  "LIST_RANGE",
+  "LIST_VALUE",
+  "LIST_RANDOM",
+  "TODO",
+  "TURNS_SINCE",
+  "VAR",
+];
 
 
-
-var InkMode = function(instructionPrefix) {
+var Mode = function(instructionPrefix) {
 
   // With instruction prefix
   if( instructionPrefix ) {
@@ -1596,7 +1493,7 @@ var InkMode = function(instructionPrefix) {
   
   this.foldingRules = new inkFoldingRules();
 };
-oop.inherits(InkMode, TextMode);
+oop.inherits(Mode, TextMode);
 
 (function() {
   // configure comment start/end characters
@@ -1612,9 +1509,9 @@ oop.inherits(InkMode, TextMode);
           meta: "Ink Keyword",
       }));
   }
-}).call(InkMode.prototype);
+}).call(Mode.prototype);
 
-exports.Mode = InkMode;
+exports.Mode = Mode;
 
 });                (function() {
                     ace.require(["ace/mode/ink"], function(m) {

@@ -134,6 +134,9 @@
   //const { InkMode } = require("./assets/ace/ace-ink.js")
   import "../assets/acesrc/mode-ink"
   import "../assets/acesrc/theme-monokai"
+  import "../assets/acesrc/inkTheme.css"
+
+
   //import "ace-builds/src-noconflict/mode-javascript"    // Load the language definition file used below
   //import "ace-builds/src-noconflict/theme-monokai" // Load the theme definition file used below
 
