@@ -94,7 +94,7 @@
     <v-list-subheader
       ><v-icon icon="mdi-script-text"></v-icon> Script</v-list-subheader
     >
-    <v-ace-editor
+    <!-- <v-ace-editor
       v-model:value="model.script"
       lang="ink"
       theme="monokai"
@@ -108,7 +108,9 @@
         highlightSelectedWord: false,
         wrap: true,
       }"
-    />
+    /> -->
+    <AceEditor label="On Enter" v-model="model.script" />
+
     <prism-editor label="On Enter" v-model="model.script" />
 
     <!-- <v-list-subheader
@@ -136,14 +138,15 @@
   import { storeToRefs } from "pinia"
   import ImageFileInputBtn from "./ImageFileInputBtn.vue"
   
+  // import { VAceEditor } from "vue3-ace-editor"
+  // import "../assets/acesrc/mode-ink"
+  // import "../assets/acesrc/theme-monokai"
+  // import "../assets/acesrc/inkTheme.css"
+  import AceEditor from "./AceEditor.vue"
+
   import PrismEditor from "./PrismEditor.vue"
 
-  import { VAceEditor } from "vue3-ace-editor"
-  //const { InkMode } = require("./assets/ace/ace-ink.js")
-  import "../assets/acesrc/mode-ink"
-  import "../assets/acesrc/theme-monokai"
-  import "../assets/acesrc/inkTheme.css"
-import type { wrap } from "module"
+
 
 
   //import "ace-builds/src-noconflict/mode-javascript"    // Load the language definition file used below
