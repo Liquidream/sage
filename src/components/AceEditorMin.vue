@@ -36,8 +36,7 @@
             theme="monokai"
             class="my-editor"
             :options="{
-              minLines: 3,
-              maxLines: 15,
+              minLines: 5,
               highlightActiveLine: true,
               highlightGutterLine: true,
               highlightIndentGuides: false,
@@ -65,7 +64,7 @@
     class="my-editor"
     style="height: 300px"
     :options="{
-      minLines: 3,
+      minLines: 5,
       maxPixelHeight: 240,
       showGutter: false,
       wrap: true,
