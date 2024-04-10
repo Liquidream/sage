@@ -99,17 +99,18 @@
       lang="ink"
       theme="monokai"
       :options="{ 
-        minLines: 3, 
-        maxLines: 15, 
-        showGutter: false, 
+        minLines: 3,
+        maxLines: 15,
+        showGutter: false,
         highlightActiveLine: false,
         highlightGutterLine: false,
         highlightIndentGuides: false,
-        highlightSelectedWord: false
+        highlightSelectedWord: false,
+        wrap: true,
       }"
     />
     <prism-editor label="On Enter" v-model="model.script" />
-    
+
     <!-- <v-list-subheader
       ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader
     > -->
@@ -142,6 +143,7 @@
   import "../assets/acesrc/mode-ink"
   import "../assets/acesrc/theme-monokai"
   import "../assets/acesrc/inkTheme.css"
+import type { wrap } from "module"
 
 
   //import "ace-builds/src-noconflict/mode-javascript"    // Load the language definition file used below
