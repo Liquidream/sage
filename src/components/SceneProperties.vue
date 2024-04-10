@@ -108,8 +108,25 @@
         highlightSelectedWord: false,
         wrap: true,
       }"
+    />
+----
+    <v-ace-editor
+      v-model:value="model.script"
+      lang="ink"
+      theme="monokai"
+      :options="{ 
+        minLines: 3,
+        maxLines: 6,
+        showGutter: false,
+        highlightActiveLine: false,
+        highlightGutterLine: false,
+        highlightIndentGuides: false,
+        highlightSelectedWord: false,
+        wrap: true,
+      }"
     /> -->
-    <AceEditor label="On Enter" v-model="model.script" />
+
+    <AceEditorMin label="On Enter" v-model="model.script" />
 
     <prism-editor label="On Enter" v-model="model.script" />
 
@@ -142,7 +159,9 @@
   // import "../assets/acesrc/mode-ink"
   // import "../assets/acesrc/theme-monokai"
   // import "../assets/acesrc/inkTheme.css"
-  import AceEditor from "./AceEditor.vue"
+
+  //import AceEditor from "./AceEditor.vue"
+  import AceEditorMin from "./AceEditorMin.vue"
 
   import PrismEditor from "./PrismEditor.vue"
 
