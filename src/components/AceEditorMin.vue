@@ -34,14 +34,14 @@
             v-model:value="model"
             lang="ink"
             theme="monokai"
+            class="my-editor"
             :options="{
               minLines: 3,
               maxLines: 15,
-              showGutter: false,
-              highlightActiveLine: false,
-              highlightGutterLine: false,
+              highlightActiveLine: true,
+              highlightGutterLine: true,
               highlightIndentGuides: false,
-              highlightSelectedWord: false,
+              highlightSelectedWord: true,
               wrap: true,
             }"
           />
@@ -58,23 +58,19 @@
       </v-dialog>
     </v-col>
   </v-row>
-  dsfsdf
   <v-ace-editor
     v-model:value="model"
     lang="ink"
     theme="monokai"
+    class="my-editor"
+    style="height: 300px"
     :options="{
-      minLines: 10,
+      minLines: 3,
       maxPixelHeight: 240,
       showGutter: false,
-      highlightActiveLine: false,
-      highlightGutterLine: false,
-      highlightIndentGuides: false,
-      highlightSelectedWord: false,
       wrap: true,
     }"
   />
-  khkjhkjhikjhkjh
   <!-- <prism-editor
     class="my-editor mb-3"
     style="max-height: 240px"

@@ -128,7 +128,7 @@
 
     <AceEditorMin label="On Enter" v-model="model.script" />
 
-    <prism-editor label="On Enter" v-model="model.script" />
+    <!-- <prism-editor label="On Enter" v-model="model.script" /> -->
 
     <!-- <v-list-subheader
       ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader
