@@ -89,8 +89,8 @@
 
 <script setup lang="ts">
   import { VAceEditor } from "vue3-ace-editor"
+  import "ace-builds/src-noconflict/theme-monokai"
   import "../assets/ace-ink-mode/mode-ink"
-  import "../assets/acesrc/theme-monokai"
   import "../assets/ace-ink-mode/inkTheme.css"
 
   import { ref, watch } from "vue"
