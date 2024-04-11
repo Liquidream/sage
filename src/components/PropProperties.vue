@@ -172,12 +172,14 @@
 
     <v-divider />
     <v-list-subheader
-      ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
+      ><v-icon icon="mdi-script-text"></v-icon> Script</v-list-subheader
     >
 
-    <prism-editor label="On Action" v-model="model.on_action" />
+    <AceEditorMin label="On Action" v-model="model.script" />
 
-    <prism-editor label="On Use" v-model="model.on_use" />
+    <!-- <prism-editor label="On Action" v-model="model.on_action" />
+
+    <prism-editor label="On Use" v-model="model.on_use" /> -->
 
     <v-divider />
 
@@ -197,8 +199,10 @@
   import SceneSelect from "./SceneSelect.vue"
   import type { PropModel } from "@/models/PropModel"
   import { usePropStore } from "@/stores/PropStore"
-  import PrismEditor from "./PrismEditor.vue"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
+
+  import AceEditorMin from "./AceEditorMin.vue"
+  // import PrismEditor from "./PrismEditor.vue"
 
   const worldStore = useWorldStore()
   const propStore = usePropStore()

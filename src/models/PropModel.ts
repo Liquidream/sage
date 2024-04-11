@@ -22,6 +22,8 @@ export interface PropModel {
 
   // Key-Value pair to allow properties to be set/read
   property?: { [key: string]: string | number | boolean }
+  // ink scripting
+  script?: string
   // Poss. event actions
   on_action?: string
   on_use?: string

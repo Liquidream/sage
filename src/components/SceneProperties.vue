@@ -94,22 +94,7 @@
     <v-list-subheader
       ><v-icon icon="mdi-script-text"></v-icon> Script</v-list-subheader
     >
-    <!-- <v-ace-editor
-      v-model:value="model.script"
-      lang="ink"
-      theme="monokai"
-      :options="{ 
-        minLines: 3,
-        maxLines: 15,
-        showGutter: false,
-        highlightActiveLine: false,
-        highlightGutterLine: false,
-        highlightIndentGuides: false,
-        highlightSelectedWord: false,
-        wrap: true,
-      }"
-    />
-----
+    <!-- 
     <v-ace-editor
       v-model:value="model.script"
       lang="ink"
@@ -154,7 +139,7 @@
   import { useDoorStore } from "@/stores/DoorStore"
   import { storeToRefs } from "pinia"
   import ImageFileInputBtn from "./ImageFileInputBtn.vue"
-  
+
   // import { VAceEditor } from "vue3-ace-editor"
   // import "../assets/acesrc/mode-ink"
   // import "../assets/acesrc/theme-monokai"
@@ -163,7 +148,7 @@
   //import AceEditor from "./AceEditor.vue"
   import AceEditorMin from "./AceEditorMin.vue"
 
-  import PrismEditor from "./PrismEditor.vue"
+  //import PrismEditor from "./PrismEditor.vue"
 
 
 

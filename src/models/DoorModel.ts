@@ -23,6 +23,8 @@ export interface DoorModel {
   // Key-Value pair to allow properties to be set/read
   property?: { [key: string]: string | number | boolean }
   playSounds?: boolean
+  // ink scripting
+  script?: string
   // Poss. event actions
   on_action?: string
 }

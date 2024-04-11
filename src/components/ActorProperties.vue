@@ -183,7 +183,10 @@
     <v-list-subheader
       ><v-icon icon="mdi-script-text"></v-icon> Script</v-list-subheader
     >
-    <prism-editor label="On Action" v-model="model.script" />
+
+    <AceEditorMin label="On Action" v-model="model.script" />
+
+    <!-- <prism-editor label="On Action" v-model="model.script" /> -->
 
     <!-- <v-list-subheader
       ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
@@ -210,10 +213,12 @@
   import { BaseTexture } from "pixi.js"
   import SceneSelect from "./SceneSelect.vue"
   import type { PropModel } from "@/models/PropModel"
-  import PrismEditor from "./PrismEditor.vue"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
   import { useActorStore } from "@/stores/ActorStore"
   import type { ActorModel } from "@/models/ActorModel"
+
+  import AceEditorMin from "./AceEditorMin.vue"
+  //import PrismEditor from "./PrismEditor.vue"
 
   const worldStore = useWorldStore()
   const actorStore = useActorStore()

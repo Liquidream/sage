@@ -44,6 +44,7 @@
               highlightIndentGuides: false,
               highlightSelectedWord: true,
               printMargin: false,
+              showLineNumbers: true,
               wrap: true,
             }"
           />
@@ -66,10 +67,10 @@
     lang="ink"
     theme="monokai"
     class="my-editor"
-    style="height: 300px"
+    style="min-height: 50px"
     :options="{
       minLines: 5,
-      maxPixelHeight: 240,
+      maxLines: 10,
       showGutter: false,
       printMargin: false,
       wrap: true,

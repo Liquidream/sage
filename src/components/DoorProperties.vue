@@ -176,10 +176,12 @@
 
     <v-divider />
     <v-list-subheader
-      ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
+      ><v-icon icon="mdi-script-text"></v-icon> Script</v-list-subheader
     >
 
-    <prism-editor label="On Action" v-model="model.on_action" />
+    <AceEditorMin label="On Action" v-model="model.script" />
+
+    <!-- <prism-editor label="On Action" v-model="model.on_action" /> -->
 
     <!-- <v-textarea
       name="on_action"
@@ -207,8 +209,10 @@
   import PropSelect from "./PropSelect.vue"
   import { useDoorStore } from "@/stores/DoorStore"
   import { BaseTexture } from "pixi.js"
-  import PrismEditor from "./PrismEditor.vue"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
+
+  import AceEditorMin from "./AceEditorMin.vue"
+  //import PrismEditor from "./PrismEditor.vue"
 
   const worldStore = useWorldStore()
   const doorStore = useDoorStore()
