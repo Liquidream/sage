@@ -31,17 +31,20 @@
             >
           </v-toolbar>
           <v-ace-editor
-            :value="modelValue"
+            :value="$props.modelValue"
+            @update:value="debouncedInput($event)"
             lang="ink"
             theme="monokai"
-            :options="{ 
-              minLines: 3,
-              maxLines: 15,
-              showGutter: false,
-              highlightActiveLine: false,
-              highlightGutterLine: false,
+            class="my-editor"
+            :options="{
+              minLines: 5,
+              maxLines: 35,
+              highlightActiveLine: true,
+              highlightGutterLine: true,
               highlightIndentGuides: false,
-              highlightSelectedWord: false,
+              highlightSelectedWord: true,
+              printMargin: false,
+              showLineNumbers: true,
               wrap: true,
             }"
           />
@@ -59,18 +62,17 @@
     </v-col>
   </v-row>
   <v-ace-editor
-    :value="modelValue"
-    @update:value="modelValue=$event; onCodeChange($event)"
+    :value="$props.modelValue"
+    @update:value="debouncedInput($event)"
     lang="ink"
     theme="monokai"
+    class="my-editor"
+    style="min-height: 50px"
     :options="{
-      minLines: 3,
-      maxPixelHeight: 240,
+      minLines: 5,
+      maxLines: 10,
       showGutter: false,
-      highlightActiveLine: false,
-      highlightGutterLine: false,
-      highlightIndentGuides: false,
-      highlightSelectedWord: false,
+      printMargin: false,
       wrap: true,
     }"
   />
@@ -86,14 +88,6 @@
 </template>
 
 <script setup lang="ts">
-  // import Prism Editor
-  //import { PrismEditor } from "vue-prism-editor"
-  //import "vue-prism-editor/dist/prismeditor.min.css" // import the styles somewhere
-  // import highlighting library (you can use any library you want just return html string)
-  // import { highlight, languages } from "prismjs/components/prism-core"
-  // import "prismjs/components/prism-clike"
-  // import "prismjs/components/prism-javascript"
-  // import "prismjs/themes/prism-tomorrow.min.css" // import syntax highlighting styles
   import { VAceEditor } from "vue3-ace-editor"
   import "../assets/acesrc/mode-ink"
   import "../assets/acesrc/theme-monokai"
@@ -103,69 +97,34 @@
   import { useDisplay } from "vuetify"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
-  const props = defineProps(["modelValue", "label"])
-  //const data = reactive({ ...props })
+  import { debounce } from "../utils/Debounce"
+
+  //const model = defineModel()
+  const label = defineModel("label", { required: true })
+
+  const props = defineProps(["modelValue"])
+  // interface Props {
+  //   modelValue?: string
+  //   type: string
+  //   debounce: number
+  // }
+  // const props = withDefaults(defineProps<Props>(), {
+  //   modelValue: "",
+  //   type: "text",
+  //   debounce: 0,
+  // })
   const emit = defineEmits(["update:modelValue"])
-
-  // Need "code" to be reactive to get changes made in editor
-  const code = ref("")
-  // Also need to set to initial value (e.g. on first load)
-  code.value = props.modelValue
-
-  //--- prev failed attempts -----------------------------------
-  //const inCode = toRef(props, "modelValue")
-
-  // reactive AND synced with props.modelValue (https://stackoverflow.com/a/75298330/574415)
-  //const code = toRef(props, "modelValue")
-
-  //const code = ref(props.modelValue)
-  // ------------------------------------------------------------
-
-  // Watch prop for changes and replace code editor contents
-  // This seems to cover for cases where incoming data changes (e.g. scene change)
-  // (one-way update, as don't want to delay editor by always pushing down)
-  // (I'm sure this could be written better to perform the same, perhaps with ":"?)
-  // https://stackoverflow.com/a/72661017/574415
-  watch(
-    () => props.modelValue,
-    (newValue, oldValue) => {
-      //console.log("prop value changed", newValue)
-      code.value = newValue
-    }
-  )
+  const debouncedInput = debounce((e) => {emit("update:modelValue", e)}, 500)
 
   const dialog = ref(false)
   const { mobile } = useDisplay()
 
-  //debugger
-
-  // Set code initially
-  // (## REMOVED ##) - was causing a nesting of data, for some reason
-  // code.value = data.modelValue
-
-  // listen for code-changes to keep in sync
-  // (small > large editor, and to storage)
-  const onCodeChange = (event) => {
-    //debugger
-    //console.log("onCodeChange()")
-    //code.value = event.target.value // was unnecessary, as now watching prop
-    emit("update:modelValue", event.target.value)
-  }
-
-  // const highlighter = (code) => {
-  //   return highlight(code, languages.js) // languages.<insert language> to return html with markup
-  // }
-
   const onPlayClicked = () => {
-    // Update state
-    emit("update:modelValue", code.value)
     // Play game
     SAGEdit.playGame()
   }
 
   const onCloseClicked = () => {
-    // Update state
-    emit("update:modelValue", code.value)
     // Play game
     dialog.value = false
   }

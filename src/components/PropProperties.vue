@@ -175,7 +175,7 @@
       ><v-icon icon="mdi-script-text"></v-icon> Script</v-list-subheader
     >
 
-    <AceEditorMin label="On Action" v-model="model.script" />
+    <AceEditor label="On Action" v-model="model.script" />
 
     <!-- <prism-editor label="On Action" v-model="model.on_action" />
 
@@ -201,7 +201,7 @@
   import { usePropStore } from "@/stores/PropStore"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
-  import AceEditorMin from "./AceEditorMin.vue"
+  import AceEditor from "./AceEditor.vue"
   // import PrismEditor from "./PrismEditor.vue"
 
   const worldStore = useWorldStore()

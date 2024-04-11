@@ -184,7 +184,7 @@
       ><v-icon icon="mdi-script-text"></v-icon> Script</v-list-subheader
     >
 
-    <AceEditorMin label="On Action" v-model="model.script" />
+    <AceEditor label="On Action" v-model="model.script" />
 
     <!-- <prism-editor label="On Action" v-model="model.script" /> -->
 
@@ -217,7 +217,7 @@
   import { useActorStore } from "@/stores/ActorStore"
   import type { ActorModel } from "@/models/ActorModel"
 
-  import AceEditorMin from "./AceEditorMin.vue"
+  import AceEditor from "./AceEditor.vue"
   //import PrismEditor from "./PrismEditor.vue"
 
   const worldStore = useWorldStore()

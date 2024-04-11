@@ -111,7 +111,7 @@
       }"
     /> -->
 
-    <AceEditorMin label="On Enter" v-model="model.script" />
+    <AceEditor label="On Enter" v-model="model.script" />
 
     <!-- <prism-editor label="On Enter" v-model="model.script" /> -->
 
@@ -146,7 +146,7 @@
   // import "../assets/acesrc/inkTheme.css"
 
   //import AceEditor from "./AceEditor.vue"
-  import AceEditorMin from "./AceEditorMin.vue"
+  import AceEditor from "./AceEditor.vue"
 
   //import PrismEditor from "./PrismEditor.vue"
 
