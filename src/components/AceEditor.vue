@@ -33,6 +33,7 @@
           <v-ace-editor
             :value="$props.modelValue"
             @update:value="debouncedInput($event)"
+            ref="aceRefLarge"
             lang="ink"
             theme="monokai"
             class="my-editor"
@@ -48,11 +49,6 @@
               wrap: true,
             }"
           />
-          <!-- <prism-editor
-            class="my-editor"
-            v-model="code"
-            :highlight="highlighter"
-          ></prism-editor> -->
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="info" @click="onCloseClicked">Close</v-btn>
@@ -64,6 +60,7 @@
   <v-ace-editor
     :value="$props.modelValue"
     @update:value="debouncedInput($event)"
+    ref="aceRefSmall"
     lang="ink"
     theme="monokai"
     class="my-editor"
@@ -76,15 +73,6 @@
       wrap: true,
     }"
   />
-  <!-- <prism-editor
-    class="my-editor mb-3"
-    style="max-height: 240px"
-    :model-value="modelValue"
-    @input="onCodeChange"
-    :highlight="highlighter"
-  > 
-  </prism-editor>
-  -->
 </template>
 
 <script setup lang="ts">
@@ -93,7 +81,12 @@
   import "../assets/ace-ink-mode/mode-ink"
   import "../assets/ace-ink-mode/inkTheme.css"
 
-  import { ref, watch } from "vue"
+  // Need language tools to enable core "auto-complete" func
+  import ace from "ace-builds"
+  import "ace-builds/src-noconflict/ext-language_tools"
+  ace.require("ace/ext/language_tools")
+
+  import { ref, onMounted } from "vue"
   import { useDisplay } from "vuetify"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
@@ -103,16 +96,6 @@
   const label = defineModel("label", { required: true })
 
   const props = defineProps(["modelValue"])
-  // interface Props {
-  //   modelValue?: string
-  //   type: string
-  //   debounce: number
-  // }
-  // const props = withDefaults(defineProps<Props>(), {
-  //   modelValue: "",
-  //   type: "text",
-  //   debounce: 0,
-  // })
   const emit = defineEmits(["update:modelValue"])
   const debouncedInput = debounce((e) => {emit("update:modelValue", e)}, 500)
 
@@ -128,6 +111,33 @@
     // Play game
     dialog.value = false
   }
+
+  // Func to setup auto-completers
+  const setupCompleters = function (editorRef) {
+    const editorInst = editorRef.value.getAceInstance()
+    console.log(editorInst)
+    // init
+    editorInst.setOptions({
+      enableBasicAutocompletion: true,
+      enableLiveAutocompletion: true,
+    })
+  };
+
+  // Get raw ace instance
+  const aceRefSmall = ref(null)
+  const aceRefLarge = ref(null)
+  onMounted(() => {
+    console.log(aceRefSmall.value.getAceInstance())
+    // setupCompleters(aceRefSmall)
+    // setupCompleters(aceRefLarge)
+
+    // console.log(aceRef.value.getAceInstance())
+    // // init
+    // aceRef.value.getAceInstance().setOptions({
+    //   enableBasicAutocompletion: true,
+    //   enableLiveAutocompletion: true,
+    // })
+  })
 </script>
 
 <style>
@@ -139,10 +149,4 @@
     font-size: 14px;
     line-height: 1.25;
   }
-
-  /* optional class for removing the outline 
-    (from PrismEditor - still useful???)*/
-  /* .prism-editor__textarea:focus {
-    outline: none;
-  } */
 </style>
