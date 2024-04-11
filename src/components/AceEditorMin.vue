@@ -31,10 +31,12 @@
             >
           </v-toolbar>
           <v-ace-editor
-            v-model:value="model"
+            :value="$props.modelValue"
+            @update:value="debouncedInput($event)"
             lang="ink"
             theme="monokai"
             class="my-editor"
+            style="height: 300px"
             :options="{
               minLines: 5,
               highlightActiveLine: true,
@@ -58,7 +60,7 @@
     </v-col>
   </v-row>
   <v-ace-editor
-    v-model:value="model"
+    :value="$props.modelValue"
     @update:value="debouncedInput($event)"
     lang="ink"
     theme="monokai"
