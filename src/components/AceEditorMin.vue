@@ -59,6 +59,7 @@
   </v-row>
   <v-ace-editor
     v-model:value="model"
+    @update:value="debouncedInput($event)"
     lang="ink"
     theme="monokai"
     class="my-editor"
@@ -91,8 +92,24 @@
   import { useDisplay } from "vuetify"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
-  const model = defineModel()
-  const label = defineModel('label', { required: true })
+  import { debounce } from "../utils/Debounce"
+
+  //const model = defineModel()
+  const label = defineModel("label", { required: true })
+
+  const props = defineProps(["modelValue"])
+  // interface Props {
+  //   modelValue?: string
+  //   type: string
+  //   debounce: number
+  // }
+  // const props = withDefaults(defineProps<Props>(), {
+  //   modelValue: "",
+  //   type: "text",
+  //   debounce: 0,
+  // })
+  const emit = defineEmits(["update:modelValue"])
+  const debouncedInput = debounce((e) => {emit("update:modelValue", e)}, 500)
 
   const dialog = ref(false)
   const { mobile } = useDisplay()
