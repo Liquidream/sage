@@ -38,11 +38,12 @@
             class="my-editor"
             :options="{
               minLines: 5,
-              maxLines: 30,
+              maxLines: 35,
               highlightActiveLine: true,
               highlightGutterLine: true,
               highlightIndentGuides: false,
               highlightSelectedWord: true,
+              printMargin: false,
               wrap: true,
             }"
           />
@@ -70,6 +71,7 @@
       minLines: 5,
       maxPixelHeight: 240,
       showGutter: false,
+      printMargin: false,
       wrap: true,
     }"
   />
