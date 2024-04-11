@@ -36,9 +36,9 @@
             lang="ink"
             theme="monokai"
             class="my-editor"
-            style="height: 300px"
             :options="{
               minLines: 5,
+              maxLines: 30,
               highlightActiveLine: true,
               highlightGutterLine: true,
               highlightIndentGuides: false,
