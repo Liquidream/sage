@@ -89,9 +89,9 @@
 
 <script setup lang="ts">
   import { VAceEditor } from "vue3-ace-editor"
-  import "../assets/acesrc/mode-ink"
+  import "../assets/ace-ink-mode/mode-ink"
   import "../assets/acesrc/theme-monokai"
-  import "../assets/acesrc/inkTheme.css"
+  import "../assets/ace-ink-mode/inkTheme.css"
 
   import { ref, watch } from "vue"
   import { useDisplay } from "vuetify"
