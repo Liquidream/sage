@@ -114,36 +114,36 @@
 
   // Func to setup auto-completers
   const setupCompleters = function (editorInst) {
-    //const editorInst = editorRef.value.getAceInstance()
-    console.log(editorInst)
+    //console.log(editorInst)
     // init
     editorInst.setOptions({
       enableBasicAutocompletion: true,
       enableLiveAutocompletion: true,
     })
-  };
+    // Don't re-process in future
+    editorInst.initDone = true
+  }
 
-  // Get raw ace instance
+  // Get & Configure raw ace instances
   const aceRefSmall = ref(null)
   const aceRefLarge = ref(null)
-
   // Wait until component mounted...
   onMounted(() => {
     // ...then look for changes in the template to capture all editor refs
     watchEffect(() => {
-      if (aceRefSmall.value) {
-        console.log(aceRefSmall.value.getAceInstance())
+      if (aceRefSmall.value && !aceRefSmall.value .getAceInstance().initDone) {
+        //console.log("1:" + aceRefSmall.value.getAceInstance())
         setupCompleters(aceRefSmall.value.getAceInstance())
       }
-      if (aceRefLarge.value) {
-        console.log(aceRefLarge.value.getAceInstance())
+      if (aceRefLarge.value && !aceRefLarge.value .getAceInstance().initDone) {
+        //console.log("2:" + aceRefLarge.value.getAceInstance())
         setupCompleters(aceRefLarge.value.getAceInstance())
       }
     })
   })
 
   //onMounted(() => {
-    // No good, as only captures the editor visble at start
+    // No good, as only captures the editor "visible/DOM-loaded" at start
     //console.log(aceRefSmall.value.getAceInstance())
     // if (aceRefSmall.value) setupCompleters(aceRefSmall.value.getAceInstance())
     // if (aceRefLarge.value) setupCompleters(aceRefLarge.value.getAceInstance())
