@@ -33,7 +33,7 @@ export class inkCompleter {
         .concat(variableSuggestions)
         .concat(vocabSuggestions)
     } else {
-      //suggestions = getAllVocabSuggestions();
+      suggestions = this.getAllVocabSuggestions()
     }
 
     callback(null, suggestions)
