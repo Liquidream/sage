@@ -84,7 +84,7 @@
   // Need language tools to enable core "auto-complete" func
   import ace from "ace-builds"
   import "ace-builds/src-noconflict/ext-language_tools"
-  ace.require("ace/ext/language_tools")
+  const langTools = ace.require("ace/ext/language_tools")
 
   import { onMounted, ref, watchEffect } from "vue"
   import { useDisplay } from "vuetify"
@@ -120,6 +120,11 @@
       enableBasicAutocompletion: true,
       enableLiveAutocompletion: true,
     })
+
+    // Exclude language_tools.textCompleter (as it autocompletes ANY existing text)
+    editorInst.completers = editorInst.completers.filter(
+      (completer) => completer !== langTools.textCompleter)
+
     // Don't re-process in future
     editorInst.initDone = true
   }
@@ -131,11 +136,11 @@
   onMounted(() => {
     // ...then look for changes in the template to capture all editor refs
     watchEffect(() => {
-      if (aceRefSmall.value && !aceRefSmall.value .getAceInstance().initDone) {
+      if (aceRefSmall.value && !aceRefSmall.value.getAceInstance().initDone) {
         //console.log("1:" + aceRefSmall.value.getAceInstance())
         setupCompleters(aceRefSmall.value.getAceInstance())
       }
-      if (aceRefLarge.value && !aceRefLarge.value .getAceInstance().initDone) {
+      if (aceRefLarge.value && !aceRefLarge.value.getAceInstance().initDone) {
         //console.log("2:" + aceRefLarge.value.getAceInstance())
         setupCompleters(aceRefLarge.value.getAceInstance())
       }
