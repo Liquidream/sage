@@ -86,7 +86,7 @@
   import "ace-builds/src-noconflict/ext-language_tools"
   ace.require("ace/ext/language_tools")
 
-  import { ref, onMounted } from "vue"
+  import { onMounted, ref, watchEffect } from "vue"
   import { useDisplay } from "vuetify"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
@@ -113,8 +113,8 @@
   }
 
   // Func to setup auto-completers
-  const setupCompleters = function (editorRef) {
-    const editorInst = editorRef.value.getAceInstance()
+  const setupCompleters = function (editorInst) {
+    //const editorInst = editorRef.value.getAceInstance()
     console.log(editorInst)
     // init
     editorInst.setOptions({
@@ -126,10 +126,27 @@
   // Get raw ace instance
   const aceRefSmall = ref(null)
   const aceRefLarge = ref(null)
+
+  // Wait until component mounted...
   onMounted(() => {
-    console.log(aceRefSmall.value.getAceInstance())
-    // setupCompleters(aceRefSmall)
-    // setupCompleters(aceRefLarge)
+    // ...then look for changes in the template to capture all editor refs
+    watchEffect(() => {
+      if (aceRefSmall.value) {
+        console.log(aceRefSmall.value.getAceInstance())
+        setupCompleters(aceRefSmall.value.getAceInstance())
+      }
+      if (aceRefLarge.value) {
+        console.log(aceRefLarge.value.getAceInstance())
+        setupCompleters(aceRefLarge.value.getAceInstance())
+      }
+    })
+  })
+
+  //onMounted(() => {
+    // No good, as only captures the editor visble at start
+    //console.log(aceRefSmall.value.getAceInstance())
+    // if (aceRefSmall.value) setupCompleters(aceRefSmall.value.getAceInstance())
+    // if (aceRefLarge.value) setupCompleters(aceRefLarge.value.getAceInstance())
 
     // console.log(aceRef.value.getAceInstance())
     // // init
@@ -137,7 +154,7 @@
     //   enableBasicAutocompletion: true,
     //   enableLiveAutocompletion: true,
     // })
-  })
+  //})
 </script>
 
 <style>
