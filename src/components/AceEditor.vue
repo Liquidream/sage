@@ -85,6 +85,10 @@
   import ace from "ace-builds"
   import "ace-builds/src-noconflict/ext-language_tools"
   const langTools = ace.require("ace/ext/language_tools")
+  
+  import { inkCompleter } from "../assets/ace-ink-mode/inkCompleter"
+  //const inkCompleter = require("../assets/ace-ink-mode/inkCompleter.js").inkCompleter
+  //import * from "../assets/ace-ink-mode/inkCompleter"
 
   import { onMounted, ref, watchEffect } from "vue"
   import { useDisplay } from "vuetify"
@@ -124,6 +128,9 @@
     // Exclude language_tools.textCompleter (as it autocompletes ANY existing text)
     editorInst.completers = editorInst.completers.filter(
       (completer) => completer !== langTools.textCompleter)
+    
+      // ..but add custom Ink completer
+    editorInst.completers.push(new inkCompleter())
 
     // Don't re-process in future
     editorInst.initDone = true
@@ -146,20 +153,6 @@
       }
     })
   })
-
-  //onMounted(() => {
-    // No good, as only captures the editor "visible/DOM-loaded" at start
-    //console.log(aceRefSmall.value.getAceInstance())
-    // if (aceRefSmall.value) setupCompleters(aceRefSmall.value.getAceInstance())
-    // if (aceRefLarge.value) setupCompleters(aceRefLarge.value.getAceInstance())
-
-    // console.log(aceRef.value.getAceInstance())
-    // // init
-    // aceRef.value.getAceInstance().setOptions({
-    //   enableBasicAutocompletion: true,
-    //   enableLiveAutocompletion: true,
-    // })
-  //})
 </script>
 
 <style>
