@@ -184,8 +184,19 @@ export class SAGE {
     // --------------------------------------------
     const sagePlayData = window.opener.sagePlayData
     const scriptData = sagePlayData.scriptData
-    SAGE.inkStory = new Compiler(scriptData).Compile()
-    // story is an inkjs.Story that can be played right away
+    const compiler = new Compiler(scriptData)
+    // Capture compile errors
+    compiler.OnError = (msg, type) => {
+      if (type == ErrorType.Warning) console.warn(msg)
+      else console.error(msg)
+    }
+    try {
+      SAGE.inkStory = compiler.Compile()
+    } catch (err) {
+      console.error(err)
+      // bail out now
+      return
+    }
 
     // Setup error handling
     SAGE.inkStory.onError = (msg, type) => { // https://github.com/y-lohse/inkjs/issues/1033

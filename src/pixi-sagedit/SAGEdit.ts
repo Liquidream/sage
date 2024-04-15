@@ -211,41 +211,72 @@ export class SAGEdit {
     window.open("?mode=play", "sagePlay")
   }
 
-  /**
-   * Loop through all the game elements and build a single ink script (+compile it)
-   */
   private static generateInkScript(): string {
+    // Loop through all the game elements and build a single ink script (+compile it)
     let inkScript = ""
+    // ----------------
+    // Scenes
+    //
     for (const scene of useSceneStore().scenes) {
       inkScript += `
 === ${scene.id} ===
 # SCENE: ${scene.id}
-{! }
-`
+{! }`
       if (scene.script) {
-        inkScript += scene.script
-      } else {
-        inkScript += "-> DONE\n"
+        inkScript += `\n${scene.script}`
       }
-      inkScript += "\n"
+      inkScript += "\n-> DONE\n"
     }
-
+    // ----------------
+    // Actors
+    //
     for (const actor of useActorStore().actors) {
       inkScript += `
 === ${actor.id} ===
 
 = init
 // TODO: setup stuff here?
-- ->DONE
+-> DONE
 
-= start
-`
+= start`
       if (actor.script) {
-        inkScript += actor.script
-      } else {
-        inkScript += "-> DONE\n"
+        inkScript += `\n${actor.script}`
       }
-      inkScript += "\n"
+      inkScript += "\n-> DONE\n"
+    }
+    // ----------------
+    // Props
+    //
+    for (const prop of usePropStore().props) {
+      inkScript += `
+=== ${prop.id} ===
+
+= init
+// TODO: setup stuff here?
+-> DONE
+
+= start`
+      if (prop.script) {
+        inkScript += `\n${prop.script}`
+      }
+      inkScript += "\n-> DONE\n"
+    }
+    // ----------------
+    // Doors
+    //
+    for (const door of useDoorStore().doors) {
+      inkScript += `
+=== ${door.id} ===
+
+= init
+// TODO: setup stuff here?
+-> DONE
+
+= start`
+      if (door.script) {
+        inkScript += `\n${door.script}`
+      }
+      inkScript += "\n-> DONE\n"
     }
 
     //debugger

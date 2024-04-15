@@ -180,8 +180,11 @@ export class Prop {
     SAGE.debugLog(`You interacted with a prop! (${this.model.name})`)
     // Custom action?
     if (this.model.on_action) {
-      SAGE.Script.safeExecFunc(this.model.on_action)
-      //Function(this.model.on_action)()
+      // v1 - JS method
+      //SAGE.Script.safeExecFunc(this.model.on_action)
+      
+      // v2 - ink method
+      SAGE.chooseStoryPath(this.model.id + ".start")
       return
     }
     // Can prop be picked up?

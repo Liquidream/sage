@@ -179,31 +179,8 @@ export class Actor {
 
       // v2 - ink method
       SAGE.chooseStoryPath(this.model.id + ".start")
-      //SAGE.continueStory()
       return
     }
-    // Can prop be picked up?
-    // (...and not already in inventory)?
-    // if (this.model.pickupable && !this.inInventory) {
-    //   SAGE.Dialog.showMessage(`You picked up the ${this.model.name}`)
-    //   // Remove prop from scene
-    //   SAGE.World.currentScene.screen.removeProp(this, true, true)
-    //   // Add to Player's inventory
-    //   SAGE.World.player.addToInventory(this.model)
-    //   // Play sound
-    //   SAGE.Sound.play("SFX-PickUp")
-    //   // Auto-open player inventory
-    //   SAGE.invScreen.open(true)
-    //   return
-    // }
-    // Interacted while in player inventory?
-    // ...if so, perform secondary action (describe)
-    // if (this.inInventory) {
-    //   this.onSecondaryAction()
-    //   // Disable auto-close of inventory
-    //   SAGE.invScreen.autoClose = false
-    //   return
-    // }
   }
 
   private onSecondaryAction() {
