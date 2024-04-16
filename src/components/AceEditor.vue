@@ -20,16 +20,16 @@
             variant="tonal"
             icon
             @click="onValidateClicked"
-            v-if="SAGEdit.inkCompilerLog.length > 0"
+            v-if="compilerResult.log.length > 0"
           >
           <v-badge color="error" 
-           :content="SAGEdit.inkCompilerLog.length">
+           :content="compilerResult.log.length">
             <v-icon>mdi-check-all</v-icon>
           </v-badge>
         </v-btn>
 
         <v-btn
-        @click="onValidateClicked"
+            @click="onValidateClicked"
             density="comfortable"
             color="info"
             variant="tonal"
@@ -117,7 +117,7 @@
   //const inkCompleter = require("../assets/ace-ink-mode/inkCompleter.js").inkCompleter
   //import * from "../assets/ace-ink-mode/inkCompleter"
 
-  import { onMounted, ref, watchEffect } from "vue"
+  import { computed, onMounted, reactive, ref, watchEffect } from "vue"
   import { useDisplay } from "vuetify"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
@@ -143,9 +143,14 @@
     dialog.value = false
   }
 
+  //const compilerCount = computed(() => SAGEdit.inkCompilerLog.length)
+  const compilerResult = reactive({
+    log: []
+  })
+
   const onValidateClicked = () => {
     // Compile/validate ink script
-    SAGEdit.validateScript()
+    compilerResult.log = SAGEdit.validateScript()
   }
 
   // Func to setup auto-completers

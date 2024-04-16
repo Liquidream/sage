@@ -46,7 +46,8 @@ export class SAGEdit {
   // Initialise InkJS (this might not be the right place...)
   private static inkStory: InstanceType<typeof Story>
   private static inkCompiler: InstanceType<typeof Compiler>
-  private static inkCompilerLog: string[] = []
+  //private static inkCompilerLog: string[] = []
+  
 
   // public static invScreen: InventoryScreen;
   public static get width(): number {
@@ -219,13 +220,15 @@ export class SAGEdit {
     window.open("?mode=play", "sagePlay")
   }
 
-  public static validateScript() {
+  public static validateScript(): string[] {
+    const compilerLog: string[] = []
     // TODO: Compile ink script and store any errors locally, so can view later
     SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScript(), {
       errorHandler: (msg, type) => {
-        //if (type == ErrorType.Warning) console.warn(msg)
-        //else console.error(msg)
-        SAGEdit.inkCompilerLog.push(msg)
+        if (type == ErrorType.Warning) console.warn(msg)
+        else console.error(msg)
+        //SAGEdit.inkCompilerLog.push(msg)
+        compilerLog.push(msg)
       },
       countAllVisits: true,
       fileHandler: null,
@@ -242,8 +245,10 @@ export class SAGEdit {
     } catch (err) {
       console.error(err)
       // bail out now
-      return
+      //return
     }
+
+    return compilerLog
   }
 
   private static generateInkScript(): string {
