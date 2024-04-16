@@ -98,6 +98,9 @@ export class SceneScreen extends Container implements IScreen {
     for (const door of this.doors) {
       door.tidyUp()
     }
+    for (const actor of this.actors) {
+      actor.tidyUp()
+    }
     SAGE.app.stage.off("pointermove", this.onPointerMove, this)
     SAGE.app.stage.off("pointerup", this.onPointerUp, this)
     SAGE.app.stage.off("touchmove", this.onTouchMove, this)
@@ -106,6 +109,10 @@ export class SceneScreen extends Container implements IScreen {
     if (this.scene.sound) {
       SAGE.Sound.stop(this.scene.sound, !restartGame)
     }
+
+    // Destroy everything to ensure no mem leak/events
+    // (overkill? was added when debugging Actor leak issues prev)
+    //this.destroy({ children: true })
   }
 
   public setDepthOfField(isEnabled: boolean) {
