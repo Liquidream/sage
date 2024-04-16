@@ -14,11 +14,38 @@
       >
         <template v-slot:activator="{ props }">
           <v-btn
+            v-bind="validprops"
+            density="comfortable"
+            color="info"
+            variant="tonal"
+            icon
+            @click="onValidateClicked"
+            v-if="SAGEdit.inkCompilerLog.length > 0"
+          >
+          <v-badge color="error" 
+           :content="SAGEdit.inkCompilerLog.length">
+            <v-icon>mdi-check-all</v-icon>
+          </v-badge>
+        </v-btn>
+
+        <v-btn
+        @click="onValidateClicked"
+            density="comfortable"
+            color="info"
+            variant="tonal"
+            icon
+            v-else
+          >
+            <v-icon>mdi-check-all</v-icon>
+        </v-btn>
+          
+          <v-btn
             v-bind="props"
             density="comfortable"
             color="info"
             variant="tonal"
             icon="mdi-open-in-new"
+            class="ml-3"
           >
           </v-btn>
         </template>
@@ -114,6 +141,11 @@
   const onCloseClicked = () => {
     // Play game
     dialog.value = false
+  }
+
+  const onValidateClicked = () => {
+    // Compile/validate ink script
+    SAGEdit.validateScript()
   }
 
   // Func to setup auto-completers

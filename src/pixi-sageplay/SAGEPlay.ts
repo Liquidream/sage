@@ -184,14 +184,14 @@ export class SAGE {
     // --------------------------------------------
     const sagePlayData = window.opener.sagePlayData
     const scriptData = sagePlayData.scriptData
-    const compiler = new Compiler(scriptData)
+    SAGE.inkCompiler = new Compiler(scriptData)
     // Capture compile errors
-    compiler.OnError = (msg, type) => {
+    SAGE.inkCompiler.OnError = (msg, type) => {
       if (type == ErrorType.Warning) console.warn(msg)
       else console.error(msg)
     }
     try {
-      SAGE.inkStory = compiler.Compile()
+      SAGE.inkStory = SAGE.inkCompiler.Compile()
     } catch (err) {
       console.error(err)
       // bail out now

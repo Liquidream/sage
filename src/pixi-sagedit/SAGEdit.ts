@@ -10,6 +10,9 @@ import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
 import { useActorStore } from "@/stores/ActorStore"
 import { usePlayerStore } from "@/stores/PlayerStore"
+import { Compiler, Story } from "inkjs"
+import { CompilerOptions } from "inkjs/compiler/CompilerOptions"
+import { ErrorType } from "inkjs/engine/Error"
 
 export class SAGEdit {
   private constructor() {
@@ -39,6 +42,11 @@ export class SAGEdit {
   public static Events: EventsEdit
   // public static Sound: Sound;
   // public static UI_Overlay: UI_Overlay;
+
+  // Initialise InkJS (this might not be the right place...)
+  private static inkStory: InstanceType<typeof Story>
+  private static inkCompiler: InstanceType<typeof Compiler>
+  private static inkCompilerLog: string[] = []
 
   // public static invScreen: InventoryScreen;
   public static get width(): number {
@@ -209,6 +217,33 @@ export class SAGEdit {
 
     // Launch "Play" window
     window.open("?mode=play", "sagePlay")
+  }
+
+  public static validateScript() {
+    // TODO: Compile ink script and store any errors locally, so can view later
+    SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScript(), {
+      errorHandler: (msg, type) => {
+        //if (type == ErrorType.Warning) console.warn(msg)
+        //else console.error(msg)
+        SAGEdit.inkCompilerLog.push(msg)
+      },
+      countAllVisits: true,
+      fileHandler: null,
+      pluginNames: [],
+      sourceFilename: null,
+    })
+    // Capture compile errors
+    // compiler.OnError = (msg, type) => {
+    //   if (type == ErrorType.Warning) console.warn(msg)
+    //   else console.error(msg)
+    // }
+    try {
+      SAGEdit.inkStory = SAGEdit.inkCompiler.Compile()
+    } catch (err) {
+      console.error(err)
+      // bail out now
+      return
+    }
   }
 
   private static generateInkScript(): string {
