@@ -110,12 +110,16 @@
 
   // Need language tools to enable core "auto-complete" func
   import ace from "ace-builds"
+
+  //import modeInkUrl from "../assets/ace-ink-mode/mode-ink?url" // fails due to "exports" - so dummy URL just to stop runtime warning
+  ace.config.setModuleUrl("ace/mode/ink", "")
+  // import themeMonokaiUrl from "ace-builds/src-noconflict/theme-monokai?url"
+  // ace.config.setModuleUrl("ace/theme/monokai", themeMonokaiUrl)
+
   import "ace-builds/src-noconflict/ext-language_tools"
   const langTools = ace.require("ace/ext/language_tools")
-  
+
   import { inkCompleter } from "../assets/ace-ink-mode/inkCompleter"
-  //const inkCompleter = require("../assets/ace-ink-mode/inkCompleter.js").inkCompleter
-  //import * from "../assets/ace-ink-mode/inkCompleter"
 
   import { computed, onMounted, reactive, ref, watchEffect } from "vue"
   import { useDisplay } from "vuetify"
