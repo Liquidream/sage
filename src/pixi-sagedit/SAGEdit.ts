@@ -13,6 +13,7 @@ import { usePlayerStore } from "@/stores/PlayerStore"
 import { Compiler, Story } from "inkjs"
 import { CompilerOptions } from "inkjs/compiler/CompilerOptions"
 import { ErrorType } from "inkjs/engine/Error"
+import { JsonFileHandler } from "inkjs/compiler/FileHandler/JsonFileHandler"
 
 export class SAGEdit {
   private constructor() {
@@ -46,6 +47,7 @@ export class SAGEdit {
   // Initialise InkJS (this might not be the right place...)
   private static inkStory: InstanceType<typeof Story>
   private static inkCompiler: InstanceType<typeof Compiler>
+  //private static inkJsonFileHandler: InstanceType<typeof JsonFileHandler>
   //private static inkCompilerLog: string[] = []
   
 
@@ -223,7 +225,131 @@ export class SAGEdit {
   public static validateScript(): string[] {
     const compilerLog: string[] = []
     // TODO: Compile ink script and store any errors locally, so can view later
-    SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScript(), {
+    // const jsonInkPackage: Record<string, string> = {
+    //   "filename1.ink": "INCLUDE filename2.ink",
+    //   "filename2.ink": "This content is included",
+    // }
+    const jsonFileHandler = new JsonFileHandler(
+      SAGEdit.generateInkScriptJsonPackage()
+    )
+
+    //SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScript(), {
+    SAGEdit.inkCompiler = new Compiler(null, {
+      errorHandler: (msg, type) => {
+        if (type == ErrorType.Warning) console.warn(msg)
+        else console.error(msg)
+        compilerLog.push(msg)
+      },
+      countAllVisits: true,
+      fileHandler: jsonFileHandler,
+      pluginNames: [],
+      sourceFilename: null,
+    })
+    try {
+      debugger
+      SAGEdit.inkStory = SAGEdit.inkCompiler.Compile()
+      // DEBUG
+      const jsonBytecode = SAGEdit.inkStory.ToJson()
+      console.log(jsonBytecode)
+    } catch (err) {
+      console.error(err)
+    }
+
+    return compilerLog
+  }
+
+  private static generateInkScriptJsonPackage(): Record<string, string> {
+    // Loop through all the game elements and build a single ink script (+compile it)
+    const inkPackage: Record<string, string> = {
+      "_main.ink": "",
+    }
+    let mainInkWithIncludes = ""
+    // ----------------
+    // Scenes
+    //
+    for (const scene of useSceneStore().scenes) {
+      const inkName = `${scene.id}.ink`
+      mainInkWithIncludes += `INCLUDE ${inkName}\n`
+      let inkScript = `
+=== ${scene.id} ===
+# SCENE: ${scene.id}
+{! }`
+      if (scene.script) {
+        inkScript += `\n${scene.script}`
+      }
+      inkScript += "\n-> DONE\n"
+      inkPackage[inkName] = inkScript
+    }
+    // ----------------
+    // Actors
+    //
+    for (const actor of useActorStore().actors) {
+      const inkName = `${actor.id}.ink`
+      mainInkWithIncludes += `INCLUDE ${inkName}\n`
+      let inkScript = `
+=== ${actor.id} ===
+
+= init
+// TODO: setup stuff here?
+-> DONE
+
+= start`
+      if (actor.script) {
+        inkScript += `\n${actor.script}`
+      }
+      inkScript += "\n-> DONE\n"
+      inkPackage[inkName] = inkScript
+    }
+    // ----------------
+    // Props
+    //
+    for (const prop of usePropStore().props) {
+      const inkName = `${prop.id}.ink`
+      mainInkWithIncludes += `INCLUDE ${inkName}\n`
+      let inkScript = `
+=== ${prop.id} ===
+
+= init
+// TODO: setup stuff here?
+-> DONE
+
+= start`
+      if (prop.script) {
+        inkScript += `\n${prop.script}`
+      }
+      inkScript += "\n-> DONE\n"
+      inkPackage[inkName] = inkScript
+    }
+    // ----------------
+    // Doors
+    //
+    for (const door of useDoorStore().doors) {
+      const inkName = `${door.id}.ink`
+      mainInkWithIncludes += `INCLUDE ${inkName}\n`
+      let inkScript = `
+=== ${door.id} ===
+
+= init
+// TODO: setup stuff here?
+-> DONE
+
+= start`
+      if (door.script) {
+        inkScript += `\n${door.script}`
+      }
+      inkScript += "\n-> DONE\n"
+      inkPackage[inkName] = inkScript
+    }
+    // Finally, set the full list of INCLUDE's
+    inkPackage["_main.ink"] = mainInkWithIncludes
+
+    return inkPackage
+  }
+
+  public static validateScriptV1(): string[] {
+    const compilerLog: string[] = []
+    // TODO: Compile ink script and store any errors locally, so can view later
+    SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScriptV1(), {
       errorHandler: (msg, type) => {
         if (type == ErrorType.Warning) console.warn(msg)
         else console.error(msg)
@@ -250,8 +376,8 @@ export class SAGEdit {
 
     return compilerLog
   }
-
-  private static generateInkScript(): string {
+  
+  private static generateInkScriptV1(): string {
     // Loop through all the game elements and build a single ink script (+compile it)
     let inkScript = ""
     // ----------------
