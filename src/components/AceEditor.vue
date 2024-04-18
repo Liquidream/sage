@@ -74,7 +74,7 @@
               printMargin: false,
               showLineNumbers: true,
               wrap: true,
-              firstLineNumber:scriptStartLineNumber(),
+              firstLineNumber:scriptStartLineNumber,
             }"
           />
           <v-card-actions>
@@ -151,19 +151,19 @@
 
   // a computed ref
   const scriptStartLineNumber = computed((): number => {
-    debugger
+    //debugger
     switch (objType.value) {
       case "scene": {
-        return SAGEdit.inkHeaderScene.split(/\r\n|\r|\n/).length
-      } 
+        return SAGEdit.inkHeaderScene.split(/\r\n|\r|\n/).length + 1
+      }
       case "actor": {
-        return SAGEdit.inkHeaderActor.split(/\r\n|\r|\n/).length
+        return SAGEdit.inkHeaderActor.split(/\r\n|\r|\n/).length + 1
       }
       case "prop": {
-        return SAGEdit.inkHeaderProp.split(/\r\n|\r|\n/).length
+        return SAGEdit.inkHeaderProp.split(/\r\n|\r|\n/).length + 1
       }
-      case "doop": {
-        return SAGEdit.inkHeaderDoor.split(/\r\n|\r|\n/).length
+      case "door": {
+        return SAGEdit.inkHeaderDoor.split(/\r\n|\r|\n/).length + 1
       }
       default: {
         return 0

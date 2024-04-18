@@ -175,7 +175,7 @@
       ><v-icon icon="mdi-script-text"></v-icon> Script</v-list-subheader
     >
 
-    <AceEditor label="On Action" v-model="model.script" />
+    <AceEditor label="On Action" type="prop" v-model="model.script" />
 
     <!-- <prism-editor label="On Action" v-model="model.on_action" />
 

@@ -111,7 +111,7 @@
       }"
     /> -->
 
-    <AceEditor label="On Enter" v-model="model.script" />
+    <AceEditor label="On Enter" type="scene" v-model="model.script" />
 
     <!-- <prism-editor label="On Enter" v-model="model.script" /> -->
 
