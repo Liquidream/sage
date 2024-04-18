@@ -14,6 +14,7 @@ import { Compiler, Story } from "inkjs"
 import { CompilerOptions } from "inkjs/compiler/CompilerOptions"
 import { ErrorType } from "inkjs/engine/Error"
 import { JsonFileHandler } from "inkjs/compiler/FileHandler/JsonFileHandler"
+import { StringUtils } from "@/utils/StringUtils"
 
 export class SAGEdit {
   private constructor() {
@@ -49,7 +50,11 @@ export class SAGEdit {
   //private static inkCompiler: InstanceType<typeof Compiler>
   //private static inkJsonFileHandler: InstanceType<typeof JsonFileHandler>
   //private static inkCompilerLog: string[] = []
-  
+
+  public static inkHeaderScene: string
+  public static inkHeaderActor: string
+  public static inkHeaderProp: string
+  public static inkHeaderDoor: string
 
   // public static invScreen: InventoryScreen;
   public static get width(): number {
@@ -103,6 +108,9 @@ export class SAGEdit {
     // ...and dialog
     // (currently using it to display selected item name - not essential!)
     SAGEdit.Dialog = new DialogEdit()
+
+    // Initialise the ink headers for Scenes, Actors, etc.
+    SAGEdit.initInkScriptHeaders()
   }
 
   static createLayers() {
@@ -295,6 +303,20 @@ export class SAGEdit {
     return inkStoryJson
   }
 
+  private static initInkScriptHeaders() {
+    SAGEdit.inkHeaderScene = "=== ${id} ===\n # SCENE: ${id}\n {! }"
+    SAGEdit.inkHeaderActor =
+      "=== ${id} ===\n\n = init\n // TODO: setup stuff here?\n -> DONE\n\n= start"
+    SAGEdit.inkHeaderProp = SAGEdit.inkHeaderActor
+    SAGEdit.inkHeaderDoor = SAGEdit.inkHeaderActor
+
+  
+// https://stackoverflow.com/questions/8488729/how-to-count-the-number-of-lines-of-a-string-in-javascript
+//Using a regular expression you can count the number of lines as
+//str.split(/\r\n|\r|\n/).length
+
+  }
+
   private static generateInkScriptJsonSourcePackage(): Record<string, string> {
     // Loop through all the game elements and build a single ink script (+compile it)
     const inkPackage: Record<string, string> = {
@@ -304,18 +326,22 @@ export class SAGEdit {
     // ----------------
     // Scenes
     //
+    //debugger
     for (const scene of useSceneStore().scenes) {
       const inkName = `${scene.id}.ink`
-      mainInkWithIncludes += `INCLUDE ${inkName}\n`
-      let inkScript = `
-=== ${scene.id} ===
-# SCENE: ${scene.id}
-{! }`
+      let inkScript = StringUtils.inject(SAGEdit.inkHeaderScene, {
+        id: scene.id,
+      })
+//       let inkScript = `
+// === ${scene.id} ===
+// # SCENE: ${scene.id}
+// {! }`
       if (scene.script) {
         inkScript += `\n${scene.script}`
       }
       inkScript += "\n-> DONE\n"
       inkPackage[inkName] = inkScript
+      mainInkWithIncludes += `INCLUDE ${inkName}\n`
     }
     // ----------------
     // Actors
@@ -323,14 +349,17 @@ export class SAGEdit {
     for (const actor of useActorStore().actors) {
       const inkName = `${actor.id}.ink`
       mainInkWithIncludes += `INCLUDE ${inkName}\n`
-      let inkScript = `
-=== ${actor.id} ===
+      let inkScript = StringUtils.inject(SAGEdit.inkHeaderActor, {
+        id: actor.id,
+      })
+//       let inkScript = `
+// === ${actor.id} ===
 
-= init
-// TODO: setup stuff here?
--> DONE
+// = init
+// // TODO: setup stuff here?
+// -> DONE
 
-= start`
+// = start`
       if (actor.script) {
         inkScript += `\n${actor.script}`
       }
@@ -343,14 +372,17 @@ export class SAGEdit {
     for (const prop of usePropStore().props) {
       const inkName = `${prop.id}.ink`
       mainInkWithIncludes += `INCLUDE ${inkName}\n`
-      let inkScript = `
-=== ${prop.id} ===
+      let inkScript = StringUtils.inject(SAGEdit.inkHeaderProp, {
+        id: prop.id,
+      })
+//       let inkScript = `
+// === ${prop.id} ===
 
-= init
-// TODO: setup stuff here?
--> DONE
+// = init
+// // TODO: setup stuff here?
+// -> DONE
 
-= start`
+// = start`
       if (prop.script) {
         inkScript += `\n${prop.script}`
       }
@@ -363,14 +395,17 @@ export class SAGEdit {
     for (const door of useDoorStore().doors) {
       const inkName = `${door.id}.ink`
       mainInkWithIncludes += `INCLUDE ${inkName}\n`
-      let inkScript = `
-=== ${door.id} ===
+      let inkScript = StringUtils.inject(SAGEdit.inkHeaderDoor, {
+        id: door.id,
+      })
+//       let inkScript = `
+// === ${door.id} ===
 
-= init
-// TODO: setup stuff here?
--> DONE
+// = init
+// // TODO: setup stuff here?
+// -> DONE
 
-= start`
+// = start`
       if (door.script) {
         inkScript += `\n${door.script}`
       }
