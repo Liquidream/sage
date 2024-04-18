@@ -45,8 +45,8 @@ export class SAGEdit {
   // public static UI_Overlay: UI_Overlay;
 
   // Initialise InkJS (this might not be the right place...)
-  private static inkStory: InstanceType<typeof Story>
-  private static inkCompiler: InstanceType<typeof Compiler>
+  //private static inkStory: InstanceType<typeof Story>
+  //private static inkCompiler: InstanceType<typeof Compiler>
   //private static inkJsonFileHandler: InstanceType<typeof JsonFileHandler>
   //private static inkCompilerLog: string[] = []
   
@@ -234,7 +234,7 @@ export class SAGEdit {
     )
 
     //SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScript(), {
-    SAGEdit.inkCompiler = new Compiler(
+    const inkCompiler = new Compiler(
       jsonFileHandler.LoadInkFileContents("_main.ink"),
       {
       errorHandler: (msg, type) => {
@@ -249,11 +249,11 @@ export class SAGEdit {
       }
     )
     try {
-      debugger
-      SAGEdit.inkStory = SAGEdit.inkCompiler.Compile()
+      //debugger
+      const inkStory = inkCompiler.Compile()
       // DEBUG
-      const jsonBytecode = SAGEdit.inkStory.ToJson()
-      console.log(jsonBytecode)
+      //const jsonBytecode = inkStory.ToJson()
+      //console.log(jsonBytecode)
     } catch (err) {
       console.error(err)
     }
@@ -269,7 +269,7 @@ export class SAGEdit {
     )
 
     //SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScript(), {
-    SAGEdit.inkCompiler = new Compiler(
+    const inkCompiler = new Compiler(
       jsonFileHandler.LoadInkFileContents("_main.ink"),
       {
         errorHandler: (msg, type) => {
@@ -283,8 +283,8 @@ export class SAGEdit {
       }
     )
     try {
-      debugger
-      const inkStory = SAGEdit.inkCompiler.Compile()
+      //debugger
+      const inkStory = inkCompiler.Compile()
       // DEBUG
       inkStoryJson = inkStory.ToJson()
       //console.log(jsonBytecode)
@@ -383,108 +383,108 @@ export class SAGEdit {
     return inkPackage
   }
 
-  public static validateScriptV1(): string[] {
-    const compilerLog: string[] = []
-    // TODO: Compile ink script and store any errors locally, so can view later
-    SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScriptV1(), {
-      errorHandler: (msg, type) => {
-        if (type == ErrorType.Warning) console.warn(msg)
-        else console.error(msg)
-        //SAGEdit.inkCompilerLog.push(msg)
-        compilerLog.push(msg)
-      },
-      countAllVisits: true,
-      fileHandler: null,
-      pluginNames: [],
-      sourceFilename: null,
-    })
-    // Capture compile errors
-    // compiler.OnError = (msg, type) => {
-    //   if (type == ErrorType.Warning) console.warn(msg)
-    //   else console.error(msg)
-    // }
-    try {
-      SAGEdit.inkStory = SAGEdit.inkCompiler.Compile()
-    } catch (err) {
-      console.error(err)
-      // bail out now
-      //return
-    }
+//   public static validateScriptV1(): string[] {
+//     const compilerLog: string[] = []
+//     // TODO: Compile ink script and store any errors locally, so can view later
+//     SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScriptV1(), {
+//       errorHandler: (msg, type) => {
+//         if (type == ErrorType.Warning) console.warn(msg)
+//         else console.error(msg)
+//         //SAGEdit.inkCompilerLog.push(msg)
+//         compilerLog.push(msg)
+//       },
+//       countAllVisits: true,
+//       fileHandler: null,
+//       pluginNames: [],
+//       sourceFilename: null,
+//     })
+//     // Capture compile errors
+//     // compiler.OnError = (msg, type) => {
+//     //   if (type == ErrorType.Warning) console.warn(msg)
+//     //   else console.error(msg)
+//     // }
+//     try {
+//       SAGEdit.inkStory = SAGEdit.inkCompiler.Compile()
+//     } catch (err) {
+//       console.error(err)
+//       // bail out now
+//       //return
+//     }
 
-    return compilerLog
-  }
+//     return compilerLog
+//   }
   
-  private static generateInkScriptV1(): string {
-    // Loop through all the game elements and build a single ink script (+compile it)
-    let inkScript = ""
-    // ----------------
-    // Scenes
-    //
-    for (const scene of useSceneStore().scenes) {
-      inkScript += `
-=== ${scene.id} ===
-# SCENE: ${scene.id}
-{! }`
-      if (scene.script) {
-        inkScript += `\n${scene.script}`
-      }
-      inkScript += "\n-> DONE\n"
-    }
-    // ----------------
-    // Actors
-    //
-    for (const actor of useActorStore().actors) {
-      inkScript += `
-=== ${actor.id} ===
+//   private static generateInkScriptV1(): string {
+//     // Loop through all the game elements and build a single ink script (+compile it)
+//     let inkScript = ""
+//     // ----------------
+//     // Scenes
+//     //
+//     for (const scene of useSceneStore().scenes) {
+//       inkScript += `
+// === ${scene.id} ===
+// # SCENE: ${scene.id}
+// {! }`
+//       if (scene.script) {
+//         inkScript += `\n${scene.script}`
+//       }
+//       inkScript += "\n-> DONE\n"
+//     }
+//     // ----------------
+//     // Actors
+//     //
+//     for (const actor of useActorStore().actors) {
+//       inkScript += `
+// === ${actor.id} ===
 
-= init
-// TODO: setup stuff here?
--> DONE
+// = init
+// // TODO: setup stuff here?
+// -> DONE
 
-= start`
-      if (actor.script) {
-        inkScript += `\n${actor.script}`
-      }
-      inkScript += "\n-> DONE\n"
-    }
-    // ----------------
-    // Props
-    //
-    for (const prop of usePropStore().props) {
-      inkScript += `
-=== ${prop.id} ===
+// = start`
+//       if (actor.script) {
+//         inkScript += `\n${actor.script}`
+//       }
+//       inkScript += "\n-> DONE\n"
+//     }
+//     // ----------------
+//     // Props
+//     //
+//     for (const prop of usePropStore().props) {
+//       inkScript += `
+// === ${prop.id} ===
 
-= init
-// TODO: setup stuff here?
--> DONE
+// = init
+// // TODO: setup stuff here?
+// -> DONE
 
-= start`
-      if (prop.script) {
-        inkScript += `\n${prop.script}`
-      }
-      inkScript += "\n-> DONE\n"
-    }
-    // ----------------
-    // Doors
-    //
-    for (const door of useDoorStore().doors) {
-      inkScript += `
-=== ${door.id} ===
+// = start`
+//       if (prop.script) {
+//         inkScript += `\n${prop.script}`
+//       }
+//       inkScript += "\n-> DONE\n"
+//     }
+//     // ----------------
+//     // Doors
+//     //
+//     for (const door of useDoorStore().doors) {
+//       inkScript += `
+// === ${door.id} ===
 
-= init
-// TODO: setup stuff here?
--> DONE
+// = init
+// // TODO: setup stuff here?
+// -> DONE
 
-= start`
-      if (door.script) {
-        inkScript += `\n${door.script}`
-      }
-      inkScript += "\n-> DONE\n"
-    }
+// = start`
+//       if (door.script) {
+//         inkScript += `\n${door.script}`
+//       }
+//       inkScript += "\n-> DONE\n"
+//     }
 
-    //debugger
-    return inkScript
-  }
+//     //debugger
+//     return inkScript
+//   }
 
   // This update will be called by a pixi ticker and tell the scene that a tick happened
   //private static update() {
