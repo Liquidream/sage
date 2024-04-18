@@ -74,7 +74,7 @@
               printMargin: false,
               showLineNumbers: true,
               wrap: true,
-              firstLineNumber: 5,
+              firstLineNumber:scriptStartLineNumber(),
             }"
           />
           <v-card-actions>
@@ -130,6 +130,7 @@
 
   //const model = defineModel()
   const label = defineModel("label", { required: true })
+  const objType = defineModel("type", { required: true })
 
   const props = defineProps(["modelValue"])
   const emit = defineEmits(["update:modelValue"])
@@ -147,6 +148,28 @@
     // Play game
     dialog.value = false
   }
+
+  // a computed ref
+  const scriptStartLineNumber = computed((): number => {
+    debugger
+    switch (objType.value) {
+      case "scene": {
+        return SAGEdit.inkHeaderScene.split(/\r\n|\r|\n/).length
+      } 
+      case "actor": {
+        return SAGEdit.inkHeaderActor.split(/\r\n|\r|\n/).length
+      }
+      case "prop": {
+        return SAGEdit.inkHeaderProp.split(/\r\n|\r|\n/).length
+      }
+      case "doop": {
+        return SAGEdit.inkHeaderDoor.split(/\r\n|\r|\n/).length
+      }
+      default: {
+        return 0
+      }
+    }
+  })
 
   //const compilerCount = computed(() => SAGEdit.inkCompilerLog.length)
   const compilerResult = reactive({
