@@ -184,19 +184,24 @@ export class SAGE {
     // --------------------------------------------
     const sagePlayData = window.opener.sagePlayData
     const scriptData = sagePlayData.scriptData
-    SAGE.inkCompiler = new Compiler(scriptData)
-    // Capture compile errors
-    SAGE.inkCompiler.OnError = (msg, type) => {
-      if (type == ErrorType.Warning) console.warn(msg)
-      else console.error(msg)
-    }
-    try {
-      SAGE.inkStory = SAGE.inkCompiler.Compile()
-    } catch (err) {
-      console.error(err)
-      // bail out now
-      return
-    }
+
+    // V2 (loading pre-compiled ink story)
+    SAGE.inkStory = new Story(scriptData)
+
+    // V1 (when compiling from source ink file)
+    // SAGE.inkCompiler = new Compiler(scriptData)
+    // // Capture compile errors
+    // SAGE.inkCompiler.OnError = (msg, type) => {
+    //   if (type == ErrorType.Warning) console.warn(msg)
+    //   else console.error(msg)
+    // }
+    // try {
+    //   SAGE.inkStory = SAGE.inkCompiler.Compile()
+    // } catch (err) {
+    //   console.error(err)
+    //   // bail out now
+    //   return
+    // }
 
     // Setup error handling
     SAGE.inkStory.onError = (msg, type) => { // https://github.com/y-lohse/inkjs/issues/1033

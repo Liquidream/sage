@@ -214,7 +214,7 @@ export class SAGEdit {
     playData.doorData = JSON.stringify(useDoorStore().$state)
     playData.actorData = JSON.stringify(useActorStore().$state)
     playData.playerData = JSON.stringify(usePlayerStore().$state)
-    playData.scriptData = SAGEdit.generateInkScript()
+    playData.scriptData = SAGEdit.generateInkStoryJson()
 
     window.sagePlayData = playData
 
@@ -230,21 +230,24 @@ export class SAGEdit {
     //   "filename2.ink": "This content is included",
     // }
     const jsonFileHandler = new JsonFileHandler(
-      SAGEdit.generateInkScriptJsonPackage()
+      SAGEdit.generateInkScriptJsonSourcePackage()
     )
 
     //SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScript(), {
-    SAGEdit.inkCompiler = new Compiler(null, {
+    SAGEdit.inkCompiler = new Compiler(
+      jsonFileHandler.LoadInkFileContents("_main.ink"),
+      {
       errorHandler: (msg, type) => {
-        if (type == ErrorType.Warning) console.warn(msg)
-        else console.error(msg)
-        compilerLog.push(msg)
-      },
-      countAllVisits: true,
-      fileHandler: jsonFileHandler,
-      pluginNames: [],
-      sourceFilename: null,
-    })
+          if (type == ErrorType.Warning) console.warn(msg)
+          else console.error(msg)
+          compilerLog.push(msg)
+        },
+        countAllVisits: true,
+        fileHandler: jsonFileHandler,
+        pluginNames: [],
+        sourceFilename: null,
+      }
+    )
     try {
       debugger
       SAGEdit.inkStory = SAGEdit.inkCompiler.Compile()
@@ -258,7 +261,41 @@ export class SAGEdit {
     return compilerLog
   }
 
-  private static generateInkScriptJsonPackage(): Record<string, string> {
+  public static generateInkStoryJson(): string {
+    let inkStoryJson = ""
+    
+    const jsonFileHandler = new JsonFileHandler(
+      SAGEdit.generateInkScriptJsonSourcePackage()
+    )
+
+    //SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScript(), {
+    SAGEdit.inkCompiler = new Compiler(
+      jsonFileHandler.LoadInkFileContents("_main.ink"),
+      {
+        errorHandler: (msg, type) => {
+          if (type == ErrorType.Warning) console.warn(msg)
+          else console.error(msg)
+        },
+        countAllVisits: true,
+        fileHandler: jsonFileHandler,
+        pluginNames: [],
+        sourceFilename: null,
+      }
+    )
+    try {
+      debugger
+      const inkStory = SAGEdit.inkCompiler.Compile()
+      // DEBUG
+      inkStoryJson = inkStory.ToJson()
+      //console.log(jsonBytecode)
+    } catch (err) {
+      console.error(err)
+    }
+
+    return inkStoryJson
+  }
+
+  private static generateInkScriptJsonSourcePackage(): Record<string, string> {
     // Loop through all the game elements and build a single ink script (+compile it)
     const inkPackage: Record<string, string> = {
       "_main.ink": "",
