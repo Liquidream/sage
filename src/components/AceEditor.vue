@@ -19,9 +19,9 @@
 
         <v-list-item
           v-for="log in compilerResult.log"
-          :key="log"
-          prepend-icon="mdi-alert-circle"
-          :title="log"
+          :key="log.message"
+          prepend-icon="{{log.type === ErrorType.Warning ? mdi-alert : mdi-close-circle}}"
+          :title="log.message"
           @click="errorDialog = false"
         ></v-list-item>
       </v-list>
@@ -134,6 +134,7 @@
 <script setup lang="ts">
   import { VAceEditor } from "vue3-ace-editor"
   import "ace-builds/src-noconflict/theme-monokai"
+  import { ErrorType } from "inkjs/engine/Error"
   import "../assets/ace-ink-mode/mode-ink"
   import "../assets/ace-ink-mode/inkTheme.css"
 
@@ -152,7 +153,7 @@
 
   import { computed, onMounted, reactive, ref, watchEffect } from "vue"
   import { useDisplay } from "vuetify"
-  import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
+  import { SAGEdit, LogEntry } from "@/pixi-sagedit/SAGEdit"
 
   import { debounce } from "../utils/Debounce"
 
@@ -202,9 +203,8 @@
 
   //const compilerCount = computed(() => SAGEdit.inkCompilerLog.length)
   const compilerResult = reactive({
-    log: []
+    log: [] as LogEntry[],
   })
-
   const onValidateClicked = () => {
     // Compile/validate ink script
     compilerResult.log = SAGEdit.validateScript()

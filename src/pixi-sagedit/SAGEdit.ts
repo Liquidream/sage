@@ -230,10 +230,10 @@ export class SAGEdit {
     window.open("?mode=play", "sagePlay")
   }
 
-  public static validateScript(): string[] {
+  public static validateScript(): LogEntry[] {
     // Compile ink script and store any errors locally,
     // so can view later
-    const compilerLog: string[] = []
+    const compilerLog: LogEntry[] = []
 
     const jsonFileHandler = new JsonFileHandler(
       SAGEdit.generateInkScriptJsonSourcePackage()
@@ -246,7 +246,10 @@ export class SAGEdit {
       errorHandler: (msg, type) => {
           if (type == ErrorType.Warning) console.warn(msg)
           else console.error(msg)
-          compilerLog.push(msg)
+          compilerLog.push({
+            type: type,
+            message: msg,
+          })
         },
         countAllVisits: true,
         fileHandler: jsonFileHandler,
@@ -531,4 +534,9 @@ export class SAGEdit {
 
     // as I said before, I HATE the "frame passed" approach. I would rather use `Manager.app.ticker.deltaMS`
   //}
+}
+
+export interface LogEntry {
+  type: ErrorType
+  message: string
 }
