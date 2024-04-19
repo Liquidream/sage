@@ -246,6 +246,10 @@ export class SAGEdit {
       errorHandler: (msg, type) => {
           if (type == ErrorType.Warning) console.warn(msg)
           else console.error(msg)
+          // TODO:?
+          if (type == ErrorType.Error && msg.toUpperCase().includes("TODO:")) {
+            type = ErrorTypeCustom.TODO
+          }
           compilerLog.push({
             type: type,
             message: msg,
@@ -536,7 +540,14 @@ export class SAGEdit {
   //}
 }
 
+export enum ErrorTypeCustom {
+  Author = 0,
+  Warning = 1,
+  Error = 2,
+  TODO = 99, // PN custom
+}
+
 export interface LogEntry {
-  type: ErrorType
+  type: ErrorTypeCustom
   message: string
 }

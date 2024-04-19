@@ -20,7 +20,13 @@
         <v-list-item
           v-for="log in compilerResult.log"
           :key="log.message"
-          :prepend-icon="log.type === ErrorType.Warning ? 'mdi-alert' : 'mdi-close-circle'"
+          :prepend-icon="
+            log.type === ErrorTypeCustom.Warning
+              ? 'mdi-alert'
+              : log.type === ErrorTypeCustom.Error
+              ? 'mdi-close-circle'
+              : 'mdi-checkbox-outline'
+          "
           :title="log.message"
           @click="errorDialog = false"
         ></v-list-item>
@@ -134,7 +140,7 @@
 <script setup lang="ts">
   import { VAceEditor } from "vue3-ace-editor"
   import "ace-builds/src-noconflict/theme-monokai"
-  import { ErrorType } from "inkjs/engine/Error"
+  //import { ErrorType } from "inkjs/engine/Error"
   import "../assets/ace-ink-mode/mode-ink"
   import "../assets/ace-ink-mode/inkTheme.css"
 
@@ -153,7 +159,7 @@
 
   import { computed, onMounted, reactive, ref, watchEffect } from "vue"
   import { useDisplay } from "vuetify"
-  import { SAGEdit, LogEntry } from "@/pixi-sagedit/SAGEdit"
+  import { SAGEdit, LogEntry, ErrorTypeCustom } from "@/pixi-sagedit/SAGEdit"
 
   import { debounce } from "../utils/Debounce"
 
@@ -166,7 +172,7 @@
   const debouncedInput = debounce((e) => {
     emit("update:modelValue", e)
     // validate on update
-    // TODO: would be better for this to be on a longer delay
+    // TODO: would be better for validation to be on a longer delay?
     compilerResult.log = SAGEdit.validateScript()
   }, 500)
 
