@@ -1,16 +1,32 @@
 <template>
 
   <!-- Compile/other error notifications -->
-  <v-alert
-    v-model="errorDialog"
-    type="info"
-    title="Alert title"
-    variant="tonal"
-    dismissible
-    text="Lorem ipsum dolor sit amet consectetur 
-    adipisicing elit. Commodi, r
-    atione debitis quis est labore voluptatibus! Eaque cupiditate minima, at placeat totam, magni doloremque veniam neque porro libero rerum unde voluptatem!"
-  ></v-alert>
+  <template>
+    <v-bottom-sheet v-model="errorDialog">
+      <!-- <template v-slot:activator="{ props }">
+        <div class="text-center">
+          <v-btn
+            v-bind="props"
+            color="purple"
+            size="x-large"
+            text="Click Me"
+          ></v-btn>
+        </div>
+      </template> -->
+
+      <v-list>
+        <v-list-subheader>Compiler errors</v-list-subheader>
+
+        <v-list-item
+          v-for="log in compilerResult.log"
+          :key="log"
+          prepend-icon="mdi-alert-circle"
+          :title="log"
+          @click="errorDialog = false"
+        ></v-list-item>
+      </v-list>
+    </v-bottom-sheet>
+  </template>
 
   <v-row align="center">
     <v-col>
