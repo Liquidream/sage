@@ -1,4 +1,17 @@
 <template>
+
+  <!-- Compile/other error notifications -->
+  <v-alert
+    v-model="errorDialog"
+    type="info"
+    title="Alert title"
+    variant="tonal"
+    dismissible
+    text="Lorem ipsum dolor sit amet consectetur 
+    adipisicing elit. Commodi, r
+    atione debitis quis est labore voluptatibus! Eaque cupiditate minima, at placeat totam, magni doloremque veniam neque porro libero rerum unde voluptatem!"
+  ></v-alert>
+
   <v-row align="center">
     <v-col>
       <span class="text-caption text-medium-emphasis">{{ label }}</span>
@@ -14,7 +27,6 @@
       >
         <template v-slot:activator="{ props }">
           <v-btn
-            v-bind="validprops"
             density="comfortable"
             color="info"
             variant="tonal"
@@ -137,6 +149,7 @@
   const debouncedInput = debounce((e) => {emit("update:modelValue", e)}, 500)
 
   const dialog = ref(false)
+  const errorDialog = ref(false)
   const { mobile } = useDisplay()
 
   const onPlayClicked = () => {
@@ -179,6 +192,9 @@
   const onValidateClicked = () => {
     // Compile/validate ink script
     compilerResult.log = SAGEdit.validateScript()
+    if (compilerResult.log.length > 0) {
+      errorDialog.value = true
+    }
   }
 
   // Func to setup auto-completers

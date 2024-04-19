@@ -231,12 +231,10 @@ export class SAGEdit {
   }
 
   public static validateScript(): string[] {
+    // Compile ink script and store any errors locally,
+    // so can view later
     const compilerLog: string[] = []
-    // TODO: Compile ink script and store any errors locally, so can view later
-    // const jsonInkPackage: Record<string, string> = {
-    //   "filename1.ink": "INCLUDE filename2.ink",
-    //   "filename2.ink": "This content is included",
-    // }
+
     const jsonFileHandler = new JsonFileHandler(
       SAGEdit.generateInkScriptJsonSourcePackage()
     )
@@ -263,7 +261,7 @@ export class SAGEdit {
       //const jsonBytecode = inkStory.ToJson()
       //console.log(jsonBytecode)
     } catch (err) {
-      console.error(err)
+      //console.error(err)
     }
 
     return compilerLog
