@@ -256,8 +256,8 @@
     })
 
     // validate on startup
-    // TODO: would be better for this to be on a longer delay
-    compilerResult.log = SAGEdit.validateScript()
+    // (Do it on a delay, to give storage chance to hydrate - if first load)
+    setTimeout(() => (compilerResult.log = SAGEdit.validateScript()), 500)
   })
 </script>
 
