@@ -20,7 +20,7 @@
         <v-list-item
           v-for="log in compilerResult.log"
           :key="log.message"
-          prepend-icon="{{log.type === ErrorType.Warning ? mdi-alert : mdi-close-circle}}"
+          :prepend-icon="log.type === ErrorType.Warning ? 'mdi-alert' : 'mdi-close-circle'"
           :title="log.message"
           @click="errorDialog = false"
         ></v-list-item>
