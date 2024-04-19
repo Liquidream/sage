@@ -163,7 +163,12 @@
 
   const props = defineProps(["modelValue"])
   const emit = defineEmits(["update:modelValue"])
-  const debouncedInput = debounce((e) => {emit("update:modelValue", e)}, 500)
+  const debouncedInput = debounce((e) => {
+    emit("update:modelValue", e)
+    // validate on update
+    // TODO: would be better for this to be on a longer delay
+    compilerResult.log = SAGEdit.validateScript()
+  }, 500)
 
   const dialog = ref(false)
   const errorDialog = ref(false)
@@ -207,7 +212,7 @@
   })
   const onValidateClicked = () => {
     // Compile/validate ink script
-    compilerResult.log = SAGEdit.validateScript()
+    //compilerResult.log = SAGEdit.validateScript()
     if (compilerResult.log.length > 0) {
       errorDialog.value = true
     }
@@ -249,6 +254,10 @@
         setupCompleters(aceRefLarge.value.getAceInstance())
       }
     })
+
+    // validate on startup
+    // TODO: would be better for this to be on a longer delay
+    compilerResult.log = SAGEdit.validateScript()
   })
 </script>
 
