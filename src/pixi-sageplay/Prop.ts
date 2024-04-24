@@ -178,15 +178,19 @@ export class Prop {
 
   private onPrimaryAction() {
     SAGE.debugLog(`You interacted with a prop! (${this.model.name})`)
+
     // Custom action?
-    if (this.model.on_action) {
-      // v1 - JS method
-      //SAGE.Script.safeExecFunc(this.model.on_action)
-      
-      // v2 - ink method
+    // v1 - JS method
+    // if (this.model.on_action) {
+    //   SAGE.Script.safeExecFunc(this.model.on_action)
+    //   return
+    // }
+    // v2 - ink method
+    if (this.model.script) {
       SAGE.chooseStoryPath(this.model.id + ".start")
       return
     }
+
     // Can prop be picked up?
     // (...and not already in inventory)?
     if (this.model.pickupable && !this.inInventory) {
