@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-main>
+      <SettingsPlay v-if="loaded" />
       <canvas
         id="pixi-canvas"
         width="100%"
@@ -12,13 +13,19 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted } from "vue"
+  import { onMounted, ref } from "vue"
   //import { Fullscreen } from "./utils/Fullscreen"
   import { SAGE } from "./pixi-sageplay/SAGEPlay"
   import { LoaderScreen } from "./pixi-sageplay/screens/LoaderScreen"
+  import SettingsPlay from "./components/SettingsPlay.vue";
   //import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
 
   console.log("start AppPlay.vue...")
+  const loaded = ref(false) // delay load other elements until all initialised
+  const dialog = ref(false)
+  const notifications = ref(false)
+  const sound = ref(true)
+  const widgets = ref(false)
 
   // current screen size
   const gameWidth = 1920
@@ -32,9 +39,9 @@
   //   return currPort
   // })
 
-  // Delay initialising and using Pixi until the cavas element is in the DOM
+  // Delay initialising and using Pixi until the canvas element is in the DOM
   onMounted(() => {
-    console.log(`the component is now mounted.`)
+    console.log(`>>> Mounting the AppPlay component...`)
 
     // Initialise Pixi (with a "black" default bg color)
     SAGE.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
@@ -56,6 +63,9 @@
     //   console.log(">>> Play/Test mode!22")
     //   const worldStore = useWorldStore()
     //}
+
+    // all done now?
+    loaded.value = true
   })
 </script>
 

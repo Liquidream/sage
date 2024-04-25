@@ -1,8 +1,7 @@
 import { DropShadowFilter } from "pixi-filters";
 import { Container, Sprite } from "pixi.js";
 import { SAGE } from "../../SAGEPlay";
-import { Fullscreen } from "../../../utils/Fullscreen";
-import { DialogType } from "../../../pixi-sagedit/DialogEdit";
+import { DialogType } from "../../../pixi-sagedit/DialogEdit"
 
 
 export class UI_Overlay {
@@ -10,7 +9,8 @@ export class UI_Overlay {
   // (perhaps overridable in config?)
   ICON_ALPHA_INACTIVE = 0.5;
   ICON_ALPHA_ACTIVE = 0.85;
-  ICON_HINT_TEXT = "Open/Close Inventory";
+  ICON_SETTINGS_HINT_TEXT = "Open/Close Settings";
+  ICON_INVENTORY_HINT_TEXT = "Open/Close Inventory";
 
   // Fields
   private parentLayer: Container;
@@ -42,7 +42,19 @@ export class UI_Overlay {
     // Events
     this.settingsIcon.on("pointertap", () => {
       // Toggle fullscreen (for now)
-      Fullscreen.toggleFullScreen();
+      //Fullscreen.toggleFullScreen();
+      SAGE.Events.emit("settingsTapped")
+    });
+    this.settingsIcon.on("pointerover", () => {
+      this.settingsIcon.alpha = this.ICON_ALPHA_ACTIVE;
+      SAGE.Dialog.showMessage(this.ICON_SETTINGS_HINT_TEXT, DialogType.Caption, -1);
+    });
+    this.settingsIcon.on("pointerout", () => {
+      this.settingsIcon.alpha = this.ICON_ALPHA_INACTIVE;
+      // If dialog being displayed is name "on hover"...
+      if (SAGE.Dialog.currentDialogType === DialogType.Caption) {
+        SAGE.Dialog.clearMessage();
+      }
     });
     this.parentLayer.addChild(this.settingsIcon);
     // ---------------------------
@@ -67,7 +79,7 @@ export class UI_Overlay {
     });
     this.inventoryIcon.on("pointerover", () => {
       this.inventoryIcon.alpha = this.ICON_ALPHA_ACTIVE;
-      SAGE.Dialog.showMessage(this.ICON_HINT_TEXT, DialogType.Caption, -1);
+      SAGE.Dialog.showMessage(this.ICON_INVENTORY_HINT_TEXT, DialogType.Caption, -1);
     });
     this.inventoryIcon.on("pointerout", () => {
       if (!SAGE.invScreen.isOpen) this.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE;

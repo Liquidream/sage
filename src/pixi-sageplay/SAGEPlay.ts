@@ -104,6 +104,9 @@ export class SAGE {
 
     // initialise stage "layers"
     SAGE.createLayers()
+
+        // Initialise events
+        SAGE.Events = new Events()
   }
 
   static createLayers() {
@@ -128,16 +131,16 @@ export class SAGE {
   }
 
   public static async loadWorld(): void {
-    // Initialise UI
+    // // Initialise events
+    // SAGE.Events = new Events()
+
+    // ... UI
     SAGE.UI_Overlay = new UI_Overlay(SAGE.topLayer)
 
     // Create and initialise game world
     SAGE.World = new World()
     SAGE.World.initialize() //gamedata)
     //Manager.World = new World().fromJSON(gamedata);
-
-    // ...and events
-    SAGE.Events = new Events()
 
     // ...and inventory (UI)
     SAGE.invScreen = new InventoryScreen(SAGE.topLayer)

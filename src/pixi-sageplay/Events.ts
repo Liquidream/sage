@@ -1,13 +1,11 @@
-import { EventEmitter } from '@pixi/utils';
+import { EventEmitter } from "@pixi/utils"
 
 export class Events extends EventEmitter {
-
   constructor() {
-    super();
+    super()
   }
-  
+
   // public initialize(): void {
   //    // Anything?
   // }
-
 }
