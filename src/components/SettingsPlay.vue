@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="showDialog">
+  <v-dialog v-model="showDialog" max-width="500">
     <!-- <template v-slot:activator="{ props: activatorProps }">
       <v-btn
         prepend-icon="mdi-cog"
@@ -23,11 +23,13 @@
       </v-toolbar>
 
       <v-list lines="two" subheader>
-        <v-list-subheader>Main Menu</v-list-subheader>
+        <!-- <v-list-subheader>Game State</v-list-subheader> -->
 
         <v-btn text="Save Game" color="primary" variant="text" size="x-large" block @click="saveGameClicked"></v-btn>
 
         <v-btn text="Load Game" color="primary" variant="text" size="x-large" block @click="loadGameClicked"></v-btn>
+
+        <v-btn text="Restart Game" color="primary" variant="text" size="x-large" block @click="restartGameClicked"></v-btn>
 
         <v-divider></v-divider>
 
@@ -62,7 +64,11 @@
     console.log("TODO: Load game...")
   }
 
-  // Delay initialising until SAGE has been fully initialised 
+  const restartGameClicked = () => {
+    console.log("TODO: Restart game...")
+  }
+
+  // Delay initialising until SAGE has been fully initialised
   onMounted(() => {
     console.log(`>>> Mounting the settings component...`)
     // Listen for Prop created

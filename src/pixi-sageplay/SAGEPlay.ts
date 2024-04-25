@@ -105,8 +105,9 @@ export class SAGE {
     // initialise stage "layers"
     SAGE.createLayers()
 
-        // Initialise events
-        SAGE.Events = new Events()
+    // Initialise events
+    // (Needs to be before app/settings vue component renders)
+    SAGE.Events = new Events()
   }
 
   static createLayers() {
@@ -131,8 +132,8 @@ export class SAGE {
   }
 
   public static async loadWorld(): void {
-    // // Initialise events
-    // SAGE.Events = new Events()
+    // Initialise events
+    //SAGE.Events = new Events()
 
     // ... UI
     SAGE.UI_Overlay = new UI_Overlay(SAGE.topLayer)
