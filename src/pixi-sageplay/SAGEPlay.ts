@@ -13,6 +13,8 @@ import { playAssets } from "./playAssets"
 import { Story, Compiler } from "inkjs"
 import { ErrorType } from "inkjs/engine/Error"
 import { Scene } from "./Scene"
+import { usePlayerStore } from "@/stores/PlayerStore"
+import type { SaveStateModel } from "@/models/SaveStateModel"
 
 //import gamedataJSON from "./gamedata.json"
 //const gamedata: IWorldData = (<unknown>gamedataJSON) as IWorldData
@@ -387,6 +389,16 @@ export class SAGE {
     SAGE.emptyLayers()
     SAGE.loadWorld()
     SAGE.startGame()
+  }
+
+  public static saveGame() {
+    const inkState = SAGE.inkStory.state.ToJson()
+    const playerStore = usePlayerStore()
+    const newSave: SaveStateModel = {
+      jsonState: inkState,
+    }
+    playerStore.gameState = newSave
+    console.log(inkState)
   }
 
   public static gameOver(message: string) {

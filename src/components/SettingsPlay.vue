@@ -58,6 +58,7 @@
 
   const saveGameClicked = () => {
     console.log("TODO: Save game...")
+    SAGE.saveGame()
   }
 
   const loadGameClicked = () => {
