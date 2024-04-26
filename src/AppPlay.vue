@@ -18,6 +18,11 @@
   import { SAGE } from "./pixi-sageplay/SAGEPlay"
   import { LoaderScreen } from "./pixi-sageplay/screens/LoaderScreen"
   import SettingsPlay from "./components/SettingsPlay.vue";
+import { useWorldStore } from "./stores/WorldStore";
+import { usePropStore } from "./stores/PropStore";
+import { useSceneStore } from "./stores/SceneStore";
+import { useDoorStore } from "./stores/DoorStore";
+import { useActorStore } from "./stores/ActorStore";
   //import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
 
   console.log("start AppPlay.vue...")
@@ -39,33 +44,43 @@
   //   return currPort
   // })
 
+  const worldStore = useWorldStore()
+  const propStore = usePropStore()
+  const sceneStore = useSceneStore()
+  const doorStore = useDoorStore()
+  const actorStore = useActorStore()
+
   // Delay initialising and using Pixi until the canvas element is in the DOM
   onMounted(() => {
     console.log(`>>> Mounting the AppPlay component...`)
 
-    // Initialise Pixi (with a "black" default bg color)
-    SAGE.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
+    // Only proceed once ALL stores have fully loaded
+    // (takes longer with IndexedDB)
+    // Promise.all([
+    //   worldStore.$persistedState.isReady(),
+    //   sceneStore.$persistedState.isReady(),
+    //   propStore.$persistedState.isReady(),
+    //   doorStore.$persistedState.isReady(),
+    //   actorStore.$persistedState.isReady(),
+    // ]).then(() => {
+      console.log("All stores hydrated pt.2, now initialise SAGE")
 
-    // SAGE.loadWorld()
-    //SAGE.startGame()
+      // Add even MORE delay to test pinia hydration/overwrite issue...
+      //setTimeout(() => { 
+        // Initialise Pixi (with a "black" default bg color)
+        SAGE.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
 
-    // pass in the screen size to avoid "asking up"
-    const sceny: LoaderScreen = new LoaderScreen()
-    console.log("changing screen to loader")
-    SAGE.changeScreen(sceny)
+        // pass in the screen size to avoid "asking up"
+        const sceny: LoaderScreen = new LoaderScreen()
+        console.log("changing screen to loader")
+        SAGE.changeScreen(sceny)
 
-    // Play mode?
-    // const queryString = window.location.search
-    // const urlParams = new URLSearchParams(queryString)
-    // const mode = urlParams.get("mode")
-    // if (mode == "play") {
-    //   //let app = createApp(AppServer);
-    //   console.log(">>> Play/Test mode!22")
-    //   const worldStore = useWorldStore()
-    //}
+        // all done now?
+        loaded.value = true
 
-    // all done now?
-    loaded.value = true
+     // }, 2000)
+
+   // })
   })
 </script>
 

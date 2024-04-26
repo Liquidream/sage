@@ -221,8 +221,9 @@ export class SAGEdit {
     playData.propData = JSON.stringify(usePropStore().$state)
     playData.doorData = JSON.stringify(useDoorStore().$state)
     playData.actorData = JSON.stringify(useActorStore().$state)
-    playData.playerData = JSON.stringify(usePlayerStore().$state)
     playData.scriptData = SAGEdit.generateInkStoryJson()
+    // Don't set this, or it'll clash wish save states
+    playData.playerData = JSON.stringify(usePlayerStore().$state)
 
     window.sagePlayData = playData
 
