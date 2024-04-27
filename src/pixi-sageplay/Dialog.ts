@@ -240,7 +240,7 @@ export class Dialog {
     soundName?: string,
     durationInSecs?: number
   ): Promise<void> {
-    console.log(">>>" + message)
+    //console.log(">>>" + message)
     let speaker!: string
     let speakerCol!: string
     // Get actor details
@@ -438,7 +438,7 @@ export class Dialog {
     // ...or leave on display (e.g. if duration = -1)
     if (waitDuration > 0) {
       // wait for calc'd duration
-      console.log(`SAGE.Script.wait(${waitDuration})....`)
+      //console.log(`SAGE.Script.wait(${waitDuration})....`)
       await SAGE.Script.waitSkippable(waitDuration)
 
       // Remove message now duration over
@@ -456,7 +456,7 @@ export class Dialog {
       }
 
       // Add a gap at end (so dialog not too close together)
-      console.log("SAGE.Script.wait(0.5)....")
+      //console.log("SAGE.Script.wait(0.5)....")
       await SAGE.Script.wait(0.5)
     }
   }

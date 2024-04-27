@@ -74,7 +74,9 @@
       ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
     >
 
-    <prism-editor label="On Start" v-model="worldStore.on_start" />
+    <AceEditor label="On Start" type="scene" v-model="worldStore.script" />
+
+    <!-- <prism-editor label="On Start" v-model="worldStore.on_start" /> -->
 
     <v-divider />
 
@@ -98,8 +100,11 @@
   import { useWorldStore } from "../stores/WorldStore"
   import { SampleData } from "../stores/SampleData"
   import SceneSelect from "./SceneSelect.vue"
-  import PrismEditor from "./PrismEditor.vue"
-import type { ActorModel } from "@/models/ActorModel"
+
+  import AceEditor from "./AceEditor.vue"
+  //import PrismEditor from "./PrismEditor.vue"
+
+  import type { ActorModel } from "@/models/ActorModel"
 
   console.log("start WordProperties.vue...")
   const worldStore = useWorldStore()

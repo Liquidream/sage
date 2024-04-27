@@ -12,6 +12,7 @@ export interface WorldState {
   id: string
   title: string
   startingSceneId: string
+  script: string
   on_start: string
   currSceneId: string
   currPropId: string
@@ -30,6 +31,7 @@ export const useWorldStore = defineStore("worldStore", {
     id: "",
     title: "",
     startingSceneId: "",
+    script: "",
     on_start: "",
     currSceneId: "",
     currPropId: "",

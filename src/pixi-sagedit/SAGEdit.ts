@@ -51,6 +51,7 @@ export class SAGEdit {
   //private static inkJsonFileHandler: InstanceType<typeof JsonFileHandler>
   //private static inkCompilerLog: string[] = []
 
+  public static inkHeaderWorld: string
   public static inkHeaderScene: string
   public static inkHeaderActor: string
   public static inkHeaderProp: string
@@ -310,6 +311,7 @@ export class SAGEdit {
   }
 
   private static initInkScriptHeaders() {
+    SAGEdit.inkHeaderWorld = "=== _world ==="
     SAGEdit.inkHeaderScene = "=== ${id} ===\n # SCENE: ${id}\n {! }"
     SAGEdit.inkHeaderActor =
       "=== ${id} ===\n\n = init\n // TODO: setup stuff here?\n -> DONE\n\n= start"
@@ -329,6 +331,20 @@ export class SAGEdit {
       "_main.ink": "",
     }
     let mainInkWithIncludes = ""
+
+    // ----------------
+    // World
+    //
+    const inkName = `_world.ink`
+    const world = useWorldStore()
+    let inkScript = SAGEdit.inkHeaderWorld
+    if (world.script) {
+      inkScript += `\n${world.script}`
+    }
+    inkScript += "\n-> DONE\n"
+    inkPackage[inkName] = inkScript
+    mainInkWithIncludes += `INCLUDE ${inkName}\n`
+
     // ----------------
     // Scenes
     //

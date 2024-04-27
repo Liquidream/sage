@@ -292,7 +292,7 @@ export class SAGE {
 
         //console.debug(paragraphText)
         if (paragraphText) {
-          console.debug(paragraphText)
+          //console.debug(paragraphText)
           await SAGE.Dialog.say(actorId, paragraphText)
         }
       }

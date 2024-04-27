@@ -32,6 +32,7 @@ export class World implements IWorldData {
   }
   // public starting_scene_id: string | undefined
   // Events
+  public script = ""
   public on_start = ""
   // Key-Value pair to allow properties to be set/read
   property: { [key: string]: string | number | boolean } = {}
@@ -58,10 +59,18 @@ export class World implements IWorldData {
 
   // Start the adventure!
   start() {
-    // Run any on_start action?
-    if (this.on_start) {
-      SAGE.Script.safeExecFunc(this.on_start)
+
+    // V2 ink ------------------------------
+    // Run any start script?
+    if (this.script) {
+      SAGE.chooseStoryPath("_start")
     }
+
+    // V1 ------------------------------------
+    // Run any on_start action?
+    // if (this.on_start) {
+    //   SAGE.Script.safeExecFunc(this.on_start)
+    // }
 
     // V1 ------------------------------------
     // Find the starting scene...
@@ -201,9 +210,10 @@ export interface IWorldData {
   player: Player.IPlayerData
   scenes: SceneModel[] //Array<Scene.ISceneData>
   startingSceneId: string | undefined
-  on_start: string
   // Key-Value pair to allow properties to be set/read
   property: { [key: string]: string | number | boolean }
+  // ink scripting
+  script: string
   // Poss. event actions
-  //on_enter: string;
+  on_start: string
 }

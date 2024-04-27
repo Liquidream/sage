@@ -56,13 +56,12 @@
             @click="onValidateClicked"
             v-if="compilerResult.log.length > 0"
           >
-          <v-badge color="error" 
-           :content="compilerResult.log.length">
-            <v-icon>mdi-check-all</v-icon>
-          </v-badge>
-        </v-btn>
+            <v-badge color="error" :content="compilerResult.log.length">
+              <v-icon>mdi-check-all</v-icon>
+            </v-badge>
+          </v-btn>
 
-        <v-btn
+          <v-btn
             @click="onValidateClicked"
             density="comfortable"
             color="info"
@@ -71,8 +70,8 @@
             v-else
           >
             <v-icon>mdi-check-all</v-icon>
-        </v-btn>
-          
+          </v-btn>
+
           <v-btn
             v-bind="props"
             density="comfortable"
@@ -87,6 +86,29 @@
           <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
             <v-toolbar-title class="text-h6">{{ label }}</v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-btn
+              density="comfortable"
+              color="info"
+              variant="tonal"
+              icon
+              @click="onValidateClicked"
+              v-if="compilerResult.log.length > 0"
+            >
+              <v-badge color="error" :content="compilerResult.log.length">
+                <v-icon>mdi-check-all</v-icon>
+              </v-badge>
+            </v-btn>
+
+            <v-btn
+              @click="onValidateClicked"
+              density="comfortable"
+              color="info"
+              variant="tonal"
+              icon
+              v-else
+            >
+              <v-icon>mdi-check-all</v-icon>
+            </v-btn>
             <v-btn @click="onPlayClicked" color="info" prepend-icon="mdi-play"
               >Play</v-btn
             >

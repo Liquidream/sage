@@ -145,9 +145,7 @@
   // import "../assets/acesrc/theme-monokai"
   // import "../assets/acesrc/inkTheme.css"
 
-  //import AceEditor from "./AceEditor.vue"
   import AceEditor from "./AceEditor.vue"
-
   //import PrismEditor from "./PrismEditor.vue"
 
 
