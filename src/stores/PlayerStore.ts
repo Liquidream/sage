@@ -13,7 +13,7 @@ export const usePlayerStore = defineStore({
 
   state: (): PlayerState => ({
     inventory: [],
-    gameState: "",
+    gameState: { jsonState: "" },
   }),
 
 })

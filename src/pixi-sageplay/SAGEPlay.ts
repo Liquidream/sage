@@ -15,6 +15,7 @@ import { ErrorType } from "inkjs/engine/Error"
 import { Scene } from "./Scene"
 import { usePlayerStore } from "@/stores/PlayerStore"
 import type { SaveStateModel } from "@/models/SaveStateModel"
+import type { InkList, InkListItem } from "inkjs/engine/InkList"
 
 //import gamedataJSON from "./gamedata.json"
 //const gamedata: IWorldData = (<unknown>gamedataJSON) as IWorldData
@@ -194,6 +195,19 @@ export class SAGE {
     // V2 (loading pre-compiled ink story)
     SAGE.inkStory = new Story(scriptData)
 
+    // TODO: Need to load last saved state
+    // (+restore inventory, world, scene, actor, prop object states accordingly)
+    const lastState = SAGE.World.player.gameState
+    if (lastState.jsonState && lastState.jsonState.length > 0) {
+      SAGE.inkStory.state.LoadJson(lastState.jsonState)
+      console.log("-- Inventory contents:")
+      const invList = SAGE.inkStory.variablesState["Inventory"] as InkList
+      //debugger
+      invList.orderedItems.forEach(({Key, Value}) => {
+        console.log(`>> ${Key.itemName}`)
+      })
+    }
+
     // V1 (when compiling from source ink file)
     // SAGE.inkCompiler = new Compiler(scriptData)
     // // Capture compile errors
@@ -216,7 +230,11 @@ export class SAGE {
     }
 
     // Performn a story "step" to get initial choices
-    SAGE.inkStory.Continue()
+    if (SAGE.inkStory.canContinue) {
+      SAGE.inkStory.Continue()
+    } else {
+      console.warn("Cannot continue ink story - canContinue = false")
+    }
 
     console.debug("<<<<<<<<<<<<<<<")
   }

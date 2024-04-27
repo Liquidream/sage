@@ -4,8 +4,10 @@ import { Prop } from "./Prop"
 //import * as PropData from "./data/PropData"
 import { PropLocationType, type PropModel } from "@/models/PropModel"
 import { usePlayerStore } from "@/stores/PlayerStore"
+import type { SaveStateModel } from "@/models/SaveStateModel"
 
-export class Player implements IPlayerData, Serialization<Player> {
+//export class Player implements IPlayerData, Serialization<Player> {
+export class Player implements IPlayerData {
   public constructor() {
     // Anything?
   }
@@ -21,6 +23,10 @@ export class Player implements IPlayerData, Serialization<Player> {
 
   // Key-Value pair to allow properties to be set/read
   public property: { [key: string]: string | number | boolean } = {}
+
+  public get gameState(): SaveStateModel {
+    return this.playerStore.gameState
+  }
 
   /** Returns whether or not the specified prop id is in player's inventory */
   public hasPropInInventory(propId: string): boolean {
@@ -67,6 +73,7 @@ export interface IPlayerData {
   inventory: Array<PropModel>
   // Key-Value pair to allow properties to be set/read
   property: { [key: string]: string | number | boolean }
+  gameState: SaveStateModel
   // Poss. event actions
   //on_enter: string;
 }

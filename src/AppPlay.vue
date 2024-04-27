@@ -23,6 +23,7 @@ import { usePropStore } from "./stores/PropStore";
 import { useSceneStore } from "./stores/SceneStore";
 import { useDoorStore } from "./stores/DoorStore";
 import { useActorStore } from "./stores/ActorStore";
+import { usePlayerStore } from "./stores/PlayerStore";
   //import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
 
   console.log("start AppPlay.vue...")
@@ -44,11 +45,12 @@ import { useActorStore } from "./stores/ActorStore";
   //   return currPort
   // })
 
-  const worldStore = useWorldStore()
-  const propStore = usePropStore()
-  const sceneStore = useSceneStore()
-  const doorStore = useDoorStore()
-  const actorStore = useActorStore()
+  // const worldStore = useWorldStore()
+  // const propStore = usePropStore()
+  // const sceneStore = useSceneStore()
+  // const doorStore = useDoorStore()
+  // const actorStore = useActorStore()
+  // const playerStore = usePlayerStore()
 
   // Delay initialising and using Pixi until the canvas element is in the DOM
   onMounted(() => {
@@ -63,7 +65,7 @@ import { useActorStore } from "./stores/ActorStore";
     //   doorStore.$persistedState.isReady(),
     //   actorStore.$persistedState.isReady(),
     // ]).then(() => {
-      console.log("All stores hydrated pt.2, now initialise SAGE")
+     // console.log("All stores hydrated pt.2, now initialise SAGE")
 
       // Add even MORE delay to test pinia hydration/overwrite issue...
       //setTimeout(() => { 

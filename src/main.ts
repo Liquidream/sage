@@ -201,6 +201,7 @@ if (mode == "play") {
   const sceneStore = useSceneStore()
   const doorStore = useDoorStore()
   const actorStore = useActorStore()
+  const playerStore = usePlayerStore()
 
   // Check for data to load
   if (window.opener.sagePlayData) {
@@ -214,6 +215,7 @@ if (mode == "play") {
       propStore.$persistedState.isReady(),
       doorStore.$persistedState.isReady(),
       actorStore.$persistedState.isReady(),
+      playerStore.$persistedState.isReady(),
     ]).then(() => {
       console.log("All stores hydrated pt.1, now overwrite state")
 

@@ -63,6 +63,8 @@
 
   const loadGameClicked = () => {
     console.log("TODO: Load game...")
+    debugger
+    const lastState = SAGE.World.player.gameState
   }
 
   const restartGameClicked = () => {
