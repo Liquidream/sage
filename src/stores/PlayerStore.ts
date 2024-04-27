@@ -3,7 +3,7 @@ import type { SaveStateModel } from "@/models/SaveStateModel"
 import { defineStore } from "pinia"
 
 export interface PlayerState {
-  inventory: PropModel[]
+  //inventory: PropModel[]
   // ink-related
   gameState: SaveStateModel
 }
@@ -12,7 +12,7 @@ export const usePlayerStore = defineStore({
   id: "playerStore",
 
   state: (): PlayerState => ({
-    inventory: [],
+    //inventory: [],
     gameState: { jsonState: "" },
   }),
 

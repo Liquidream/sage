@@ -45,9 +45,9 @@ export class InventoryScreen {
 
   private initialise() {
     // Create and add objects for initial inventory
-    for (const propData of SAGE.World.player.inventory) {
-      this.addProp(new Prop(propData))
-    }
+    // for (const propData of SAGE.World.player.inventory) {
+    //   this.addProp(new Prop(propData))
+    // }
   }
 
   public addProp(prop: Prop) {

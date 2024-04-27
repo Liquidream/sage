@@ -16,9 +16,10 @@ export class Player implements IPlayerData {
 
   public name: string | undefined
 
-  public get inventory(): PropModel[] {
-    return this.playerStore.inventory
-  }
+  public inventory: PropModel[] = []
+  // public get inventory(): PropModel[] {
+  //   return this.playerStore.inventory
+  // }
   // public inventory: Array<PropModel> = []
 
   // Key-Value pair to allow properties to be set/read

@@ -62,7 +62,7 @@ export class SAGE {
 
   // Initialise InkJS (this might not be the right place...)
   private static inkStory: InstanceType<typeof Story>
-  private static inkCompiler: InstanceType<typeof Compiler>
+  //private static inkCompiler: InstanceType<typeof Compiler>
 
   // public static invScreen: InventoryScreen;
   public static get width(): number {
@@ -197,16 +197,7 @@ export class SAGE {
 
     // TODO: Need to load last saved state
     // (+restore inventory, world, scene, actor, prop object states accordingly)
-    const lastState = SAGE.World.player.gameState
-    if (lastState.jsonState && lastState.jsonState.length > 0) {
-      SAGE.inkStory.state.LoadJson(lastState.jsonState)
-      console.log("-- Inventory contents:")
-      const invList = SAGE.inkStory.variablesState["Inventory"] as InkList
-      //debugger
-      invList.orderedItems.forEach(({Key, Value}) => {
-        console.log(`>> ${Key.itemName}`)
-      })
-    }
+    this.restoreSavedState()
 
     // V1 (when compiling from source ink file)
     // SAGE.inkCompiler = new Compiler(scriptData)
@@ -335,6 +326,25 @@ export class SAGE {
       }
     } catch (error) {
       console.error(">>> Error choosing story path: " + error)
+    }
+  }
+
+  private static restoreSavedState() {
+    // TODO: Need to load last saved state
+    // (+restore inventory, world, scene, actor, prop object states accordingly)
+    const lastState = SAGE.World.player.gameState
+    if (lastState.jsonState && lastState.jsonState.length > 0) {
+      SAGE.inkStory.state.LoadJson(lastState.jsonState)
+      console.log("-- Inventory contents:")
+      const invList = SAGE.inkStory.variablesState["Inventory"] as InkList
+      //debugger
+      invList.orderedItems.forEach(({Key, Value}) => {
+        console.log(`>> ${Key.itemName}`)
+        const propName = Key.itemName.replace("prp_", "")
+        // Add to Player's inventory
+        const propModel = SAGE.World.getPropById(propName)
+        if (propName) SAGE.World.player.addToInventory(propModel)
+      })
     }
   }
 
