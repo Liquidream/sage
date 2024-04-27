@@ -5,6 +5,7 @@ import { Prop } from "./Prop"
 import { PropLocationType, type PropModel } from "@/models/PropModel"
 import { usePlayerStore } from "@/stores/PlayerStore"
 import type { SaveStateModel } from "@/models/SaveStateModel"
+import { InkList, InkListItem } from "inkjs/engine/InkList"
 
 //export class Player implements IPlayerData, Serialization<Player> {
 export class Player implements IPlayerData {
@@ -40,6 +41,15 @@ export class Player implements IPlayerData {
     propData.location_id = ""
     SAGE.World.player.inventory.push(propData)
     SAGE.invScreen.addProp(new Prop(propData))
+    // Update ink story state
+    const listName = `prp_${propData.id}`
+    //const test1 = SAGE.inkStory.listDefinitions?.FindSingleItemListWithName("prplamp")
+    //const test2 = new InkList(test1.value)
+    //const test9 = InkList.FromString("prplamp", SAGE.inkStory)
+    //const prpListItem = InkList.FromString(listName, SAGE.inkStory)
+    const prpListItem = new InkListItem("Props", listName)
+    const result = SAGE.inkStory.EvaluateFunction(
+      "pickup_item", [ prpListItem ])
   }
 
   /** Remove (and return) the specified prop, if present */

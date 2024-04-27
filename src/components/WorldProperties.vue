@@ -74,7 +74,9 @@
       ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
     >
 
-    <AceEditor label="On Start" type="scene" v-model="worldStore.script" />
+    <AceEditor label="On Start" type="scene" v-model="worldStore.script_on_start" />
+
+    <AceEditor label="Functions" type="scene" v-model="worldStore.script_functions" />
 
     <!-- <prism-editor label="On Start" v-model="worldStore.on_start" /> -->
 

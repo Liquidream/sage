@@ -32,8 +32,9 @@ export class World implements IWorldData {
   }
   // public starting_scene_id: string | undefined
   // Events
-  public script = ""
-  public on_start = ""
+  //public script = ""
+  public script_functions = ""
+  public script_on_start = ""
   // Key-Value pair to allow properties to be set/read
   property: { [key: string]: string | number | boolean } = {}
 
@@ -62,7 +63,7 @@ export class World implements IWorldData {
 
     // V2 ink ------------------------------
     // Run any start script?
-    if (this.script) {
+    if (this.script_on_start) {
       SAGE.chooseStoryPath("_start")
     }
 
@@ -213,7 +214,8 @@ export interface IWorldData {
   // Key-Value pair to allow properties to be set/read
   property: { [key: string]: string | number | boolean }
   // ink scripting
-  script: string
+  script_functions: string
+  script_on_start: string
   // Poss. event actions
-  on_start: string
+  //on_start: string
 }

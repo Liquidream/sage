@@ -332,14 +332,27 @@ export class SAGEdit {
     }
     let mainInkWithIncludes = ""
 
+    const worldStore = useWorldStore()
+
+    // ----------------
+    // Functions
+    //
+    let inkName = `_functions.ink`
+    let inkScript = ""
+    if (worldStore.script_functions) {
+      inkScript += `\n${worldStore.script_functions}`
+    }
+    inkPackage[inkName] = inkScript
+    mainInkWithIncludes += `INCLUDE ${inkName}\n`
+
     // ----------------
     // World
     //
-    const inkName = `_world.ink`
-    const world = useWorldStore()
-    let inkScript = SAGEdit.inkHeaderWorld
-    if (world.script) {
-      inkScript += `\n${world.script}`
+    inkName = `_world.ink`
+    inkScript = SAGEdit.inkHeaderWorld
+    // On Start
+    if (worldStore.script_on_start) {
+      inkScript += `\n${worldStore.script_on_start}`
     }
     inkScript += "\n-> DONE\n"
     inkPackage[inkName] = inkScript
