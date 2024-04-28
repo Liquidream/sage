@@ -35,29 +35,26 @@ export class Player implements IPlayerData {
     return this.inventory.some((prop) => prop.id === propId)
   }
 
-  /** Remove (and return) the specified prop, if present */
+  /** Add the specified prop top inventory */
   public addToInventory(propData: PropModel) {
     propData.location_type = PropLocationType.Inventory
     propData.location_id = ""
     SAGE.World.player.inventory.push(propData)
     SAGE.invScreen.addProp(new Prop(propData))
     // Update ink story state
-    const listName = `prp_${propData.id}`
-    //const test1 = SAGE.inkStory.listDefinitions?.FindSingleItemListWithName("prplamp")
-    //const test2 = new InkList(test1.value)
-    //const test9 = InkList.FromString("prplamp", SAGE.inkStory)
-    //const prpListItem = InkList.FromString(listName, SAGE.inkStory)
-    const prpListItem = new InkListItem("Props", listName)
-    const result = SAGE.inkStory.EvaluateFunction(
-      "pickup_item", [ prpListItem ])
+    const listItem = `prp_${propData.id}`
+    SAGE.inkStory.EvaluateFunction("pickup_item", [listItem])
   }
 
   /** Remove (and return) the specified prop, if present */
   public removeFromInventory(propId: string): PropModel | undefined {
+    // Update ink story state
+    const listItem = `prp_${propId}`
+    SAGE.inkStory.EvaluateFunction("drop_item", [listItem])
+    // Remove from game inventory
     const index = this.inventory.findIndex((item) => item.id === propId)
     let propData
     if (index !== -1) propData = this.inventory.splice(index, 1)
-    //const propData = this.inventory.splice(this.inventory.findIndex(item => item.id === propId), 1);
     const prop = SAGE.invScreen.removeProp(propId)
     prop?.destroy()
     if (propData) return propData[0]
