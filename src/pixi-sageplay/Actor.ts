@@ -4,6 +4,7 @@ import { SAGE } from "./SAGEPlay"
 import { DialogType } from "./Dialog"
 import { InputEventEmitter } from "./screens/ui/InputEventEmitter"
 import type { ActorModel } from "@/models/ActorModel"
+import { InkManager } from "@/utils/InkManager"
 
 export class Actor {
   // "constants"
@@ -178,7 +179,7 @@ export class Actor {
       //SAGE.Script.safeExecFunc(this.model.on_interact)
 
       // v2 - ink method
-      SAGE.chooseStoryPath(this.model.id + ".start")
+      InkManager.chooseStoryPath(this.model.id + ".start")
       return
     }
   }

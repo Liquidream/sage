@@ -6,6 +6,7 @@ import { DoorState, type DoorModel } from "@/models/DoorModel"
 //import * as DoorData from "./data/DoorData"
 import { InputEventEmitter } from "./screens/ui/InputEventEmitter"
 import { Scene } from "./Scene"
+import { InkManager } from "@/utils/InkManager"
 
 export class Door {
   // "constants"
@@ -188,7 +189,7 @@ export class Door {
     // }
 
     // V2 ink ---------------------------------------
-    SAGE.chooseStoryPath(this.model.target_scene_id + "")
+    InkManager.chooseStoryPath(this.model.target_scene_id + "")
     //SAGE.chooseStoryPath(this.model.target_scene_id + ".start")
   }
 

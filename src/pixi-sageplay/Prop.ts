@@ -5,6 +5,7 @@ import { DialogType } from "./Dialog"
 import { InputEventEmitter } from "./screens/ui/InputEventEmitter"
 //import type { IPropData } from "./data/PropData"
 import type { PropModel } from "@/models/PropModel"
+import { InkManager } from "@/utils/InkManager"
 
 export class Prop {
   // "constants"
@@ -187,7 +188,7 @@ export class Prop {
     // }
     // v2 - ink method
     if (this.model.script) {
-      SAGE.chooseStoryPath(this.model.id + ".start")
+      InkManager.chooseStoryPath(this.model.id + ".start")
       return
     }
 

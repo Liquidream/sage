@@ -10,12 +10,10 @@ import { InventoryScreen } from "./screens/ui/InventoryPanel"
 import { UI_Overlay } from "./screens/ui/UI_Overlay"
 import { playAssets } from "./playAssets"
 
-import { Story, Compiler } from "inkjs"
 import { ErrorType } from "inkjs/engine/Error"
-import { Scene } from "./Scene"
 import { usePlayerStore } from "@/stores/PlayerStore"
 import type { SaveStateModel } from "@/models/SaveStateModel"
-import type { InkList, InkListItem } from "inkjs/engine/InkList"
+import { InkManager } from "@/utils/InkManager"
 
 //import gamedataJSON from "./gamedata.json"
 //const gamedata: IWorldData = (<unknown>gamedataJSON) as IWorldData
@@ -60,9 +58,7 @@ export class SAGE {
   public static Sound: Sound
   public static UI_Overlay: UI_Overlay
 
-  // Initialise InkJS (this might not be the right place...)
-  private static inkStory: InstanceType<typeof Story>
-  //private static inkCompiler: InstanceType<typeof Compiler>
+
 
   // public static invScreen: InventoryScreen;
   public static get width(): number {
@@ -169,60 +165,30 @@ export class SAGE {
     this.shortenAPI()
 
     // ...and ink
-    // ------------------------------------------
-    // v1 - loading from compiled .json
-    // ------------------------------------------
-    // await fetch("story.json")
-    //   .then(function (response) {
-    //     return response.text()
-    //   })
-    //   .then(function (storyContent) {
-    //     SAGE.inkStory = new Story(storyContent)
-
-    //  ... (setup onError, continueStory() etc.)
-
-    // HACK: Auto-select starting branch/knot
-    //  SAGE.inkStory.ChooseChoiceIndex(3)
-    //  SAGE.continueStory()
-    //})
-
+  
     // --------------------------------------------
-    // v2 - loading + compiling script from editor
+    // v2 - loading pre-compiled script from editor
     // --------------------------------------------
     const sagePlayData = window.opener.sagePlayData
     const scriptData = sagePlayData.scriptData
 
     // V2 (loading pre-compiled ink story)
-    SAGE.inkStory = new Story(scriptData)
+    //SAGE.inkStory = new Story(scriptData)
+    InkManager.createStory(scriptData)
 
     // TODO: Need to load last saved state
     // (+restore inventory, world, scene, actor, prop object states accordingly)
-    this.restoreSavedState()
-
-    // V1 (when compiling from source ink file)
-    // SAGE.inkCompiler = new Compiler(scriptData)
-    // // Capture compile errors
-    // SAGE.inkCompiler.OnError = (msg, type) => {
-    //   if (type == ErrorType.Warning) console.warn(msg)
-    //   else console.error(msg)
-    // }
-    // try {
-    //   SAGE.inkStory = SAGE.inkCompiler.Compile()
-    // } catch (err) {
-    //   console.error(err)
-    //   // bail out now
-    //   return
-    // }
+    InkManager.restoreSavedState()
 
     // Setup error handling
-    SAGE.inkStory.onError = (msg, type) => { // https://github.com/y-lohse/inkjs/issues/1033
+    InkManager.inkStory.onError = (msg, type) => { // https://github.com/y-lohse/inkjs/issues/1033
       if (type == ErrorType.Warning) console.warn(msg)
       else console.error(msg)
     }
 
     // Performn a story "step" to get initial choices
-    if (SAGE.inkStory.canContinue) {
-      SAGE.inkStory.Continue()
+    if (InkManager.inkStory.canContinue) {
+      InkManager.inkStory.Continue()
     } else {
       console.warn("Cannot continue ink story - canContinue = false")
     }
@@ -230,123 +196,7 @@ export class SAGE {
     console.debug("<<<<<<<<<<<<<<<")
   }
 
-  /**
-   * Continues the ink story (if it can)
-   */
-  public static async chooseStoryPath(path: string) {
-    try {
-      SAGE.inkStory.ChoosePathString(path)
-      //SAGE.inkStory.ChoosePathString("Prisoner.main_jail")
-      SAGE.continueStory()
-    } catch (error) {
-      console.error(`>>> Error choosing story path (${path}): ` + error)
-    }
-  }
-
-  /**
-   * Continues the ink story (if it can)
-   */
-  public static async continueStory() {
-    try {
-      // Generate story text - loop through available content
-      while (SAGE.inkStory.canContinue) {
-        // Get ink to generate the next paragraph
-        let paragraphText = SAGE.inkStory.Continue()
-        if (paragraphText == null) {
-          break // No more story text (for now)
-        }
-        // ----------------------------------
-        // Parse current story line...
-        //
-        // remove trailing line break (likely to be present)
-        paragraphText = paragraphText.trim()
-        // Actor specified?
-        let actorId = ""
-        if (paragraphText.indexOf(": ") > 0) {
-          const dialogArray = paragraphText.split(": ")
-          actorId = dialogArray[0]
-          paragraphText = dialogArray[1]
-        }
-        // do we have tags?
-        if (SAGE.inkStory.currentTags?.length > 0) {
-          const tags = SAGE.inkStory.currentTags
-          console.debug(tags)
-          //tags.forEach(async (tag, index) => {
-          for (let tag of tags) {
-            // -------------------------------------------
-            // Scene?
-            if (tag.toUpperCase().startsWith("SCENE")) {
-              // Get target scene name (same as knot - but Ink doesn't expose that!)
-              let target_scene_id = tag.split(":")[1].trim()
-              const targetSceneModel = SAGE.World.getSceneById(target_scene_id)
-              if (targetSceneModel) {
-                const targetScene: Scene = new Scene(targetSceneModel)
-                await targetScene.show()
-              }
-            }
-            // TODO: other tags...
-            if (tag.startsWith("CLOSEUP_ON")) {
-              // Get target actor/object name
-              let target_id = tag.split(":")[1].trim()
-              SAGE.World.currentScene.closeUpOn(target_id)
-            }
-            if (tag.startsWith("CLOSEUP_OFF")) {
-              // Get target actor/object name
-              let target_id = tag.split(":")[1].trim()
-              SAGE.World.currentScene.stopCloseUp(target_id)
-            }
-          }
-        }
-        // -----------------------------------
-
-        //console.debug(paragraphText)
-        if (paragraphText) {
-          //console.debug(paragraphText)
-          await SAGE.Dialog.say(actorId, paragraphText)
-        }
-      }
-
-      // Dialog choices..?
-      if (SAGE.inkStory.currentChoices.length > 0) {
-        console.debug(SAGE.inkStory.currentChoices)
-        const dialogChoices: DialogChoice[] = []
-        for (const choice of SAGE.inkStory.currentChoices) {
-          dialogChoices.push(
-            new DialogChoice(choice.text, async () => {
-              SAGE.inkStory.ChooseChoiceIndex(choice.index)
-              SAGE.Dialog.end()
-              SAGE.continueStory()
-            })
-          )
-        }
-
-        await SAGE.Dialog.showChoices(dialogChoices, {
-          suppressChoiceSelectRepeat: true, // Let ink syntax handle this!
-        })
-      }
-    } catch (error) {
-      console.error(">>> Error choosing story path: " + error)
-    }
-  }
-
-  private static restoreSavedState() {
-    // TODO: Need to load last saved state
-    // (+restore inventory, world, scene, actor, prop object states accordingly)
-    const lastState = SAGE.World.player.gameState
-    if (lastState.jsonState && lastState.jsonState.length > 0) {
-      SAGE.inkStory.state.LoadJson(lastState.jsonState)
-      console.log("-- Inventory contents:")
-      const invList = SAGE.inkStory.variablesState["Inventory"] as InkList
-      //debugger
-      invList.orderedItems.forEach(({Key, Value}) => {
-        console.log(`>> ${Key.itemName}`)
-        const propName = Key.itemName.replace("prp_", "")
-        // Add to Player's inventory
-        const propModel = SAGE.World.getPropById(propName)
-        if (propName) SAGE.World.player.addToInventory(propModel)
-      })
-    }
-  }
+  
 
   private static shortenAPI() {
     // -------------------------------
@@ -420,7 +270,7 @@ export class SAGE {
   }
 
   public static saveGame() {
-    const inkState = SAGE.inkStory.state.ToJson()
+    const inkState = InkManager.inkStory.state.ToJson()
     const playerStore = usePlayerStore()
     const newSave: SaveStateModel = {
       jsonState: inkState,

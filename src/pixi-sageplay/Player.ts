@@ -6,6 +6,7 @@ import { PropLocationType, type PropModel } from "@/models/PropModel"
 import { usePlayerStore } from "@/stores/PlayerStore"
 import type { SaveStateModel } from "@/models/SaveStateModel"
 import { InkList, InkListItem } from "inkjs/engine/InkList"
+import { InkManager } from "@/utils/InkManager"
 
 //export class Player implements IPlayerData, Serialization<Player> {
 export class Player implements IPlayerData {
@@ -43,14 +44,14 @@ export class Player implements IPlayerData {
     SAGE.invScreen.addProp(new Prop(propData))
     // Update ink story state
     const listItem = `prp_${propData.id}`
-    SAGE.inkStory.EvaluateFunction("pickup_item", [listItem])
+    InkManager.inkStory.EvaluateFunction("pickup_item", [listItem])
   }
 
   /** Remove (and return) the specified prop, if present */
   public removeFromInventory(propId: string): PropModel | undefined {
     // Update ink story state
     const listItem = `prp_${propId}`
-    SAGE.inkStory.EvaluateFunction("drop_item", [listItem])
+    InkManager.inkStory.EvaluateFunction("drop_item", [listItem])
     // Remove from game inventory
     const index = this.inventory.findIndex((item) => item.id === propId)
     let propData

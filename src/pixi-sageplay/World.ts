@@ -8,6 +8,7 @@ import type { SceneModel } from "@/models/SceneModel"
 import { usePropStore } from "@/stores/PropStore"
 import { PropLocationType } from "@/models/PropModel"
 import { useActorStore } from "@/stores/ActorStore"
+import { InkManager } from "@/utils/InkManager"
 
 export class World implements IWorldData {
   //}, Serialization<World> {
@@ -64,7 +65,7 @@ export class World implements IWorldData {
     // V2 ink ------------------------------
     // Run any start script?
     if (this.script_on_start) {
-      SAGE.chooseStoryPath("_start")
+      InkManager.chooseStoryPath("_start")
     }
 
     // V1 ------------------------------------
@@ -90,7 +91,7 @@ export class World implements IWorldData {
     // }
 
     // V2 ink ------------------------------
-    SAGE.chooseStoryPath(this.startingSceneId + "")
+    InkManager.chooseStoryPath(this.startingSceneId + "")
     //SAGE.chooseStoryPath(this.startingSceneId + ".start")
   }
 
