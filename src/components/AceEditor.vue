@@ -181,9 +181,10 @@
 
   import { computed, onMounted, reactive, ref, watchEffect } from "vue"
   import { useDisplay } from "vuetify"
-  import { SAGEdit, LogEntry, ErrorTypeCustom } from "@/pixi-sagedit/SAGEdit"
+  import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
   import { debounce } from "../utils/Debounce"
+  import { InkManager, ErrorTypeCustom } from "@/utils/InkManager"
 
   //const model = defineModel()
   const label = defineModel("label", { required: true })
@@ -195,7 +196,7 @@
     emit("update:modelValue", e)
     // validate on update
     // TODO: would be better for validation to be on a longer delay?
-    compilerResult.log = SAGEdit.validateScript()
+    compilerResult.log = InkManager.validateScript()
   }, 500)
 
   const dialog = ref(false)
@@ -217,16 +218,16 @@
     //debugger
     switch (objType.value) {
       case "scene": {
-        return SAGEdit.inkHeaderScene.split(/\r\n|\r|\n/).length + 1
+        return InkManager.inkHeaderScene.split(/\r\n|\r|\n/).length + 1
       }
       case "actor": {
-        return SAGEdit.inkHeaderActor.split(/\r\n|\r|\n/).length + 1
+        return InkManager.inkHeaderActor.split(/\r\n|\r|\n/).length + 1
       }
       case "prop": {
-        return SAGEdit.inkHeaderProp.split(/\r\n|\r|\n/).length + 1
+        return InkManager.inkHeaderProp.split(/\r\n|\r|\n/).length + 1
       }
       case "door": {
-        return SAGEdit.inkHeaderDoor.split(/\r\n|\r|\n/).length + 1
+        return InkManager.inkHeaderDoor.split(/\r\n|\r|\n/).length + 1
       }
       default: {
         return 0
@@ -234,13 +235,11 @@
     }
   })
 
-  //const compilerCount = computed(() => SAGEdit.inkCompilerLog.length)
   const compilerResult = reactive({
     log: [] as LogEntry[],
   })
   const onValidateClicked = () => {
     // Compile/validate ink script
-    //compilerResult.log = SAGEdit.validateScript()
     if (compilerResult.log.length > 0) {
       errorDialog.value = true
     }
@@ -285,7 +284,7 @@
 
     // validate on startup
     // (Do it on a delay, to give storage chance to hydrate - if first load)
-    setTimeout(() => (compilerResult.log = SAGEdit.validateScript()), 500)
+    setTimeout(() => (compilerResult.log = InkManager.validateScript()), 1000)
   })
 </script>
 

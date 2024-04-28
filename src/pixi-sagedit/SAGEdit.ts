@@ -10,11 +10,7 @@ import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
 import { useActorStore } from "@/stores/ActorStore"
 import { usePlayerStore } from "@/stores/PlayerStore"
-import { Compiler, Story } from "inkjs"
-import { CompilerOptions } from "inkjs/compiler/CompilerOptions"
-import { ErrorType } from "inkjs/engine/Error"
-import { JsonFileHandler } from "inkjs/compiler/FileHandler/JsonFileHandler"
-import { StringUtils } from "@/utils/StringUtils"
+import { InkManager } from "@/utils/InkManager"
 
 export class SAGEdit {
   private constructor() {
@@ -44,20 +40,8 @@ export class SAGEdit {
   public static Events: EventsEdit
   // public static Sound: Sound;
   // public static UI_Overlay: UI_Overlay;
-
-  // Initialise InkJS (this might not be the right place...)
-  //private static inkStory: InstanceType<typeof Story>
-  //private static inkCompiler: InstanceType<typeof Compiler>
-  //private static inkJsonFileHandler: InstanceType<typeof JsonFileHandler>
-  //private static inkCompilerLog: string[] = []
-
-  public static inkHeaderWorld: string
-  public static inkHeaderScene: string
-  public static inkHeaderActor: string
-  public static inkHeaderProp: string
-  public static inkHeaderDoor: string
-
   // public static invScreen: InventoryScreen;
+
   public static get width(): number {
     return SAGEdit._width
   }
@@ -111,7 +95,7 @@ export class SAGEdit {
     SAGEdit.Dialog = new DialogEdit()
 
     // Initialise the ink headers for Scenes, Actors, etc.
-    SAGEdit.initInkScriptHeaders()
+    InkManager.initInkScriptHeaders()
   }
 
   static createLayers() {
@@ -153,8 +137,8 @@ export class SAGEdit {
     // current screen size
     // const screenWidth = mainWrap?.clientWidth
     // const screenWidth = Math.max(
-      //   mainWrap?.clientWidth, 
-      //   window.innerWidth || 0)
+    //   mainWrap?.clientWidth, 
+    //   window.innerWidth || 0)
     const screenWidth = mainWrap?.clientWidth
     const screenHeight = Math.max(
       document.documentElement.clientHeight,
@@ -222,7 +206,7 @@ export class SAGEdit {
     playData.propData = JSON.stringify(usePropStore().$state)
     playData.doorData = JSON.stringify(useDoorStore().$state)
     playData.actorData = JSON.stringify(useActorStore().$state)
-    playData.scriptData = SAGEdit.generateInkStoryJson()
+    playData.scriptData = InkManager.generateInkStoryJson()
     // Don't set this, or it'll clash wish save states
     playData.playerData = JSON.stringify(usePlayerStore().$state)
 
@@ -231,353 +215,4 @@ export class SAGEdit {
     // Launch "Play" window
     window.open("?mode=play", "sagePlay")
   }
-
-  public static validateScript(): LogEntry[] {
-    // Compile ink script and store any errors locally,
-    // so can view later
-    const compilerLog: LogEntry[] = []
-
-    const jsonFileHandler = new JsonFileHandler(
-      SAGEdit.generateInkScriptJsonSourcePackage()
-    )
-
-    //SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScript(), {
-    const inkCompiler = new Compiler(
-      jsonFileHandler.LoadInkFileContents("_main.ink"),
-      {
-      errorHandler: (msg, type) => {
-          if (type == ErrorType.Warning) console.warn(msg)
-          else console.error(msg)
-          // TODO:?
-          if (type == ErrorType.Error && msg.toUpperCase().includes("TODO:")) {
-            type = ErrorTypeCustom.TODO
-          }
-          compilerLog.push({
-            type: type,
-            message: msg,
-          })
-        },
-        countAllVisits: true,
-        fileHandler: jsonFileHandler,
-        pluginNames: [],
-        sourceFilename: null,
-      }
-    )
-    try {
-      //debugger
-      const inkStory = inkCompiler.Compile()
-      // DEBUG
-      //const jsonBytecode = inkStory.ToJson()
-      //console.log(jsonBytecode)
-    } catch (err) {
-      //console.error(err)
-    }
-
-    return compilerLog
-  }
-
-  public static generateInkStoryJson(): string {
-    let inkStoryJson = ""
-    
-    const jsonFileHandler = new JsonFileHandler(
-      SAGEdit.generateInkScriptJsonSourcePackage()
-    )
-
-    //SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScript(), {
-    const inkCompiler = new Compiler(
-      jsonFileHandler.LoadInkFileContents("_main.ink"),
-      {
-        errorHandler: (msg, type) => {
-          if (type == ErrorType.Warning) console.warn(msg)
-          else console.error(msg)
-        },
-        countAllVisits: true,
-        fileHandler: jsonFileHandler,
-        pluginNames: [],
-        sourceFilename: null,
-      }
-    )
-    try {
-      //debugger
-      const inkStory = inkCompiler.Compile()
-      // DEBUG
-      inkStoryJson = inkStory.ToJson()
-      //console.log(jsonBytecode)
-    } catch (err) {
-      console.error(err)
-    }
-
-    return inkStoryJson
-  }
-
-  private static initInkScriptHeaders() {
-    SAGEdit.inkHeaderWorld = "=== _world ==="
-    SAGEdit.inkHeaderScene = "=== ${id} ===\n # SCENE: ${id}\n {! }"
-    SAGEdit.inkHeaderActor =
-      "=== ${id} ===\n\n = init\n // TODO: setup stuff here?\n -> DONE\n\n= start"
-    SAGEdit.inkHeaderProp = SAGEdit.inkHeaderActor
-    SAGEdit.inkHeaderDoor = SAGEdit.inkHeaderActor
-
-  
-// https://stackoverflow.com/questions/8488729/how-to-count-the-number-of-lines-of-a-string-in-javascript
-//Using a regular expression you can count the number of lines as
-//str.split(/\r\n|\r|\n/).length
-
-  }
-
-  private static generateInkScriptJsonSourcePackage(): Record<string, string> {
-    // Loop through all the game elements and build a single ink script (+compile it)
-    const inkPackage: Record<string, string> = {
-      "_main.ink": "",
-    }
-    let mainInkWithIncludes = ""
-
-    const worldStore = useWorldStore()
-
-    // ----------------
-    // Functions
-    //
-    let inkName = `_functions.ink`
-    let inkScript = ""
-    if (worldStore.script_functions) {
-      inkScript += `\n${worldStore.script_functions}`
-    }
-    inkPackage[inkName] = inkScript
-    mainInkWithIncludes += `INCLUDE ${inkName}\n`
-
-    // ----------------
-    // World
-    //
-    inkName = `_world.ink`
-    inkScript = SAGEdit.inkHeaderWorld
-    // On Start
-    if (worldStore.script_on_start) {
-      inkScript += `\n${worldStore.script_on_start}`
-    }
-    inkScript += "\n-> DONE\n"
-    inkPackage[inkName] = inkScript
-    mainInkWithIncludes += `INCLUDE ${inkName}\n`
-
-    // ----------------
-    // Scenes
-    //
-    //debugger
-    for (const scene of useSceneStore().scenes) {
-      const inkName = `${scene.id}.ink`
-      let inkScript = StringUtils.inject(SAGEdit.inkHeaderScene, {
-        id: scene.id,
-      })
-//       let inkScript = `
-// === ${scene.id} ===
-// # SCENE: ${scene.id}
-// {! }`
-      if (scene.script) {
-        inkScript += `\n${scene.script}`
-      }
-      inkScript += "\n-> DONE\n"
-      inkPackage[inkName] = inkScript
-      mainInkWithIncludes += `INCLUDE ${inkName}\n`
-    }
-    // ----------------
-    // Actors
-    //
-    for (const actor of useActorStore().actors) {
-      const inkName = `${actor.id}.ink`
-      mainInkWithIncludes += `INCLUDE ${inkName}\n`
-      let inkScript = StringUtils.inject(SAGEdit.inkHeaderActor, {
-        id: actor.id,
-      })
-//       let inkScript = `
-// === ${actor.id} ===
-
-// = init
-// // TODO: setup stuff here?
-// -> DONE
-
-// = start`
-      if (actor.script) {
-        inkScript += `\n${actor.script}`
-      }
-      inkScript += "\n-> DONE\n"
-      inkPackage[inkName] = inkScript
-    }
-    // ----------------
-    // Props
-    //
-    for (const prop of usePropStore().props) {
-      const inkName = `${prop.id}.ink`
-      mainInkWithIncludes += `INCLUDE ${inkName}\n`
-      let inkScript = StringUtils.inject(SAGEdit.inkHeaderProp, {
-        id: prop.id,
-      })
-//       let inkScript = `
-// === ${prop.id} ===
-
-// = init
-// // TODO: setup stuff here?
-// -> DONE
-
-// = start`
-      if (prop.script) {
-        inkScript += `\n${prop.script}`
-      }
-      inkScript += "\n-> DONE\n"
-      inkPackage[inkName] = inkScript
-    }
-    // ----------------
-    // Doors
-    //
-    for (const door of useDoorStore().doors) {
-      const inkName = `${door.id}.ink`
-      mainInkWithIncludes += `INCLUDE ${inkName}\n`
-      let inkScript = StringUtils.inject(SAGEdit.inkHeaderDoor, {
-        id: door.id,
-      })
-//       let inkScript = `
-// === ${door.id} ===
-
-// = init
-// // TODO: setup stuff here?
-// -> DONE
-
-// = start`
-      if (door.script) {
-        inkScript += `\n${door.script}`
-      }
-      inkScript += "\n-> DONE\n"
-      inkPackage[inkName] = inkScript
-    }
-    // Finally, set the full list of INCLUDE's
-    inkPackage["_main.ink"] = mainInkWithIncludes
-
-    return inkPackage
-  }
-
-//   public static validateScriptV1(): string[] {
-//     const compilerLog: string[] = []
-//     // TODO: Compile ink script and store any errors locally, so can view later
-//     SAGEdit.inkCompiler = new Compiler(SAGEdit.generateInkScriptV1(), {
-//       errorHandler: (msg, type) => {
-//         if (type == ErrorType.Warning) console.warn(msg)
-//         else console.error(msg)
-//         //SAGEdit.inkCompilerLog.push(msg)
-//         compilerLog.push(msg)
-//       },
-//       countAllVisits: true,
-//       fileHandler: null,
-//       pluginNames: [],
-//       sourceFilename: null,
-//     })
-//     // Capture compile errors
-//     // compiler.OnError = (msg, type) => {
-//     //   if (type == ErrorType.Warning) console.warn(msg)
-//     //   else console.error(msg)
-//     // }
-//     try {
-//       SAGEdit.inkStory = SAGEdit.inkCompiler.Compile()
-//     } catch (err) {
-//       console.error(err)
-//       // bail out now
-//       //return
-//     }
-
-//     return compilerLog
-//   }
-  
-//   private static generateInkScriptV1(): string {
-//     // Loop through all the game elements and build a single ink script (+compile it)
-//     let inkScript = ""
-//     // ----------------
-//     // Scenes
-//     //
-//     for (const scene of useSceneStore().scenes) {
-//       inkScript += `
-// === ${scene.id} ===
-// # SCENE: ${scene.id}
-// {! }`
-//       if (scene.script) {
-//         inkScript += `\n${scene.script}`
-//       }
-//       inkScript += "\n-> DONE\n"
-//     }
-//     // ----------------
-//     // Actors
-//     //
-//     for (const actor of useActorStore().actors) {
-//       inkScript += `
-// === ${actor.id} ===
-
-// = init
-// // TODO: setup stuff here?
-// -> DONE
-
-// = start`
-//       if (actor.script) {
-//         inkScript += `\n${actor.script}`
-//       }
-//       inkScript += "\n-> DONE\n"
-//     }
-//     // ----------------
-//     // Props
-//     //
-//     for (const prop of usePropStore().props) {
-//       inkScript += `
-// === ${prop.id} ===
-
-// = init
-// // TODO: setup stuff here?
-// -> DONE
-
-// = start`
-//       if (prop.script) {
-//         inkScript += `\n${prop.script}`
-//       }
-//       inkScript += "\n-> DONE\n"
-//     }
-//     // ----------------
-//     // Doors
-//     //
-//     for (const door of useDoorStore().doors) {
-//       inkScript += `
-// === ${door.id} ===
-
-// = init
-// // TODO: setup stuff here?
-// -> DONE
-
-// = start`
-//       if (door.script) {
-//         inkScript += `\n${door.script}`
-//       }
-//       inkScript += "\n-> DONE\n"
-//     }
-
-//     //debugger
-//     return inkScript
-//   }
-
-  // This update will be called by a pixi ticker and tell the scene that a tick happened
-  //private static update() {
-    //framesPassed: number) {
-    // Let the current scene know that we updated it...
-    // Just for funzies, sanity check that it exists first.
-    // if (SAGEdit.currentScreen) {
-    //   // Update anything that's time-base (e.g. tweens)
-    //   SAGEdit.currentScreen.update() //framesPassed)
-    // }
-
-    // as I said before, I HATE the "frame passed" approach. I would rather use `Manager.app.ticker.deltaMS`
-  //}
-}
-
-export enum ErrorTypeCustom {
-  Author = 0,
-  Warning = 1,
-  Error = 2,
-  TODO = 99, // PN custom
-}
-
-export interface LogEntry {
-  type: ErrorTypeCustom
-  message: string
 }

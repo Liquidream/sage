@@ -61,7 +61,6 @@ export class World implements IWorldData {
 
   // Start the adventure!
   start() {
-
     // V2 ink ------------------------------
     // Run any start script?
     if (this.script_on_start) {

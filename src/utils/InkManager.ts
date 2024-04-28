@@ -1,17 +1,263 @@
 import { Scene } from "@/pixi-sageplay/Scene"
-import { Story } from "inkjs"
+import { Compiler, Story } from "inkjs"
+//import { CompilerOptions } from "inkjs/compiler/CompilerOptions"
+import { ErrorType } from "inkjs/engine/Error"
+import { JsonFileHandler } from "inkjs/compiler/FileHandler/JsonFileHandler"
+
 import type { InkList, InkListItem } from "inkjs/engine/InkList"
+import { useWorldStore } from "@/stores/WorldStore"
+import { DialogChoice } from "@/pixi-sageplay/Dialog"
+import { SAGE } from "@/pixi-sageplay/SAGEPlay"
+import { StringUtils } from "./StringUtils"
+import { useSceneStore } from "@/stores/SceneStore"
+import { useActorStore } from "@/stores/ActorStore"
+import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
+import { useDoorStore } from "@/stores/DoorStore"
+import { usePropStore } from "@/stores/PropStore"
 
 export class InkManager {
   private constructor() {
     /*this class is purely static. No constructor to see here*/
   }
 
-    // Initialise InkJS (this might not be the right place...)
-    private static inkStory: InstanceType<typeof Story>
-    //private static inkCompiler: InstanceType<typeof Compiler>
+  // Initialise InkJS (this might not be the right place...)
+  private static inkStory: InstanceType<typeof Story>
+  //private static inkCompiler: InstanceType<typeof Compiler>
 
-    /**
+  public static inkHeaderWorld: string
+  public static inkHeaderScene: string
+  public static inkHeaderActor: string
+  public static inkHeaderProp: string
+  public static inkHeaderDoor: string
+
+/* ********************************************************************
+ * "Edit" Related
+ * ********************************************************************/
+
+  public static validateScript(): LogEntry[] {
+    // Compile ink script and store any errors locally,
+    // so can view later
+    const compilerLog: LogEntry[] = []
+
+    const jsonFileHandler = new JsonFileHandler(
+      InkManager.generateInkScriptJsonSourcePackage()
+    )
+
+    const inkCompiler = new Compiler(
+      jsonFileHandler.LoadInkFileContents("_main.ink"),
+      {
+        errorHandler: (msg, type) => {
+          if (type == ErrorType.Warning) console.warn(msg)
+          else console.error(msg)
+          // TODO:?
+          if (type == ErrorType.Error && msg.toUpperCase().includes("TODO:")) {
+            type = ErrorTypeCustom.TODO
+          }
+          compilerLog.push({
+            type: type,
+            message: msg,
+          })
+        },
+        countAllVisits: true,
+        fileHandler: jsonFileHandler,
+        pluginNames: [],
+        sourceFilename: null,
+      }
+    )
+    try {
+      //debugger
+      const inkStory = inkCompiler.Compile()
+      // DEBUG
+      //const jsonBytecode = inkStory.ToJson()
+      //console.log(jsonBytecode)
+    } catch (err) {
+      //console.error(err)
+    }
+
+    return compilerLog
+  }
+
+  public static generateInkStoryJson(): string {
+    let inkStoryJson = ""
+    const jsonFileHandler = new JsonFileHandler(
+      InkManager.generateInkScriptJsonSourcePackage()
+    )
+
+    const inkCompiler = new Compiler(
+      jsonFileHandler.LoadInkFileContents("_main.ink"),
+      {
+        errorHandler: (msg, type) => {
+          if (type == ErrorType.Warning) console.warn(msg)
+          else console.error(msg)
+        },
+        countAllVisits: true,
+        fileHandler: jsonFileHandler,
+        pluginNames: [],
+        sourceFilename: null,
+      }
+    )
+    try {
+      //debugger
+      const inkStory = inkCompiler.Compile()
+      // DEBUG
+      inkStoryJson = inkStory.ToJson()
+      //console.log(jsonBytecode)
+    } catch (err) {
+      console.error(err)
+    }
+
+    return inkStoryJson
+  }
+
+  private static initInkScriptHeaders() {
+    InkManager.inkHeaderWorld = "=== _world ==="
+    InkManager.inkHeaderScene = "=== ${id} ===\n # SCENE: ${id}\n {! }"
+    InkManager.inkHeaderActor =
+      "=== ${id} ===\n\n = init\n // TODO: setup stuff here?\n -> DONE\n\n= start"
+      InkManager.inkHeaderProp = InkManager.inkHeaderActor
+      InkManager.inkHeaderDoor = InkManager.inkHeaderActor
+
+
+  // https://stackoverflow.com/questions/8488729/how-to-count-the-number-of-lines-of-a-string-in-javascript
+  //Using a regular expression you can count the number of lines as
+  //str.split(/\r\n|\r|\n/).length
+
+  }
+
+  private static generateInkScriptJsonSourcePackage(): Record<string, string> {
+    // Loop through all the game elements and build a single ink script (+compile it)
+    const inkPackage: Record<string, string> = {
+      "_main.ink": "",
+    }
+    let mainInkWithIncludes = ""
+
+    const worldStore = useWorldStore()
+
+    // ----------------
+    // Functions
+    //
+    let inkName = `_functions.ink`
+    let inkScript = ""
+    if (worldStore.script_functions) {
+      inkScript += `\n${worldStore.script_functions}`
+    }
+    inkPackage[inkName] = inkScript
+    mainInkWithIncludes += `INCLUDE ${inkName}\n`
+
+    // ----------------
+    // World
+    //
+    inkName = `_world.ink`
+    inkScript = InkManager.inkHeaderWorld
+    // On Start
+    if (worldStore.script_on_start) {
+      inkScript += `\n${worldStore.script_on_start}`
+    }
+    inkScript += "\n-> DONE\n"
+    inkPackage[inkName] = inkScript
+    mainInkWithIncludes += `INCLUDE ${inkName}\n`
+
+    // ----------------
+    // Scenes
+    //
+    //debugger
+    for (const scene of useSceneStore().scenes) {
+      const inkName = `${scene.id}.ink`
+      let inkScript = StringUtils.inject(InkManager.inkHeaderScene, {
+        id: scene.id,
+      })
+  //       let inkScript = `
+  // === ${scene.id} ===
+  // # SCENE: ${scene.id}
+  // {! }`
+      if (scene.script) {
+        inkScript += `\n${scene.script}`
+      }
+      inkScript += "\n-> DONE\n"
+      inkPackage[inkName] = inkScript
+      mainInkWithIncludes += `INCLUDE ${inkName}\n`
+    }
+    // ----------------
+    // Actors
+    //
+    for (const actor of useActorStore().actors) {
+      const inkName = `${actor.id}.ink`
+      mainInkWithIncludes += `INCLUDE ${inkName}\n`
+      let inkScript = StringUtils.inject(InkManager.inkHeaderActor, {
+        id: actor.id,
+      })
+  //       let inkScript = `
+  // === ${actor.id} ===
+
+  // = init
+  // // TODO: setup stuff here?
+  // -> DONE
+
+  // = start`
+      if (actor.script) {
+        inkScript += `\n${actor.script}`
+      }
+      inkScript += "\n-> DONE\n"
+      inkPackage[inkName] = inkScript
+    }
+    // ----------------
+    // Props
+    //
+    for (const prop of usePropStore().props) {
+      const inkName = `${prop.id}.ink`
+      mainInkWithIncludes += `INCLUDE ${inkName}\n`
+      let inkScript = StringUtils.inject(InkManager.inkHeaderProp, {
+        id: prop.id,
+      })
+  //       let inkScript = `
+  // === ${prop.id} ===
+
+  // = init
+  // // TODO: setup stuff here?
+  // -> DONE
+
+  // = start`
+      if (prop.script) {
+        inkScript += `\n${prop.script}`
+      }
+      inkScript += "\n-> DONE\n"
+      inkPackage[inkName] = inkScript
+    }
+    // ----------------
+    // Doors
+    //
+    for (const door of useDoorStore().doors) {
+      const inkName = `${door.id}.ink`
+      mainInkWithIncludes += `INCLUDE ${inkName}\n`
+      let inkScript = StringUtils.inject(InkManager.inkHeaderDoor, {
+        id: door.id,
+      })
+  //       let inkScript = `
+  // === ${door.id} ===
+
+  // = init
+  // // TODO: setup stuff here?
+  // -> DONE
+
+  // = start`
+      if (door.script) {
+        inkScript += `\n${door.script}`
+      }
+      inkScript += "\n-> DONE\n"
+      inkPackage[inkName] = inkScript
+    }
+    // Finally, set the full list of INCLUDE's
+    inkPackage["_main.ink"] = mainInkWithIncludes
+
+    return inkPackage
+  }
+
+
+/* ********************************************************************
+ * "Play" Related
+ * ********************************************************************/
+
+  /**
    * Continues the ink story (if it can)
    */
   public static async createStory(strData: string) {
@@ -137,4 +383,17 @@ export class InkManager {
     }
   }
 
+}
+
+
+export enum ErrorTypeCustom {
+  Author = 0,
+  Warning = 1,
+  Error = 2,
+  TODO = 99, // PN custom
+}
+
+export interface LogEntry {
+  type: ErrorTypeCustom
+  message: string
 }
