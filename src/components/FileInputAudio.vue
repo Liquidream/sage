@@ -15,11 +15,12 @@
       <v-btn
         density="comfortable"
         variant="tonal"
-        icon="mdi-play"
+        :icon="soundData.length == 0 ? 'mdi-play' : 'mdi-stop'"
         @click="playAudio"
       ></v-btn>
     </template>
   </v-file-input>
+  <!-- <audio v-bind:id="playerId" :loop="innerLoop" ref="audiofile" :src="file" preload="auto" style="display:none;"></audio> -->
 </template>
 
 <script setup lang="ts">
@@ -42,16 +43,28 @@
     return null
   })
   const soundData: Ref<string | ArrayBuffer | null> = ref("")
-  let audio = new Audio()
+  let audio = null
 
   const playAudio = (e: any) => {
+    // Already playing?
+    if (audio) {
+      stopAudio()
+      return
+    }
     // Bail out if nothing to play
     if (model.value == null) return
     // Get just base64 section
-    const audioData = model.value.split("|")[1]
+    soundData.value = model.value.split("|")[1]
     audio = new Audio()
-    audio.src = audioData
+    audio.src = soundData.value
     audio.play()
+  }
+
+  const stopAudio = (e: any) => {
+    audio.pause()
+    audio.currentTime = 0
+    soundData.value = ""
+    audio = null
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,7 +76,7 @@
     reader.readAsDataURL(e.target.files[0])
     reader.onload = () => {
       // debugger
-      soundData.value = reader.result
+      //soundData.value = reader.result
       model.value = `${filename}|${reader.result}`
       //model.value = reader.result as string // added "as" to squash error/warn, ok?
     }
