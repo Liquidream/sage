@@ -11,9 +11,14 @@
     title=""
     single-line
   >
-    <!-- <template v-if="filename" #prepend-inner>
-      {{ filename }}
-    </template> -->
+    <template v-slot:append>
+      <v-btn
+        density="comfortable"
+        variant="tonal"
+        icon="mdi-play"
+        @click="playAudio"
+      ></v-btn>
+    </template>
   </v-file-input>
 </template>
 
@@ -25,9 +30,11 @@
 
   const filename = computed(() => {
     try {
-      const fileInfoArray = model.value.split("|")
-      if (fileInfoArray.length == 2) {
-        return fileInfoArray[0]
+      if (model.value) {
+        const fileInfoArray = model.value.split("|")
+        if (fileInfoArray.length == 2) {
+          return fileInfoArray[0]
+        }
       }
     } catch {
       //ignore all
@@ -35,6 +42,17 @@
     return null
   })
   const soundData: Ref<string | ArrayBuffer | null> = ref("")
+  let audio = new Audio()
+
+  const playAudio = (e: any) => {
+    // Bail out if nothing to play
+    if (model.value == null) return
+    // Get just base64 section
+    const audioData = model.value.split("|")[1]
+    audio = new Audio()
+    audio.src = audioData
+    audio.play()
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSoundFileChange = (e: any) => {
@@ -53,5 +71,6 @@
 
   const onClear = () => {
     model.value = null
+    parent?.focus()
   }
 </script>
