@@ -40,15 +40,16 @@
       <v-col class="text-medium-emphasis">Backdrop image/video</v-col>
     </v-row>
 
-    <!-- <v-text-field label="Sound" v-model="model.sound"></v-text-field> -->
-    <v-file-input
+    <FileInputAudio label="Background Sound" v-model="model.sound" />
+
+   <!-- <v-file-input
       class="mt-8"
       @change="onSoundFileChange"
       label="Background Sound"
       accept="audio/mpeg, audio/ogg, audio/vnd.wav"
       placeholder="Pick a backdrop sound"
       prepend-icon="mdi-volume-high"
-    ></v-file-input>
+    ></v-file-input> -->
 
     <v-divider />
     <v-list-subheader
@@ -139,6 +140,7 @@
   import { useDoorStore } from "@/stores/DoorStore"
   import { storeToRefs } from "pinia"
   import ImageFileInputBtn from "./ImageFileInputBtn.vue"
+  import FileInputAudio from "./FileInputAudio.vue"
 
   // import { VAceEditor } from "vue3-ace-editor"
   // import "../assets/acesrc/mode-ink"
@@ -181,19 +183,21 @@
       model.value.image = reader.result as string // added "as" to squash error/warn, ok?
     }
   }
-  const soundData: Ref<string | ArrayBuffer | null> = ref("")
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSoundFileChange = (e: any) => {
-    const reader = new FileReader()
-    // Use the javascript reader object to load the contents
-    // of the file in the v-model prop
-    reader.readAsDataURL(e.target.files[0])
-    reader.onload = () => {
-      // debugger
-      soundData.value = reader.result
-      model.value.sound = reader.result as string // added "as" to squash error/warn, ok?
-    }
-  }
+
+  // const soundData: Ref<string | ArrayBuffer | null> = ref("")
+  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // const onSoundFileChange = (e: any) => {
+  //   const reader = new FileReader()
+  //   // Use the javascript reader object to load the contents
+  //   // of the file in the v-model prop
+  //   reader.readAsDataURL(e.target.files[0])
+  //   reader.onload = () => {
+  //     // debugger
+  //     soundData.value = reader.result
+  //     model.value.sound = reader.result as string // added "as" to squash error/warn, ok?
+  //   }
+  // }
+  
   const backToWorldClicked = () => {
     worldStore.currPropId = ""
     worldStore.currSceneId = ""
