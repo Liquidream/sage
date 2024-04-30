@@ -20,14 +20,20 @@
       ></v-btn>
     </template>
   </v-file-input>
-  <!-- <audio v-bind:id="playerId" :loop="innerLoop" ref="audiofile" :src="file" preload="auto" style="display:none;"></audio> -->
 </template>
 
 <script setup lang="ts">
   import { computed, ref, type Ref } from "vue"
 
   const model = defineModel()
-  const props = defineProps(["label"])
+  const props = defineProps({
+    label: String,
+    loop: Boolean,
+  })
+  //props.loop
+
+  let audio = null
+
 
   const filename = computed(() => {
     try {
@@ -43,7 +49,6 @@
     return null
   })
   const soundData: Ref<string | ArrayBuffer | null> = ref("")
-  let audio = null
 
   const playAudio = (e: any) => {
     // Already playing?
@@ -56,15 +61,24 @@
     // Get just base64 section
     soundData.value = model.value.split("|")[1]
     audio = new Audio()
+    //audio.addEventListener("onended", onEnded)
+    audio.onended = onEnded
     audio.src = soundData.value
+    audio.loop = props.loop
     audio.play()
   }
 
   const stopAudio = (e: any) => {
-    audio.pause()
-    audio.currentTime = 0
-    soundData.value = ""
-    audio = null
+    if (audio) {
+      audio.pause()
+      audio.currentTime = 0
+      soundData.value = ""
+      audio = null
+    }
+  }
+
+  const onEnded = () => {
+    stopAudio()
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

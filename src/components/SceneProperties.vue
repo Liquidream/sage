@@ -40,7 +40,11 @@
       <v-col class="text-medium-emphasis">Backdrop image/video</v-col>
     </v-row>
 
-    <FileInputAudio label="Background Sound" v-model="model.sound" />
+    <FileInputAudio
+      label="Background Sound"
+      v-model="model.sound"
+      :loop="true"
+    />
 
    <!-- <v-file-input
       class="mt-8"
