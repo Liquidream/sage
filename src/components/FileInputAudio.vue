@@ -15,6 +15,7 @@
       <v-btn
         density="comfortable"
         variant="tonal"
+        color="info" 
         :icon="soundData.length == 0 ? 'mdi-play' : 'mdi-stop'"
         @click="playAudio"
       ></v-btn>
