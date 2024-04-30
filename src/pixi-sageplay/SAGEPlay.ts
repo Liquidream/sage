@@ -227,9 +227,10 @@ export class SAGE {
     // debugger
     for (const scene of SAGE.World.scenes) {
       // Should only happen while "testing" game, not in "release"
-      if (scene.sound && scene.sound.startsWith("data:")) {
+      if (scene.sound && scene.sound.includes("data:")) {
         const assetName = scene.name + "-sound"
-        const data = scene.sound.split(",").slice(1).join(",")
+        const dataPackage = scene.sound.split("|")
+        const data = dataPackage[1].split(",").slice(1).join(",")
         const buffer = SAGE.base64ToArrayBuffer(data)
         SAGE.Sound.soundLibrary.add(assetName, buffer)
         scene.sound = assetName
