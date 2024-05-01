@@ -37,9 +37,8 @@
       ><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader
     >
 
-    <ControlledTextEdit label="ID-new2" type="actor" v-model="model.id" />
-
-    <v-text-field label="ID" :value="model.id" @input="idUpdated" dirty>
+    <ControlledTextEdit label="ID" type="actor" v-model="model.id" />
+    <!-- <v-text-field label="ID" :value="model.id" @input="idUpdated" dirty>
       <template v-slot:append>
         <v-btn
           density="comfortable"
@@ -49,7 +48,8 @@
           @click="idUpdated"
         ></v-btn>
       </template>
-    </v-text-field>
+    </v-text-field> -->
+
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
     <v-row align="center">
@@ -352,12 +352,12 @@
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }
 
-  const idUpdated = (evt) => {
-    console.log(">>> actId edited, so keep it 'current'")
-    console.debug(evt)
-    model.value.id = evt.target.value
-    useWorldStore().currActorId = evt.target.value
-  }
+  // const idUpdated = (evt) => {
+  //   console.log(">>> actId edited, so keep it 'current'")
+  //   console.debug(evt)
+  //   model.value.id = evt.target.value
+  //   useWorldStore().currActorId = evt.target.value
+  // }
 
   const removeActorClicked = () => {
     // TODO: Remove Actor from scene - don't delete,

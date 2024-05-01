@@ -25,12 +25,14 @@
       ><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader
     >
 
-    <v-text-field
+    <ControlledTextEdit label="ID" type="scene" v-model="model.id" />
+    <!-- <v-text-field
       label="ID"
       :value="model.id"
       @input="idUpdated"
       dirty
-    ></v-text-field>
+    ></v-text-field> -->
+
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
     <v-row align="center">
@@ -152,6 +154,7 @@
   // import "../assets/acesrc/inkTheme.css"
 
   import AceEditor from "./AceEditor.vue"
+  import ControlledTextEdit from "./ControlledTextEdit.vue"
   //import PrismEditor from "./PrismEditor.vue"
 
 
@@ -209,12 +212,12 @@
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }
 
-  const idUpdated = (evt) => {
-    console.log(">>> sceneId edited, so keep it 'current'")
-    console.debug(evt)
-    model.value.id = evt.target.value
-    useWorldStore().currSceneId = evt.target.value
-  }
+  // const idUpdated = (evt) => {
+  //   console.log(">>> sceneId edited, so keep it 'current'")
+  //   console.debug(evt)
+  //   model.value.id = evt.target.value
+  //   useWorldStore().currSceneId = evt.target.value
+  // }
 
   const propSelected = (value: {
     id: unknown

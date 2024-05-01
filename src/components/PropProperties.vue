@@ -32,12 +32,14 @@
     <v-list-subheader
       ><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader
     >
-    <v-text-field
+    <ControlledTextEdit label="ID" type="prop" v-model="model.id" />
+    <!-- <v-text-field
       label="ID"
       :value="model.id"
       @input="idUpdated"
       dirty
-    ></v-text-field>
+    ></v-text-field> -->
+
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
     <v-row align="center" class="mb-0">
@@ -202,6 +204,7 @@
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
   import AceEditor from "./AceEditor.vue"
+  import ControlledTextEdit from "./ControlledTextEdit.vue"
   // import PrismEditor from "./PrismEditor.vue"
 
   const worldStore = useWorldStore()
@@ -315,12 +318,12 @@
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }
 
-  const idUpdated = (evt) => {
-    console.log(">>> prpId edited, so keep it 'current'")
-    console.debug(evt)
-    model.value.id = evt.target.value
-    useWorldStore().currPropId = evt.target.value
-  }
+  // const idUpdated = (evt) => {
+  //   console.log(">>> prpId edited, so keep it 'current'")
+  //   console.debug(evt)
+  //   model.value.id = evt.target.value
+  //   useWorldStore().currPropId = evt.target.value
+  // }
 
   const removePropClicked = () => {
     SAGEdit.Events.emit("propRemoved", model.value)

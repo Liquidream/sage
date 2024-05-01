@@ -3,7 +3,7 @@
     <v-col>
       <v-text-field
         :label="label"
-        :value="model" /// need to do this on load only
+        v-model="wipModel"
         :disabled="!editMode"
         dirty
         hide-details
@@ -30,35 +30,42 @@
     label: String,
     type: String,
   })
+  const wipModel = ref(model.value)
   const editMode = ref(false)
+
+  const wipModelUpdated = (evt) => {
+    console.log(">>> wipModel edited, so keep it 'current'")
+    console.debug(evt)
+    wipModel.value = evt.target.value
+    //useWorldStore().currActorId = evt.target.value
+  }
 
   // When save clicked,
   //  - Check ID name is valid (unique)
   //  - Update value, but ensure current selection maintained
   const editSaveClicked = (evt) => {
-    
     if (editMode.value) {
       // Save clicked
-      console.log(">>> actId edited, so keep it 'current'")
-      console.debug(evt)
-      model.value = evt.target.value
+      console.log(">>> wip text done, so save to model")
+      //console.debug(evt)
+      model.value = wipModel.value
 
       // Maintain current selection by keeping curr ID in sync
       switch (props.type) {
         case "scene": {
-          useWorldStore().currSceneId = evt.target.value
+          useWorldStore().currSceneId = wipModel.value
           break
         }
         case "actor": {
-          useWorldStore().currActorId = evt.target.value
+          useWorldStore().currActorId = wipModel.value
           break
         }
         case "prop": {
-          useWorldStore().currPropId = evt.target.value
+          useWorldStore().currPropId = wipModel.value
           break
         }
         case "door": {
-          useWorldStore().currDoorId = evt.target.val
+          useWorldStore().currDoorId = wipModel.value
           break
         }
       }
