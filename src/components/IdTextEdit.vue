@@ -7,6 +7,7 @@
         :disabled="!editMode"
         dirty
         hide-details
+        @keydown.enter="editSaveClicked"
       ></v-text-field>
     </v-col>
     <v-col cols="2">
@@ -22,7 +23,9 @@
 </template>
 
 <script setup lang="ts">
-  import { useWorldStore } from "@/stores/WorldStore"
+  import { SAGEdit } from "@/pixi-sagedit/SAGEdit";
+import { useSceneStore } from "@/stores/SceneStore";
+import { useWorldStore } from "@/stores/WorldStore"
   import { ref } from "vue"
 
   const model = defineModel({ type: String })
@@ -47,12 +50,18 @@
     if (editMode.value) {
       // Save clicked
       console.log(">>> wip text done, so save to model")
-      //console.debug(evt)
+      // Remember prev value (as could be useful later)
+      const oldValue = model.value
+      //
       model.value = wipModel.value
 
       // Maintain current selection by keeping curr ID in sync
       switch (props.type) {
         case "scene": {
+          // Realign "orphaned" child objects in scene
+          // (now scene id has been renamed)
+          SAGEdit.Events.emit("sceneIdRenamed", oldValue, wipModel.value)
+          //useSceneStore().realignChildObjects(oldValue, wipModel.value)
           useWorldStore().currSceneId = wipModel.value
           break
         }

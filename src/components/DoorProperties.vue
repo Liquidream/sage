@@ -32,7 +32,7 @@
     <v-list-subheader
       ><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader
     >
-    <ControlledTextEdit label="ID" type="door" v-model="model.id" />
+    <IdTextEdit label="ID" type="door" v-model="model.id" />
     <!-- <v-text-field
       label="ID"
       :value="model.id"
@@ -214,7 +214,7 @@
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 
   import AceEditor from "./AceEditor.vue"
-  import ControlledTextEdit from "./ControlledTextEdit.vue"
+  import IdTextEdit from "./IdTextEdit.vue"
   //import PrismEditor from "./PrismEditor.vue"
 
   const worldStore = useWorldStore()

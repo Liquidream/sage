@@ -66,6 +66,12 @@ export class ActorEdit extends AdjustableDataObject {
       },
       this
     )
+    // Listen for id/data changes
+    SAGEdit.Events.on("sceneIdRenamed", (oldSceneId: string, newSceneId: string) => {
+        this.updateSceneIdChanged(oldSceneId, newSceneId)
+      },
+      this
+    )
 
     // visible state
     if (!actorModel.visible) {
@@ -87,6 +93,15 @@ export class ActorEdit extends AdjustableDataObject {
     //SAGEdit.currentScreen.removeProp(this, true)
     //   SAGE.World.currentScene.screen.removeProp(this, true)
     // }
+  }
+
+  private updateSceneIdChanged(oldSceneId: string, newSceneId: string) {
+    // Rename all references of oldSceneId > newSceneId in current instance
+    // (store will react to handle all other instances)
+    const actorModel = this.data as ActorModel
+    if (actorModel.location_id === oldSceneId) {
+      actorModel.location_id = newSceneId
+    }
   }
 
   private updateSelectionState(isSelected: boolean) {

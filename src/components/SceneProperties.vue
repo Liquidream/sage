@@ -25,7 +25,7 @@
       ><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader
     >
 
-    <ControlledTextEdit label="ID" type="scene" v-model="model.id" />
+    <IdTextEdit label="ID" type="scene" v-model="model.id" />
     <!-- <v-text-field
       label="ID"
       :value="model.id"
@@ -154,7 +154,7 @@
   // import "../assets/acesrc/inkTheme.css"
 
   import AceEditor from "./AceEditor.vue"
-  import ControlledTextEdit from "./ControlledTextEdit.vue"
+  import IdTextEdit from "./IdTextEdit.vue"
   //import PrismEditor from "./PrismEditor.vue"
 
 

@@ -96,6 +96,19 @@ export class SAGEdit {
 
     // Initialise the ink headers for Scenes, Actors, etc.
     InkManager.initInkScriptHeaders()
+
+    // Subscribe to id/data changes in order to update stores
+    // (visible/on-screen objects will take care of themselves)
+    // SAGEdit.Events.on("sceneIdRenamed", (oldSceneId: string, newSceneId: string) => {
+    //     this.updateSceneIdChanged(oldSceneId, newSceneId)
+    //   },
+    //   this
+    // )
+    // SAGEdit.Events.on("propIdRenamed", (oldPropId: string, newPropId: string) => {
+    //     this.updatePropIdChanged(oldPropId, newPropId)
+    //   },
+    //   this
+    // )
   }
 
   static createLayers() {

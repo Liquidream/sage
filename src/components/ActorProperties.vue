@@ -37,7 +37,7 @@
       ><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader
     >
 
-    <ControlledTextEdit label="ID" type="actor" v-model="model.id" />
+    <IdTextEdit label="ID" type="actor" v-model="model.id" />
     <!-- <v-text-field label="ID" :value="model.id" @input="idUpdated" dirty>
       <template v-slot:append>
         <v-btn
@@ -227,7 +227,7 @@
 
   import AceEditor from "./AceEditor.vue"
   //import PrismEditor from "./PrismEditor.vue"
-  import ControlledTextEdit from "./ControlledTextEdit.vue"
+  import IdTextEdit from "./IdTextEdit.vue"
 
   const worldStore = useWorldStore()
   const actorStore = useActorStore()

@@ -45,8 +45,13 @@ export class DoorEdit extends AdjustableDataObject {
 
     // Listen for selection changes
     SAGEdit.Events.on("selectionChanged", (selectedId: string) => {
-        //debugger
         this.updateSelectionState(selectedId == this.data.id)
+      },
+      this
+    )
+    // Listen for id/data changes
+    SAGEdit.Events.on("sceneIdRenamed", (oldSceneId: string, newSceneId: string) => {
+        this.updateSceneIdChanged(oldSceneId, newSceneId)
       },
       this
     )
@@ -82,6 +87,18 @@ export class DoorEdit extends AdjustableDataObject {
     // Unsubscribe from events, etc.
     this.graphics.removeAllListeners()
     this.resizeSprite.removeAllListeners()
+  }
+
+  private updateSceneIdChanged(oldSceneId: string, newSceneId: string) {
+    // Rename all references of oldSceneId > newSceneId in current instance
+    // (store will react to handle all other instances)
+    const doorModel = this.data as DoorModel
+    if (doorModel.location_id === oldSceneId) {
+      doorModel.location_id = newSceneId
+    }
+    if (doorModel.target_scene_id === oldSceneId) {
+      doorModel.target_scene_id = newSceneId
+    }
   }
 
   private updateSelectionState(isSelected: boolean) {
