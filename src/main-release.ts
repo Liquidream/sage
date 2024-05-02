@@ -12,6 +12,7 @@ import { useDoorStore, type DoorState } from "./stores/DoorStore"
 import { useActorStore, type ActorState } from "./stores/ActorStore"
 import { SAGE } from "./pixi-sageplay/SAGEPlay"
 import { usePlayerStore, type PlayerState } from "./stores/PlayerStore"
+import { InkManager } from "./utils/InkManager"
 
 // current screen size
 // const gameWidth = 1920
@@ -103,12 +104,17 @@ const importPlayData = async (): Promise<void> => {
     console.log(">>> (finished importing release data)")
   }
 
+  // Ink Script data
+  const response = await fetch("story.json")
+  InkManager.inkJsonString = await response.text()
+
   loadFonts()
 
   // Finally, mount the app
   console.log(">>> Mounting #app...")
   app.mount("#app")
 }
+
 
 // Only proceed once store has fully loaded
 // (takes longer with IndexedDB)

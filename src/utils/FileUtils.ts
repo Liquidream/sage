@@ -14,6 +14,7 @@ import { playAssets } from "@/pixi-sageplay/playAssets"
 import JSZipUtils from "jszip-utils"
 import { usePlayerStore } from "@/stores/PlayerStore"
 import { getActivePinia } from "pinia"
+import { InkManager } from "./InkManager"
 
 export class FileUtils {
   private constructor() {
@@ -139,6 +140,10 @@ export class FileUtils {
 
     const playDataJSON = JSON.stringify(playData, null, 4)
     zip.file("sageData.json", playDataJSON)
+
+    // Ink
+    const inkJsonStory = InkManager.generateInkStoryJson()
+    zip.file("story.json", inkJsonStory)
 
     // debugger
 

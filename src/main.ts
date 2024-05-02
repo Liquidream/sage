@@ -13,6 +13,8 @@ import { useDoorStore, type DoorState } from "./stores/DoorStore"
 import { useActorStore, type ActorState } from "./stores/ActorStore"
 import { SAGE } from "./pixi-sageplay/SAGEPlay"
 import { usePlayerStore, type PlayerState } from "./stores/PlayerStore"
+import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
+import { InkManager } from "./utils/InkManager"
 
 let app: App
 
@@ -205,7 +207,7 @@ if (mode == "play") {
 
   // Check for data to load
   if (window.opener.sagePlayData) {
-    const sagePlayData = window.opener.sagePlayData
+    const sagePlayData = window.opener.sagePlayData as SagePlayData
 
     // Only proceed once ALL stores have fully loaded
     // (takes longer with IndexedDB)
@@ -236,9 +238,12 @@ if (mode == "play") {
       doorStore.$state = doorData
 
       // Actor Data
-      // const actorData: ActorState = JSON.parse(sagePlayData.actorData)
-      // actorStore.$state = actorData
+      const actorData: ActorState = JSON.parse(sagePlayData.actorData)
+      actorStore.$state = actorData
     })
+
+    // Ink Script data
+    InkManager.inkJsonString = sagePlayData.scriptData
 
     // // World Data
     // const worldStore = useWorldStore()

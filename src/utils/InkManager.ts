@@ -20,9 +20,9 @@ export class InkManager {
     /*this class is purely static. No constructor to see here*/
   }
 
-  // Initialise InkJS (this might not be the right place...)
+  public static inkJsonString: string
+
   private static inkStory: InstanceType<typeof Story>
-  //private static inkCompiler: InstanceType<typeof Compiler>
 
   public static inkHeaderWorld: string
   public static inkHeaderScene: string

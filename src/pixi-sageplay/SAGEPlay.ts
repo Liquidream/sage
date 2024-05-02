@@ -169,12 +169,13 @@ export class SAGE {
     // --------------------------------------------
     // v2 - loading pre-compiled script from editor
     // --------------------------------------------
-    const sagePlayData = window.opener.sagePlayData
-    const scriptData = sagePlayData.scriptData
+    // const sagePlayData = window.opener.sagePlayData
+    // const scriptData = sagePlayData.scriptData
 
     // V2 (loading pre-compiled ink story)
     //SAGE.inkStory = new Story(scriptData)
-    InkManager.createStory(scriptData)
+    //InkManager.createStory(scriptData)
+    InkManager.createStory(InkManager.inkJsonString)
 
     // TODO: Need to load last saved state
     // (+restore inventory, world, scene, actor, prop object states accordingly)
