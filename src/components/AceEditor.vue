@@ -162,7 +162,7 @@
 <script setup lang="ts">
   import { VAceEditor } from "vue3-ace-editor"
   import "ace-builds/src-noconflict/theme-monokai"
-  //import { ErrorType } from "inkjs/engine/Error"
+
   import "../assets/ace-ink-mode/mode-ink"
   import "../assets/ace-ink-mode/inkTheme.css"
 
