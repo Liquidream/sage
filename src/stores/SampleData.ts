@@ -11,7 +11,8 @@ export class SampleData {
   }
 
   public static async resetToDemoData() {
-    const response = await fetch("https://s3.filebin.net/filebin/66086b8a9ff7eb80d98662b5515cce4e155994c5df5edce18d2cae42b786168a/cd153ecc43b62333f66fcc5b69f7696718baa45b52b92d2e6f7d7d2b05eb7a06?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=7pMj6hGeoKewqmMQILjm%2F20240511%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240511T184450Z&X-Amz-Expires=30&X-Amz-SignedHeaders=host&response-cache-control=max-age%3D30&response-content-disposition=filename%3D%22demoData.json%22&response-content-type=application%2Fjson&X-Amz-Signature=fa77728e86984cd324dbdb9f5615b9bdb010cf84df992daadb517d63a94aca93")
+    const response = await fetch("https://raw.githubusercontent.com/Liquidream/sage/dev/sample_games/demoData-found.json")
+    // const response = await fetch("https://raw.githubusercontent.com/Liquidream/sage/dev/sample_games/demoData-ransom.json")
 
     const sageEditData = await response.json()
     // World Data
