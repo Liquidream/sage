@@ -45,6 +45,9 @@ export class FileUtils {
         if (multiple) resolve(files)
         else resolve(files[0])
       }
+      input.oncancel = () => {
+        resolve(null)
+      }
 
       input.click()
     })
@@ -56,33 +59,62 @@ export class FileUtils {
 
     // TODO: Let user upload file (or enter URL?)
     // TODO: Warn user if trying to load a version that's newer than editor (unlikely, but if not updated their copy?)
-
+//debugger
     // const sageEditData = await response.json()
     const jsonFile = await FileUtils.selectFile(".json", false)
+
+    // abort if cancelled
+    if (jsonFile === null) {
+      console.log(">>> file selection null (probably cancelled) - aborting...")
+      return
+    }
+
     // const jsonString = fs.readFileSync(sageEditData., 'utf-8');
     //const jsonString = await jsonFile.text()
-    // setting up the reader
-    const reader = new FileReader()
-    reader.readAsText(jsonFile, "UTF-8")
-    // here we tell the reader what to do when it's done reading...
-    reader.onload = () => {
-      const jsonContent = reader.result // this is the content!
-      const sageEditData = JSON.parse(jsonContent)
-      // World Data
-      useWorldStore().$state = sageEditData.worldData
-      // Scene Data
-      useSceneStore().$state = sageEditData.sceneData
-      // Prop Data
-      usePropStore().$state = sageEditData.propData
-      // // Door Data
-      useDoorStore().$state = sageEditData.doorData
-      // // Actor Data
-      useActorStore().$state = sageEditData.actorData
-      // // Player Data
-      usePlayerStore().$state = sageEditData.playerData
+    // Return a promise per file
+    const filePromise = new Promise((resolve, reject) => {
+      // setting up the reader
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(reader.result)
+      reader.onabort = () => resolve(reader.result)
+      reader.readAsText(jsonFile, "UTF-8")
+      // here we tell the reader what to do when it's done reading...
+      reader.onload = async () => {
+        const jsonContent = reader.result // this is the content!
+        const sageEditData = JSON.parse(jsonContent)
+        // Populate state
+        const worldStore = useWorldStore()
+        const propStore = usePropStore()
+        const sceneStore = useSceneStore()
+        const doorStore = useDoorStore()
+        const actorStore = useActorStore()
+        const playerStore = usePlayerStore()
+        worldStore.$state = sageEditData.worldData
+        sceneStore.$state = sageEditData.sceneData
+        propStore.$state = sageEditData.propData
+        doorStore.$state = sageEditData.doorData
+        actorStore.$state = sageEditData.actorData
+        playerStore.$state = sageEditData.playerData
 
-      console.log(">>> (finished importing data)")
-    }
+        // Hack to ensure all state is restored before
+        // trying to redraw the current screen
+        // else get missing objects
+        // (TODO: potentially skip if no curr scene???)
+        await Promise.all([
+          worldStore.$persistedState.isReady(),
+          sceneStore.$persistedState.isReady(),
+          propStore.$persistedState.isReady(),
+          doorStore.$persistedState.isReady(),
+          actorStore.$persistedState.isReady(),
+        ]).then(() => {
+          console.log(">>>> All stores hydrated (performLoad), now initialise SceneScreen")
+          //SAGEdit.currentScreen.setup()
+          console.log(">>> (finished importing data)")
+        })
+      }
+    })
+
+    await filePromise
   }
 
   public static performSave() {

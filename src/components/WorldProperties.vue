@@ -82,7 +82,7 @@
 
     <v-divider />
 
-    <v-btn @click="SampleData.resetToDemoData" color="info" class="mt-2"
+    <v-btn :loading="loading" @click="resetDataClicked" color="info" class="mt-2"
       >Reset Data</v-btn
     >
     <!-- &nbsp;
@@ -107,6 +107,7 @@
   //import PrismEditor from "./PrismEditor.vue"
 
   import type { ActorModel } from "@/models/ActorModel"
+import { ref } from "vue"
 
   console.log("start WordProperties.vue...")
   const worldStore = useWorldStore()
@@ -126,9 +127,12 @@
     worldStore.currActorId = actor.id
   }
 
-  //const loadBtnClicked = () => {
-  //worldStore.load()
-  //}
+  const loading = ref(false)
+  const resetDataClicked = async () => {
+    loading.value = true
+    await SampleData.resetToDemoData()
+    loading.value = false
+  }
 
   //const addSceneClicked = () => {
   //

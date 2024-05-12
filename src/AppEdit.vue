@@ -2,6 +2,15 @@
   <v-app style="height: 100vh">
     <!-- Added to force bottom container to show scrollbar? -->
 
+    <!-- Progress indicator for load/save/exports -->
+    <v-overlay :model-value="waitOverlay" class="align-center justify-center">
+      <v-progress-circular
+        color="primary"
+        size="64"
+        indeterminate
+      ></v-progress-circular>
+    </v-overlay>
+
     <!-- For some reason had to add some padding at top to get 
          canvas to v-center properly in landscape mode -->
     <v-main :class="!isPortrait ? 'd-flex justify-center align-center' : ''">
@@ -163,6 +172,8 @@
   import SceneList from "@/components/SceneList.vue"
   import { ActorLocationType, type ActorModel } from "./models/ActorModel"
 
+  const waitOverlay = ref(false)
+
   // replaced dyanmicaly
   const date = "__DATE__"
   const timeAgo = useTimeAgo(date)
@@ -196,9 +207,13 @@
     )
   })
 
-  const loadGame = () => {
-    console.log(">> Load game")
-    FileUtils.performLoad()
+  const loadGame = async () => {
+    console.log(">> Load game started...")
+    waitOverlay.value = true
+    await FileUtils.performLoad()
+    SAGEdit.currentScreen.setup()
+    waitOverlay.value = false
+    console.log(">> Load game done")
   }
 
   const saveGame = () => {
