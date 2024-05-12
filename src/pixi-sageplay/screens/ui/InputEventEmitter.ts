@@ -1,5 +1,6 @@
 //import { EventEmitter } from '@pixi/utils';
 //import { SAGE } from "@/SAGE"
+import { SAGE } from "@/pixi-sageplay/SAGEPlay"
 import type { DisplayObject } from "pixi.js"
 
 export class InputEventEmitter {
@@ -46,10 +47,11 @@ export class InputEventEmitter {
     //SAGE.debugLog("onTouchStart...")
     this.touchStartTime = new Date()
     this.touchTimer = setTimeout(() => {
-      // if (!SAGE.World.currentScene.screen.draggedProp) {
-      //   this.onSecondaryAction()
-      //   this.longPressFired = true
-      // }
+      // Was prev commented out (poss causing issues with drag+drop?)
+      if (!SAGE.World.currentScene.screen.draggedProp) {
+        this.onSecondaryAction()
+        this.longPressFired = true
+      }
     }, this.TOUCH_DURATION)
     // Reset state
     this.longPressFired = false
