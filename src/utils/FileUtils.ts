@@ -24,7 +24,7 @@ export class FileUtils {
   public static debugMode = true
 
   public static initialize() {
-    console.log("SAGExport:initialize()...")
+    console.log("FileUtils:initialize()...")
   }
 
   /**
@@ -55,7 +55,7 @@ export class FileUtils {
 
   public static async performLoad() {
     // Import game "edit" data
-    console.log("SAGExport:performLoad()...")
+    console.log("FileUtils:performLoad()...")
 
     // TODO: Let user upload file (or enter URL?)
     // TODO: Warn user if trying to load a version that's newer than editor (unlikely, but if not updated their copy?)
@@ -118,7 +118,7 @@ export class FileUtils {
   }
 
   public static performSave() {
-    console.log("SAGExport:performSave()...")
+    console.log("FileUtils:performSave()...")
 
     const sageEditData = {} as any
     sageEditData.version = Constants.APP_VERSION
@@ -140,7 +140,7 @@ export class FileUtils {
   }
 
   public static async performExport() {
-    console.log("SAGExport:performExport()...")
+    console.log("FileUtils:performExport()...")
 
     // Create the zip file
     const zip = new JSZip()

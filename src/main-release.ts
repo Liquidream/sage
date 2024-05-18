@@ -115,10 +115,16 @@ const importPlayData = async (): Promise<void> => {
   app.mount("#app")
 }
 
-
-// Only proceed once store has fully loaded
+// Only proceed once ALL stores have fully loaded
 // (takes longer with IndexedDB)
-worldStore.$persistedState.isReady().then(() => {
+Promise.all([
+  worldStore.$persistedState.isReady(),
+  sceneStore.$persistedState.isReady(),
+  propStore.$persistedState.isReady(),
+  doorStore.$persistedState.isReady(),
+  actorStore.$persistedState.isReady(),
+  playerStore.$persistedState.isReady(),
+]).then(() => {
   importPlayData()
 })
 
