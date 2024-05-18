@@ -79,6 +79,7 @@
     SAGE.Events.on(
       "settingsTapped",
       () => {
+        console.log("SettingsPlay:OnSettingsTapped event...")
         showDialog.value = true
       },
       this
