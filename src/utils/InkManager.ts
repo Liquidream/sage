@@ -364,12 +364,12 @@ export class InkManager {
     }
   }
 
-  public static restoreSavedState() {
+  public static restoreSavedState(inkStoryJson: string) {
     // TODO: Need to load last saved state
     // (+restore inventory, world, scene, actor, prop object states accordingly)
-    const lastState = SAGE.World.player.gameState
-    if (lastState.jsonState && lastState.jsonState.length > 0) {
-      InkManager.inkStory.state.LoadJson(lastState.jsonState)
+    //const lastState = SAGE.World.player.gameState
+    if (inkStoryJson && inkStoryJson.length > 0) {
+      InkManager.inkStory.state.LoadJson(inkStoryJson)
       console.log("-- Inventory contents:")
       const invList = InkManager.inkStory.variablesState["Inventory"] as InkList
       //debugger

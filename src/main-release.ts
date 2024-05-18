@@ -11,7 +11,7 @@ import { usePropStore, type PropState } from "./stores/PropStore"
 import { useDoorStore, type DoorState } from "./stores/DoorStore"
 import { useActorStore, type ActorState } from "./stores/ActorStore"
 import { SAGE } from "./pixi-sageplay/SAGEPlay"
-import { usePlayerStore, type PlayerState } from "./stores/PlayerStore"
+import { useGameStateStore, type GameState } from "./stores/GameStateStore"
 import { InkManager } from "./utils/InkManager"
 
 // current screen size
@@ -67,7 +67,7 @@ const sceneStore = useSceneStore()
 const propStore = usePropStore()
 const doorStore = useDoorStore()
 const actorStore = useActorStore()
-const playerStore = usePlayerStore()
+const playerStore = useGameStateStore()
 
 const importPlayData = async (): Promise<void> => {
   // Import game data (but only on first run)
@@ -98,7 +98,7 @@ const importPlayData = async (): Promise<void> => {
     actorStore.$state = actorData
 
     // Player Data
-    const playerData: PlayerState = JSON.parse(sagePlayData.playerData)
+    const playerData: GameState = JSON.parse(sagePlayData.playerData)
     playerStore.$state = playerData
 
     console.log(">>> (finished importing release data)")

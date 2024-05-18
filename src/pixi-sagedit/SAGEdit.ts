@@ -9,7 +9,7 @@ import { useSceneStore } from "@/stores/SceneStore"
 import { usePropStore } from "@/stores/PropStore"
 import { useDoorStore } from "@/stores/DoorStore"
 import { useActorStore } from "@/stores/ActorStore"
-import { usePlayerStore } from "@/stores/PlayerStore"
+import { useGameStateStore } from "@/stores/GameStateStore"
 import { InkManager } from "@/utils/InkManager"
 
 export class SAGEdit {
@@ -221,7 +221,7 @@ export class SAGEdit {
     playData.actorData = JSON.stringify(useActorStore().$state)
     playData.scriptData = InkManager.generateInkStoryJson()
     // Don't set this, or it'll clash wish save states
-    playData.playerData = JSON.stringify(usePlayerStore().$state)
+    playData.playerData = JSON.stringify(useGameStateStore().$state)
 
     window.sagePlayData = playData
 

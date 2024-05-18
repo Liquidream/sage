@@ -1,11 +1,11 @@
 import { SAGE } from "./SAGEPlay"
-import type { Serialization } from "../utils/Serialization"
+//import type { Serialization } from "../utils/Serialization"
 import { Prop } from "./Prop"
 //import * as PropData from "./data/PropData"
 import { PropLocationType, type PropModel } from "@/models/PropModel"
-import { usePlayerStore } from "@/stores/PlayerStore"
+import { useGameStateStore } from "@/stores/GameStateStore"
 import type { SaveStateModel } from "@/models/SaveStateModel"
-import { InkList, InkListItem } from "inkjs/engine/InkList"
+//import { InkList, InkListItem } from "inkjs/engine/InkList"
 import { InkManager } from "@/utils/InkManager"
 
 //export class Player implements IPlayerData, Serialization<Player> {
@@ -14,7 +14,7 @@ export class Player implements IPlayerData {
     // Anything?
   }
 
-  private playerStore = usePlayerStore()
+  private gameStateStore = useGameStateStore()
 
   public name: string | undefined
 
@@ -28,7 +28,7 @@ export class Player implements IPlayerData {
   public property: { [key: string]: string | number | boolean } = {}
 
   public get gameState(): SaveStateModel {
-    return this.playerStore.gameState
+    return this.gameStateStore.saveState
   }
 
   /** Returns whether or not the specified prop id is in player's inventory */

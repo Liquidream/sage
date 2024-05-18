@@ -57,14 +57,15 @@
   // }
 
   const saveGameClicked = () => {
-    console.log("TODO: Save game...")
-    SAGE.saveGame()
+    console.log("Save game...")
+    SAGE.saveGameState()
+    showDialog.value = false
   }
 
   const loadGameClicked = () => {
     console.log("TODO: Load game...")
-    debugger
-    const lastState = SAGE.World.player.gameState
+    SAGE.loadGameState()
+    showDialog.value = false
   }
 
   const restartGameClicked = () => {

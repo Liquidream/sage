@@ -1,5 +1,6 @@
 export interface SaveStateModel {
-  jsonState: string
+  piniaStates: string[]
+  inkStoryState: string
   timestamp?: Date
   screenshot?: string
 }

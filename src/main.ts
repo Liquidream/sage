@@ -12,7 +12,7 @@ import { usePropStore, type PropState } from "./stores/PropStore"
 import { useDoorStore, type DoorState } from "./stores/DoorStore"
 import { useActorStore, type ActorState } from "./stores/ActorStore"
 import { SAGE } from "./pixi-sageplay/SAGEPlay"
-import { usePlayerStore, type PlayerState } from "./stores/PlayerStore"
+import { useGameStateStore, type GameState } from "./stores/GameStateStore"
 import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
 import { InkManager } from "./utils/InkManager"
 
@@ -203,7 +203,7 @@ if (mode == "play") {
   const sceneStore = useSceneStore()
   const doorStore = useDoorStore()
   const actorStore = useActorStore()
-  const playerStore = usePlayerStore()
+  const gameStateStore = useGameStateStore()
 
   // Check for data to load
   if (window.opener.sagePlayData) {
@@ -217,11 +217,11 @@ if (mode == "play") {
       propStore.$persistedState.isReady(),
       doorStore.$persistedState.isReady(),
       actorStore.$persistedState.isReady(),
-      playerStore.$persistedState.isReady(),
+      gameStateStore.$persistedState.isReady(),
     ]).then(() => {
       console.log("All stores hydrated pt.1, now overwrite state")
 
-       // World Data
+      // World Data
       const worldData: WorldState = JSON.parse(sagePlayData.worldData)
       worldStore.$state = worldData
 
@@ -240,6 +240,10 @@ if (mode == "play") {
       // Actor Data
       const actorData: ActorState = JSON.parse(sagePlayData.actorData)
       actorStore.$state = actorData
+
+      // GameState data
+      // (Deliberately not restored/reset from edit data
+      //  so that it is available for same/load)
     })
 
     // Ink Script data

@@ -162,7 +162,7 @@
   import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
   import { FileUtils } from "./utils/FileUtils"
   import { useSageEditStore } from "./stores/SAGEditStore"
-  import { usePlayerStore } from "./stores/PlayerStore"
+  import { useGameStateStore } from "./stores/GameStateStore"
   import type { SceneModel } from "./models/SceneModel"
   import { PropLocationType, PropModel } from "./models/PropModel"
   import { DoorModel } from "./models/DoorModel"

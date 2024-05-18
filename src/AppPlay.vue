@@ -23,7 +23,7 @@ import { usePropStore } from "./stores/PropStore";
 import { useSceneStore } from "./stores/SceneStore";
 import { useDoorStore } from "./stores/DoorStore";
 import { useActorStore } from "./stores/ActorStore";
-import { usePlayerStore } from "./stores/PlayerStore";
+import { useGameStateStore } from "./stores/GameStateStore";
   //import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
 
   console.log("start AppPlay.vue...")

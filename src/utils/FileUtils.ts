@@ -12,7 +12,7 @@ import type { ResolverManifest } from "pixi.js"
 import { playAssets } from "@/pixi-sageplay/playAssets"
 // @ts-ignore
 import JSZipUtils from "jszip-utils"
-import { usePlayerStore } from "@/stores/PlayerStore"
+import { useGameStateStore } from "@/stores/GameStateStore"
 import { getActivePinia } from "pinia"
 import { InkManager } from "./InkManager"
 
@@ -88,7 +88,7 @@ export class FileUtils {
         const sceneStore = useSceneStore()
         const doorStore = useDoorStore()
         const actorStore = useActorStore()
-        const playerStore = usePlayerStore()
+        const playerStore = useGameStateStore()
         worldStore.$state = sageEditData.worldData
         sceneStore.$state = sageEditData.sceneData
         propStore.$state = sageEditData.propData
@@ -129,7 +129,7 @@ export class FileUtils {
     sageEditData.propData = usePropStore().$state
     sageEditData.doorData = useDoorStore().$state
     sageEditData.actorData = useActorStore().$state
-    sageEditData.playerData = usePlayerStore().$state
+    sageEditData.playerData = useGameStateStore().$state
     const sageEditDataJSON = JSON.stringify(sageEditData, null, 4)
 
     console.log("saving file...")
@@ -168,7 +168,7 @@ export class FileUtils {
     const actorState = FileUtils.cloneState(useActorStore()) as ActorState
     playData.actorData = FileUtils.exportActorData(actorState, assetsManifest, zip)
     //playData.actorData = JSON.stringify(useActorStore().$state)
-    playData.playerData = JSON.stringify(usePlayerStore().$state)
+    playData.playerData = JSON.stringify(useGameStateStore().$state)
 
     const playDataJSON = JSON.stringify(playData, null, 4)
     zip.file("sageData.json", playDataJSON)

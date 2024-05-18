@@ -11,9 +11,14 @@ import { UI_Overlay } from "./screens/ui/UI_Overlay"
 import { playAssets } from "./playAssets"
 
 import { ErrorType } from "inkjs/engine/Error"
-import { usePlayerStore } from "@/stores/PlayerStore"
+import { useGameStateStore } from "@/stores/GameStateStore"
 import type { SaveStateModel } from "@/models/SaveStateModel"
 import { InkManager } from "@/utils/InkManager"
+import { useWorldStore, type WorldState } from "@/stores/WorldStore"
+import { useActorStore, type ActorState } from "@/stores/ActorStore"
+import { useDoorStore, type DoorState } from "@/stores/DoorStore"
+import { usePropStore, type PropState } from "@/stores/PropStore"
+import { useSceneStore, type SceneState } from "@/stores/SceneStore"
 
 //import gamedataJSON from "./gamedata.json"
 //const gamedata: IWorldData = (<unknown>gamedataJSON) as IWorldData
@@ -179,7 +184,7 @@ export class SAGE {
 
     // TODO: Need to load last saved state
     // (+restore inventory, world, scene, actor, prop object states accordingly)
-    InkManager.restoreSavedState()
+    //InkManager.restoreSavedState()
 
     // Setup error handling
     InkManager.inkStory.onError = (msg, type) => { // https://github.com/y-lohse/inkjs/issues/1033
@@ -196,8 +201,6 @@ export class SAGE {
 
     console.debug("<<<<<<<<<<<<<<<")
   }
-
-  
 
   private static shortenAPI() {
     // -------------------------------
@@ -271,13 +274,62 @@ export class SAGE {
     SAGE.startGame()
   }
 
-  public static saveGame() {
+  public static saveGameState() {
     const inkState = InkManager.inkStory.state.ToJson()
-    const playerStore = usePlayerStore()
+    const worldStore = useWorldStore()
+    const propStore = usePropStore()
+    const sceneStore = useSceneStore()
+    const doorStore = useDoorStore()
+    const actorStore = useActorStore()
+    const gameStateStore = useGameStateStore()
+
     const newSave: SaveStateModel = {
-      jsonState: inkState,
+      piniaStates: [
+        JSON.stringify(worldStore.$state),
+        JSON.stringify(propStore.$state),
+        JSON.stringify(sceneStore.$state),
+        JSON.stringify(doorStore.$state),
+        JSON.stringify(actorStore.$state),
+      ],
+      inkStoryState: inkState,
     }
-    playerStore.gameState = newSave
+    gameStateStore.saveState = newSave
+    console.log(inkState)
+  }
+
+  public static loadGameState() {
+    const worldStore = useWorldStore()
+    const propStore = usePropStore()
+    const sceneStore = useSceneStore()
+    const doorStore = useDoorStore()
+    const actorStore = useActorStore()
+    const gameStateStore = useGameStateStore()
+
+    console.log("Restoring pinia states...")
+
+    const piniaStates = gameStateStore.saveState.piniaStates
+    // World Data
+    const worldData: WorldState = JSON.parse(piniaStates[0])
+    worldStore.$state = worldData
+    // Scene Data
+    const sceneData: SceneState = JSON.parse(piniaStates[1])
+    sceneStore.$state = sceneData
+    // Prop Data
+    const propData: PropState = JSON.parse(piniaStates[2])
+    propStore.$state = propData
+    // Door Data
+    const doorData: DoorState = JSON.parse(piniaStates[3])
+    doorStore.$state = doorData
+    // Actor Data
+    const actorData: ActorState = JSON.parse(piniaStates[4])
+    actorStore.$state = actorData
+
+    console.log("Restoring ink state...")
+
+    const inkState = gameStateStore.saveState.inkStoryState
+    InkManager.restoreSavedState(inkState)
+    InkManager.chooseStoryPath(worldStore.currSceneId + "")
+
     console.log(inkState)
   }
 
