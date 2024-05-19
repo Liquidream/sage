@@ -438,26 +438,31 @@ export class SceneScreen extends Container {
     let sprite = undefined
     if (this.scene?.image) {
       // Is it a video?
-      if (this.scene?.image.includes("data:video")) {
-        // Load video data
-        this.videoElement = document.createElement("video")
-        this.videoElement.id = "tempVideo"
-        this.videoElement.src = this.scene.image // e.g. "data:video/mp4;base64,xxxxxx"
-        this.videoElement.preload = "auto"
-        this.videoElement.loop = true
+      // if (this.scene?.image.includes("data:video")) {
+      //   // Load video data
+      //   this.videoElement = document.createElement("video")
+      //   this.videoElement.id = "tempVideo"
+      //   this.videoElement.src = this.scene.image // e.g. "data:video/mp4;base64,xxxxxx"
+      //   this.videoElement.preload = "auto"
+      //   this.videoElement.loop = true
 
-        const resource = new VideoSource(this.videoElement)
-        //const resource = new VideoResource(this.videoElement)
-        const texture = Texture.from(resource)
-        // https://github.com/pixijs/pixi.js/issues/6501 - SOLVED!!
-        //resource.source.loop = true
-        sprite = Sprite.from(texture)
-        sprite.width = SAGEdit.width
-        sprite.height = SAGEdit.height
-      } else {
+      //   const resource = new VideoSource(this.videoElement)
+      //   //const resource = new VideoResource(this.videoElement)
+      //   const texture = Texture.from(resource)
+      //   // https://github.com/pixijs/pixi.js/issues/6501 - SOLVED!!
+      //   //resource.source.loop = true
+      //   sprite = Sprite.from(texture)
+      //   sprite.width = SAGEdit.width
+      //   sprite.height = SAGEdit.height
+      // } else {
         // Load image data
         const base = await Assets.load(this.scene.image)
         //const base = new BaseTexture(this.scene.image)
+
+        if (this.scene?.image.includes("data:video")) {
+          base.baseTexture.resource.loop = true
+        }
+
         const texture = new Texture(base)
         sprite = Sprite.from(texture)
 
@@ -487,7 +492,7 @@ export class SceneScreen extends Container {
             // }
           //})
         //}
-      }
+      //}
       //-----
     } else {
       // console.log("<No scene backgdrop image specified>")
@@ -595,10 +600,11 @@ export class SceneScreen extends Container {
     door.tidyUp()
   }
 
-  public addActor(actorModel: ActorModel) {
+  public async addActor(actorModel: ActorModel) {
     const graphics = new Graphics()
     // Create new component obj (contains data + view)
     const actor = new ActorEdit(actorModel, graphics)
+    await actor.initialize()
     this.addChild(actor.sprite)
     this.actors.push(actor)
     this.addChild(graphics)

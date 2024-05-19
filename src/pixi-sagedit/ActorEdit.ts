@@ -23,36 +23,37 @@ export class ActorEdit extends AdjustableDataObject {
   public constructor(actorModel: ActorModel, inGraphics: Graphics) {
     super(actorModel)
 
+    this.data = actorModel
+    this.graphics = inGraphics
+  }
+
+  public async initialize() {
     // Initialise from data object
     let sprite = undefined
-    if (actorModel.image) {
-      const imgBase64 = actorModel.image
-      // Workaround for awaiting async call in constructor
-      // https://stackoverflow.com/a/50885340/574415
-      ;(async () => {
-        const base = await Assets.load(imgBase64)
-        //const base = new BaseTexture(imgBase64)
-        console.log(
-          `>> model dimensions: width=${actorModel.width} height=${actorModel.height}`
-        )
-        const texture = new Texture(base)
-        sprite = Sprite.from(texture)
-      })()
+    if (this.data.image) {
+      const imgBase64 = this.data.image
+
+      const base = await Assets.load(imgBase64)
+      //const base = new BaseTexture(imgBase64)
+      console.log(
+        `>> model dimensions: width=${this.data.width} height=${this.data.height}`
+      )
+      const texture = new Texture(base)
+      sprite = Sprite.from(texture)
+
     } else {
       sprite = new Sprite(Texture.EMPTY)
     }
-    this.data = actorModel
-    this.graphics = inGraphics
     this.sprite = sprite
 
-    this.updateSelectionState(useWorldStore().currActorId === actorModel.id)
+    this.updateSelectionState(useWorldStore().currActorId === this.data.id)
 
-    sprite.width = actorModel.width || 0
-    sprite.height = actorModel.height || 0
+    sprite.width = this.data.width || 0
+    sprite.height = this.data.height || 0
 
     sprite.anchor.set(0.5)
-    sprite.x = actorModel.x || 0
-    sprite.y = actorModel.y || 0
+    sprite.x = this.data.x || 0
+    sprite.y = this.data.y || 0
 
     // Events
     this.propInputEvents = new InputEventEmitter(this.sprite)
@@ -79,7 +80,7 @@ export class ActorEdit extends AdjustableDataObject {
     )
 
     // visible state
-    if (!actorModel.visible) {
+    if (!this.data.visible) {
       this.sprite.alpha = 0.5
     }
     //this.sprite.visible = propModel.visible // || true
