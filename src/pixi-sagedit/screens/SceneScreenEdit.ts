@@ -547,10 +547,11 @@ export class SceneScreen extends Container {
     }
   }
 
-  public addProp(propModel: PropModel) {
+  public async addProp(propModel: PropModel) {
     const graphics = new Graphics()
     // Create new component obj (contains data + view)
     const prop = new PropEdit(propModel, graphics)
+    await prop.initialize()
     this.addChild(prop.sprite)
     this.props.push(prop)
     // Don't add to scene.propdata here, as it likely already came from it?

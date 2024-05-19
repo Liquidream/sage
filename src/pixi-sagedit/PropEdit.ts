@@ -25,36 +25,35 @@ export class PropEdit extends AdjustableDataObject {
   public constructor(propModel: PropModel, inGraphics: Graphics) {
     super(propModel)
 
+    this.data = propModel
+    this.graphics = inGraphics
+  }
+
+  public async initialize() {
     // Initialise from data object
     let sprite = undefined
-    if (propModel.image) {
-      const imgBase64 = propModel.image
-      // Workaround for awaiting async call in constructor
-      // https://stackoverflow.com/a/50885340/574415
-      ;(async () => {
-          const base = await Assets.load(imgBase64)
-        //const base = new BaseTexture(imgBase64)
-        console.log(
-          `>> model dimensions: width=${propModel.width} height=${propModel.height}`
-        )
-        const texture = new Texture(base)
-        sprite = Sprite.from(texture)
-      })()
+    if (this.data.image) {
+      const imgBase64 = this.data.image
+      const base = await Assets.load(imgBase64)
+      //const base = new BaseTexture(imgBase64)
+      console.log(
+        `>> model dimensions: width=${this.data.width} height=${this.data.height}`
+      )
+      const texture = new Texture(base)
+      sprite = Sprite.from(texture)
     } else {
       sprite = new Sprite(Texture.EMPTY)
     }
-    this.data = propModel
-    this.graphics = inGraphics
     this.sprite = sprite
-
-    sprite.width = propModel.width || 0
-    sprite.height = propModel.height || 0
+  
+    sprite.width = this.data.width || 0
+    sprite.height = this.data.height || 0
     sprite.anchor.set(0.5)
-    sprite.x = propModel.x || 0
-    sprite.y = propModel.y || 0
-
-    this.updateSelectionState(useWorldStore().currPropId === propModel.id)
-
+    sprite.x = this.data.x || 0
+    sprite.y = this.data.y || 0
+  
+    this.updateSelectionState(useWorldStore().currPropId === this.data.id)
+  
     // Events
     this.inputEvents = new InputEventEmitter(this.sprite)
     // this.sprite.on("primaryaction", this.onPrimaryAction, this)
@@ -64,10 +63,10 @@ export class PropEdit extends AdjustableDataObject {
     this.sprite.on("pointerout", this.onSpritePointerOut, this)
     // Drag+Drop
     this.sprite.on("pointerdown", this.onSpritePointerDown, this)
-
+  
     // Resize
     //this.resizeSprite.on("pointerdown", this.onResizePointerDown, this)
-
+  
     // Listen for selection changes
     SAGEdit.Events.on("selectionChanged", (selectedId: string) => {
         //debugger
@@ -81,9 +80,9 @@ export class PropEdit extends AdjustableDataObject {
       },
       this
     )
-
+  
     // visible state
-    if (!propModel.visible) {
+    if (!this.data.visible) {
       this.sprite.alpha = 0.5
     }
   }
