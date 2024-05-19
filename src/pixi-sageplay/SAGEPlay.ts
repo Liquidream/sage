@@ -1,4 +1,4 @@
-import { Application, Container, DisplayObject, filters } from "pixi.js"
+import { Application, Container, AlphaFilter } from "pixi.js"
 import { Tween } from "tweedle.js"
 import { Dialog, DialogChoice } from "./Dialog"
 import { Events } from "./Events"
@@ -25,7 +25,7 @@ import { useSceneStore, type SceneState } from "@/stores/SceneStore"
 
 // This could have a lot more generic functions that you force all your scenes to have. Update is just an example.
 // Also, this could be in its own file...
-export interface IScreen extends DisplayObject {
+export interface IScreen extends Container {
   update(framesPassed: number): void
 
   // we added the resize method to the interface
@@ -80,26 +80,17 @@ export class SAGE {
     return SAGE._app
   }
 
-  public static initialize(
+  public static async initialize(
     width: number,
     height: number,
     background: number
-  ): void {
+  ): Promise<void> {
     console.log("SAGE:initialize()...")
     SAGE._width = width
     SAGE._height = height
 
-    // SAGE._app = new Application()
-    // await SAGE._app.init({
-    //   view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
-    //   //resolution: window.devicePixelRatio || 1, // This distorts/wrong on mobile
-    //   autoDensity: true,
-    //   backgroundColor: background,
-    //   width: width,
-    //   height: height,
-    // })
-
-    SAGE._app = new Application({
+    SAGE._app = new Application()
+    await SAGE._app.init({
       view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
       //resolution: window.devicePixelRatio || 1, // This distorts/wrong on mobile
       autoDensity: true,
@@ -107,6 +98,15 @@ export class SAGE {
       width: width,
       height: height,
     })
+
+    // SAGE._app = new Application({
+    //   view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
+    //   //resolution: window.devicePixelRatio || 1, // This distorts/wrong on mobile
+    //   autoDensity: true,
+    //   backgroundColor: background,
+    //   width: width,
+    //   height: height,
+    // })
 
     SAGE._app.ticker.add(SAGE.update)
 
@@ -422,14 +422,14 @@ export class SAGE {
       const oldScreen = SAGE.currentScreen
       // Fade out
       // https://github.com/pixijs/pixijs/issues/4334
-      const fadeOutAlphaMatrix = new filters.AlphaFilter()
+      const fadeOutAlphaMatrix = new AlphaFilter()
       fadeOutAlphaMatrix.alpha = 1
       oldScreen.filters = [fadeOutAlphaMatrix]
 
       const fadeOutTween = new Tween(fadeOutAlphaMatrix).to({ alpha: 0 }, 500)
 
       // Fade in
-      const fadeInAlphaMatrix = new filters.AlphaFilter()
+      const fadeInAlphaMatrix = new AlphaFilter()
       fadeInAlphaMatrix.alpha = 0
       newScene.filters = [fadeInAlphaMatrix]
       const fadeInTween = new Tween(fadeInAlphaMatrix)

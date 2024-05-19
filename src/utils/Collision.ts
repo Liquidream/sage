@@ -1,10 +1,10 @@
-import { DisplayObject, Point } from "pixi.js";
+import { Container, Point } from "pixi.js";
 
 export class Collision {
   private constructor() { /*this class is purely static. No constructor to see here*/ }
 
   /** Check collision between two objects (e.g. Prop>Prop, Prop>Door, etc.) */
-  public static isCollidingObjToObj(objA: DisplayObject | undefined, objB: DisplayObject): boolean {
+  public static isCollidingObjToObj(objA: Container  | undefined, objB: Container): boolean {
     // Check we have objects to test,
     // Also check that they are not the same object
     if (objA && objB
@@ -28,7 +28,7 @@ export class Collision {
   }
 
    /** Check collision between two objects (e.g. Prop>Prop, Prop>Door, etc.) */
-   public static isCollidingPointToObj(point: Point, objB: DisplayObject): boolean {
+   public static isCollidingPointToObj(point: Point, objB: Container): boolean {
     const b = objB.getBounds();
     const h = b.height;
     const w = b.width;

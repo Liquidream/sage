@@ -231,13 +231,13 @@ export class Scene implements SceneModel {
   }
 
   removePropModelById(propId: string) {
-    // Remove data from prop list (no DisplayObject changes)
+    // Remove data from prop list (no Container changes)
     const index = this.props.findIndex((item) => item.id === propId)
     if (index !== -1) this.props.splice(index, 1)
   }
 
   removeActorModelById(actorId: string) {
-    // Remove data from actor list (no DisplayObject changes)
+    // Remove data from actor list (no Container changes)
     const index = this.actors.findIndex((item) => item.id === actorId)
     if (index !== -1) this.actors.splice(index, 1)
   }

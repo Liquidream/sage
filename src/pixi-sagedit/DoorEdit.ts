@@ -1,7 +1,7 @@
 import type { DoorModel } from "@/models/DoorModel"
 import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
-import { BaseTexture, Graphics, Sprite, Texture } from "pixi.js"
+import { Assets, Graphics, Sprite, Texture } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"
 //import { DialogType } from "./Dialog"
 import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter"
@@ -62,12 +62,17 @@ export class DoorEdit extends AdjustableDataObject {
     let sprite = undefined
     if (doorModel.image) {
       const imgBase64 = doorModel.image
-      const base = new BaseTexture(imgBase64)
-      console.log(
-        `>> model dimensions: width=${doorModel.width} height=${doorModel.height}`
-      )
-      const texture = new Texture(base)
-      sprite = Sprite.from(texture)
+       // Workaround for awaiting async call in constructor
+      // https://stackoverflow.com/a/50885340/574415
+      (async () => {
+        const base = await Assets.load(imgBase64)
+        //const base = new BaseTexture(imgBase64)
+        console.log(
+          `>> model dimensions: width=${doorModel.width} height=${doorModel.height}`
+        )
+        const texture = new Texture(base)
+        sprite = Sprite.from(texture)
+      })()
     } else {
       sprite = new Sprite(Texture.EMPTY)
       sprite.width = doorModel.width || 0

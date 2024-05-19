@@ -1,4 +1,4 @@
-import { BaseTexture, Graphics, Sprite, Texture } from "pixi.js"
+import { Graphics, Sprite, Texture } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"
 import { SAGE } from "./SAGEPlay"
 import { DialogType } from "./Dialog"

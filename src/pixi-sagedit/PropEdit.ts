@@ -1,4 +1,4 @@
-import { BaseTexture, Graphics, Sprite, Texture } from "pixi.js"
+import { Assets, Graphics, Sprite, Texture } from "pixi.js"
 import type { PropModel } from "@/models/PropModel"
 import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 import { useWorldStore } from "@/stores/WorldStore"
@@ -29,12 +29,17 @@ export class PropEdit extends AdjustableDataObject {
     let sprite = undefined
     if (propModel.image) {
       const imgBase64 = propModel.image
-      const base = new BaseTexture(imgBase64)
-      console.log(
-        `>> model dimensions: width=${propModel.width} height=${propModel.height}`
-      )
-      const texture = new Texture(base)
-      sprite = Sprite.from(texture)
+      // Workaround for awaiting async call in constructor
+      // https://stackoverflow.com/a/50885340/574415
+      ;(async () => {
+          const base = await Assets.load(imgBase64)
+        //const base = new BaseTexture(imgBase64)
+        console.log(
+          `>> model dimensions: width=${propModel.width} height=${propModel.height}`
+        )
+        const texture = new Texture(base)
+        sprite = Sprite.from(texture)
+      })()
     } else {
       sprite = new Sprite(Texture.EMPTY)
     }

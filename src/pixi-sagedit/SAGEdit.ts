@@ -55,16 +55,18 @@ export class SAGEdit {
     return SAGEdit._app
   }
 
-  public static initialize(
+  public static async initialize(
     width: number,
     height: number,
     background: number
-  ): void {
+  ): Promise<void> {
     console.log("SAGEdit:initialize()...")
     SAGEdit._width = width
     SAGEdit._height = height
 
-    SAGEdit._app = new Application({
+    SAGEdit._app = new Application()
+    console.log("Before _app.init...")
+    await SAGEdit._app.init({
       view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
       //resolution: window.devicePixelRatio || 1, // This distorts/wrong on mobile
       autoDensity: true,
@@ -72,6 +74,16 @@ export class SAGEdit {
       width: width,
       height: height,
     })
+    console.log("After _app.init...")
+
+    // SAGEdit._app = new Application({
+    //   view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
+    //   //resolution: window.devicePixelRatio || 1, // This distorts/wrong on mobile
+    //   autoDensity: true,
+    //   backgroundColor: background,
+    //   width: width,
+    //   height: height,
+    // })
 
     // (REMOVED, as not being used in editor, currently)
     // Update time-based things, like tweens
@@ -109,6 +121,8 @@ export class SAGEdit {
     //   },
     //   this
     // )
+
+    SAGEdit.loadWorld()
   }
 
   static createLayers() {

@@ -1,7 +1,7 @@
 //import { EventEmitter } from '@pixi/utils';
 //import { SAGE } from "@/SAGE"
 import { SAGE } from "@/pixi-sageplay/SAGEPlay"
-import type { DisplayObject } from "pixi.js"
+import type { Container } from "pixi.js"
 
 export class InputEventEmitter {
   //extends EventEmitter {
@@ -9,9 +9,9 @@ export class InputEventEmitter {
   // (perhaps overridable in config?)
   TOUCH_DURATION = 500
 
-  dispObj: DisplayObject
+  dispObj: Container
 
-  constructor(dispObj: DisplayObject) {
+  constructor(dispObj: Container) {
     //super();
 
     this.dispObj = dispObj

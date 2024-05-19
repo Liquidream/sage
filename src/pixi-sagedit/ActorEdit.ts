@@ -1,4 +1,4 @@
-import { BaseTexture, Graphics, Sprite, Texture } from "pixi.js"
+import { Assets, Graphics, Sprite, Texture } from "pixi.js"
 import { InputEventEmitter } from "../pixi-sageplay/screens/ui/InputEventEmitter"
 import type { ActorModel } from "@/models/ActorModel"
 import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
@@ -27,12 +27,17 @@ export class ActorEdit extends AdjustableDataObject {
     let sprite = undefined
     if (actorModel.image) {
       const imgBase64 = actorModel.image
-      const base = new BaseTexture(imgBase64)
-      console.log(
-        `>> model dimensions: width=${actorModel.width} height=${actorModel.height}`
-      )
-      const texture = new Texture(base)
-      sprite = Sprite.from(texture)
+      // Workaround for awaiting async call in constructor
+      // https://stackoverflow.com/a/50885340/574415
+      ;(async () => {
+        const base = await Assets.load(imgBase64)
+        //const base = new BaseTexture(imgBase64)
+        console.log(
+          `>> model dimensions: width=${actorModel.width} height=${actorModel.height}`
+        )
+        const texture = new Texture(base)
+        sprite = Sprite.from(texture)
+      })()
     } else {
       sprite = new Sprite(Texture.EMPTY)
     }

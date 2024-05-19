@@ -218,7 +218,7 @@
   import { ref } from "vue"
   import { storeToRefs } from "pinia"
   import { useWorldStore } from "../stores/WorldStore"
-  import { BaseTexture } from "pixi.js"
+  import {  } from "pixi.js"
   import SceneSelect from "./SceneSelect.vue"
   import type { PropModel } from "@/models/PropModel"
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
@@ -278,12 +278,13 @@
     // Use the javascript reader object to load the contents
     // of the file in the v-model prop
     reader.readAsDataURL(e.target.files[0])
-    reader.onload = () => {
+    reader.onload = async () => {
       imageData.value = reader.result
       if (model.value) {
         model.value.image = reader.result as string // added "as" to squash error/warn, ok?
         // Now do a test load into Pixi texture to get dimensions
-        const base = new BaseTexture(model.value.image)
+        const base = await Assets.load(model.value.image)
+        //const base = new BaseTexture(model.value.image)
         // If previously cached texture, get dimensions immediately
         if (base.valid) {
           const aspect = base.width / base.height

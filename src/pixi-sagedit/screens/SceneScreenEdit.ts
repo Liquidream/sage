@@ -8,9 +8,9 @@ import {
   TextStyle,
   Texture,
   Text,
-  BaseTexture,
-  VideoResource,
-  BlurFilter,
+  //BaseTexture,
+  VideoSource,
+  Assets, //VideoResource,
 } from "pixi.js"
 
 import { SAGEdit } from "../SAGEdit"
@@ -433,7 +433,7 @@ export class SceneScreen extends Container {
     this.addChild(this.dialogText)
   }
 
-  private buildBackdrop() {
+  private async buildBackdrop() {
     // Backdrop
     let sprite = undefined
     if (this.scene?.image) {
@@ -446,7 +446,8 @@ export class SceneScreen extends Container {
         this.videoElement.preload = "auto"
         this.videoElement.loop = true
 
-        const resource = new VideoResource(this.videoElement)
+        const resource = new VideoSource(this.videoElement)
+        //const resource = new VideoResource(this.videoElement)
         const texture = Texture.from(resource)
         // https://github.com/pixijs/pixi.js/issues/6501 - SOLVED!!
         //resource.source.loop = true
@@ -455,7 +456,8 @@ export class SceneScreen extends Container {
         sprite.height = SAGEdit.height
       } else {
         // Load image data
-        const base = new BaseTexture(this.scene.image)
+        const base = await Assets.load(this.scene.image)
+        //const base = new BaseTexture(this.scene.image)
         const texture = new Texture(base)
         sprite = Sprite.from(texture)
 

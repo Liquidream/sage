@@ -8,9 +8,9 @@ import {
   Texture,
   FederatedPointerEvent,
   Point,
-  BaseTexture,
-  VideoResource,
+  VideoSource, //VideoResource,
   BlurFilter,
+  Assets,
 } from "pixi.js" //filters
 
 import { SAGE, type IScreen } from "../SAGEPlay"
@@ -356,14 +356,15 @@ export class SceneScreen extends Container implements IScreen {
           element.preload = "auto"
           element.loop = true
           //element.muted = true // Added to try to fix the frozen playback issue
-          const resource = new VideoResource(element)
+          const resource = new VideoSource(element)
           const texture = Texture.from(resource)
           sprite = Sprite.from(texture)
           sprite.width = SAGE.width
           sprite.height = SAGE.height
         } else {
           // When in play/test mode - need to handle non-preloaded images
-          const base = new BaseTexture(this.scene.image)
+          const base = await Assets.load(this.scene.image)
+          //const base = new BaseTexture(this.scene.image)
           const texture = new Texture(base)
           sprite = Sprite.from(texture)
           //
