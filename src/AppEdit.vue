@@ -13,11 +13,10 @@
 
     <!-- For some reason had to add some padding at top to get 
          canvas to v-center properly in landscape mode -->
-    <v-main :class="!isPortrait ? 'd-flex justify-center align-center' : ''" style="background-color: brown;">
+    <v-main :class="!isPortrait ? 'd-flex justify-center align-center' : ''">
       <div ref="stage" :class="isPortrait ? 'mt-0 mb-0' : ''" id="pixi-canvas"></div>
       <!-- <canvas :class="isPortrait ? 'mt-0 mb-0' : ''" id="pixi-canvas"></canvas> -->
 
-     
     </v-main>
 
     <v-app-bar v-if="!isPortrait" flat height="75" location="bottom" order="1">
@@ -341,8 +340,11 @@
     console.log(`the component is now mounted.`)
 
     // Initialise Pixi (with a "black" default bg color)
-    await SAGEdit.initialize(gameWidth, gameHeight, 0x6495ed) //0x0)
+    await SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
 
+    // Seems only way it'll work atm 
+    // (canvas: propery on app.init doesn't seem to work now?)
+    // Found here: https://www.html5gamedevs.com/topic/55854-strange-behavior-when-using-pixijs-8-within-a-vuejs-component/
     stage.value.appendChild(SAGEdit._app.canvas)
 
     //await SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)

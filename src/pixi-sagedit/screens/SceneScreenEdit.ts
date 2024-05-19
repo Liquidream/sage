@@ -461,7 +461,7 @@ export class SceneScreen extends Container {
         const texture = new Texture(base)
         sprite = Sprite.from(texture)
 
-        if (base.valid) {
+        //if (base.valid) {
           // (Only called if prev loaded image is re-loaded)
           const viewRatio = SAGEdit.width / SAGEdit.height //1.77
           const imageRatio = sprite.width / sprite.height
@@ -472,21 +472,21 @@ export class SceneScreen extends Container {
             sprite.height = SAGEdit.height
             sprite.width = sprite.height * imageRatio
           }
-        } else {
+       // } else {
           // ...else grab dimensions one texture fully loaded
-          base.on("loaded", () => {
+          //base.on("loaded", () => {
             // debugger
-            const viewRatio = SAGEdit.width / SAGEdit.height //1.77
-            const imageRatio = sprite.width / sprite.height
-            if (imageRatio < viewRatio) {
-              sprite.width = SAGEdit.width
-              sprite.height = sprite.width / imageRatio
-            } else {
-              sprite.height = SAGEdit.height
-              sprite.width = sprite.height * imageRatio
-            }
-          })
-        }
+            // const viewRatio = SAGEdit.width / SAGEdit.height //1.77
+            // const imageRatio = sprite.width / sprite.height
+            // if (imageRatio < viewRatio) {
+            //   sprite.width = SAGEdit.width
+            //   sprite.height = sprite.width / imageRatio
+            // } else {
+            //   sprite.height = SAGEdit.height
+            //   sprite.width = sprite.height * imageRatio
+            // }
+          //})
+        //}
       }
       //-----
     } else {
@@ -497,7 +497,10 @@ export class SceneScreen extends Container {
     sprite.x = SAGEdit.width / 2
     sprite.y = SAGEdit.height / 2
 
-    this.addChild(sprite)
+    this.addChildAt(sprite, 0) // Ensure backdrop at bottom/first rendered
+                               // (async above can mean others get added first)
+    // this.addChild(sprite)
+
     this.backdrop = sprite
 
     // Events
