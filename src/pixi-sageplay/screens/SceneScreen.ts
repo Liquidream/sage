@@ -75,7 +75,7 @@ export class SceneScreen extends Container implements IScreen {
     }
 
     // Drag+Drop support
-    SAGE.app.stage.interactive = true
+    SAGE.app.stage.eventMode = "static"
     SAGE.app.stage.on("pointermove", this.onPointerMove, this)
     SAGE.app.stage.on("pointerup", this.onPointerUp, this)
     SAGE.app.stage.on("touchmove", this.onTouchMove, this)
@@ -144,7 +144,7 @@ export class SceneScreen extends Container implements IScreen {
     SAGE.debugLog(`${this.name}::onPointerMove()`)
     if (this.draggedProp) {
       // Temp remove interaction to "dragged" Prop
-      this.draggedProp.sprite.interactive = false
+      this.draggedProp.sprite.eventMode = "auto"
       // Update pos
       this.draggedProp.sprite.x = _e.data.global.x
       this.draggedProp.sprite.y = _e.data.global.y
@@ -169,7 +169,7 @@ export class SceneScreen extends Container implements IScreen {
       // End Drag+Drop mode
       this.draggedProp.dragging = false
       // Restore interaction to "dragged" Prop
-      this.draggedProp.sprite.interactive = true
+      this.draggedProp.sprite.eventMode = "static"
       this.draggedProp.sprite.alpha = 1
       this.draggedProp = undefined
       // Update inventory (in case it was an inventory prop)
@@ -291,7 +291,7 @@ export class SceneScreen extends Container implements IScreen {
     overlay.alpha = 0
     overlay.drawRect(0, 0, SAGE.width, SAGE.height)
     overlay.endFill()
-    overlay.interactive = true // Super important or the object will never receive mouse events!
+    overlay.eventMode = "static" // Super important or the object will never receive mouse events!
     overlay.on("pointertap", this.onClickGameOver, this)
     this.addChild(overlay)
     // Animate it...

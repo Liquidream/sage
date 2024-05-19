@@ -37,7 +37,7 @@ export class UI_Overlay {
     const dropShadow = new DropShadowFilter();
     dropShadow.alpha = 1;
     this.settingsIcon.filters = [dropShadow]
-    this.settingsIcon.interactive = true;
+    this.settingsIcon.eventMode = "static";
     this.settingsIcon.buttonMode = true;
     // Events
     this.settingsIcon.on("pointertap", () => {
@@ -68,7 +68,7 @@ export class UI_Overlay {
     this.inventoryIcon.anchor.set(0.5);
     this.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE;
     this.inventoryIcon.filters = [dropShadow]
-    this.inventoryIcon.interactive = true;
+    this.inventoryIcon.eventMode = "static";
     this.inventoryIcon.buttonMode = true;
     // Events
     this.inventoryIcon.on("pointertap", () => {

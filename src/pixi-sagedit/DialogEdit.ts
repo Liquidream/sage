@@ -97,7 +97,7 @@ export class DialogEdit {
       this.blocker = new Graphics()
       this.blocker.beginFill(0xccc, 0.00000000000001) // "Invisible"
       this.blocker.drawRect(0, 0, SAGEdit.width, SAGEdit.height)
-      this.blocker.interactive = true
+      this.blocker.eventMode = "static"
       this.blocker.on("pointertap", () => {
         SAGEdit.debugLog("Blocker was clicked/tapped")
         SAGEdit.Events.emit("sceneinteract")
@@ -147,8 +147,8 @@ export class DialogEdit {
       this.dialogContainer.addChild(choice.text)
       yOffset += choice.text.height + this.CHOICE_MARGIN
       // Events
-      bullet.interactive = true // Super important or the object will never receive mouse events!
-      choice.text.interactive = true // Super important or the object will never receive mouse events!
+      bullet.eventMode = "static" // Super important or the object will never receive mouse events!
+      choice.text.eventMode = "static" // Super important or the object will never receive mouse events!
       // >> On Selected...
       const funcSelect = async () => {
         if (!this.suppressChoiceSelectRepeat)
@@ -216,7 +216,8 @@ export class DialogEdit {
     this.clearMessage()
     // Tidy up any dialog choice related content
     if (this.blocker) {
-      this.blocker.interactive = false
+      this.blocker.eventMode = "auto"
+      // (old v7 way) this.blocker.interactive = false
       SAGEdit.app.stage.removeChild(this.blocker)
       this.blocker.destroy()
       this.blocker = null

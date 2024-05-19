@@ -139,7 +139,7 @@ export class InventoryScreen {
     this.inventoryContainer.addChild(this.inventoryBackground)
     // Events
     // (Make bg receive input, so that can't be clicked "through" + cancel auto-close)
-    this.inventoryBackground.interactive = true
+    this.inventoryBackground.eventMode = "static"
     this.inventoryBackground.on("pointertap", () => {
       this.autoClose = false
     })

@@ -347,7 +347,7 @@ export class SceneScreen extends Container {
     }
 
     // Drag+Drop support
-    SAGEdit.app.stage.interactive = true
+    SAGEdit.app.stage.eventMode = "static"
     SAGEdit.app.stage.on("pointermove", this.onPointerMove, this)
     SAGEdit.app.stage.on("pointerup", this.onPointerUp, this)
     SAGEdit.app.stage.on("touchmove", this.onTouchMove, this)
@@ -625,7 +625,7 @@ export class SceneScreen extends Container {
     //SAGE.debugLog(`${this.name}::onPointerMove()`)
     if (this.draggedProp) {
       // Temp remove interaction to "dragged" Prop
-      this.draggedProp.sprite.interactive = false
+      this.draggedProp.sprite.eventMode = "auto"
       // Update pos
       this.draggedProp.graphics.x = _e.data.global.x
       this.draggedProp.graphics.y = _e.data.global.y
@@ -637,7 +637,7 @@ export class SceneScreen extends Container {
     }
     if (this.draggedDoor) {
       // Temp remove interaction to "dragged" Prop
-      this.draggedDoor.graphics.interactive = false
+      this.draggedDoor.graphics.eventMode = "auto"
       // Update pos
       this.draggedDoor.graphics.x = _e.data.global.x
       this.draggedDoor.graphics.y = _e.data.global.y
@@ -649,7 +649,7 @@ export class SceneScreen extends Container {
     }
     if (this.draggedActor) {
       // Temp remove interaction to "dragged" Prop
-      this.draggedActor.graphics.interactive = false
+      this.draggedActor.graphics.eventMode = "auto"
       // Update pos
       this.draggedActor.graphics.x = _e.data.global.x
       this.draggedActor.graphics.y = _e.data.global.y
@@ -661,7 +661,7 @@ export class SceneScreen extends Container {
     }
     if (this.draggedResizeObj) {
       // Temp remove interaction to "dragged" Prop
-      this.draggedResizeObj.resizeSprite.interactive = false
+      this.draggedResizeObj.resizeSprite.eventMode = "auto"
       let newWidth: number
       let newHeight: number
       if (this.draggedResizeObj.data.preserve_aspect) {
@@ -706,10 +706,10 @@ export class SceneScreen extends Container {
       this.draggedProp.data.x = Math.floor(this.draggedProp.sprite.x)
       this.draggedProp.data.y = Math.floor(this.draggedProp.sprite.y)
       // Restore interaction to "dragged" Prop
-      this.draggedProp.sprite.interactive = true
+      this.draggedProp.sprite.eventMode = "static"
       this.draggedProp.sprite.alpha = 1
       // UI
-      this.draggedProp.resizeSprite.interactive = true
+      this.draggedProp.resizeSprite.eventMode = "static"
       this.draggedProp = undefined
     }
     if (this.draggedDoor) {
@@ -722,7 +722,7 @@ export class SceneScreen extends Container {
       this.draggedDoor.sprite.y = this.draggedDoor.data.y
 
       // Restore interaction to "dragged" Prop
-      this.draggedDoor.graphics.interactive = true
+      this.draggedDoor.graphics.eventMode = "static"
       this.draggedDoor.graphics.alpha = 1
       this.draggedDoor = undefined
       // Update inventory (in case it was an inventory prop)
@@ -738,7 +738,7 @@ export class SceneScreen extends Container {
       this.draggedActor.sprite.y = this.draggedActor.data.y
 
       // Restore interaction to "dragged" Prop
-      this.draggedActor.graphics.interactive = true
+      this.draggedActor.graphics.eventMode = "static"
       this.draggedActor.graphics.alpha = 1
       this.draggedActor = undefined
       // Update inventory (in case it was an inventory prop)
@@ -753,7 +753,7 @@ export class SceneScreen extends Container {
       this.draggedResizeObj.data.height = Math.ceil(this.draggedResizeObj.sprite.height)
 
       // Restore interaction to "dragged" sprite
-      this.draggedResizeObj.resizeSprite.interactive = true
+      this.draggedResizeObj.resizeSprite.eventMode = "static"
       // this.draggedActor.graphics.alpha = 1
       this.draggedResizeObj = undefined
     }

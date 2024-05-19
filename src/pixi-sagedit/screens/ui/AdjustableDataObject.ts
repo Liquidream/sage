@@ -39,7 +39,7 @@ export class AdjustableDataObject {
     sprite.anchor.set(0.5)
     sprite.x = this.data.x + this.data.width / 2
     sprite.y = this.data.y + this.data.height / 2
-    sprite.interactive = true
+    sprite.eventMode = "static"
     sprite.visible = false // default not shown (until selected)
     this.resizeSprite = sprite
 

@@ -24,7 +24,7 @@ export class InputEventEmitter {
     this.dispObj.on("touchstart", this.onTouchStart, this)
     this.dispObj.on("touchend", this.onTouchEnd, this) // Both touch "tap" & "long-press"
 
-    this.dispObj.interactive = true // Super important or the object will never receive mouse events!
+    this.dispObj.eventMode = "static" // Super important or the object will never receive mouse events!
   }
 
   // -------------------------------------------------------------

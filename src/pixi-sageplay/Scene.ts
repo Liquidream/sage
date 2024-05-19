@@ -209,7 +209,7 @@ export class Scene implements SceneModel {
       //this.blocker.alpha = 0.6    //  (...for debugging)
       this.blocker.beginFill(0xccc, 0.00000000000001) // "Invisible"
       this.blocker.drawRect(0, 0, SAGE.width, SAGE.height)
-      this.blocker.interactive = true
+      this.blocker.eventMode = "static"
       this.blocker.on("pointertap", () => {
         SAGE.debugLog("Blocker was clicked/tapped")
         SAGE.Events.emit("sceneinteract")
@@ -217,7 +217,7 @@ export class Scene implements SceneModel {
       SAGE.app.stage.addChild(this.blocker)
     } else {
       if (this.blocker) {
-        this.blocker.interactive = false
+        this.blocker.eventMode = "auto"
         SAGE.app.stage.removeChild(this.blocker)
         this.blocker.destroy()
         this.blocker = null

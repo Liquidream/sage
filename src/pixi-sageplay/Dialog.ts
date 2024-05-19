@@ -104,7 +104,7 @@ export class Dialog {
       // this.blocker.alpha = 0.6
       // //this.blocker.beginFill(0xccc, 0.00000000000001) // "Invisible"
       // this.blocker.drawRect(0, 0, SAGE.width, SAGE.height)
-      // this.blocker.interactive = true
+      // this.blocker.eventMode = "static"
       // this.blocker.on("pointertap", () => {
       //   SAGE.debugLog("Blocker was clicked/tapped")
       //   SAGE.Events.emit("sceneinteract")
@@ -154,8 +154,8 @@ export class Dialog {
       this.dialogContainer.addChild(choice.text)
       yOffset += choice.text.height + this.CHOICE_MARGIN
       // Events
-      bullet.interactive = true // Super important or the object will never receive mouse events!
-      choice.text.interactive = true // Super important or the object will never receive mouse events!
+      bullet.eventMode = "static" // Super important or the object will never receive mouse events!
+      choice.text.eventMode = "static" // Super important or the object will never receive mouse events!
       // >> On Selected...
       const funcSelect = async () => {
         if (!this.suppressChoiceSelectRepeat)
@@ -223,7 +223,7 @@ export class Dialog {
     // Tidy up any dialog choice related content
     this.setInteractionBlocker(false)
     // if (this.blocker) {
-    //   this.blocker.interactive = false
+    //   this.blocker.eventMode = "auto"
     //   SAGE.app.stage.removeChild(this.blocker)
     //   this.blocker.destroy()
     //   this.blocker = null
@@ -471,7 +471,7 @@ export class Dialog {
       //this.blocker.alpha = 0.6    //  (...for debugging)
       this.blocker.beginFill(0xccc, 0.00000000000001) // "Invisible"
       this.blocker.drawRect(0, 0, SAGE.width, SAGE.height)
-      this.blocker.interactive = true
+      this.blocker.eventMode = "static"
       this.blocker.on("pointertap", () => {
         SAGE.debugLog("Blocker was clicked/tapped")
         SAGE.Events.emit("sceneinteract")
@@ -479,7 +479,7 @@ export class Dialog {
       SAGE.app.stage.addChild(this.blocker)
     } else {
       if (this.blocker) {
-        this.blocker.interactive = false
+        this.blocker.eventMode = "auto"
         SAGE.app.stage.removeChild(this.blocker)
         this.blocker.destroy()
         this.blocker = null

@@ -50,7 +50,10 @@ export class Button extends Container {
     text.anchor.set(0.5)
     this.addChild(text)
 
-    this.interactive = true // Respond to interaction
+    this.eventMode = "static"
+    //(old v7 way)
+    //this.interactive = true // Respond to interaction
+
     this.buttonMode = true
   }
 }
