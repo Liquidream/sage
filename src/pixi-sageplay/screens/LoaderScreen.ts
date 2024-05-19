@@ -90,8 +90,9 @@ export class LoaderScreen extends Container {
     // Remove loading bar
     this.removeChild(this.loaderBar)
 
-    if (SAGE.enableFullscreen) this.showStartButton()
-    else {
+    if (SAGE.showStartButton || SAGE.enableFullscreen) {
+      this.showStartButton()
+    } else {
       await SAGE.loadWorld()
       SAGE.startGame()
     }
@@ -106,12 +107,14 @@ export class LoaderScreen extends Container {
 
     const button = new Button("Start Game", x, y, w, h)
     this.addChild(button)
-    button.on("pointertap", () => {
-      // Launch fullscreen
-      Fullscreen.openFullscreen()
+    button.on("pointertap", async () => {
+      if (SAGE.enableFullscreen) {
+        // Launch fullscreen
+        Fullscreen.openFullscreen()
+      }
       // Change scene to the game scene!
-      SAGE.loadWorld()
-      //SAGEdit.startGame()
+      await SAGE.loadWorld()
+      SAGE.startGame()
     })
   }
 }

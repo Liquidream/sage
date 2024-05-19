@@ -355,7 +355,7 @@ export class SceneScreen extends Container implements IScreen {
           element.src = this.scene.image // e.g. "data:video/mp4;base64,xxxxxx"
           element.preload = "auto"
           element.loop = true
-
+          //element.muted = true // Added to try to fix the frozen playback issue
           const resource = new VideoResource(element)
           const texture = Texture.from(resource)
           sprite = Sprite.from(texture)

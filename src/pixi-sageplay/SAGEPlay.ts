@@ -39,6 +39,7 @@ export class SAGE {
 
   public static debugMode = false
 
+  public static showStartButton = true // Used to resolve chrome/autoplay issues
   public static enableFullscreen = false
 
   public static navWidth = 350
