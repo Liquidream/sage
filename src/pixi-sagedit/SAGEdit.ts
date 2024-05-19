@@ -64,16 +64,21 @@ export class SAGEdit {
     SAGEdit._width = width
     SAGEdit._height = height
 
+    const canvasElem = document.getElementById("pixi-canvas") as HTMLCanvasElement
     SAGEdit._app = new Application()
     console.log("Before _app.init...")
     await SAGEdit._app.init({
-      view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
+      //canvas: canvasElem,
       //resolution: window.devicePixelRatio || 1, // This distorts/wrong on mobile
       autoDensity: true,
       backgroundColor: background,
       width: width,
       height: height,
+
+      resizeTo: HTMLElement,
+      //resizeTo: canvasElem,
     })
+
     console.log("After _app.init...")
 
     // SAGEdit._app = new Application({

@@ -13,13 +13,11 @@
 
     <!-- For some reason had to add some padding at top to get 
          canvas to v-center properly in landscape mode -->
-    <v-main :class="!isPortrait ? 'd-flex justify-center align-center' : ''">
-      <canvas :class="isPortrait ? 'mt-0 mb-0' : ''" id="pixi-canvas"></canvas>
+    <v-main :class="!isPortrait ? 'd-flex justify-center align-center' : ''" style="background-color: brown;">
+      <div ref="stage" :class="isPortrait ? 'mt-0 mb-0' : ''" id="pixi-canvas"></div>
+      <!-- <canvas :class="isPortrait ? 'mt-0 mb-0' : ''" id="pixi-canvas"></canvas> -->
 
-      <!-- <v-container height="75" fluid class="pa-0 flex-column">
-        <v-spacer></v-spacer>
-        <SceneList v-model="selectedModelID" :show="true" />
-      </v-container> -->
+     
     </v-main>
 
     <v-app-bar v-if="!isPortrait" flat height="75" location="bottom" order="1">
@@ -337,12 +335,17 @@
     return currPort
   })
 
+  const stage = ref(null)
   // Delay initialising and using Pixi until the cavas element is in the DOM
   onMounted(async () => {
     console.log(`the component is now mounted.`)
 
     // Initialise Pixi (with a "black" default bg color)
-    await SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
+    await SAGEdit.initialize(gameWidth, gameHeight, 0x6495ed) //0x0)
+
+    stage.value.appendChild(SAGEdit._app.canvas)
+
+    //await SAGEdit.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
     SAGEdit.loadWorld()
   })
 
