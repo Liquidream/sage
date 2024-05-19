@@ -117,10 +117,12 @@ export class PropEdit extends AdjustableDataObject {
     this.graphics.clear()
     const propWidth = this.data.width || 0,
       propHeight = this.data.height || 0
+    // v8 do before stroke
+    this.graphics.roundRect(0, 0, propWidth, propHeight, 30)
     if (isSelected) {
-      this.graphics.lineStyle(10, 0xff0000) // Red
+      this.graphics.stroke({ width: 10, color: "red" }) // Red
     } else {
-      this.graphics.lineStyle(10, 0x000000, 0) // "Invisible"
+      this.graphics.stroke({ width: 0, color: 0x000000 }) // "Invisible"
     }
     // Set Graphics "canvas" to correct pos/width
     // (So we can easily move it when "dragging")
@@ -129,9 +131,7 @@ export class PropEdit extends AdjustableDataObject {
     this.graphics.width = propWidth
     this.graphics.height = propHeight
     this.graphics.pivot.set(propWidth / 2, propHeight / 2)
-    this.graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
-    //}
-    this.graphics.endFill()
+
     // Other UI
     if (this.resizeSprite) this.resizeSprite.visible = isSelected
   }

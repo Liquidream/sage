@@ -33,12 +33,12 @@ export class ActorEdit extends AdjustableDataObject {
     if (this.data.image) {
       const imgBase64 = this.data.image
 
-      const base = await Assets.load(imgBase64)
+      const texture = await Assets.load(imgBase64)
       //const base = new BaseTexture(imgBase64)
       console.log(
         `>> model dimensions: width=${this.data.width} height=${this.data.height}`
       )
-      const texture = new Texture(base)
+      //const texture = new Texture(base)
       sprite = Sprite.from(texture)
 
     } else {
@@ -114,11 +114,13 @@ export class ActorEdit extends AdjustableDataObject {
     this.selected = isSelected
     this.graphics.clear()
     const actorWidth = this.data.width || 0,
-      actorHeight = this.data.height || 0
+    actorHeight = this.data.height || 0
+    // v8 do before stroke
+    this.graphics.roundRect(0, 0, actorWidth, actorHeight, 30)
     if (isSelected) {
-      this.graphics.lineStyle(10, 0xff0000) // Red
+      this.graphics.stroke({ width: 10, color: "red" }) // Red
     } else {
-      this.graphics.lineStyle(10, 0x000000, 0) // "Invisible"
+      this.graphics.stroke({ width: 0, color: 0x000000 }) // "Invisible"
     }
     // Set Graphics "canvas" to correct pos/width
     // (So we can easily move it when "dragging")
@@ -127,9 +129,8 @@ export class ActorEdit extends AdjustableDataObject {
     this.graphics.width = actorWidth
     this.graphics.height = actorHeight
     this.graphics.pivot.set(actorWidth / 2, actorHeight / 2)
-    this.graphics.drawRoundedRect(0, 0, actorWidth, actorHeight, 30)
     //}
-    this.graphics.endFill()
+    //this.graphics.endFill()
     // Other UI
     if (this.resizeSprite) this.resizeSprite.visible = isSelected
   }

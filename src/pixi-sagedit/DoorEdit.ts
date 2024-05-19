@@ -31,6 +31,7 @@ export class DoorEdit extends AdjustableDataObject {
     // Door Graphics
     //
     this.graphics = new Graphics()
+
     this.updateSelectionState(useWorldStore().currDoorId === doorModel.id)
 
     // Events
@@ -111,8 +112,10 @@ export class DoorEdit extends AdjustableDataObject {
     this.selected = isSelected
     this.graphics.clear()
     // Draw a rectangle
+    
     // Set the fill color
-    this.graphics.beginFill(0xffff00, 0.25) // light yellow
+    //this.graphics.beginFill(0xffff00, 0.25) // light yellow
+    
     // Set Graphics "canvas" to correct pos/width
     // (So we can easily move it when "dragging")
     this.graphics.x = this.data.x || 0
@@ -123,16 +126,22 @@ export class DoorEdit extends AdjustableDataObject {
     this.graphics.height = doorHeight
     // Make a center point of origin (anchor)
     this.graphics.pivot.set(doorWidth / 2, doorHeight / 2)
-    if (isSelected) {
-      this.graphics.lineStyle(10, 0xff0000) // Red
-    } else {
-      this.graphics.lineStyle(10, 0x000000, 0) // "Invisible"
-    }
     // (graphics "canvas" are already in position/width)
-    this.graphics.drawRoundedRect(0, 0, doorWidth, doorHeight, 30)
+    // v8 do before stroke
+    this.graphics.roundRect(0, 0, doorWidth, doorHeight, 30)
+    this.graphics.fill({ color: "yellow", alpha: 0.25 })
+    if (isSelected) {
+      this.graphics.stroke({ width: 10, color: "red" }) // Red
+      //this.graphics.lineStyle(10, 0xff0000) // Red
+    } else {
+      this.graphics.stroke({ width: 5, color: "yellow" })
+      //this.graphics.stroke({ width: 0, color: 0x000000 }) // "Invisible"
+      //this.graphics.lineStyle(10, 0x000000, 0) // "Invisible"
+    }
+    //this.graphics.drawRoundedRect(0, 0, doorWidth, doorHeight, 30)
 
     // Applies fill to lines and shapes since the last call to beginFill.
-    this.graphics.endFill()
+    //this.graphics.endFill()
 
     // Other UI
     if (this.resizeSprite) this.resizeSprite.visible = isSelected
