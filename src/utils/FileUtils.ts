@@ -255,7 +255,7 @@ export class FileUtils {
     zip.file("favicon.ico", FileUtils.urlToPromise("favicon.ico"), {
       binary: true,
     })
-    //zip.file("SAGE.css", SAGExport.urlToPromise("SAGE.css"), { binary: true })
+    zip.file("SAGE.css", FileUtils.urlToPromise("SAGE.css"), { binary: true })
     zip
       .folder("assets")
       .file(
