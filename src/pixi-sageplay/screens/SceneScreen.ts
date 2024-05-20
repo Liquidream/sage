@@ -304,9 +304,10 @@ export class SceneScreen extends Container implements IScreen {
           fill: "white",
           fontFamily: "Impact",
           fontSize: 48,
-          lineJoin: "round",
           padding: 4,
-          strokeThickness: 10,
+          stroke: { width: 10, color: "black", join: "round" },
+          // lineJoin: "round",
+          // strokeThickness: 10,
           trim: true,
         })
         const text = new Text(actionMessage, style)
@@ -320,9 +321,10 @@ export class SceneScreen extends Container implements IScreen {
       fill: "white",
       fontFamily: "Impact",
       fontSize: 120,
-      lineJoin: "round",
       padding: 4,
-      strokeThickness: 10,
+      stroke: { width: 10, color: "black", join: "round" },
+      // lineJoin: "round",
+      // strokeThickness: 10,
       trim: true,
     })
     const text = new Text(message, style)

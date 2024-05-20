@@ -127,8 +127,7 @@ export class DialogEdit {
         align: "left",
         fill: this.dialogCol,
         fontSize: 47,
-        strokeThickness: 6,
-        lineJoin: "round",
+        stroke: { width: 6, color: "black", join: "round" },
         wordWrap: true,
         wordWrapWidth: SAGEdit.width / 2,
       })
@@ -331,8 +330,7 @@ export class DialogEdit {
       align: "center",
       fill: options.col || "#fff",
       fontSize: 47,
-      strokeThickness: 6,
-      lineJoin: "round",
+      stroke: { width: 6, color: "black", join: "round" },
       wordWrap: true,
       wordWrapWidth: SAGEdit.width / 2,
     })

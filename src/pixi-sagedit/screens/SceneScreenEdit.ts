@@ -408,6 +408,7 @@ export class SceneScreen extends Container {
       align: "center",
       fill: "#fff",
       fontSize: 47,
+      stroke: { width: 6, color: "black", join: "round" },
       //strokeThickness: 6,
       //lineJoin: "round",
       wordWrap: true,

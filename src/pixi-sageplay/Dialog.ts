@@ -134,8 +134,7 @@ export class Dialog {
         align: "left",
         fill: this.dialogCol,
         fontSize: 47,
-        strokeThickness: 6,
-        lineJoin: "round",
+        stroke: { width: 6, color: "black", join: "round" },
         wordWrap: true,
         wordWrapWidth: SAGE.width / 2,
       })
@@ -366,8 +365,7 @@ export class Dialog {
       align: "center",
       fill: options.col || "#fff",
       fontSize: 47,
-      strokeThickness: 6,
-      lineJoin: "round",
+      stroke: { width: 6, color: "black", join: "round" },
       wordWrap: true,
       wordWrapWidth: SAGE.width / 2,
     })
