@@ -2,12 +2,18 @@
   <v-app>
     <v-main>
       <SettingsPlay v-if="loaded" />
-      <canvas
+      <div ref="stage"
         id="pixi-canvas"
         width="100%"
         height="100%"
         style="background: #000000"
-      ></canvas>
+      ></div>
+      <!-- <canvas
+        id="pixi-canvas"
+        width="100%"
+        height="100%"
+        style="background: #000000"
+      ></canvas> -->
     </v-main>
   </v-app>
 </template>
@@ -38,12 +44,18 @@
   //   return currPort
   // })
 
+  const stage = ref(null)
   // Delay initialising and using Pixi until the canvas element is in the DOM
-  onMounted(() => {
+  onMounted(async () => {
     console.log(`>>> Mounting the AppPlay component...`)
 
     // Initialise Pixi (with a "black" default bg color)
-    SAGE.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
+    await SAGE.initialize(gameWidth, gameHeight, 0x0) //0x6495ed) //0x0)
+
+    // Seems only way it'll work atm 
+    // (canvas: propery on app.init doesn't seem to work now?)
+    // Found here: https://www.html5gamedevs.com/topic/55854-strange-behavior-when-using-pixijs-8-within-a-vuejs-component/
+    stage.value.appendChild(SAGE._app.canvas)
 
     // pass in the screen size to avoid "asking up"
     const sceny: LoaderScreen = new LoaderScreen()

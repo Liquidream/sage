@@ -74,9 +74,7 @@ export class SAGEdit {
       backgroundColor: background,
       width: width,
       height: height,
-
       resizeTo: HTMLElement,
-      //resizeTo: canvasElem,
     })
 
     console.log("After _app.init...")

@@ -89,14 +89,16 @@ export class SAGE {
     SAGE._width = width
     SAGE._height = height
 
+    const canvasElem = document.getElementById("pixi-canvas") as HTMLCanvasElement
     SAGE._app = new Application()
     await SAGE._app.init({
-      view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
+      //view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
       //resolution: window.devicePixelRatio || 1, // This distorts/wrong on mobile
       autoDensity: true,
       backgroundColor: background,
       width: width,
       height: height,
+      resizeTo: HTMLElement,
     })
 
     // SAGE._app = new Application({
