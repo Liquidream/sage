@@ -6,6 +6,7 @@ import {
   extensions,
   ExtensionType,
   Texture,
+  path,
   //utils,
 } from "pixi.js"
 //import { assets } from "../../assets"
@@ -71,7 +72,7 @@ export class LoaderScreen extends Container {
         remove: async (formats) => formats.filter((format) => format !== "mp4"),
       },
       loader: {
-        test: (url) => utils.path.extname(url) === ".mp4",
+        test: (url) => path.extname(url) === ".mp4",
         load: async (url, asset) => Texture.fromURL(url, asset.data),
         unload: async (asset) => asset.destroy(true),
       },

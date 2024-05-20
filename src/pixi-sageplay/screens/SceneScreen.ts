@@ -426,7 +426,10 @@ export class SceneScreen extends Container implements IScreen {
     sprite.x = SAGE.width / 2
     sprite.y = SAGE.height / 2
 
-    this.addChild(sprite)
+    this.addChildAt(sprite, 0) // Ensure backdrop at bottom/first rendered
+                               // (async above can mean others get added first)
+    //this.addChild(sprite)
+
     this.backdrop = sprite
 
     // Events
