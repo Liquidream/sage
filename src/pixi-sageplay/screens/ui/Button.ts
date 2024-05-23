@@ -26,16 +26,15 @@ export class Button extends Container {
     this.h = height //
     this.createButton()
   }
-
+  
   private createButton() {
     // Show "Start Game" button
     const btnbackground = new Graphics()
-    btnbackground.lineStyle(10, this.COL_PRIME, 1)
-    btnbackground.beginFill(this.COL_SECOND)
+      .roundRect(0, 0, this.w, this.h, 30)
+      .fill({ color: this.COL_SECOND })
+      .stroke({ width: 10, color: this.COL_PRIME })
     btnbackground.pivot.set(this.w / 2, this.h / 2)
-    // Draw a rectangle
-    btnbackground.drawRoundedRect(0, 0, this.w, this.h, 30)
-    btnbackground.endFill()
+    //btnbackground.endFill()
     this.addChild(btnbackground)
 
     const style: TextStyle = new TextStyle({
