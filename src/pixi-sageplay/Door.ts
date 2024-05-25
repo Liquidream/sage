@@ -28,24 +28,12 @@ export class Door {
     // ---------------------------------------
     // Door Graphics
     //
-    const graphics = new Graphics()
-    // Make doors visible in debug
-    if (SAGE.debugMode) {
-      // Set the fill color
-      graphics.beginFill(0xe74c3c, 125) // Red
-      // Line/stroke style
-      graphics.lineStyle(10, 0xff0000)
-    } else {
-      // Set the fill color to barely visible
-      // (else won't get collision hit)
-      // TODO: find a nicer solution to this!
-      graphics.beginFill(0xccc, 0.00000000000001) // "Invisible"
-    }
+    this.graphics = new Graphics()
     if (this.model && this.model.width && this.model.height) {
       // Make a center point of origin (anchor)
-      graphics.pivot.set(this.model.width / 2, this.model.height / 2)
+      this.graphics.pivot.set(this.model.width / 2, this.model.height / 2)
       // Draw a rectangle
-      graphics.drawRoundedRect(
+      this.graphics.roundRect(
         this.model.x || 0,
         this.model.y || 0,
         this.model.width,
@@ -53,20 +41,34 @@ export class Door {
         30
       )
     }
+    // Make doors visible in debug
+    if (SAGE.debugMode) {
+      // Set the fill color
+      this.graphics
+        .fill({ color: "0xe74c3c", alpha: 0.5 })
+        .stroke({ width: 10, color: "red" }) // Red
+      //this.graphics.lineStyle(10, 0xff0000)
+    } else {
+      // Set the fill color to barely visible
+      // (else won't get collision hit)
+      // TODO: find a nicer solution to this!
+      this.graphics.fill({ alpha: 0.0 })
+      //this.graphics.beginFill(0xccc, 0.00000000000001) // "Invisible"
+    }
     // Applies fill to lines and shapes since the last call to beginFill.
-    graphics.endFill()
+    //this.graphics.endFill()
 
     // Events
-    this.doorInputEvents = new InputEventEmitter(graphics)
-    graphics.on("primaryaction", this.onPrimaryAction, this)
-    graphics.on("secondaryaction", this.onSecondaryAction, this)
+    this.doorInputEvents = new InputEventEmitter(this.graphics)
+    this.graphics.on("primaryaction", this.onPrimaryAction, this)
+    this.graphics.on("secondaryaction", this.onSecondaryAction, this)
     // Hover (info)
-    graphics.on("pointerover", this.onPointerOver, this)
-    graphics.on("pointerout", this.onPointerOut, this)
+    this.graphics.on("pointerover", this.onPointerOver, this)
+    this.graphics.on("pointerout", this.onPointerOut, this)
     //
     SAGE.Events.on("scenehint", this.onSceneHint, this)
 
-    this.graphics = graphics
+    //this.graphics = graphics
 
     // ---------------------------------------
     // Door Sprite
