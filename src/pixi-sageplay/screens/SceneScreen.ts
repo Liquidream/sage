@@ -454,9 +454,10 @@ export class SceneScreen extends Container implements IScreen {
     SAGE.Dialog.clearMessage()
   }
 
-  public addProp(model: PropModel, fadeIn = false) {
+  public async addProp(model: PropModel, fadeIn = false) {
     // Create new component obj (contains data + view)
     const prop = new Prop(model)
+    await prop.initialize()
     this.addChild(prop.sprite)
     this.props.push(prop)
     // Don't add to scene.propdata here, as it likely already came from it?
@@ -544,9 +545,10 @@ export class SceneScreen extends Container implements IScreen {
     SAGE.Dialog.clearMessage()
   }
 
-  public addActor(model: ActorModel, fadeIn = false) {
+  public async addActor(model: ActorModel, fadeIn = false) {
     // Create new component obj (contains data + view)
     const actor = new Actor(model)
+    await actor.initialize()
     this.addChild(actor.sprite)
     this.actors.push(actor)
     // Don't add to scene.propdata here, as it likely already came from it?
@@ -611,7 +613,7 @@ export class SceneScreen extends Container implements IScreen {
     }
   }
 
-  public addActorCloseup(model: ActorModel, fadeIn = false) {
+  public async addActorCloseup(model: ActorModel, fadeIn = false) {
     // Check to see whether actor already exists in scene
     let actor: Actor
     const existingActor = this.actors.filter((a) => a.model.id === model.id)[0]
@@ -623,6 +625,7 @@ export class SceneScreen extends Container implements IScreen {
     } else {
       // Create new component obj (contains data + view)
       actor = new Actor(model)
+      await actor.initialize()
     }
 
     // Only add to closeups if not already there
@@ -661,7 +664,7 @@ export class SceneScreen extends Container implements IScreen {
     }
   }
 
-  public addPropCloseup(model: PropModel, fadeIn = false) {
+  public async addPropCloseup(model: PropModel, fadeIn = false) {
     // Check to see whether prop already exists in scene
     let prop: Prop
     const existingProp = this.props.filter((p) => p.model.id === model.id)[0]
@@ -673,6 +676,7 @@ export class SceneScreen extends Container implements IScreen {
     } else {
       // Create new component obj (contains data + view)
       prop = new Prop(model)
+      await prop.initialize()
     }
 
     // Only add to closeups if not already there

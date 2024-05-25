@@ -1,45 +1,45 @@
-import type { ResolverManifest } from "pixi.js"
+import type { AssetsManifest } from "pixi.js"
 
-export const playAssets: ResolverManifest = {
+export const playAssets: AssetsManifest = {
   bundles: [
     {
       name: "load-screen",
       assets: [
         {
-          name: "DebugFill",
-          srcs: "images/debug.png",
+          alias: "DebugFill",
+          src: "images/debug.png",
         },
         {
-          name: "UI-Shine",
-          srcs: "images/ui/shine.png",
+          alias: "UI-Shine",
+          src: "images/ui/shine.png",
         },
         {
-          name: "UI-Settings",
-          srcs: "images/ui/settings.png",
+          alias: "UI-Settings",
+          src: "images/ui/settings.png",
         },
         {
-          name: "UI-Inventory",
-          srcs: "images/ui/inventory.png",
+          alias: "UI-Inventory",
+          src: "images/ui/inventory.png",
         },
         {
-          name: "SFX-PickUp",
-          srcs: "sfx/pick-up.mp3",
+          alias: "SFX-PickUp",
+          src: "sfx/pick-up.mp3",
         },
         {
-          name: "SFX-DoorLocked",
-          srcs: "sfx/door-locked.mp3",
+          alias: "SFX-DoorLocked",
+          src: "sfx/door-locked.mp3",
         },
         {
-          name: "SFX-DoorUnlock",
-          srcs: "sfx/door-unlock.mp3",
+          alias: "SFX-DoorUnlock",
+          src: "sfx/door-unlock.mp3",
         },
         {
-          name: "SFX-GameWon",
-          srcs: "sfx/game-won.mp3",
+          alias: "SFX-GameWon",
+          src: "sfx/game-won.mp3",
         },
         {
-          name: "SFX-GameLost",
-          srcs: "sfx/game-lost.mp3",
+          alias: "SFX-GameLost",
+          src: "sfx/game-lost.mp3",
         },
       ],
     },

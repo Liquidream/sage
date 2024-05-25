@@ -1,4 +1,4 @@
-import { Application, Container, AlphaFilter } from "pixi.js"
+import { Application, Container, AlphaFilter, Assets } from "pixi.js"
 import { Tween } from "tweedle.js"
 import { Dialog, DialogChoice } from "./Dialog"
 import { Events } from "./Events"
@@ -211,6 +211,11 @@ export class SAGE {
     } else {
       console.warn("Cannot continue ink story - canContinue = false")
     }
+
+    // Load core assets
+    // await Assets.init({ manifest: SAGE.playManifest })
+    // // Bundles can be loaded in the background too!
+    // Assets.backgroundLoadBundle(['load-screen', 'game-screen']);
 
     console.debug("<<<<<<<<<<<<<<<")
   }

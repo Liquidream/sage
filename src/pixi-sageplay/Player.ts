@@ -37,11 +37,13 @@ export class Player implements IPlayerData {
   }
 
   /** Add the specified prop top inventory */
-  public addToInventory(propData: PropModel) {
+  public async addToInventory(propData: PropModel) {
     propData.location_type = PropLocationType.Inventory
     propData.location_id = ""
     SAGE.World.player.inventory.push(propData)
-    SAGE.invScreen.addProp(new Prop(propData))
+    const prop = new Prop(propData)
+    await prop.initialize()
+    SAGE.invScreen.addProp(prop)
     // Update ink story state
     const listItem = `prp_${propData.id}`
     InkManager.inkStory.EvaluateFunction("pickup_item", [listItem])

@@ -1,4 +1,4 @@
-import { Sprite, Texture } from "pixi.js"
+import { Assets, Sprite, Texture } from "pixi.js"
 import { Easing, Tween } from "tweedle.js"
 import { SAGE } from "./SAGEPlay"
 import { DialogType } from "./Dialog"
@@ -30,30 +30,39 @@ export class Prop {
   public constructor(inModel: PropModel) {
     // Initialise from data object
     this.model = inModel
+  }
+
+  public async initialize() {
     let sprite = undefined
 
     // Load main image(s)
-    if (inModel.image) {
-      sprite = Sprite.from(inModel.image)
+    if (this.model.image) {
+      const texture = await Assets.load(this.model.image)
+      sprite = new Sprite(texture)
+      //sprite = Sprite.from(inModel.image)
     } else {
       sprite = new Sprite(Texture.EMPTY)
-      sprite.width = inModel.width || 0
-      sprite.height = inModel.height || 0
+      sprite.width = this.model.width || 0
+      sprite.height = this.model.height || 0
     }
-    sprite.width = inModel.width || 0
-    sprite.height = inModel.height || 0
+    sprite.width = this.model.width || 0
+    sprite.height = this.model.height || 0
     sprite.anchor.set(0.5)
-    sprite.x = inModel.x || 0
-    sprite.y = inModel.y || 0
+    sprite.x = this.model.x || 0
+    sprite.y = this.model.y || 0
     this.sprite = sprite
 
     // Close-up image(s)
-    if (inModel.image_closeup) {
-      sprite = Sprite.from(inModel.image_closeup)
+    if (this.model.image_closeup) {
+      const texture = await Assets.load(this.model.image_closeup)
+      sprite = new Sprite(texture)
+      //sprite = Sprite.from(inModel.image_closeup)
       this.sprite_closeup = sprite
     } else {
       // Use main image for close-up (even if never called upon)
-      sprite = Sprite.from(inModel.image)
+      const texture = await Assets.load(this.model.image)
+      this.sprite_closeup = new Sprite(texture)
+      //sprite = Sprite.from(this.model.image)
     }
     // TODO: Calc & scale down to max display size (if needed)
     // Positioning
@@ -75,7 +84,7 @@ export class Prop {
     SAGE.Events.on("scenehint", this.onSceneHint, this)
 
     // visible state
-    this.sprite.visible = inModel.visible //|| true // default to visible, unless otherwise specified
+    this.sprite.visible = this.model.visible //|| true // default to visible, unless otherwise specified
   }
 
   tidyUp() {

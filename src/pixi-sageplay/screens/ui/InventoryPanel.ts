@@ -126,16 +126,17 @@ export class InventoryScreen {
 
   private createBackground() {
     this.inventoryBackground = new Graphics()
-    this.inventoryBackground.beginFill(0x0)
-    this.inventoryBackground.alpha = 0.6
-    this.inventoryBackground.drawRoundedRect(
-      this.SIDE_MARGIN,
-      this.OPEN_YPOS,
-      SAGE.width - this.SIDE_MARGIN * 2,
-      this.HEIGHT + this.ROUNDED_EDGE,
-      this.ROUNDED_EDGE
-    )
-    this.inventoryBackground.endFill()
+    //this.inventoryBackground.beginFill(0x0)
+    //this.inventoryBackground.alpha = 0.6
+      .roundRect(
+        this.SIDE_MARGIN,
+        this.OPEN_YPOS,
+        SAGE.width - this.SIDE_MARGIN * 2,
+        this.HEIGHT + this.ROUNDED_EDGE,
+        this.ROUNDED_EDGE
+      )
+      .fill({ color: "black", alpha: 0.6 })
+    //this.inventoryBackground.endFill()
     this.inventoryContainer.addChild(this.inventoryBackground)
     // Events
     // (Make bg receive input, so that can't be clicked "through" + cancel auto-close)

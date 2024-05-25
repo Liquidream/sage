@@ -1,6 +1,6 @@
-import { DropShadowFilter } from "pixi-filters";
-import { Container, Sprite } from "pixi.js";
-import { SAGE } from "../../SAGEPlay";
+import { DropShadowFilter } from "pixi-filters"
+import { Container, Sprite } from "pixi.js"
+import { SAGE } from "../../SAGEPlay"
 import { DialogType } from "../../../pixi-sagedit/DialogEdit"
 
 

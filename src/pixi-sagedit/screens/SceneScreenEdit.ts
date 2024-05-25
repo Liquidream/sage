@@ -340,11 +340,11 @@ export class SceneScreen extends Container {
       this.buildProps()
       this.buildDoorways()
       this.buildActors()
-      this.buildDialogText()
     } else if (this.worldStore.currActorId !== "") {
       this.buildActors()
-      this.buildDialogText()
     }
+    // Always do this (if nothing selected, does "hint" text)
+    this.buildDialogText()
 
     // Drag+Drop support
     SAGEdit.app.stage.eventMode = "static"
@@ -424,6 +424,10 @@ export class SceneScreen extends Container {
     }
     if (this.worldStore.currActorId != "") {
       dialogText = this.worldStore.getCurrentActor?.name
+    }
+
+    if (dialogText === undefined) {
+      dialogText = "(No Scene selected)"
     }
 
     this.dialogText = new Text(dialogText, styly) // Text supports unicode!
