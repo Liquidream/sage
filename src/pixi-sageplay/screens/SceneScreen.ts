@@ -462,29 +462,23 @@ export class SceneScreen extends Container implements IScreen {
     if (SAGE.debugMode) {
       console.log(`prop.propModel.width = ${prop.model.width}`)
       const graphics = new Graphics()
-      const propWidth = prop.model.width || 0,
-        propHeight = prop.model.height || 0
-      graphics.beginFill(0xe74c3c, 125) // Red
-      graphics.lineStyle(10, 0xff0000)
-      graphics.pivot.set(propWidth / 2, propHeight / 2)
-      // Need to handle diff for "non-image" sprites
-      // (as Graphics scaling goes screwy if image dimensions are not really there)
-      if (prop.model.image) {
-        graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
-        this.addChildAt(graphics, this.children.length) // Ensure added to "top"
-        //prop.sprite.addChild(graphics)
-      } else {
-        graphics.drawRoundedRect(
-          prop.model.x || 0,
-          prop.model.y || 0,
-          propWidth,
-          propHeight,
+      const propTextureWidth = prop.sprite.texture.width,
+        propTexturHeight = prop.sprite.texture.height
+      // const propWidth = prop.model.width || 0,
+      //   propHeight = prop.model.height || 0
+      //graphics.pivot.set(-propWidth / 2, -propHeight / 2)
+      //graphics.pivot.set(propWidth / 2, propHeight / 2)
+      graphics
+        .roundRect(
+          -propTextureWidth / 2,
+          -propTexturHeight / 2, //0,0,
+          propTextureWidth,
+          propTexturHeight,
           30
         )
-        this.addChildAt(graphics, this.children.length) // Ensure added to "top"
-        //this.addChild(graphics)
-      }
-      graphics.endFill()
+        //.fill({ color: "0xe74c3c", alpha: 0.5 }) // Can't do else blocks interaction to sprite
+        .stroke({ width: 10, color: "red" }) // Red
+      prop.sprite.addChild(graphics)
     }
   }
 
@@ -558,29 +552,30 @@ export class SceneScreen extends Container implements IScreen {
     if (SAGE.debugMode) {
       console.log(`actor.model.width = ${actor.model.width}`)
       const graphics = new Graphics()
-      const actorWidth = actor.model.width || 0,
-        actorHeight = actor.model.height || 0
-      graphics.beginFill(0xe74c3c, 125) // Red
-      graphics.lineStyle(10, 0xff0000)
-      graphics.pivot.set(actorWidth / 2, actorHeight / 2)
-      // Need to handle diff for "non-image" sprites
-      // (as Graphics scaling goes screwy if image dimensions are not really there)
-      if (actor.model.image) {
-        graphics.drawRoundedRect(0, 0, actorWidth, actorHeight, 30)
-        this.addChildAt(graphics, this.children.length) // Ensure added to "top"
-        //actor.sprite.addChild(graphics)
-      } else {
-        graphics.drawRoundedRect(
-          actor.model.x || 0,
-          actor.model.y || 0,
-          actorWidth,
-          actorHeight,
+      const actorTextureWidth = actor.sprite.texture.width,
+        actorTexturHeight = actor.sprite.texture.height
+      graphics
+        .roundRect(
+          -actorTextureWidth / 2,
+          -actorTexturHeight / 2, //0,0,
+          actorTextureWidth,
+          actorTexturHeight,
           30
         )
-        this.addChildAt(graphics, this.children.length) // Ensure added to "top"
-        //this.addChild(graphics)
-      }
-      graphics.endFill()
+      // const actorWidth = actor.model.width || 0,
+      //   actorHeight = actor.model.height || 0
+      // graphics.pivot.set(actorWidth / 2, actorHeight / 2)
+      // graphics
+      //   .roundRect(
+      //     actor.model.x || 0,
+      //     actor.model.y || 0,
+      //     actorWidth,
+      //     actorHeight,
+      //     30
+      //   )
+        //.fill({ color: "0xe74c3c", alpha: 0.5 }) // Can't do else blocks interaction to sprite
+        .stroke({ width: 10, color: "red" }) // Red
+      actor.sprite.addChild(graphics)
     }
   }
 
