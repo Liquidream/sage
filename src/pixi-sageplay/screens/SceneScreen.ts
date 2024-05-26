@@ -464,10 +464,6 @@ export class SceneScreen extends Container implements IScreen {
       const graphics = new Graphics()
       const propTextureWidth = prop.sprite.texture.width,
         propTexturHeight = prop.sprite.texture.height
-      // const propWidth = prop.model.width || 0,
-      //   propHeight = prop.model.height || 0
-      //graphics.pivot.set(-propWidth / 2, -propHeight / 2)
-      //graphics.pivot.set(propWidth / 2, propHeight / 2)
       graphics
         .roundRect(
           -propTextureWidth / 2,
@@ -562,17 +558,6 @@ export class SceneScreen extends Container implements IScreen {
           actorTexturHeight,
           30
         )
-      // const actorWidth = actor.model.width || 0,
-      //   actorHeight = actor.model.height || 0
-      // graphics.pivot.set(actorWidth / 2, actorHeight / 2)
-      // graphics
-      //   .roundRect(
-      //     actor.model.x || 0,
-      //     actor.model.y || 0,
-      //     actorWidth,
-      //     actorHeight,
-      //     30
-      //   )
         //.fill({ color: "0xe74c3c", alpha: 0.5 }) // Can't do else blocks interaction to sprite
         .stroke({ width: 10, color: "red" }) // Red
       actor.sprite.addChild(graphics)

@@ -37,7 +37,7 @@ export class SAGE {
     /*this class is purely static. No constructor to see here*/
   }
 
-  public static debugMode = true
+  public static debugMode = false
 
   public static showStartButton = true // Used to resolve chrome/autoplay issues
   public static enableFullscreen = false
