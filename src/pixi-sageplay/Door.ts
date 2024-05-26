@@ -52,7 +52,7 @@ export class Door {
       // Set the fill color to barely visible
       // (else won't get collision hit)
       // TODO: find a nicer solution to this!
-      this.graphics.fill({ alpha: 0.0 })
+      this.graphics.fill({ alpha: 0.00000000000001 }) // "Invisible" (else doesn't draw/exist to collide)
       //this.graphics.beginFill(0xccc, 0.00000000000001) // "Invisible"
     }
     // Applies fill to lines and shapes since the last call to beginFill.

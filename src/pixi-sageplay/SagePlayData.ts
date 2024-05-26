@@ -7,6 +7,6 @@ export interface SagePlayData {
   propData: string
   doorData: string
   actorData: string
-  playerData: string
   scriptData: string
+  gameStateData: string
 }

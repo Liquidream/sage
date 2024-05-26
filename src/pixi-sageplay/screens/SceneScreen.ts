@@ -447,7 +447,8 @@ export class SceneScreen extends Container implements IScreen {
     // Create new component obj (contains data + view)
     const prop = new Prop(model)
     await prop.initialize()
-    this.addChild(prop.sprite)
+    this.addChildAt(prop.sprite, this.children.length) // Ensure added to "top"
+    //this.addChild(prop.sprite)
     this.props.push(prop)
     // Don't add to scene.propdata here, as it likely already came from it?
 
@@ -470,7 +471,8 @@ export class SceneScreen extends Container implements IScreen {
       // (as Graphics scaling goes screwy if image dimensions are not really there)
       if (prop.model.image) {
         graphics.drawRoundedRect(0, 0, propWidth, propHeight, 30)
-        prop.sprite.addChild(graphics)
+        this.addChildAt(graphics, this.children.length) // Ensure added to "top"
+        //prop.sprite.addChild(graphics)
       } else {
         graphics.drawRoundedRect(
           prop.model.x || 0,
@@ -479,7 +481,8 @@ export class SceneScreen extends Container implements IScreen {
           propHeight,
           30
         )
-        this.addChild(graphics)
+        this.addChildAt(graphics, this.children.length) // Ensure added to "top"
+        //this.addChild(graphics)
       }
       graphics.endFill()
     }
@@ -516,8 +519,10 @@ export class SceneScreen extends Container implements IScreen {
       for (const doorData of this.scene.doors) {
         // Create new component obj (contains data + view)
         const door = new Door(doorData)
-        this.addChild(door.sprite)
-        this.addChild(door.graphics)
+        this.addChildAt(door.sprite, this.children.length) // Ensure added to "top"
+        this.addChildAt(door.graphics, this.children.length) // Ensure added to "top"
+        //this.addChild(door.sprite)
+        //this.addChild(door.graphics)
         this.doors.push(door)
       }
     }
@@ -538,7 +543,8 @@ export class SceneScreen extends Container implements IScreen {
     // Create new component obj (contains data + view)
     const actor = new Actor(model)
     await actor.initialize()
-    this.addChild(actor.sprite)
+    this.addChildAt(actor.sprite, this.children.length) // Ensure added to "top"
+    //this.addChild(actor.sprite)
     this.actors.push(actor)
     // Don't add to scene.propdata here, as it likely already came from it?
 
@@ -561,7 +567,8 @@ export class SceneScreen extends Container implements IScreen {
       // (as Graphics scaling goes screwy if image dimensions are not really there)
       if (actor.model.image) {
         graphics.drawRoundedRect(0, 0, actorWidth, actorHeight, 30)
-        actor.sprite.addChild(graphics)
+        this.addChildAt(graphics, this.children.length) // Ensure added to "top"
+        //actor.sprite.addChild(graphics)
       } else {
         graphics.drawRoundedRect(
           actor.model.x || 0,
@@ -570,7 +577,8 @@ export class SceneScreen extends Container implements IScreen {
           actorHeight,
           30
         )
-        this.addChild(graphics)
+        this.addChildAt(graphics, this.children.length) // Ensure added to "top"
+        //this.addChild(graphics)
       }
       graphics.endFill()
     }

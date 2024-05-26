@@ -178,7 +178,7 @@ export class FileUtils {
     const actorState = FileUtils.cloneState(useActorStore()) as ActorState
     playData.actorData = FileUtils.exportActorData(actorState, assetsManifest, zip)
     //playData.actorData = JSON.stringify(useActorStore().$state)
-    playData.playerData = JSON.stringify(useGameStateStore().$state)
+    playData.gameStateData = JSON.stringify(useGameStateStore().$state)
 
     const playDataJSON = JSON.stringify(playData, null, 4)
     zip.file("sageData.json", playDataJSON)

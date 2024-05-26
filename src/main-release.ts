@@ -67,13 +67,13 @@ const sceneStore = useSceneStore()
 const propStore = usePropStore()
 const doorStore = useDoorStore()
 const actorStore = useActorStore()
-const playerStore = useGameStateStore()
+const gameStateStore = useGameStateStore()
 
 const importPlayData = async (): Promise<void> => {
   // Import game data (but only on first run)
-  if (worldStore.currSceneId === "") {
-    console.log(">>> No saved data - so import release data...")
-    const response = await fetch("sageData.json")
+ // if (worldStore.currSceneId === "") {
+ //   console.log(">>> No saved data - so import release data...")
+    let response = await fetch("sageData.json")
     const sagePlayData = await response.json()
     console.log(">>> (finished retriving release data)")
 
@@ -97,15 +97,17 @@ const importPlayData = async (): Promise<void> => {
     const actorData: ActorState = JSON.parse(sagePlayData.actorData)
     actorStore.$state = actorData
 
-    // Player Data
-    const playerData: GameState = JSON.parse(sagePlayData.playerData)
-    playerStore.$state = playerData
+    // Game State Data
+    // (Deliberately not restored/reset from edit data
+    //  so that it is available for same/load)
+      //   const gameStateData: GameState = JSON.parse(sagePlayData.gameStateData)
+      //   gameStateStore.$state = gameStateData
 
     console.log(">>> (finished importing release data)")
-  }
+//  }
 
   // Ink Script data
-  const response = await fetch("story.json")
+  response = await fetch("story.json")
   InkManager.inkJsonString = await response.text()
 
   loadFonts()
@@ -123,7 +125,7 @@ Promise.all([
   propStore.$persistedState.isReady(),
   doorStore.$persistedState.isReady(),
   actorStore.$persistedState.isReady(),
-  playerStore.$persistedState.isReady(),
+  gameStateStore.$persistedState.isReady(),
 ]).then(() => {
   importPlayData()
 })
