@@ -70,6 +70,8 @@ const actorStore = useActorStore()
 const gameStateStore = useGameStateStore()
 
 const importPlayData = async (): Promise<void> => {
+  // UPDATE: Now resetting it on every run, otherwise world state and inventory state can go out of sync
+  // (inventory only saved/restored on Save/Load - perhaps this should be dynamic also..?)
   // Import game data (but only on first run)
  // if (worldStore.currSceneId === "") {
  //   console.log(">>> No saved data - so import release data...")

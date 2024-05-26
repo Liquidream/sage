@@ -353,7 +353,7 @@ export class SceneScreen extends Container implements IScreen {
           // When in play/test mode - need to handle non-preloaded images
           const base = await Assets.load(this.scene.image)
 
-          if (this.scene?.image.includes("data:video") || this.scene?.image.includes(".mp4")) {
+          if (this.scene?.image.includes("data:video")) {
             base.baseTexture.resource.loop = true
           }
 
