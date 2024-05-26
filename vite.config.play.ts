@@ -70,7 +70,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
     build: {
       rollupOptions: {
         input: {
-          index_play: "./index-release.html",
+          "index-play": "./index-release.html",
         },
         output: {
           assetFileNames: "SAGE.[ext]",

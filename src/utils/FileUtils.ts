@@ -8,7 +8,7 @@ import { useDoorStore, type DoorState } from "@/stores/DoorStore"
 import { usePropStore, type PropState } from "@/stores/PropStore"
 import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneState } from "@/stores/SceneStore"
-import type { ResolverManifest } from "pixi.js"
+import type { AssetsManifest } from "pixi.js"
 import { playAssets } from "@/pixi-sageplay/playAssets"
 // @ts-ignore
 import JSZipUtils from "jszip-utils"
@@ -193,7 +193,7 @@ export class FileUtils {
     zip.file("index.html", htmlPage)
     zip.file(
       "entry-index-play.js",
-      FileUtils.urlToPromise("entry-index_play.js"),
+      FileUtils.urlToPromise("entry-index-play.js"),
       { binary: true }
     )
 
@@ -274,7 +274,7 @@ export class FileUtils {
 
   public static exportSceneData(
     sceneState: SceneState,
-    assets: ResolverManifest,
+    assets: AssetsManifest,
     zip: JSZip
   ): string {
     console.log("Exporting scenes to zip...")
@@ -305,7 +305,7 @@ export class FileUtils {
 
   public static exportPropData(
     propState: PropState,
-    assets: ResolverManifest,
+    assets: AssetsManifest,
     zip: JSZip
   ): string {
     console.log("Exporting props to zip...")
@@ -338,7 +338,7 @@ export class FileUtils {
 
   public static exportDoorData(
     propState: DoorState,
-    assets: ResolverManifest,
+    assets: AssetsManifest,
     zip: JSZip
   ): string {
     console.log("Exporting doors to zip...")
@@ -363,7 +363,7 @@ export class FileUtils {
 
   public static exportActorData(
     actorState: ActorState,
-    assets: ResolverManifest,
+    assets: AssetsManifest,
     zip: JSZip
   ): string {
     console.log("Exporting actors to zip...")
@@ -409,7 +409,7 @@ export class FileUtils {
   public static exportData(
     assetName: string,
     dataUri: string,
-    assets: ResolverManifest,
+    assets: AssetsManifest,
     zipFolder: JSZip | null
   ) {
     // Find the offset to start of data
@@ -423,8 +423,8 @@ export class FileUtils {
 
     // Add to assets list
     assets.bundles[0].assets.push({
-      name: assetName,
-      srcs: `${zipFolder?.root}${filename}`,
+      alias: assetName,
+      src: `${zipFolder?.root}${filename}`,
     })
   }
 
