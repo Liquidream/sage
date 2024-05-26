@@ -350,25 +350,10 @@ export class SceneScreen extends Container implements IScreen {
 
     if (this.scene.image) {
       if (mode == "play") {
-        // Is it a video?
-        // if (this.scene?.image.includes("data:video")) {
-        //   // Load video data
-        //   const element = document.createElement("video")
-        //   element.src = this.scene.image // e.g. "data:video/mp4;base64,xxxxxx"
-        //   element.preload = "auto"
-        //   element.loop = true
-        //   //element.muted = true // Added to try to fix the frozen playback issue
-        //   const resource = new VideoSource(element)
-        //   const texture = Texture.from(resource)
-        //   sprite = Sprite.from(texture)
-        //   sprite.width = SAGE.width
-        //   sprite.height = SAGE.height
-        // } else {
           // When in play/test mode - need to handle non-preloaded images
           const base = await Assets.load(this.scene.image)
-          //const base = new BaseTexture(this.scene.image)
 
-          if (this.scene?.image.includes("data:video")) {
+          if (this.scene?.image.includes("data:video") || this.scene?.image.includes(".mp4")) {
             base.baseTexture.resource.loop = true
           }
 
@@ -406,16 +391,20 @@ export class SceneScreen extends Container implements IScreen {
       } else {
         // When in "release" mode, all images should've been preloaded, so go ahead
         // create a video texture from a path
-        const texture = Texture.from({ id: this.scene.image })
-        //const texture = Texture.from(this.scene.image)
+        sprite = Sprite.from(this.scene.image)
+        //const texture = Texture.from({ id: this.scene.image })
         // create a new Sprite using the video texture (yes it's that easy)
-        sprite = new Sprite(texture)
-        //sprite = Sprite.from(this.scene.image)
+        //sprite = new Sprite(texture)
 
         // Video?
-        if (this.scene?.image.includes("data:video")) {
-          texture.baseTexture.resource.loop = true
+        //debugger
+        //if (this.scene?.image.includes(".mp4")) {
+        if (sprite.texture.source.resource.loop !== undefined) {
+          sprite.texture.source.resource.loop = true
         }
+        // if (this.scene?.image.includes("data:video")) {
+        //   texture.baseTexture.resource.loop = true
+        // }
 
         const viewRatio = SAGE.width / SAGE.height //1.77
         const imageRatio = sprite.width / sprite.height

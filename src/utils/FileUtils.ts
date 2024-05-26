@@ -144,6 +144,16 @@ export class FileUtils {
 
     // Create the zip file
     const zip = new JSZip()
+
+    // Timestamp/timezone fix
+    // (https://github.com/Stuk/jszip/issues/369)
+    const currDate = new Date();
+    const dateWithOffset = new Date(
+      currDate.getTime() - currDate.getTimezoneOffset() * 60000
+    )
+    // replace the default date with dateWithOffset
+    JSZip.defaults.date = dateWithOffset
+
     const assetsManifest = playAssets
     const playData = {} as SagePlayData
     playData.version = Constants.APP_VERSION

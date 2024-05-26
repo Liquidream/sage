@@ -37,9 +37,15 @@ export class Prop {
 
     // Load main image(s)
     if (this.model.image) {
-      const texture = await Assets.load(this.model.image)
-      sprite = new Sprite(texture)
-      //sprite = Sprite.from(inModel.image)
+      // If in "test" play mode, load base64 data
+      if (this.model.image.includes("data:")) {
+        const texture = await Assets.load(this.model.image)
+        sprite = new Sprite(texture)
+      } else {
+        // Load exported asset as normal
+        // (should already be in asset cache)
+        sprite = Sprite.from(this.model.image)
+      }
     } else {
       sprite = new Sprite(Texture.EMPTY)
       sprite.width = this.model.width || 0
