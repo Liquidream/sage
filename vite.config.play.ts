@@ -10,6 +10,8 @@ import { VitePWA } from "vite-plugin-pwa"
 import mkcert from "vite-plugin-mkcert"
 import replace from "@rollup/plugin-replace"
 
+import { viteStaticCopy } from 'vite-plugin-static-copy'
+
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode, ssrBuild }) => {
   return {
@@ -54,6 +56,14 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
         preventAssignment: true,
       }),
       mkcert(),
+      viteStaticCopy({
+        targets: [
+          {
+            src: "dist-play/assets/*",
+            dest: "../public/assets/",
+          },
+        ],
+      }),
     ],
     // (This is now explicitly specified in separate npm build script)
     //base: command === "build" ? "/sage/" : "/",
