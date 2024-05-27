@@ -495,11 +495,12 @@ export class FileUtils {
       // Is this nested?
       //console.log(" > (Type): " + typeof foldersAndFilesToZip[prop])
       if (prop.length > 1) {
-        if (parentFolder === "<root>") {
-          currDir = `/${prop}`.replace("<root>", "")
-        } else {
-          currDir = `${parentFolder || ""}/${prop}`.replace("<root>", "")
-        }
+        // if (parentFolder === "<root>") {
+        //   currDir = `${prop}`.replace("<root>", "")
+        // } else {
+          currDir = `${parentFolder != null ? parentFolder + "/" : ""}${prop}`
+          currDir = currDir.replace("/<root>", "")
+        //}
       }
       if (typeof foldersAndFilesToZip[prop] === "object") {
         // Nested object, go a level deeper
@@ -512,8 +513,8 @@ export class FileUtils {
       } else {
         // File to add to zip
         //console.log(` > Folder: ${currDir}, File: ${foldersAndFilesToZip[prop]}`)
-        const filePath = `${currDir}/${foldersAndFilesToZip[prop]}`.slice(1)
-        const filename = foldersAndFilesToZip[prop]
+        const filePath = `${currDir}/${foldersAndFilesToZip[prop]}`//.slice(1)
+        //const filename = foldersAndFilesToZip[prop]
         //console.log(`Adding: ${filePath}`)
         zip.file(filePath, FileUtils.urlToPromise(filePath), {
           binary: true,
