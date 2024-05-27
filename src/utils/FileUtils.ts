@@ -16,6 +16,9 @@ import { useGameStateStore } from "@/stores/GameStateStore"
 import { getActivePinia } from "pinia"
 import { InkManager } from "./InkManager"
 
+// import * as fs from "fs"
+// import * as path from "path"
+
 export class FileUtils {
   private constructor() {
     /*this class is purely static. No constructor to see here*/
@@ -207,72 +210,112 @@ export class FileUtils {
       { binary: true }
     )
 
-    // Code GFX files
-    zip
-      .folder("images")
-      .file("debug.png", FileUtils.urlToPromise("images/debug.png"), {
-        binary: true,
-      })
-    zip
-      .folder("images")
-      .folder("ui")
-      .file("shine.png", FileUtils.urlToPromise("images/ui/shine.png"), {
-        binary: true,
-      })
-    zip
-      .folder("images")
-      .folder("ui")
-      .file("settings.png", FileUtils.urlToPromise("images/ui/settings.png"), {
-        binary: true,
-      })
-    zip
-      .folder("images")
-      .folder("ui")
-      .file(
-        "inventory.png",
-        FileUtils.urlToPromise("images/ui/inventory.png"),
-        { binary: true }
-      )
+    // Folders + Files list
+    // (Having to list manually, as cannot do fs.readFileSync in browser)
+    const foldersAndFilesToZip = {
+      images: {
+        ui: [
+          "inventory.png",
+          "settings.png",
+          "shine.png",
+        ],
+        "<root>": [
+          "debug.png",
+          "placeholder.png",
+          "scene-placeholder.png",
+        ],
+      },
+      sfx: [
+        "door-locked.mp3",
+        "door-unlock.mp3",
+        "game-lost.mp3",
+        "game-won.mp3",
+        "pick-up.mp3",
+      ],
+      assets: [
+        "batchSamplersUniformGroup-150bce8f.js",
+        "browserAll-8bbe6d64.js",
+        "CanvasPool-986452dd.js",
+        "colorToUniform-0e879aa2.js",
+        "init-13405ea0.js",
+        "SharedSystems-a590d61c.js",
+        "webfontloader-1dc4de64.js",
+        "WebGLRenderer-5fb33d05.js",
+        "WebGPURenderer-ac109295.js",
+        "webworkerAll-a2c8f34f.js",
+      ],
+    }
+    FileUtils.addFolderFilesRecursively(foldersAndFilesToZip, zip)
 
-    // Code SFX files
-    zip
-      .folder("sfx")
-      .file("pick-up.mp3", FileUtils.urlToPromise("sfx/pick-up.mp3"), {
-        binary: true,
-      })
-    zip
-      .folder("sfx")
-      .file("door-locked.mp3", FileUtils.urlToPromise("sfx/door-locked.mp3"), {
-        binary: true,
-      })
-    zip
-      .folder("sfx")
-      .file("door-unlock.mp3", FileUtils.urlToPromise("sfx/door-unlock.mp3"), {
-        binary: true,
-      })
-    zip
-      .folder("sfx")
-      .file("game-won.mp3", FileUtils.urlToPromise("sfx/game-won.mp3"), {
-        binary: true,
-      })
-    zip
-      .folder("sfx")
-      .file("game-lost.mp3", FileUtils.urlToPromise("sfx/game-lost.mp3"), {
-        binary: true,
-      })
+    // GFX files
+    //FileUtils.buildZipFromDirectory("images", zip, "images")
+    // zip
+    //   .folder("images")
+    //   .file("debug.png", FileUtils.urlToPromise("images/debug.png"), {
+    //     binary: true,
+    //   })
+    // zip
+    //   .folder("images")
+    //   .folder("ui")
+    //   .file("shine.png", FileUtils.urlToPromise("images/ui/shine.png"), {
+    //     binary: true,
+    //   })
+    // zip
+    //   .folder("images")
+    //   .folder("ui")
+    //   .file("settings.png", FileUtils.urlToPromise("images/ui/settings.png"), {
+    //     binary: true,
+    //   })
+    // zip
+    //   .folder("images")
+    //   .folder("ui")
+    //   .file(
+    //     "inventory.png",
+    //     FileUtils.urlToPromise("images/ui/inventory.png"),
+    //     { binary: true }
+    //   )
+
+    // SFX files
+    // zip
+    //   .folder("sfx")
+    //   .file("pick-up.mp3", FileUtils.urlToPromise("sfx/pick-up.mp3"), {
+    //     binary: true,
+    //   })
+    // zip
+    //   .folder("sfx")
+    //   .file("door-locked.mp3", FileUtils.urlToPromise("sfx/door-locked.mp3"), {
+    //     binary: true,
+    //   })
+    // zip
+    //   .folder("sfx")
+    //   .file("door-unlock.mp3", FileUtils.urlToPromise("sfx/door-unlock.mp3"), {
+    //     binary: true,
+    //   })
+    // zip
+    //   .folder("sfx")
+    //   .file("game-won.mp3", FileUtils.urlToPromise("sfx/game-won.mp3"), {
+    //     binary: true,
+    //   })
+    // zip
+    //   .folder("sfx")
+    //   .file("game-lost.mp3", FileUtils.urlToPromise("sfx/game-lost.mp3"), {
+    //     binary: true,
+    //   })
+
+    // Assets folder
+    // zip
+    //   .folder("assets")
+    //   .file(
+    //     "webfontloader.js",
+    //     FileUtils.urlToPromise("assets/webfontloader.js"),
+    //     { binary: true }
+    //   )
 
     // Other assets
     zip.file("favicon.ico", FileUtils.urlToPromise("favicon.ico"), {
       binary: true,
     })
     zip.file("SAGE.css", FileUtils.urlToPromise("SAGE.css"), { binary: true })
-    zip
-      .folder("assets")
-      .file(
-        "webfontloader.js",
-        FileUtils.urlToPromise("assets/webfontloader.js"),
-        { binary: true }
-      )
 
     console.log("generating file...")
     zip.generateAsync({ type: "blob" }).then(function (content) {
@@ -443,4 +486,55 @@ export class FileUtils {
     const clonedObj = JSON.parse(stateJSON)
     return clonedObj
   }
+
+  private static addFolderFilesRecursively(foldersAndFilesToZip, zip, parentFolder) {
+    let currDir = parentFolder || ""
+    for (const prop in foldersAndFilesToZip) {
+      //console.log(" > Key:" + prop)
+      //console.log(" > Value:" + foldersAndFilesToZip[prop])
+      // Is this nested?
+      //console.log(" > (Type): " + typeof foldersAndFilesToZip[prop])
+      if (prop.length > 1) {
+        if (parentFolder === "<root>") {
+          currDir = `/${prop}`.replace("<root>", "")
+        } else {
+          currDir = `${parentFolder || ""}/${prop}`.replace("<root>", "")
+        }
+      }
+      if (typeof foldersAndFilesToZip[prop] === "object") {
+        // Nested object, go a level deeper
+        //console.log(" > Nested object, go a level deeper...")
+        FileUtils.addFolderFilesRecursively(
+          foldersAndFilesToZip[prop],
+          zip,
+          currDir
+        )
+      } else {
+        // File to add to zip
+        //console.log(` > Folder: ${currDir}, File: ${foldersAndFilesToZip[prop]}`)
+        const filePath = `${currDir}/${foldersAndFilesToZip[prop]}`.slice(1)
+        const filename = foldersAndFilesToZip[prop]
+        //console.log(`Adding: ${filePath}`)
+        zip.file(filePath, FileUtils.urlToPromise(filePath), {
+          binary: true,
+        })
+        // File list
+        //console.log(`   > File count: ${foldersAndFilesToZip[prop].length}`)
+      }
+    }
+  }
+
+  // private static buildZipFromDirectory(dir, zip, root) {
+  //   const list = fs.readdirSync(dir)
+  //   for (let file of list) {
+  //     file = path.resolve(dir, file)
+  //     const stat = fs.statSync(file)
+  //     if (stat && stat.isDirectory()) {
+  //       this.buildZipFromDirectory(file, zip, root)
+  //     } else {
+  //       const filedata = fs.readFileSync(file);
+  //       zip.file(path.relative(root, file), filedata);
+  //     }
+  //   }
+  // }
 }
