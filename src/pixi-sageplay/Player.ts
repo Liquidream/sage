@@ -64,6 +64,11 @@ export class Player implements IPlayerData {
     return
   }
 
+  public clearInventory() {
+    // Remove all items from inventory
+    this.inventory = []
+  }
+
   fromJSON(input: IPlayerData) {
     this.name = input.name
     if (input.property) this.property = input.property

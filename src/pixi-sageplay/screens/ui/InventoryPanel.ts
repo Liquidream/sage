@@ -93,6 +93,15 @@ export class InventoryScreen {
     return
   }
 
+  public clearInventory() {
+    // Remove all items from inventory
+    for (const prop of this.propsList) {
+      this.removeProp(prop.model.id)
+    }
+    //this.propsList = new Array<Prop>()
+    //this.inventoryContainer.removeChildren()
+  }
+
   public open(isAutoOpen: boolean) {
     new Tween(this.inventoryContainer)
       .to({ y: 0 }, 500)

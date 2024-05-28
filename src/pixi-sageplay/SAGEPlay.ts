@@ -342,6 +342,10 @@ export class SAGE {
     const actorData: ActorState = JSON.parse(piniaStates[4])
     actorStore.$state = actorData
 
+    // Reset (clear) inventory
+    SAGE.World.player.clearInventory()
+    SAGE.invScreen.clearInventory()
+
     console.log("Restoring ink state...")
 
     const inkState = gameStateStore.saveState.inkStoryState
