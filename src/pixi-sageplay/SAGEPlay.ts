@@ -8,7 +8,7 @@ import { Sound } from "./Sound"
 import { World } from "./World"
 import { InventoryScreen } from "./screens/ui/InventoryPanel"
 import { UI_Overlay } from "./screens/ui/UI_Overlay"
-import { playAssets } from "./playAssets"
+//import { playAssets } from "./playAssets"
 
 import { ErrorType } from "inkjs/engine/Error"
 import { useGameStateStore } from "@/stores/GameStateStore"
@@ -44,7 +44,7 @@ export class SAGE {
 
   public static navWidth = 350
 
-  private static playManifest = playAssets
+  //private static playManifest = playAssets
 
   private static _app: Application
   private static _width: number

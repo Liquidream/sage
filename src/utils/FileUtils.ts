@@ -26,6 +26,8 @@ export class FileUtils {
 
   public static debugMode = true
 
+  private static emptyPlayAssetsJSON = JSON.stringify(playAssets)
+
   public static initialize() {
     console.log("FileUtils:initialize()...")
   }
@@ -157,7 +159,7 @@ export class FileUtils {
     // replace the default date with dateWithOffset
     JSZip.defaults.date = dateWithOffset
 
-    const assetsManifest = playAssets
+    const assetsManifest = JSON.parse(FileUtils.emptyPlayAssetsJSON) //playAssets
     const playData = {} as SagePlayData
     playData.version = Constants.APP_VERSION
     // TODO: This needs to be pulled somewhere from storage (prob playData store?)
