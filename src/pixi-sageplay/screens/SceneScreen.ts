@@ -58,10 +58,6 @@ export class SceneScreen extends Container implements IScreen {
   private setup() {
     SAGE.debugLog("SceneScreen : setup()...")
 
-    // Tidy up any leftover screen content (close-ups, etc.)
-    SAGE.backLayer.removeChildren()
-    SAGE.midLayer.removeChildren()
-    
     // Construct scene from data
     this.buildBackdrop()
     this.buildDoorways()

@@ -348,6 +348,10 @@ export class SAGE {
     // Ensure settings icon is clickable (in case of broken state)
     SAGE.UI_Overlay.setSettingsIconStatus(true)
 
+    // Wipe any existing content before starting to show restored content
+    SAGE.backLayer.removeChildren()
+    SAGE.midLayer.removeChildren()
+    
     console.log("Restoring ink state...")
 
     const inkState = gameStateStore.saveState.inkStoryState
@@ -454,6 +458,7 @@ export class SAGE {
           if (oldScreen) {
             // remove all event subscriptions
             SAGE.backLayer.removeChild(oldScreen)
+            SAGE.midLayer.removeChildren()
             //SAGE.midLayer.removeChild(oldScreen)
             //SAGE._app.stage.removeChild(oldScreen);
             oldScreen.destroy()
