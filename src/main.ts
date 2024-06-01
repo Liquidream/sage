@@ -193,17 +193,18 @@ if (mode == "play") {
 
 // createApp(App).use(vuetify).use(pinia).mount("#app")
 
+const worldStore = useWorldStore()
+const propStore = usePropStore()
+const sceneStore = useSceneStore()
+const doorStore = useDoorStore()
+const actorStore = useActorStore()
+const gameStateStore = useGameStateStore()
+
 //Restore play data?
 if (mode == "play") {
   //let app = createApp(AppServer);
   console.log(">>> Load data?")
 
-  const worldStore = useWorldStore()
-  const propStore = usePropStore()
-  const sceneStore = useSceneStore()
-  const doorStore = useDoorStore()
-  const actorStore = useActorStore()
-  const gameStateStore = useGameStateStore()
 
   // Check for data to load
   if (window.opener.sagePlayData) {
@@ -282,9 +283,19 @@ if (mode == "play") {
 
     // debugger
   }
-
-  console.log(">>> (finished loading data)")
+} else {
+  // Still wait for hydration, in edit mode
+  await Promise.all([
+    worldStore.$persistedState.isReady(),
+    sceneStore.$persistedState.isReady(),
+    propStore.$persistedState.isReady(),
+    doorStore.$persistedState.isReady(),
+    actorStore.$persistedState.isReady(),
+    //gameStateStore.$persistedState.isReady(),
+  ])
 }
+
+console.log(">>> (finished loading data)")
 
 loadFonts()
 
