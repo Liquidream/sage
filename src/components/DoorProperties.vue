@@ -183,8 +183,6 @@
 
     <AceEditor label="On Action" type="door" v-model="model.script" />
 
-    <!-- <prism-editor label="On Action" v-model="model.on_action" /> -->
-
     <!-- <v-textarea
       name="on_action"
       v-model="model.on_action"
@@ -215,7 +213,6 @@
 
   import AceEditor from "./AceEditor.vue"
   import IdTextEdit from "./IdTextEdit.vue"
-  //import PrismEditor from "./PrismEditor.vue"
 
   const worldStore = useWorldStore()
   const doorStore = useDoorStore()

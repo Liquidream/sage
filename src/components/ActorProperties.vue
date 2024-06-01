@@ -194,14 +194,6 @@
 
     <AceEditor label="On Action" type="actor" v-model="model.script" />
 
-    <!-- <prism-editor label="On Action" v-model="model.script" /> -->
-
-    <!-- <v-list-subheader
-      ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
-    >
-
-    <prism-editor label="On Action" v-model="model.on_interact" /> -->
-
     <v-divider />
 
     <v-btn @click="removeActorClicked" color="error" class="mt-2">
@@ -226,7 +218,6 @@
   import type { ActorModel } from "@/models/ActorModel"
 
   import AceEditor from "./AceEditor.vue"
-  //import PrismEditor from "./PrismEditor.vue"
   import IdTextEdit from "./IdTextEdit.vue"
 
   const worldStore = useWorldStore()

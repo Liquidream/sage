@@ -120,15 +120,6 @@
 
     <AceEditor label="On Enter" type="scene" v-model="model.script" />
 
-    <!-- <prism-editor label="On Enter" v-model="model.script" /> -->
-
-    <!-- <v-list-subheader
-      ><v-icon icon="mdi-lightning-bolt"></v-icon>Events</v-list-subheader
-    > -->
-    <!-- <prism-editor label="On Enter" v-model="model.on_enter" />
-
-    <prism-editor label="On Exit" v-model="model.on_exit" /> -->
-
     <v-divider />
 
     <v-btn @click="worldStore.deleteScene(model.id)" color="error" class="mt-2"
@@ -155,14 +146,9 @@
 
   import AceEditor from "./AceEditor.vue"
   import IdTextEdit from "./IdTextEdit.vue"
-  //import PrismEditor from "./PrismEditor.vue"
-
-
-
 
   //import "ace-builds/src-noconflict/mode-javascript"    // Load the language definition file used below
   //import "ace-builds/src-noconflict/theme-monokai" // Load the theme definition file used below
-
 
   const worldStore = useWorldStore()
   const worldRefs = storeToRefs(worldStore)

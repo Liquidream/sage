@@ -179,10 +179,6 @@
 
     <AceEditor label="On Action" type="prop" v-model="model.script" />
 
-    <!-- <prism-editor label="On Action" v-model="model.on_action" />
-
-    <prism-editor label="On Use" v-model="model.on_use" /> -->
-
     <v-divider />
 
     <v-btn @click="removePropClicked" color="error" class="mt-2"
@@ -205,7 +201,6 @@
 
   import AceEditor from "./AceEditor.vue"
   import IdTextEdit from "./IdTextEdit.vue"
-  // import PrismEditor from "./PrismEditor.vue"
 
   const worldStore = useWorldStore()
   const propStore = usePropStore()

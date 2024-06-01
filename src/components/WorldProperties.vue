@@ -78,8 +78,6 @@
 
     <AceEditor label="Functions" type="scene" v-model="worldStore.script_functions" />
 
-    <!-- <prism-editor label="On Start" v-model="worldStore.on_start" /> -->
-
     <v-divider />
 
     <v-btn :loading="loading" @click="resetDataClicked" color="info" class="mt-2"
@@ -104,7 +102,6 @@
   import SceneSelect from "./SceneSelect.vue"
 
   import AceEditor from "./AceEditor.vue"
-  //import PrismEditor from "./PrismEditor.vue"
 
   import type { ActorModel } from "@/models/ActorModel"
 import { ref } from "vue"
