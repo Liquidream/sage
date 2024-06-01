@@ -326,6 +326,11 @@ export class SceneScreen extends Container {
   setup() {
     SAGEdit.debugLog("SceneScreenEdit : setup()...")
 
+    // Set defaults for Video/other configuration
+    VideoSource.defaultOptions.autoPlay = true
+    VideoSource.defaultOptions.loop = true
+    VideoSource.defaultOptions.muted = true
+
     // Moved re-getting store here to try to resolve rendering issue
     // (when jump straight to scene/selection on reload)
     //const worldStore = useWorldStore()
@@ -464,9 +469,9 @@ export class SceneScreen extends Container {
         const base = await Assets.load(this.scene.image)
         //const base = new BaseTexture(this.scene.image)
 
-        if (this.scene?.image.includes("data:video")) {
-          base.baseTexture.resource.loop = true
-        }
+        // if (this.scene?.image.includes("data:video")) {
+        //   base.baseTexture.resource.loop = true
+        // }
 
         const texture = new Texture(base)
         sprite = Sprite.from(texture)

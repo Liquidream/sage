@@ -7,6 +7,7 @@ import {
   ExtensionType,
   Texture,
   path,
+  VideoSource,
   //utils,
 } from "pixi.js"
 //import { assets } from "../../assets"
@@ -56,6 +57,11 @@ export class LoaderScreen extends Container {
 
   private async initializeLoader(): Promise<void> {
     console.log("in initializeLoader()...")
+
+    // Set defaults for Video/other configuration
+    VideoSource.defaultOptions.autoPlay = false
+    VideoSource.defaultOptions.loop = true
+    VideoSource.defaultOptions.muted = true
 
     // Add extension to handle video/mp4 files
     // const Mp4Asset = {

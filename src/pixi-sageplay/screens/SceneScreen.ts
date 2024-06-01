@@ -353,7 +353,7 @@ export class SceneScreen extends Container implements IScreen {
         // When in PLAY/test mode - need to handle non-preloaded images
         const base = await Assets.load(this.scene.image)
         if (this.scene?.image.includes("data:video")) {
-          base.baseTexture.resource.loop = true
+          base.baseTexture.resource.play()
         }
         const texture = new Texture(base)
         sprite = Sprite.from(texture)
@@ -377,12 +377,11 @@ export class SceneScreen extends Container implements IScreen {
 
         // Video?
         //debugger
-        //if (this.scene?.image.includes(".mp4")) {
-        if (sprite.texture.source.resource.loop !== undefined) {
-          sprite.texture.source.resource.loop = true
+        if (sprite.texture.source.resource.play !== undefined) {
+          sprite.texture.source.resource.play()
         }
-        // if (this.scene?.image.includes("data:video")) {
-        //   texture.baseTexture.resource.loop = true
+        // if (sprite.texture.source.resource.loop !== undefined) {
+        //   sprite.texture.source.resource.loop = true
         // }
 
         const viewRatio = SAGE.width / SAGE.height //1.77
