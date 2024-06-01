@@ -9,6 +9,7 @@ export class UI_Overlay {
   // (perhaps overridable in config?)
   ICON_ALPHA_INACTIVE = 0.5;
   ICON_ALPHA_ACTIVE = 0.85;
+  ICON_ALPHA_DISABLED = 0.25;
   ICON_SETTINGS_HINT_TEXT = "Open/Close Settings";
   ICON_INVENTORY_HINT_TEXT = "Open/Close Inventory";
 
@@ -42,7 +43,6 @@ export class UI_Overlay {
     // Events
     this.settingsIcon.on("pointertap", () => {
       // Toggle fullscreen (for now)
-      //Fullscreen.toggleFullScreen();
       SAGE.Events.emit("settingsTapped")
     });
     this.settingsIcon.on("pointerover", () => {
@@ -90,6 +90,30 @@ export class UI_Overlay {
     });
     //
     this.parentLayer.addChild(this.inventoryIcon);
+  }
+
+  public setSettingsIconStatus(isEnabled: boolean) {
+    if (isEnabled) {
+      // Enable UX
+      this.settingsIcon.eventMode = "static"
+      this.settingsIcon.alpha = this.ICON_ALPHA_INACTIVE
+    } else {
+      // Disable UX
+      this.settingsIcon.eventMode = "auto"
+      this.settingsIcon.alpha = this.ICON_ALPHA_DISABLED
+    }
+  }
+
+  public setInventoryIconStatus(isEnabled: boolean) {
+    if (isEnabled) {
+      // Enable UX
+      this.inventoryIcon.eventMode = "static"
+      this.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE
+    } else {
+      // Disable UX
+      this.inventoryIcon.eventMode = "auto"
+      this.inventoryIcon.alpha = this.ICON_ALPHA_DISABLED
+    }
   }
 
 

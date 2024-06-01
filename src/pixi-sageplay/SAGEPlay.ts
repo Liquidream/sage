@@ -345,6 +345,8 @@ export class SAGE {
     // Reset (clear) inventory
     SAGE.World.player.clearInventory()
     SAGE.invScreen.clearInventory()
+    // Ensure settings icon is clickable (in case of broken state)
+    SAGE.UI_Overlay.setSettingsIconStatus(true)
 
     console.log("Restoring ink state...")
 
@@ -398,16 +400,16 @@ export class SAGE {
     const horizontalMargin = (screenWidth - enlargedWidth) / 2
     const verticalMargin = (screenHeight - enlargedHeight) / 2
 
-    if (SAGE._app && SAGE._app.view.style) {
+    if (SAGE._app && SAGE._app.canvas.style) {
       // now we use css trickery to set the sizes and margins
-      SAGE._app.view.style.width = `${enlargedWidth}px`
-      SAGE._app.view.style.height = `${enlargedHeight}px`
+      SAGE._app.canvas.style.width = `${enlargedWidth}px`
+      SAGE._app.canvas.style.height = `${enlargedHeight}px`
 
       // center vertically and horizontally
-      SAGE._app.view.style.marginTop =
-        SAGE._app.view.style.marginBottom = `${verticalMargin}px`
-      SAGE._app.view.style.marginLeft =
-        SAGE._app.view.style.marginRight = `${horizontalMargin}px`
+      SAGE._app.canvas.style.marginTop =
+        SAGE._app.canvas.style.marginBottom = `${verticalMargin}px`
+      SAGE._app.canvas.style.marginLeft =
+        SAGE._app.canvas.style.marginRight = `${horizontalMargin}px`
     }
   }
 

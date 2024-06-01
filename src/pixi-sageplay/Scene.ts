@@ -97,6 +97,8 @@ export class Scene implements SceneModel {
       // Add "blocker" for all other input except dialog choices
       // (only do this once, per dialog choice menu init)
       this.setInteractionBlocker(true)
+      // Disable settings icon click (to avoid awkward save/load state)
+      SAGE.UI_Overlay.setSettingsIconStatus(false)
       return
     }
     // ok, try Prop then
@@ -104,6 +106,8 @@ export class Scene implements SceneModel {
     if (propModel !== undefined) {
       this.screen.setDepthOfField(true)
       this.screen.addPropCloseup(propModel, true)
+      // Disable settings icon click (to avoid awkward save/load state)
+      SAGE.UI_Overlay.setSettingsIconStatus(false)
       return
     } 
     //If got here, then didn't find something...    
@@ -125,13 +129,24 @@ export class Scene implements SceneModel {
       this.screen.removePropCloseup(prop, true)
     }
     // If last close-up object, then auto-reset depth of field
-    if (
-      this.screen.actorsCloseups.length === 0 &&
-      this.screen.propsCloseups.length == 0
-    ) {
-        this.screen.setDepthOfField(false)
-        this.setInteractionBlocker(false)
-      }
+    if (!this.inCloseUpMode())
+    // if (
+    //   this.screen.actorsCloseups.length === 0 &&
+    //   this.screen.propsCloseups.length == 0
+    // ) 
+    {
+      this.screen.setDepthOfField(false)
+      this.setInteractionBlocker(false)
+      // Allow settings icon click again
+      SAGE.UI_Overlay.setSettingsIconStatus(true)
+    }
+  }
+
+  public inCloseUpMode(): boolean {
+    return (
+      this.screen.actorsCloseups.length > 0 ||
+      this.screen.propsCloseups.length > 0
+    )
   }
 
   // public initialize(): void {
@@ -205,16 +220,20 @@ export class Scene implements SceneModel {
       // Add "blocker" for all other input except dialog choices
       // (only do this once, per dialog choice menu init)
       this.blocker = new Graphics()
-      //this.blocker.beginFill(0x0) // "Visible"...
-      //this.blocker.alpha = 0.6    //  (...for debugging)
-      this.blocker.beginFill(0xccc, 0.00000000000001) // "Invisible"
-      this.blocker.drawRect(0, 0, SAGE.width, SAGE.height)
+      // (...for debugging)
+      //this.blocker
+      // .fill({ color: "0xe74c3c", alpha: 0.5 })
+      // .stroke({ width: 10, color: "red" }) // Red
+      this.blocker
+        .fill({ alpha: 0.00000000000001 }) // "Invisible" (else doesn't draw/exist to collide)
+        .rect(0, 0, SAGE.width, SAGE.height)
       this.blocker.eventMode = "static"
       this.blocker.on("pointertap", () => {
         SAGE.debugLog("Blocker was clicked/tapped")
         SAGE.Events.emit("sceneinteract")
       })
       SAGE.app.stage.addChild(this.blocker)
+      // Also disable UX (to )
     } else {
       if (this.blocker) {
         this.blocker.eventMode = "auto"

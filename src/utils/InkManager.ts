@@ -343,7 +343,7 @@ export class InkManager {
 
       // Dialog choices..?
       if (InkManager.inkStory.currentChoices.length > 0) {
-        console.debug(InkManager.inkStory.currentChoices)
+        //console.debug(InkManager.inkStory.currentChoices)
         const dialogChoices: DialogChoice[] = []
         for (const choice of InkManager.inkStory.currentChoices) {
           dialogChoices.push(

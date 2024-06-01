@@ -45,7 +45,7 @@ export class Button extends Container {
       padding: 4,
       trim: true,
     })
-    const text = new Text(this.label, style)
+    const text = new Text({ text: this.label, style })
     text.anchor.set(0.5)
     this.addChild(text)
 

@@ -58,6 +58,10 @@ export class SceneScreen extends Container implements IScreen {
   private setup() {
     SAGE.debugLog("SceneScreen : setup()...")
 
+    // Tidy up any leftover screen content (close-ups, etc.)
+    SAGE.backLayer.removeChildren()
+    SAGE.midLayer.removeChildren()
+    
     // Construct scene from data
     this.buildBackdrop()
     this.buildDoorways()
@@ -65,8 +69,8 @@ export class SceneScreen extends Container implements IScreen {
     this.buildActors()
 
     // Setup filters
-    this.blurFilter = new BlurFilter(0) // 8 = default strength
-    // default to NO blur
+    this.blurFilter = new BlurFilter({ strength: 0 }) // default to NO blur
+    //this.blurFilter = new BlurFilter(0) // 8 = default strength
     SAGE.backLayer.filters = [this.blurFilter]
 
     // Fade in scene music
@@ -141,7 +145,7 @@ export class SceneScreen extends Container implements IScreen {
   }
 
   private onPointerMove(_e: FederatedPointerEvent) {
-    SAGE.debugLog(`${this.name}::onPointerMove()`)
+    SAGE.debugLog(`${this.label}::onPointerMove()`)
     if (this.draggedProp) {
       // Temp remove interaction to "dragged" Prop
       this.draggedProp.sprite.eventMode = "auto"
@@ -155,7 +159,7 @@ export class SceneScreen extends Container implements IScreen {
 
   private onPointerUp() {
     //_e: FederatedPointerEvent) {
-    SAGE.debugLog(`${this.name}::onPointerUp()`)
+    SAGE.debugLog(`${this.label}::onPointerUp()`)
     if (this.draggedProp) {
       // We were dragging something - did we drop it on something?
       if (this.dragTarget) {
@@ -353,7 +357,7 @@ export class SceneScreen extends Container implements IScreen {
         // When in PLAY/test mode - need to handle non-preloaded images
         const base = await Assets.load(this.scene.image)
         if (this.scene?.image.includes("data:video")) {
-          base.baseTexture.resource.play()
+          base.source.resource.play()
         }
         const texture = new Texture(base)
         sprite = Sprite.from(texture)

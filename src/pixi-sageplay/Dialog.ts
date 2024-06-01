@@ -142,12 +142,12 @@ export class Dialog {
       // ================================================================================
       // NOTE: the unicode char breaks debugging, use ">" instead while debugging!
       // ================================================================================
-      const bullet = new Text("▸", style)
+      const bullet = new Text({ text: "▸", style })
       bullet.x = 0
       bullet.y = yOffset
       this.dialogContainer.addChild(bullet)
       // Choice
-      choice.text = new Text(choice.message, style) // Text supports unicode!
+      choice.text = new Text({ text: choice.message, style }) // Text supports unicode!
       choice.text.x = 46
       choice.text.y = yOffset
       this.dialogContainer.addChild(choice.text)
@@ -360,7 +360,7 @@ export class Dialog {
     // }
 
     // Subtitle/caption/speech
-    const styly: TextStyle = new TextStyle({
+    const style: TextStyle = new TextStyle({
       align: "center",
       fill: options.col || "#fff",
       fontSize: 47,
@@ -372,7 +372,7 @@ export class Dialog {
     if (options.speaker) {
       options.message = `[${options.speaker.toUpperCase()}]\n${options.message}`
     }
-    const newDialogText = new Text(options.message, styly) // Text supports unicode!
+    const newDialogText = new Text({ text: options.message, style }) // Text supports unicode!
     newDialogText.x = SAGE.width / 2
     newDialogText.y = SAGE.height - newDialogText.height / 2 - 80
     newDialogText.anchor.set(0.5)
@@ -463,10 +463,13 @@ export class Dialog {
       // Add "blocker" for all other input except dialog choices
       // (only do this once, per dialog choice menu init)
       this.blocker = new Graphics()
-      //this.blocker.beginFill(0x0) // "Visible"...
-      //this.blocker.alpha = 0.6    //  (...for debugging)
-      this.blocker.beginFill(0xccc, 0.00000000000001) // "Invisible"
-      this.blocker.drawRect(0, 0, SAGE.width, SAGE.height)
+      // (...for debugging)
+      //this.blocker
+      // .fill({ color: "0xe74c3c", alpha: 0.5 })
+      // .stroke({ width: 10, color: "red" }) // Red
+      this.blocker
+        .fill({ alpha: 0.00000000000001 }) // "Invisible" (else doesn't draw/exist to collide)
+        .rect(0, 0, SAGE.width, SAGE.height)
       this.blocker.eventMode = "static"
       this.blocker.on("pointertap", () => {
         SAGE.debugLog("Blocker was clicked/tapped")
