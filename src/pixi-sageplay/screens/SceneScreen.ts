@@ -350,46 +350,25 @@ export class SceneScreen extends Container implements IScreen {
 
     if (this.scene.image) {
       if (mode == "play") {
-          // When in play/test mode - need to handle non-preloaded images
-          const base = await Assets.load(this.scene.image)
-
-          if (this.scene?.image.includes("data:video")) {
-            base.baseTexture.resource.loop = true
-          }
-
-          const texture = new Texture(base)
-          sprite = Sprite.from(texture)
-          //
-          //-----
-          //if (base.valid) {
-            // (Only called if prev loaded image is re-loaded)
-            const viewRatio = SAGE.width / SAGE.height //1.77
-            const imageRatio = sprite.width / sprite.height
-            if (imageRatio < viewRatio) {
-              sprite.width = SAGE.width
-              sprite.height = sprite.width / imageRatio
-            } else {
-              sprite.height = SAGE.height
-              sprite.width = sprite.height * imageRatio
-            }
-          // } else {
-          //   // ...else grab dimensions one texture fully loaded
-          //   base.on("loaded", () => {
-          //     // debugger
-          //     const viewRatio = SAGE.width / SAGE.height //1.77
-          //     const imageRatio = sprite.width / sprite.height
-          //     if (imageRatio < viewRatio) {
-          //       sprite.width = SAGE.width
-          //       sprite.height = sprite.width / imageRatio
-          //     } else {
-          //       sprite.height = SAGE.height
-          //       sprite.width = sprite.height * imageRatio
-          //     }
-          //   })
-          // }
-        //}
+        // When in PLAY/test mode - need to handle non-preloaded images
+        const base = await Assets.load(this.scene.image)
+        if (this.scene?.image.includes("data:video")) {
+          base.baseTexture.resource.loop = true
+        }
+        const texture = new Texture(base)
+        sprite = Sprite.from(texture)
+        const viewRatio = SAGE.width / SAGE.height //1.77
+        const imageRatio = sprite.width / sprite.height
+        if (imageRatio < viewRatio) {
+          sprite.width = SAGE.width
+          sprite.height = sprite.width / imageRatio
+        } else {
+          sprite.height = SAGE.height
+          sprite.width = sprite.height * imageRatio
+        }
       } else {
-        // When in "release" mode, all images should've been preloaded, so go ahead
+        // When in "RELEASE" mode,
+        // all images should've been preloaded, so go ahead
         // create a video texture from a path
         sprite = Sprite.from(this.scene.image)
         //const texture = Texture.from({ id: this.scene.image })
