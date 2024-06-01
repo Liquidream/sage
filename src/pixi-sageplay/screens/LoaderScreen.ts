@@ -15,13 +15,13 @@ import { Button } from "@/pixi-sageplay/screens/ui/Button"
 import { Fullscreen } from "@/utils/Fullscreen"
 
 export class LoaderScreen extends Container {
-  // Colour scheme
-  readonly colPrime = 0x0a62be
-  readonly colSecond = 0x1d2b53
+  // "constants"
+  // (perhaps overridable in config?)
+  readonly COL_PRIME = 0x0a62be
+  readonly COL_SECOND = 0x1d2b53
 
   // for making our loader graphics...
   private loaderBar: Container
-  private loaderBarBorder: Graphics
   private loaderBarFill: Graphics
 
   constructor() {
@@ -31,20 +31,15 @@ export class LoaderScreen extends Container {
     const loaderBarHeight = SAGE.height * 0.1
 
     this.loaderBarFill = new Graphics()
-    this.loaderBarFill.beginFill(this.colPrime, 1)
-    this.loaderBarFill.drawRect(0, 0, loaderBarWidth, loaderBarHeight)
-    this.loaderBarFill.endFill()
+      .rect(0, 0, loaderBarWidth, loaderBarHeight)
+      .fill({ color: this.COL_PRIME })
+      .stroke({ width: 10, color: this.COL_SECOND })
     this.loaderBarFill.scale.x = 0
-
-    this.loaderBarBorder = new Graphics()
-    this.loaderBarBorder.lineStyle(10, this.colSecond, 1)
-    this.loaderBarBorder.drawRect(0, 0, loaderBarWidth, loaderBarHeight)
 
     this.loaderBar = new Container()
     this.loaderBar.addChild(this.loaderBarFill)
-    this.loaderBar.addChild(this.loaderBarBorder)
-    this.loaderBar.position.x = (SAGE.width - this.loaderBar.width) / 2
-    this.loaderBar.position.y = (SAGE.height - this.loaderBar.height) / 2
+    this.loaderBar.position.x = (SAGE.width - loaderBarWidth) / 2
+    this.loaderBar.position.y = (SAGE.height - loaderBarHeight) / 2
     this.addChild(this.loaderBar)
 
     // Start loading!
@@ -63,21 +58,21 @@ export class LoaderScreen extends Container {
     console.log("in initializeLoader()...")
 
     // Add extension to handle video/mp4 files
-    const Mp4Asset = {
-      extension: ExtensionType.Asset,
-      detection: {
-        // TODO: replace this with browser detection
-        test: async () => true,
-        add: async (formats) => [...formats, "mp4"],
-        remove: async (formats) => formats.filter((format) => format !== "mp4"),
-      },
-      loader: {
-        test: (url) => path.extname(url) === ".mp4",
-        load: async (url, asset) => Texture.fromURL(url, asset.data),
-        unload: async (asset) => asset.destroy(true),
-      },
-    }
-    extensions.add(Mp4Asset)
+    // const Mp4Asset = {
+    //   extension: ExtensionType.Asset,
+    //   detection: {
+    //     // TODO: replace this with browser detection
+    //     test: async () => true,
+    //     add: async (formats) => [...formats, "mp4"],
+    //     remove: async (formats) => formats.filter((format) => format !== "mp4"),
+    //   },
+    //   loader: {
+    //     test: (url) => path.extname(url) === ".mp4",
+    //     load: async (url, asset) => Texture.fromURL(url, asset.data),
+    //     unload: async (asset) => asset.destroy(true),
+    //   },
+    // }
+    // extensions.add(Mp4Asset)
 
     // use .json file
     await Assets.init({ manifest: "assets.json" })

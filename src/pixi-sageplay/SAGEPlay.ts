@@ -352,7 +352,7 @@ export class SAGE {
     InkManager.restoreSavedState(inkState)
     InkManager.chooseStoryPath(worldStore.currSceneId + "")
 
-    console.log(inkState)
+    //console.log(inkState)
   }
 
   public static gameOver(message: string) {
