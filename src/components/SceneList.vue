@@ -18,6 +18,8 @@
           width="100"
           @click="toggle"
           style="cursor: pointer"
+          :aspect-ratio="16 / 9"
+          cover
         >
           <div class="d-flex fill-height align-center justify-center">
             <v-scale-transition>
