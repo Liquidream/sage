@@ -183,12 +183,14 @@ export class Dialog {
       // >> On Mouse Over...
       const funcOver = () => {
         choice.text.style.fill = "yellow"
+        bullet.style.fill = "yellow"
       }
       bullet.on("mouseover", funcOver)
       choice.text.on("mouseover", funcOver)
       // >> On Mouse Out...
       const funcOut = () => {
         choice.text.style.fill = this.dialogCol
+        bullet.style.fill = this.dialogCol
       }
       bullet.on("mouseout", funcOut)
       choice.text.on("mouseout", funcOut)
