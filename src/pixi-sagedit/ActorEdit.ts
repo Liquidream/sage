@@ -28,6 +28,9 @@ export class ActorEdit extends AdjustableDataObject {
   }
 
   public async initialize() {
+    // init base content
+    await this.setup()
+
     // Initialise from data object
     let sprite = undefined
     if (this.data.image) {

@@ -26,13 +26,18 @@ export class DoorEdit extends AdjustableDataObject {
 
     // Initialise from data object
     this.data = doorModel
+  }
+
+ public async initialize() {
+    // init base content
+    await this.setup()
 
     // ---------------------------------------
     // Door Graphics
     //
     this.graphics = new Graphics()
 
-    this.updateSelectionState(useWorldStore().currDoorId === doorModel.id)
+    this.updateSelectionState(useWorldStore().currDoorId === this.data.id)
 
     // Events
     this.inputEvents = new InputEventEmitter(this.graphics)
@@ -61,30 +66,30 @@ export class DoorEdit extends AdjustableDataObject {
     // Door Sprite
     //
     let sprite = undefined
-    if (doorModel.image) {
-      const imgBase64 = doorModel.image
+    if (this.data.image) {
+      const imgBase64 = this.data.image
        // Workaround for awaiting async call in constructor
       // https://stackoverflow.com/a/50885340/574415
       (async () => {
         const base = await Assets.load(imgBase64)
         //const base = new BaseTexture(imgBase64)
         console.log(
-          `>> model dimensions: width=${doorModel.width} height=${doorModel.height}`
+          `>> model dimensions: width=${this.data.width} height=${this.data.height}`
         )
         const texture = new Texture(base)
         sprite = Sprite.from(texture)
       })()
     } else {
       sprite = new Sprite(Texture.EMPTY)
-      sprite.width = doorModel.width || 0
-      sprite.height = doorModel.height || 0
+      sprite.width = this.data.width || 0
+      sprite.height = this.data.height || 0
     }
     this.sprite = sprite
     sprite.anchor.set(0.5)
-    sprite.x = doorModel.x || 0
-    sprite.y = doorModel.y || 0
+    sprite.x = this.data.x || 0
+    sprite.y = this.data.y || 0
     // visible state
-    if (!doorModel.visible) {
+    if (!this.data.visible) {
       this.sprite.alpha = 0.5
     }
   }

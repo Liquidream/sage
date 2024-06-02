@@ -591,9 +591,10 @@ export class SceneScreen extends Container {
     prop.tidyUp()
   }
 
-  public addDoor(doorModel: DoorModel) {
+  public async addDoor(doorModel: DoorModel) {
     // Create new component obj (contains data + view)
     const door = new DoorEdit(doorModel)
+    await door.initialize()
     this.addChild(door.sprite)
     this.addChild(door.graphics)
     this.doors.push(door)
