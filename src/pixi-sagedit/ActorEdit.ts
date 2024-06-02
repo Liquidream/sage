@@ -123,7 +123,7 @@ export class ActorEdit extends AdjustableDataObject {
     if (isSelected) {
       this.graphics.stroke({ width: 10, color: "red" }) // Red
     } else {
-      this.graphics.stroke({ width: 0, color: 0x000000 }) // "Invisible"
+      this.graphics.stroke({ width: 0, color: 0x00000000000001 }) // "Invisible"
     }
     // Set Graphics "canvas" to correct pos/width
     // (So we can easily move it when "dragging")

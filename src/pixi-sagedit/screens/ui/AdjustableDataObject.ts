@@ -52,7 +52,7 @@ export class AdjustableDataObject {
     this.graphics.clear()
     // Draw a rectangle
     // Set the fill color
-    if (this.data.key_prop_id) this.graphics.beginFill(0xffff00, 0.25) // light yellow
+    //if (this.data.key_prop_id) this.graphics.beginFill(0xffff00, 0.25) // light yellow
     // Set Graphics "canvas" to correct pos/width
     // (So we can easily move it when "dragging")
     this.graphics.x = this.data.x || 0
@@ -61,16 +61,19 @@ export class AdjustableDataObject {
     this.graphics.height = height
     // Make a center point of origin (anchor)
     this.graphics.pivot.set(width / 2, height / 2)
+    this.graphics.roundRect(0, 0, width, height, 30)
+    if (this.data.target_scene_id) this.graphics.fill({ color: "yellow", alpha: 0.25 })
     if (this.selected) {
-      this.graphics.lineStyle(10, 0xff0000) // Red
+      this.graphics.stroke({ width: 10, color: "red" }) // Red
+      //this.graphics.lineStyle(10, 0xff0000) // Red
     } else {
-      this.graphics.lineStyle(10, 0x000000, 0) // "Invisible"
+      this.graphics.stroke({ width: 0, color: 0x000000 }) // "Invisible"
+      //this.graphics.lineStyle(10, 0x00000000000001, 0) // "Invisible"
     }
     // (graphics "canvas" are already in position/width)
-    this.graphics.drawRoundedRect(0, 0, width, height, 30)
 
     // Applies fill to lines and shapes since the last call to beginFill.
-    this.graphics.endFill()
+    //this.graphics.endFill()
   }
 
   private onResizePointerDown() {
