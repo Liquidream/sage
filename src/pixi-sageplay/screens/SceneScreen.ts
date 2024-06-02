@@ -64,10 +64,10 @@ export class SceneScreen extends Container implements IScreen {
     this.buildProps()
     this.buildActors()
 
-    // Setup filters
-    this.blurFilter = new BlurFilter({ strength: 0 }) // default to NO blur
-    //this.blurFilter = new BlurFilter(0) // 8 = default strength
-    SAGE.backLayer.filters = [this.blurFilter]
+    // Reference filters
+    this.blurFilter = SAGE.backLayer.filters[1] as BlurFilter
+    //this.blurFilter = new BlurFilter({ strength: 0 }) // default to NO blur
+    //SAGE.backLayer.filters = [this.blurFilter]
 
     // Fade in scene music
     if (this.scene.sound) {
@@ -85,6 +85,7 @@ export class SceneScreen extends Container implements IScreen {
     //{(_framesPassed: number): void {
     // Do any movement here...
 
+    //console.log(`>> update()... ${Date.now()}`)
     //You need to update a group for the tweens to do something!
     Group.shared.update()
   }

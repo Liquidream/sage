@@ -1,4 +1,4 @@
-import { Application, Container, AlphaFilter, Assets } from "pixi.js"
+import { Application, Container, AlphaFilter, Assets, BlurFilter } from "pixi.js"
 import { Tween } from "tweedle.js"
 import { Dialog, DialogChoice } from "./Dialog"
 import { Events } from "./Events"
@@ -130,10 +130,26 @@ export class SAGE {
   static createLayers() {
     // Background layer
     SAGE.backLayer = new Container()
+    // Setup filters
+    //   [0] = Alpha
+    //   [1] = Blur
+    SAGE.backLayer.filters = [
+      new AlphaFilter({ alpha: 0.5 }),
+      new BlurFilter({ strength: 0 }), // default to NO blur (8 = default strength)
+    ]
     SAGE._app.stage.addChild(SAGE.backLayer)
+
     // Mid-ground layer
     SAGE.midLayer = new Container()
+    // Setup filters
+    //   [0] = Alpha
+    //   [1] = Blur
+    SAGE.midLayer.filters = [
+      new AlphaFilter(),
+      new BlurFilter({ strength: 0 }), // default to NO blur (8 = default strength)
+    ]
     SAGE._app.stage.addChild(SAGE.midLayer)
+
     // Foreground/UI layer
     SAGE.topLayer = new Container()
     SAGE._app.stage.addChild(SAGE.topLayer)
@@ -437,43 +453,53 @@ export class SAGE {
   public static changeScreenFade(newScene: IScreen): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       const oldScreen = SAGE.currentScreen
-      // Fade out
-      // https://github.com/pixijs/pixijs/issues/4334
-      const fadeOutAlphaMatrix = new AlphaFilter()
-      fadeOutAlphaMatrix.alpha = 1
-      oldScreen.filters = [fadeOutAlphaMatrix]
 
-      const fadeOutTween = new Tween(fadeOutAlphaMatrix).to({ alpha: 0 }, 500)
+      // Reference filters
+      const fadeAlphaBack = SAGE.backLayer.filters[0] as AlphaFilter
+      const fadeAlphaMid = SAGE.midLayer.filters[0] as AlphaFilter
+      const blurFilterBack = SAGE.backLayer.filters[1] as BlurFilter
+      const blurFilterMid = SAGE.backLayer.filters[1] as BlurFilter
+
+      // Fade out
+      const fadeOutBackTween = new Tween(fadeAlphaBack) //(fadeOutAlphaMatrix)
+        .to({ alpha: 0 }, 500)
+        .onComplete(() => {
+          // remove all old screen resources (+event subscriptions)
+          SAGE.backLayer.removeChild(oldScreen)
+          SAGE.midLayer.removeChildren()
+
+          // Default to no blur every time
+          // (so can fade down a blur, but start up without)
+          blurFilterBack.blur = 0
+          blurFilterMid.blur = 0
+
+          // Prep the fade-in
+          SAGE.backLayer.addChild(newScene)
+        })
+
+      const fadeOutMidTween = new Tween(fadeAlphaMid)
+        .to({ alpha: 0 }, 500)
 
       // Fade in
-      const fadeInAlphaMatrix = new AlphaFilter()
-      fadeInAlphaMatrix.alpha = 0
-      newScene.filters = [fadeInAlphaMatrix]
-      const fadeInTween = new Tween(fadeInAlphaMatrix)
+      const fadeInBackTween = new Tween(fadeAlphaBack)
         .to({ alpha: 1 }, 500)
         .onComplete(() => {
-          // call callback function when fade complete
-          //func()
           // Remove and destroy old scene... if we had one..
           if (oldScreen) {
             // remove all event subscriptions
-            SAGE.backLayer.removeChild(oldScreen)
-            SAGE.midLayer.removeChildren()
-            //SAGE.midLayer.removeChild(oldScreen)
-            //SAGE._app.stage.removeChild(oldScreen);
             oldScreen.destroy()
           }
           resolve()
         })
 
-      SAGE.currentScreen = newScene
-      // Moved main gameplay to back layer
-      // so we can blur/lock it when talking/examining objects
-      SAGE.backLayer.addChild(newScene)
-      //SAGE.midLayer.addChild(newScene)
+      const fadeInMidTween = new Tween(fadeAlphaMid)
+        .to({ alpha: 1 }, 500)
 
-      // Start the fade out+in animation
-      fadeOutTween.chain(fadeInTween).start()
+      SAGE.currentScreen = newScene
+
+      // Start the fade out+in animations
+      fadeOutBackTween.chain(fadeInBackTween).start()
+      fadeOutMidTween.chain(fadeInMidTween).start()
 
       // If inventory open, auto-collapse it
       if (SAGE.invScreen.isOpen) SAGE.invScreen.close()

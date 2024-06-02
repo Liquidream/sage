@@ -200,26 +200,25 @@ const doorStore = useDoorStore()
 const actorStore = useActorStore()
 const gameStateStore = useGameStateStore()
 
-//Restore play data?
-if (mode == "play") {
-  //let app = createApp(AppServer);
-  console.log(">>> Load data?")
+// Only proceed once ALL stores have fully loaded
+// (takes longer with IndexedDB)
+Promise.all([
+  worldStore.$persistedState.isReady(),
+  sceneStore.$persistedState.isReady(),
+  propStore.$persistedState.isReady(),
+  doorStore.$persistedState.isReady(),
+  actorStore.$persistedState.isReady(),
+  gameStateStore.$persistedState.isReady(),
+]).then(() => {
+  //Restore play data?
+  if (mode == "play") {
+    //let app = createApp(AppServer);
+    console.log(">>> Load data?")
 
+    // Check for data to load
+    if (window.opener.sagePlayData) {
+      const sagePlayData = window.opener.sagePlayData as SagePlayData
 
-  // Check for data to load
-  if (window.opener.sagePlayData) {
-    const sagePlayData = window.opener.sagePlayData as SagePlayData
-
-    // Only proceed once ALL stores have fully loaded
-    // (takes longer with IndexedDB)
-    Promise.all([
-      worldStore.$persistedState.isReady(),
-      sceneStore.$persistedState.isReady(),
-      propStore.$persistedState.isReady(),
-      doorStore.$persistedState.isReady(),
-      actorStore.$persistedState.isReady(),
-      gameStateStore.$persistedState.isReady(),
-    ]).then(() => {
       console.log("All stores hydrated pt.1, now overwrite state")
 
       // World Data
@@ -245,65 +244,22 @@ if (mode == "play") {
       // GameState data
       // (Deliberately not restored/reset from edit data
       //  so that it is available for same/load)
-    })
 
-    // Ink Script data
-    InkManager.inkJsonString = sagePlayData.scriptData
-
-    // // World Data
-    // const worldStore = useWorldStore()
-    // const worldData: WorldState = JSON.parse(sagePlayData.worldData)
-    // worldStore.$state = worldData
-
-    // // Scene Data
-    // const sceneStore = useSceneStore()
-    // const sceneData: SceneState = JSON.parse(sagePlayData.sceneData)
-    // sceneStore.$state = sceneData
-
-    // // Prop Data
-    // const propStore = usePropStore()
-    // const propData: PropState = JSON.parse(sagePlayData.propData)
-    // propStore.$state = propData
-
-    // // Door Data
-    // const doorStore = useDoorStore()
-    // const doorData: DoorState = JSON.parse(sagePlayData.doorData)
-    // doorStore.$state = doorData
-
-    // // Actor Data
-    // const actorStore = useActorStore()
-    // const actorData: ActorState = JSON.parse(sagePlayData.actorData)
-    // actorStore.$state = actorData
-
-    // DONT reset player/save store on each "play"
-    // Player Data
-    //const playerStore = usePlayerStore()
-    // const playerData: PlayerState = JSON.parse(sagePlayData.playerData)
-    // playerStore.$state = playerData
-
-    // debugger
+      // Ink Script data
+      InkManager.inkJsonString = sagePlayData.scriptData
+    }
   }
-} else {
-  // Still wait for hydration, in edit mode
-  await Promise.all([
-    worldStore.$persistedState.isReady(),
-    sceneStore.$persistedState.isReady(),
-    propStore.$persistedState.isReady(),
-    doorStore.$persistedState.isReady(),
-    actorStore.$persistedState.isReady(),
-    //gameStateStore.$persistedState.isReady(),
-  ])
-}
 
-console.log(">>> (finished loading data)")
+  console.log(">>> (finished loading data)")
 
-loadFonts()
+  loadFonts()
 
-// Finally, mount the app
-console.log(">>> Mounting #app...")
-app.mount("#app")
+  // Finally, mount the app
+  console.log(">>> Mounting #app...")
+  app.mount("#app")
 
-// prevent right click contextBox
-document.addEventListener("contextmenu", (e) => {
-  e.preventDefault()
+  // prevent right click contextBox
+  document.addEventListener("contextmenu", (e) => {
+    e.preventDefault()
+  })
 })
