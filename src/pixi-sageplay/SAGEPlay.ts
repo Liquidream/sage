@@ -128,22 +128,27 @@ export class SAGE {
   }
 
   static createLayers() {
+    // Setup filters
+    //   [0] = Alpha
+    //   [1] = Blur
+    SAGE._app.stage.filters = [
+      new AlphaFilter(),
+      new BlurFilter({ strength: 0 }), // default to NO blur (8 = default strength)
+    ]
+
     // Background layer
     SAGE.backLayer = new Container()
     // Setup filters
     //   [0] = Alpha
     //   [1] = Blur
     SAGE.backLayer.filters = [
-      new AlphaFilter({ alpha: 0.5 }),
+      new AlphaFilter(),
       new BlurFilter({ strength: 0 }), // default to NO blur (8 = default strength)
     ]
     SAGE._app.stage.addChild(SAGE.backLayer)
 
     // Mid-ground layer
     SAGE.midLayer = new Container()
-    // Setup filters
-    //   [0] = Alpha
-    //   [1] = Blur
     SAGE.midLayer.filters = [
       new AlphaFilter(),
       new BlurFilter({ strength: 0 }), // default to NO blur (8 = default strength)
@@ -453,13 +458,14 @@ export class SAGE {
       const oldScreen = SAGE.currentScreen
 
       // Reference filters
-      const fadeAlphaBack = SAGE.backLayer.filters[0] as AlphaFilter
-      const fadeAlphaMid = SAGE.midLayer.filters[0] as AlphaFilter
+      const fadeAlphaStage = SAGE._app.stage.filters[0] as AlphaFilter
+      // const fadeAlphaBack = SAGE.backLayer.filters[0] as AlphaFilter
+      // const fadeAlphaMid = SAGE.midLayer.filters[0] as AlphaFilter
       const blurFilterBack = SAGE.backLayer.filters[1] as BlurFilter
       const blurFilterMid = SAGE.backLayer.filters[1] as BlurFilter
 
       // Fade out
-      const fadeOutBackTween = new Tween(fadeAlphaBack)
+      const fadeOutTween = new Tween(fadeAlphaStage)
         .to({ alpha: 0 }, 500)
         .onComplete(() => {
           // remove all old screen resources (+event subscriptions)
@@ -475,11 +481,11 @@ export class SAGE {
           SAGE.backLayer.addChild(newScene)
         })
 
-      const fadeOutMidTween = new Tween(fadeAlphaMid)
-        .to({ alpha: 0 }, 500)
+      // const fadeOutMidTween = new Tween(fadeAlphaMid)
+      //   .to({ alpha: 0 }, 500)
 
       // Fade in
-      const fadeInBackTween = new Tween(fadeAlphaBack)
+      const fadeInTween = new Tween(fadeAlphaStage)
         .to({ alpha: 1 }, 500)
         .onComplete(() => {
           // Remove and destroy old scene... if we had one..
@@ -490,14 +496,13 @@ export class SAGE {
           resolve()
         })
 
-      const fadeInMidTween = new Tween(fadeAlphaMid)
-        .to({ alpha: 1 }, 500)
+      // const fadeInMidTween = new Tween(fadeAlphaMid)
+      //   .to({ alpha: 1 }, 500)
 
       SAGE.currentScreen = newScene
 
       // Start the fade out+in animations
-      fadeOutBackTween.chain(fadeInBackTween).start()
-      fadeOutMidTween.chain(fadeInMidTween).start()
+      fadeOutTween.chain(fadeInTween).start()
 
       // If inventory open, auto-collapse it
       if (SAGE.invScreen.isOpen) SAGE.invScreen.close()
