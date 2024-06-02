@@ -11,7 +11,9 @@ export class StringUtils {
    * https://stackoverflow.com/a/55594573/574415
    */
   public static inject(str, obj) {
-    // https://stackoverflow.com/a/55594573/574415
-    return str.replace(/\${(.*?)}/g, (x, g) => obj[g])
+    if (str != undefined) {
+      // https://stackoverflow.com/a/55594573/574415
+      return str.replace(/\${(.*?)}/g, (x, g) => obj[g])
+    }
   }
 }

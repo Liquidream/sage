@@ -114,7 +114,7 @@
             >
           </v-toolbar>
           <v-ace-editor
-            :value="$props.modelValue"
+            :value="$props.modelValue ?? ''"
             @update:value="debouncedInput($event)"
             ref="aceRefLarge"
             lang="ink"
@@ -142,7 +142,7 @@
     </v-col>
   </v-row>
   <v-ace-editor
-    :value="$props.modelValue"
+    :value="$props.modelValue ?? ''"
     @update:value="debouncedInput($event)"
     ref="aceRefSmall"
     lang="ink"
@@ -284,7 +284,7 @@
 
     // validate on startup
     // (Do it on a delay, to give storage chance to hydrate - if first load)
-    setTimeout(() => (compilerResult.log = InkManager.validateScript()), 1000)
+    setTimeout(() => (compilerResult.log = InkManager.validateScript()), 5000)
   })
 </script>
 

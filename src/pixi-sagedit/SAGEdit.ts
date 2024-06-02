@@ -197,19 +197,19 @@ export class SAGEdit {
     // console.log(`verticalMargin = ${verticalMargin}px`)
     // console.log(`horizontalMargin = ${horizontalMargin}px`)
 
-    if (SAGEdit._app && SAGEdit._app.view.style) {
+    if (SAGEdit._app && SAGEdit._app.canvas.style) {
       // now we use css trickery to set the sizes and margins
-      SAGEdit._app.view.style.width = `${enlargedWidth}px`
-      SAGEdit._app.view.style.height = `${enlargedHeight}px`
+      SAGEdit._app.canvas.style.width = `${enlargedWidth}px`
+      SAGEdit._app.canvas.style.height = `${enlargedHeight}px`
 
       // center vertically ONLY if not in "mobile" mode
       if (!isMobile) {
-        // SAGEdit._app.view.style.marginTop =
-        //   SAGEdit._app.view.style.marginBottom = `${verticalMargin}px`
-        // SAGEdit._app.view.style.marginLeft = `${horizontalMargin}px`
+        // SAGEdit._app.canvas.style.marginTop =
+        //   SAGEdit._app.canvas.style.marginBottom = `${verticalMargin}px`
+        // SAGEdit._app.canvas.style.marginLeft = `${horizontalMargin}px`
       } else {
-        SAGEdit._app.view.style.marginTop = `$0px`
-        SAGEdit._app.view.style.marginLeft = `$0px`
+        SAGEdit._app.canvas.style.marginTop = `$0px`
+        SAGEdit._app.canvas.style.marginLeft = `$0px`
       }
     }
   }

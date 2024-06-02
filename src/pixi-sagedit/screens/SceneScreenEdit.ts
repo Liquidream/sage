@@ -409,7 +409,7 @@ export class SceneScreen extends Container {
   private buildDialogText() {
     //const worldStore = useWorldStore()
     // Create text
-    const styly: TextStyle = new TextStyle({
+    const style: TextStyle = new TextStyle({
       align: "center",
       fill: "#fff",
       fontSize: 47,
@@ -435,7 +435,7 @@ export class SceneScreen extends Container {
       dialogText = "(No Scene selected)"
     }
 
-    this.dialogText = new Text(dialogText, styly) // Text supports unicode!
+    this.dialogText = new Text({ text: dialogText, style }) // Text supports unicode!
     this.dialogText.x = SAGEdit.width / 2
     this.dialogText.y = SAGEdit.height - this.dialogText.height / 2 - 80
     this.dialogText.anchor.set(0.5)
@@ -720,7 +720,7 @@ export class SceneScreen extends Container {
 
   private onPointerUp() {
     //_e: InteractionEvent) {
-    SAGEdit.debugLog(`${this.name}::onPointerUp()`)
+    SAGEdit.debugLog(`${this.label}::onPointerUp()`)
 
     if (this.draggedProp) {
       // End Drag+Drop mode
