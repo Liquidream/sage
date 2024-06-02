@@ -29,6 +29,7 @@
 
 <style>
   .pwa-toast {
+    background: #323232;
     position: fixed;
     right: 0;
     bottom: 0;
