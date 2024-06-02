@@ -440,14 +440,12 @@ export class SAGE {
     if (SAGE.currentScreen) {
       // remove all event subscriptions
       SAGE.midLayer.removeChild(SAGE.currentScreen)
-      //SAGE._app.stage.removeChild(SAGE.currentScreen);
       SAGE.currentScreen.destroy()
     }
 
     // Add the new one
     SAGE.currentScreen = newScene
     SAGE.midLayer.addChild(SAGE.currentScreen)
-    //SAGE._app.stage.addChild(SAGE.currentScreen);
   }
 
   public static changeScreenFade(newScene: IScreen): Promise<void> {
@@ -461,7 +459,7 @@ export class SAGE {
       const blurFilterMid = SAGE.backLayer.filters[1] as BlurFilter
 
       // Fade out
-      const fadeOutBackTween = new Tween(fadeAlphaBack) //(fadeOutAlphaMatrix)
+      const fadeOutBackTween = new Tween(fadeAlphaBack)
         .to({ alpha: 0 }, 500)
         .onComplete(() => {
           // remove all old screen resources (+event subscriptions)
