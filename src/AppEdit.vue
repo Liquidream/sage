@@ -16,7 +16,6 @@
     <v-main :class="!isPortrait ? 'd-flex justify-center align-center' : ''">
       <div ref="stage" :class="isPortrait ? 'mt-0 mb-0' : ''" id="pixi-canvas"></div>
       <!-- <canvas :class="isPortrait ? 'mt-0 mb-0' : ''" id="pixi-canvas"></canvas> -->
-
     </v-main>
 
     <v-app-bar v-if="!isPortrait" flat height="75" location="bottom" order="1">
@@ -390,5 +389,6 @@
 
   html {
     overflow: hidden !important;
+    line-height: 0; /* Without this, it's 1.5 and get black line under stage on mobile */
   }
 </style>
