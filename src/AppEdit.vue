@@ -389,6 +389,6 @@
 
   html {
     overflow: hidden !important;
-    line-height: 0; /* Without this, it's 1.5 and get black line under stage on mobile */
+    line-height: 0 !important; /* Without this, it's 1.5 and get black line under stage on mobile */
   }
 </style>
