@@ -389,6 +389,9 @@
 
   html {
     overflow: hidden !important;
+  }
+
+  .v-main {
     line-height: 0 !important; /* Without this, it's 1.5 and get black line under stage on mobile */
   }
 </style>
