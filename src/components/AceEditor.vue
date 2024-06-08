@@ -38,7 +38,7 @@
     <v-col>
       <span class="text-caption text-medium-emphasis">{{ label }}</span>
     </v-col>
-    <v-col align="end">
+    <v-col align="right">
       <v-dialog
         v-model="dialog"
         persistent
