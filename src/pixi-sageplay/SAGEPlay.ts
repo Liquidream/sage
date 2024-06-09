@@ -102,7 +102,7 @@ export class SAGE {
 
       // Webgpu seems to make video rendering smooth again on my mobile
       // (and doesn't seem to affect desktop perf)
-      preference: "webgpu",
+      //preference: "webgpu",
     })
 
     // SAGE._app = new Application({
@@ -149,7 +149,7 @@ export class SAGE {
     SAGE.backLayer.filters = [
       // TODO: Maybe better to only create these when neeed (+remove after)? 
       //       else could be affecting perf
-      new AlphaFilter(),
+      //new AlphaFilter(),
       new BlurFilter({ strength: 0 }), // default to NO blur (8 = default strength)
     ]
     SAGE._app.stage.addChild(SAGE.backLayer)
@@ -159,8 +159,8 @@ export class SAGE {
     SAGE.midLayer.filters = [
       // TODO: Maybe better to only create these when neeed (+remove after)? 
       //       else could be affecting perf
-      new AlphaFilter(),
-      new BlurFilter({ strength: 0 }), // default to NO blur (8 = default strength)
+      //new AlphaFilter(),
+      //new BlurFilter({ strength: 0 }), // default to NO blur (8 = default strength)
     ]
     SAGE._app.stage.addChild(SAGE.midLayer)
 
@@ -468,10 +468,9 @@ export class SAGE {
 
       // Reference filters
       const fadeAlphaStage = SAGE._app.stage.filters[0] as AlphaFilter
-      // const fadeAlphaBack = SAGE.backLayer.filters[0] as AlphaFilter
-      // const fadeAlphaMid = SAGE.midLayer.filters[0] as AlphaFilter
-      const blurFilterBack = SAGE.backLayer.filters[1] as BlurFilter
-      const blurFilterMid = SAGE.backLayer.filters[1] as BlurFilter
+      const blurFilterBack = SAGE.backLayer.filters[0] as BlurFilter
+      //const blurFilterBack = SAGE.backLayer.filters[1] as BlurFilter
+      //const blurFilterMid = SAGE.backLayer.filters[1] as BlurFilter
 
       // Fade out
       const fadeOutTween = new Tween(fadeAlphaStage)
@@ -484,7 +483,7 @@ export class SAGE {
           // Default to no blur every time
           // (so can fade down a blur, but start up without)
           blurFilterBack.blur = 0
-          blurFilterMid.blur = 0
+          //blurFilterMid.blur = 0
 
           // Prep the fade-in
           SAGE.backLayer.addChild(newScene)

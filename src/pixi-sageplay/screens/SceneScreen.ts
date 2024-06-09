@@ -65,7 +65,8 @@ export class SceneScreen extends Container implements IScreen {
     this.buildActors()
 
     // Reference filters
-    this.blurFilter = SAGE.backLayer.filters[1] as BlurFilter
+    this.blurFilter = SAGE.backLayer.filters[0] as BlurFilter
+    //this.blurFilter = SAGE.backLayer.filters[1] as BlurFilter
     //this.blurFilter = new BlurFilter({ strength: 0 }) // default to NO blur
     //SAGE.backLayer.filters = [this.blurFilter]
 
