@@ -99,7 +99,7 @@ export class SAGE {
       width: width,
       height: height,
       resizeTo: HTMLElement,
-      
+
       // Webgpu seems to make video rendering smooth again on my mobile
       // (and doesn't seem to affect desktop perf)
       preference: "webgpu",
@@ -137,7 +137,8 @@ export class SAGE {
     //   [1] = Blur
     SAGE._app.stage.filters = [
       new AlphaFilter(),
-      new BlurFilter({ strength: 0 }), // default to NO blur (8 = default strength)
+      // Not needed yet (+has an impact on FPS for non-desktops, so maybe not use?)
+      //new BlurFilter({ strength: 0 }), // default to NO blur (8 = default strength)
     ]
 
     // Background layer
@@ -146,6 +147,8 @@ export class SAGE {
     //   [0] = Alpha
     //   [1] = Blur
     SAGE.backLayer.filters = [
+      // TODO: Maybe better to only create these when neeed (+remove after)? 
+      //       else could be affecting perf
       new AlphaFilter(),
       new BlurFilter({ strength: 0 }), // default to NO blur (8 = default strength)
     ]
@@ -154,6 +157,8 @@ export class SAGE {
     // Mid-ground layer
     SAGE.midLayer = new Container()
     SAGE.midLayer.filters = [
+      // TODO: Maybe better to only create these when neeed (+remove after)? 
+      //       else could be affecting perf
       new AlphaFilter(),
       new BlurFilter({ strength: 0 }), // default to NO blur (8 = default strength)
     ]
