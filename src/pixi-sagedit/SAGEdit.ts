@@ -75,6 +75,10 @@ export class SAGEdit {
       width: width,
       height: height,
       resizeTo: HTMLElement,
+
+      // Webgpu seems to make video rendering smooth again on my mobile
+      // (and doesn't seem to affect desktop perf)
+      preference: "webgpu",
     })
 
     console.log("After _app.init...")
