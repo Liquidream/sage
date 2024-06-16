@@ -55,6 +55,10 @@ export class LoaderScreen extends Container {
     // To be a scene we must have the update method even if we don't use it.
   }
 
+  public tidyUp(restartGame?: boolean) {
+    //SAGE.debugLog(`>> Loaderscreen tidyUp()`)
+  }
+
   private async initializeLoader(): Promise<void> {
     console.log("in initializeLoader()...")
 

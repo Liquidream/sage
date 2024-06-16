@@ -330,6 +330,8 @@ export class SceneScreen extends Container {
     VideoSource.defaultOptions.autoPlay = true
     VideoSource.defaultOptions.loop = true
     VideoSource.defaultOptions.muted = true
+    // Seems without this, not getting smooth video on mobile/tablet
+    VideoSource.defaultOptions.updateFPS = 60
 
     // Moved re-getting store here to try to resolve rendering issue
     // (when jump straight to scene/selection on reload)

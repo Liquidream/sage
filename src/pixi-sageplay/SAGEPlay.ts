@@ -29,6 +29,7 @@ export interface IScreen extends Container {
   update(framesPassed: number): void
 
   // we added the resize method to the interface
+  tidyUp(restartGame?: boolean): void
   //resize(screenWidth: number, screenHeight: number): void;
 }
 
@@ -453,6 +454,8 @@ export class SAGE {
     console.log("in changeScreen(IScreen)")
     // Remove and destroy old scene... if we had one..
     if (SAGE.currentScreen) {
+      // Clean up current scene "screen"
+      SAGE.currentScreen.tidyUp()
       // remove all event subscriptions
       SAGE.midLayer.removeChild(SAGE.currentScreen)
       SAGE.currentScreen.destroy()
@@ -499,6 +502,8 @@ export class SAGE {
         .onComplete(() => {
           // Remove and destroy old scene... if we had one..
           if (oldScreen) {
+            // Clean up current scene "screen"
+            oldScreen.tidyUp()
             // remove all event subscriptions
             oldScreen.destroy()
           }

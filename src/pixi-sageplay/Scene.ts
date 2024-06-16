@@ -163,7 +163,7 @@ export class Scene implements SceneModel {
     // Teardown current scene
     SAGE.World.currentScene?.teardown()
     // Clean up current scene "screen"
-    SAGE.World.currentScene?.screen.tidyUp()
+    //SAGE.World.currentScene?.screen.tidyUp()
     // Create and switch to new "screen"
     this.screen = new SceneScreen(this)
 
