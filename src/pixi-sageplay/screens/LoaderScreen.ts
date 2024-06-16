@@ -62,6 +62,8 @@ export class LoaderScreen extends Container {
     VideoSource.defaultOptions.autoPlay = false
     VideoSource.defaultOptions.loop = true
     VideoSource.defaultOptions.muted = true
+    // Seems without this, not getting smooth video on mobile/tablet
+    VideoSource.defaultOptions.updateFPS = 60
 
     // Add extension to handle video/mp4 files
     // const Mp4Asset = {

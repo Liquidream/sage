@@ -78,6 +78,7 @@ export class SAGEdit {
 
       // Webgpu seems to make video rendering smooth again on my mobile
       // (and doesn't seem to affect desktop perf)
+      //preference: "webgl",
       //preference: "webgpu",
     })
 

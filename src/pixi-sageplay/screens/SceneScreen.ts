@@ -43,7 +43,9 @@ export class SceneScreen extends Container implements IScreen {
   private backdropInputEvents!: InputEventEmitter
 
   // Filters
-  private blurFilter: BlurFilter
+  private blurFilter!: BlurFilter
+
+  private mode!: string | null
 
   constructor(scene: Scene) {
     super()
@@ -57,6 +59,10 @@ export class SceneScreen extends Container implements IScreen {
 
   private setup() {
     SAGE.debugLog("SceneScreen : setup()...")
+
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+    this.mode = urlParams.get("mode")
 
     // Construct scene from data
     this.buildBackdrop()
@@ -110,6 +116,13 @@ export class SceneScreen extends Container implements IScreen {
     // Fade out scene music
     if (this.scene.sound) {
       SAGE.Sound.stop(this.scene.sound, !restartGame)
+    }
+
+    // Stop video playing while not being shown
+    if (this.scene.image) {
+      if (this.backdrop.texture.source.resource.pause) {
+        this.backdrop.texture.source.resource.pause()
+      }
     }
 
     // Destroy everything to ensure no mem leak/events
@@ -346,12 +359,10 @@ export class SceneScreen extends Container implements IScreen {
     // Backdrop
     let sprite = new Sprite(Texture.EMPTY)
 
-    const queryString = window.location.search
-    const urlParams = new URLSearchParams(queryString)
-    const mode = urlParams.get("mode")
+   
 
     if (this.scene.image) {
-      if (mode == "play") {
+      if (this.mode == "play") {
         // When in PLAY/test mode - need to handle non-preloaded images
         const base = await Assets.load(this.scene.image)
         if (this.scene?.image.includes("data:video")) {
