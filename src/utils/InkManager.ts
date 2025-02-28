@@ -369,20 +369,22 @@ export class InkManager {
     // (+restore inventory, world, scene, actor, prop object states accordingly)
     //const lastState = SAGE.World.player.gameState
     if (inkStoryJson && inkStoryJson.length > 0) {
+      //debugger
       InkManager.inkStory.state.LoadJson(inkStoryJson)
       console.log("-- Inventory contents:")
       const invList = InkManager.inkStory.variablesState["Inventory"] as InkList
       //debugger
       invList.orderedItems.forEach(({Key, Value}) => {
         console.log(`>> ${Key.itemName}`)
-        const propName = Key.itemName.replace("prp_", "")
+        const propName = Key.itemName?.replace("prp_", "")
         // Add to Player's inventory
-        const propModel = SAGE.World.getPropById(propName)
-        if (propName) SAGE.World.player.addToInventory(propModel)
+        if (propName) { 
+          const propModel = SAGE.World.getPropById(propName)
+          SAGE.World.player.addToInventory(propModel)
+        }
       })
     }
   }
-
 }
 
 

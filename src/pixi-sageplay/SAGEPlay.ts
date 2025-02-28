@@ -325,14 +325,15 @@ export class SAGE {
   }
 
   public static saveGameState() {
-    const inkState = InkManager.inkStory.state.ToJson()
     const worldStore = useWorldStore()
     const propStore = usePropStore()
     const sceneStore = useSceneStore()
     const doorStore = useDoorStore()
     const actorStore = useActorStore()
     const gameStateStore = useGameStateStore()
-
+    const inkState = InkManager.inkStory.state.ToJson()
+    
+    //debugger
     const newSave: SaveStateModel = {
       piniaStates: [
         JSON.stringify(worldStore.$state),
@@ -344,7 +345,9 @@ export class SAGE {
       inkStoryState: inkState,
     }
     gameStateStore.saveState = newSave
-    console.log(inkState)
+
+    //console.debug(newSave.piniaStates[1])
+    //console.debug(inkState)
   }
 
   public static loadGameState() {
@@ -361,12 +364,12 @@ export class SAGE {
     // World Data
     const worldData: WorldState = JSON.parse(piniaStates[0])
     worldStore.$state = worldData
-    // Scene Data
-    const sceneData: SceneState = JSON.parse(piniaStates[1])
-    sceneStore.$state = sceneData
     // Prop Data
-    const propData: PropState = JSON.parse(piniaStates[2])
+    const propData: PropState = JSON.parse(piniaStates[1])
     propStore.$state = propData
+    // Scene Data
+    const sceneData: SceneState = JSON.parse(piniaStates[2])
+    sceneStore.$state = sceneData
     // Door Data
     const doorData: DoorState = JSON.parse(piniaStates[3])
     doorStore.$state = doorData
@@ -374,9 +377,11 @@ export class SAGE {
     const actorData: ActorState = JSON.parse(piniaStates[4])
     actorStore.$state = actorData
 
+    //debugger
+
     // Reset (clear) inventory
-    SAGE.World.player.clearInventory()
     SAGE.invScreen.clearInventory()
+    SAGE.World.player.clearInventory()
     // Ensure settings icon is clickable (in case of broken state)
     SAGE.UI_Overlay.setSettingsIconStatus(true)
 
@@ -389,8 +394,7 @@ export class SAGE {
     const inkState = gameStateStore.saveState.inkStoryState
     InkManager.restoreSavedState(inkState)
     InkManager.chooseStoryPath(worldStore.currSceneId + "")
-
-    //console.log(inkState)
+    //console.debug(inkState)
   }
 
   public static gameOver(message: string) {

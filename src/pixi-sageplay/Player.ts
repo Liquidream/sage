@@ -36,17 +36,30 @@ export class Player implements IPlayerData {
     return this.inventory.some((prop) => prop.id === propId)
   }
 
+  /* Steps to replicate issue:
+      - Refresh
+      - Add both to inventory, save
+      - Refresh
+      - Load
+      - Refresh
+      - Save
+      - Load
+      - <NO OBJECTs - Props think in inventory, but Ink thinks not>
+   */
+
+
   /** Add the specified prop top inventory */
   public async addToInventory(propData: PropModel) {
     propData.location_type = PropLocationType.Inventory
     propData.location_id = ""
     SAGE.World.player.inventory.push(propData)
-    const prop = new Prop(propData)
-    await prop.initialize()
-    SAGE.invScreen.addProp(prop)
     // Update ink story state
     const listItem = `prp_${propData.id}`
     InkManager.inkStory.EvaluateFunction("pickup_item", [listItem])
+    // Now animate it (but at least data state in sync)
+    const prop = new Prop(propData)
+    await prop.initialize()
+    SAGE.invScreen.addProp(prop)
   }
 
   /** Remove (and return) the specified prop, if present */

@@ -94,10 +94,16 @@ export class InventoryScreen {
   }
 
   public clearInventory() {
+    console.debug(`clearInventory ${this.propsList.length}`)
     // Remove all items from inventory
     for (const prop of this.propsList) {
-      this.removeProp(prop.model.id)
+      console.debug(`remove sprite for ${prop.model.id}`)
+      this.inventoryContainer.removeChild(prop.sprite)
+      // Can't call this as it manipulates the propList
+      //this.removeProp(prop.model.id, true)
     }
+    this.propsList = new Array<Prop>()
+
     //this.propsList = new Array<Prop>()
     //this.inventoryContainer.removeChildren()
   }

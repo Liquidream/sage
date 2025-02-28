@@ -68,15 +68,13 @@ export class Prop {
       // Use main image for close-up (even if never called upon)
       const texture = await Assets.load(this.model.image)
       this.sprite_closeup = new Sprite(texture)
-      //sprite = Sprite.from(this.model.image)
     }
     // TODO: Calc & scale down to max display size (if needed)
     // Positioning
-    sprite.anchor.set(0.5)
-    sprite.x = SAGE.width / 2
-    sprite.y = SAGE.height / 2
-    this.sprite_closeup = sprite
-
+    this.sprite_closeup.anchor.set(0.5)
+    this.sprite_closeup.x = SAGE.width / 2
+    this.sprite_closeup.y = SAGE.height / 2
+    
     // Events
     this.propInputEvents = new InputEventEmitter(this.sprite)
     this.sprite.on("primaryaction", this.onPrimaryAction, this)
