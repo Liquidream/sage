@@ -215,6 +215,7 @@ export class SAGE {
     this.shortenAPI()
 
     // ...and ink
+    InkManager.Initialise()
   
     // --------------------------------------------
     // v2 - loading pre-compiled script from editor

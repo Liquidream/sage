@@ -14,14 +14,15 @@ import { useActorStore } from "@/stores/ActorStore"
 import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
 import { useDoorStore } from "@/stores/DoorStore"
 import { usePropStore } from "@/stores/PropStore"
+import type { Prop } from "@/pixi-sageplay/Prop"
 
 export class InkManager {
   private constructor() {
     /*this class is purely static. No constructor to see here*/
   }
-
+  
   public static inkJsonString: string
-
+  
   private static inkStory: InstanceType<typeof Story>
 
   public static inkHeaderWorld: string
@@ -30,9 +31,10 @@ export class InkManager {
   public static inkHeaderProp: string
   public static inkHeaderDoor: string
 
-/* ********************************************************************
- * "Edit" Related
- * ********************************************************************/
+  /* ********************************************************************
+  * "Edit" Related
+  * ********************************************************************/
+
 
   public static validateScript(): LogEntry[] {
     // Compile ink script and store any errors locally,
@@ -249,6 +251,8 @@ export class InkManager {
     // Finally, set the full list of INCLUDE's
     inkPackage["_main.ink"] = mainInkWithIncludes
 
+    //debugger
+
     return inkPackage
   }
 
@@ -258,11 +262,57 @@ export class InkManager {
  * ********************************************************************/
 
   /**
-   * Continues the ink story (if it can)
+   * Init the class (inc. setup of external functions)
+   */
+  static Initialise() {
+    // TODO: Anything here?
+  }
+
+  /**
+   * Create the ink story object from pre-compiled JSON data
    */
   public static async createStory(strData: string) {
      // V2 (loading pre-compiled ink story)
      InkManager.inkStory = new Story(strData)
+
+    // Now story exists, we can bind external functions
+    InkManager.inkStory.BindExternalFunction("ext_pickup_prop",
+      function(propId: string){ 
+        debugger
+
+        // TODO: REFACTOR THIS to call some common Pickup Prop method 
+        //       (would say Prop.Pickup(), but getting Prop obj is currently v. hard!!!)
+
+        console.debug(">>> ext_pickup_prop...")
+        let msg = `pickup ${propId}`
+        console.debug(msg)
+        if (propId) { 
+          const propModel = SAGE.World.getPropById(propId)
+          SAGE.Dialog.showMessage(`You picked up the ${propModel.name}`)
+          // If prop is in current scene, remove it
+          if (SAGE.World.currentScene.id == propModel.location_id)
+          {
+            // Find prop obj (needed to actually remove from scene - if present)
+            const index = SAGE.World.currentScene.screen.props.findIndex(
+              (item) => item.model.id === propId
+            )
+            let prop: Prop | undefined
+            if (index !== -1) prop = SAGE.World.currentScene.screen.props.splice(index, 1)[0]
+            if (prop) {
+              SAGE.World.currentScene.screen.removeProp(prop, true, true)
+            }
+          }
+          // Add to Player's inventory
+          SAGE.World.player.addToInventory(propModel)
+          // Play sound
+          SAGE.Sound.play("SFX-PickUp")
+          // Auto-open player inventory
+          SAGE.invScreen.open(true)
+        }
+        //return msg
+        //return "twelve o'clock"; 
+      }
+    );
   }
 
   /**
