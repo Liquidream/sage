@@ -101,25 +101,25 @@ export class World implements IWorldData {
   }
 
   /** Find and return scene with specific id */
-  getSceneById(sceneId: string) {
+  getSceneModelById(sceneId: string) {
     // Find the specified scene...
-    const scene = this.scenes.find((obj) => {
+    const sceneModel = this.scenes.find((obj) => {
       return obj.id === sceneId
     })
-    return scene
+    return sceneModel
   }
 
   /** Find and return prop with specific id */
-  getPropById(propId: string) {
+  getPropModelById(propId: string) {
     const propStore = usePropStore()
     const propModel = propStore.getProps.filter((c) => c.id === propId)[0]
     return propModel
   }
 
-  getActorById(actorId: string) {
+  getActorModelById(actorId: string) {
     const actorStore = useActorStore()
-    const propModel = actorStore.getActors.filter((c) => c.id === actorId)[0]
-    return propModel
+    const actorModel = actorStore.getActors.filter((c) => c.id === actorId)[0]
+    return actorModel
   }
 
   // ### REMOVED for now - as perhaps should move to Void instead? (once gone, can't come back)
@@ -145,7 +145,7 @@ export class World implements IWorldData {
     fadeIn?: boolean
   ) {
     // Get prop data
-    const propModel = this.getPropById(propId)
+    const propModel = this.getPropModelById(propId)
     if (propModel) {
       let sourceSceneId = ""
       // Remove prop from its current scene...

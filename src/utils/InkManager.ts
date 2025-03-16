@@ -278,29 +278,41 @@ export class InkManager {
     // Now story exists, we can bind external functions
     InkManager.inkStory.BindExternalFunction("ext_pickup_prop",
       function(propId: string){ 
-        debugger
+        console.debug(">>> ext_pickup_prop...")
+        //debugger
 
         // TODO: REFACTOR THIS to call some common Pickup Prop method 
         //       (would say Prop.Pickup(), but getting Prop obj is currently v. hard!!!)
 
-        console.debug(">>> ext_pickup_prop...")
+        // Check prop not already in inventory
+        if (SAGE.World.player.hasPropInInventory(propId)) {
+          // bail out now...
+          console.debug("Cannot pickup prop ${propId} - already in inventory")
+          return
+        }
+
         let msg = `pickup ${propId}`
         console.debug(msg)
         if (propId) { 
-          const propModel = SAGE.World.getPropById(propId)
+          const propModel = SAGE.World.getPropModelById(propId)
           SAGE.Dialog.showMessage(`You picked up the ${propModel.name}`)
           // If prop is in current scene, remove it
           if (SAGE.World.currentScene.id == propModel.location_id)
           {
             // Find prop obj (needed to actually remove from scene - if present)
-            const index = SAGE.World.currentScene.screen.props.findIndex(
-              (item) => item.model.id === propId
-            )
-            let prop: Prop | undefined
-            if (index !== -1) prop = SAGE.World.currentScene.screen.props.splice(index, 1)[0]
+            let prop = SAGE.World.currentScene.screen.getPropById(propId)
             if (prop) {
               SAGE.World.currentScene.screen.removeProp(prop, true, true)
             }
+            // -----
+            // const index = SAGE.World.currentScene.screen.props.findIndex(
+            //   (item) => item.model.id === propId
+            // )
+            // let prop: Prop | undefined
+            // if (index !== -1) prop = SAGE.World.currentScene.screen.props.splice(index, 1)[0]
+            // if (prop) {
+            //   SAGE.World.currentScene.screen.removeProp(prop, true, true)
+            // }
           }
           // Add to Player's inventory
           SAGE.World.player.addToInventory(propModel)
@@ -363,7 +375,7 @@ export class InkManager {
             if (tag.toUpperCase().startsWith("SCENE")) {
               // Get target scene name (same as knot - but Ink doesn't expose that!)
               let target_scene_id = tag.split(":")[1].trim()
-              const targetSceneModel = SAGE.World.getSceneById(target_scene_id)
+              const targetSceneModel = SAGE.World.getSceneModelById(target_scene_id)
               if (targetSceneModel) {
                 const targetScene: Scene = new Scene(targetSceneModel)
                 await targetScene.show()
@@ -429,7 +441,7 @@ export class InkManager {
         const propName = Key.itemName?.replace("prp_", "")
         // Add to Player's inventory
         if (propName) { 
-          const propModel = SAGE.World.getPropById(propName)
+          const propModel = SAGE.World.getPropModelById(propName)
           SAGE.World.player.addToInventory(propModel)
         }
       })

@@ -90,7 +90,7 @@ export class Scene implements SceneModel {
   public closeUpOn(objectName: string) {
     //debugger
     // try actor first
-    const actorModel = SAGE.World.getActorById(objectName)
+    const actorModel = SAGE.World.getActorModelById(objectName)
     if (actorModel !== undefined) {
       this.screen.setDepthOfField(true)
       this.screen.addActorCloseup(actorModel, true)
@@ -102,7 +102,7 @@ export class Scene implements SceneModel {
       return
     }
     // ok, try Prop then
-    const propModel = SAGE.World.getPropById(objectName)
+    const propModel = SAGE.World.getPropModelById(objectName)
     if (propModel !== undefined) {
       this.screen.setDepthOfField(true)
       this.screen.addPropCloseup(propModel, true)
@@ -117,13 +117,13 @@ export class Scene implements SceneModel {
 
   public stopCloseUp(objectName: string) {
     // try actor first
-    const actorModel = SAGE.World.getActorById(objectName)
+    const actorModel = SAGE.World.getActorModelById(objectName)
     if (actorModel !== undefined) {
       const actor = this.screen.actorsCloseups.filter((a) => a.model.id === actorModel.id)[0]
       this.screen.removeActorCloseup(actor, true)
     }
     // ok, try Prop then
-    const propModel = SAGE.World.getPropById(objectName)
+    const propModel = SAGE.World.getPropModelById(objectName)
     if (propModel !== undefined) {
       const prop = this.screen.propsCloseups.filter((p) => p.model.id === propModel.id)[0]
       this.screen.removePropCloseup(prop, true)

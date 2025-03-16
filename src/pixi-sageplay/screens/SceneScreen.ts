@@ -469,6 +469,19 @@ export class SceneScreen extends Container implements IScreen {
     }
   }
 
+  /** Find and return prop with specific id */
+  public getPropById(propId: string) {
+    // Find prop obj
+    const index = this.props.findIndex(
+      (item) => item.model.id === propId
+    )
+    let prop: Prop | undefined
+    if (index !== -1) {
+      prop = this.props.splice(index, 1)[0]
+      return prop
+    }
+  }
+
   /**
    * Removes a Prop from a scene (default = fade out).
    */
