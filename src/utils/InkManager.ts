@@ -278,51 +278,32 @@ export class InkManager {
     // Now story exists, we can bind external functions
     InkManager.inkStory.BindExternalFunction("ext_pickup_prop",
       function(propId: string){ 
-        console.debug(">>> ext_pickup_prop...")
-        //debugger
-
-        // TODO: REFACTOR THIS to call some common Pickup Prop method 
-        //       (would say Prop.Pickup(), but getting Prop obj is currently v. hard!!!)
-
+        console.debug(`>>> ext_pickup_prop(${propId})`)
         // Check prop not already in inventory
         if (SAGE.World.player.hasPropInInventory(propId)) {
           // bail out now...
-          console.debug("Cannot pickup prop ${propId} - already in inventory")
+          console.debug(`Cannot pickup prop - already in inventory`)
           return
         }
-
-        let msg = `pickup ${propId}`
-        console.debug(msg)
         if (propId) { 
           const propModel = SAGE.World.getPropModelById(propId)
-          SAGE.Dialog.showMessage(`You picked up the ${propModel.name}`)
+          SAGE.Dialog.showMessage(`You picked up the '${propModel.name}'`)
           // If prop is in current scene, remove it
           if (SAGE.World.currentScene.id == propModel.location_id)
           {
             // Find prop obj (needed to actually remove from scene - if present)
             let prop = SAGE.World.currentScene.screen.getPropById(propId)
             if (prop) {
-              SAGE.World.currentScene.screen.removeProp(prop, true, true)
+              //SAGE.World.currentScene.screen.removeProp(prop, true, true)
+              // "Pickup" prop
+              prop.performPickupAction() 
             }
-            // -----
-            // const index = SAGE.World.currentScene.screen.props.findIndex(
-            //   (item) => item.model.id === propId
-            // )
-            // let prop: Prop | undefined
-            // if (index !== -1) prop = SAGE.World.currentScene.screen.props.splice(index, 1)[0]
-            // if (prop) {
-            //   SAGE.World.currentScene.screen.removeProp(prop, true, true)
-            // }
           }
-          // Add to Player's inventory
-          SAGE.World.player.addToInventory(propModel)
-          // Play sound
-          SAGE.Sound.play("SFX-PickUp")
-          // Auto-open player inventory
-          SAGE.invScreen.open(true)
+          else {
+            // 
+            // TODO: Prop not in current scene - so need to create it and add to inv
+          }
         }
-        //return msg
-        //return "twelve o'clock"; 
       }
     );
   }

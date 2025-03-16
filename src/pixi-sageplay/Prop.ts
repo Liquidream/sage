@@ -208,15 +208,7 @@ export class Prop {
     // Can prop be picked up?
     // (...and not already in inventory)?
     if (this.model.pickupable && !this.inInventory) {
-      SAGE.Dialog.showMessage(`You picked up the ${this.model.name}`)
-      // Remove prop from scene
-      SAGE.World.currentScene.screen.removeProp(this, true, true)
-      // Add to Player's inventory
-      SAGE.World.player.addToInventory(this.model)
-      // Play sound
-      SAGE.Sound.play("SFX-PickUp")
-      // Auto-open player inventory
-      SAGE.invScreen.open(true)
+      performPickupAction()
       return
     }
     // Interacted while in player inventory?
@@ -235,4 +227,17 @@ export class Prop {
       SAGE.Dialog.showMessage(this.model.desc)
     }
   }
+
+  private performPickupAction() {
+    SAGE.Dialog.showMessage(`You picked up the ${this.model.name}`)
+      // Remove prop from scene
+      SAGE.World.currentScene.screen.removeProp(this, true, true)
+      // Add to Player's inventory
+      SAGE.World.player.addToInventory(this.model)
+      // Play sound
+      SAGE.Sound.play("SFX-PickUp")
+      // Auto-open player inventory
+      SAGE.invScreen.open(true)
+  }
+
 }
