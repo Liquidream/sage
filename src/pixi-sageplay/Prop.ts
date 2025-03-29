@@ -208,7 +208,7 @@ export class Prop {
     // Can prop be picked up?
     // (...and not already in inventory)?
     if (this.model.pickupable && !this.inInventory) {
-      performPickupAction()
+      this.performPickupAction()
       return
     }
     // Interacted while in player inventory?

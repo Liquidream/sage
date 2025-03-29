@@ -276,36 +276,7 @@ export class InkManager {
      InkManager.inkStory = new Story(strData)
 
     // Now story exists, we can bind external functions
-    InkManager.inkStory.BindExternalFunction("ext_pickup_prop",
-      function(propId: string){ 
-        console.debug(`>>> ext_pickup_prop(${propId})`)
-        // Check prop not already in inventory
-        if (SAGE.World.player.hasPropInInventory(propId)) {
-          // bail out now...
-          console.debug(`Cannot pickup prop - already in inventory`)
-          return
-        }
-        if (propId) { 
-          const propModel = SAGE.World.getPropModelById(propId)
-          SAGE.Dialog.showMessage(`You picked up the '${propModel.name}'`)
-          // If prop is in current scene, remove it
-          if (SAGE.World.currentScene.id == propModel.location_id)
-          {
-            // Find prop obj (needed to actually remove from scene - if present)
-            let prop = SAGE.World.currentScene.screen.getPropById(propId)
-            if (prop) {
-              //SAGE.World.currentScene.screen.removeProp(prop, true, true)
-              // "Pickup" prop
-              prop.performPickupAction() 
-            }
-          }
-          else {
-            // 
-            // TODO: Prop not in current scene - so need to create it and add to inv
-          }
-        }
-      }
-    );
+    InkManager.inkStory.BindExternalFunction("ext_pickup_prop", InkManager.func_pickupProp);
   }
 
   /**
@@ -428,6 +399,37 @@ export class InkManager {
       })
     }
   }
+
+  public static func_pickupProp(propId: string) { 
+    console.debug(`>>> ext_pickup_prop(${propId})`)
+    // Check prop not already in inventory
+    if (SAGE.World.player.hasPropInInventory(propId)) {
+      // bail out now...
+      console.debug(`Cannot pickup prop - already in inventory`)
+      return
+    }
+    if (propId) { 
+      const propModel = SAGE.World.getPropModelById(propId)
+      SAGE.Dialog.showMessage(`You picked up the '${propModel.name}'`)
+      // If prop is in current scene, remove it
+      if (SAGE.World.currentScene.id == propModel.location_id)
+      {
+        // Find prop obj (needed to actually remove from scene - if present)
+        let prop = SAGE.World.currentScene.screen.getPropById(propId)
+        if (prop) {
+          // "Pickup" prop
+          prop.performPickupAction() 
+        }
+      }
+      else {
+        // 
+        // Prop not in current scene - so need to create it and add to inv
+        const propModel = SAGE.World.getPropModelById(propId)
+        SAGE.World.player.addToInventory(propModel)
+      }
+    }
+  }
+
 }
 
 
