@@ -25,7 +25,9 @@
       ><v-icon icon="mdi-view-list-outline"></v-icon> General</v-list-subheader
     >
 
+    <!-- <IdTextEdit label="ID" type="scene" :modelValue="model.id" @update:modelValue="$event => (model.id = $event)" /> -->
     <IdTextEdit label="ID" type="scene" v-model="model.id" />
+    
     <v-text-field label="Id" v-model="model.id"></v-text-field>
     <!-- <v-text-field
       label="ID"

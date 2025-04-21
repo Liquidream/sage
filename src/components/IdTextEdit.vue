@@ -1,5 +1,21 @@
 <template>
+  <!-- V2  -->
   <v-row align="center" class="mb-2">
+    <v-col>
+    <div v-if="isEditing">
+      <v-text-field v-model="localValue" />
+      <v-btn @click="save">Save</v-btn>
+      <v-btn @click="cancel">Cancel</v-btn>
+    </div>
+    <div v-else>
+      <span>{{ model }}</span>
+      <v-btn @click="startEditing">Edit</v-btn>
+    </div>
+  </v-col>
+</v-row>
+
+  <!-- V1  -->
+  <!-- <v-row align="center" class="mb-2">
     <v-col>
       <v-text-field
         :label="label"
@@ -19,30 +35,96 @@
         @click="editSaveClicked"
       ></v-btn>
     </v-col>
-  </v-row>
+  </v-row> -->
 </template>
 
 <script setup lang="ts">
   console.log(">>> Creating IdTextEdit...")
   
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit";
-//import { useSceneStore } from "@/stores/SceneStore";
-import { useWorldStore } from "@/stores/WorldStore"
+  import { useWorldStore } from "@/stores/WorldStore"
   import { ref } from "vue"
 
-  const model = defineModel({ type: String })
+
+// - v2 ----------------------------------------------------------------
+
+const model = defineModel()  // this is the v-model binding
+
+const props = defineProps({  // This is for extra props
+  type: {
+    type: String,
+    default: 'text'
+  }
+})
+
+const isEditing = ref(false)
+const localValue = ref('')
+
+// Start editing
+function startEditing() {
+  localValue.value = model.value  // copy model into local editable value
+  isEditing.value = true
+}
+
+// Save changes
+function save() {
+  let oldValue = model.value
+  model.value = localValue.value  // push local value back to parent
+  isEditing.value = false
+
+  // Maintain current selection by keeping curr ID in sync
+  switch (props.type) {
+        case "sequence": {
+          // Realign "orphaned" child objects in scene
+          // (now sequence id has been renamed)
+          SAGEdit.Events.emit("sequenceIdRenamed", oldValue, localValue.value)
+          useWorldStore().currSequenceId = localValue.value
+          break
+        }
+        case "scene": {
+          // Realign "orphaned" child objects in scene
+          // (now scene id has been renamed)
+          SAGEdit.Events.emit("sceneIdRenamed", oldValue, localValue.value)
+          //useSceneStore().realignChildObjects(oldValue, wipModel.value)
+          useWorldStore().currSceneId = localValue.value
+          break
+        }
+        case "actor": {
+          useWorldStore().currActorId = localValue.value
+          break
+        }
+        case "prop": {
+          useWorldStore().currPropId = localValue.value
+          break
+        }
+        case "door": {
+          useWorldStore().currDoorId = localValue.value
+          break
+        }
+      }
+}
+
+// Cancel editing
+function cancel() {
+  isEditing.value = false
+}
+
+// - v1 ----------------------------------------------------------------
+/*
+  const model = defineModel()
+  //const model = defineModel({ type: String })
   const props = defineProps({
     label: String,
     type: String,
   })
   const wipModel = ref(model.value)
+  console.log(`>>> model.value = ${model.value}`)
   const editMode = ref(false)
 
   const wipModelUpdated = (evt) => {
     console.log(">>> wipModel edited, so keep it 'current'")
     console.debug(evt)
     wipModel.value = evt.target.value
-    //useWorldStore().currActorId = evt.target.value
   }
 
   // When save clicked,
@@ -94,4 +176,6 @@ import { useWorldStore } from "@/stores/WorldStore"
       editMode.value = true
     }
   }
+*/
+
 </script>
