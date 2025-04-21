@@ -2,9 +2,9 @@
   <!-- V2  -->
   <v-row v-if="isEditing" align="center" class="mb-2">
     <v-col>
-      <v-text-field v-model="localValue" />
+      <v-text-field v-model="localValue" :label="label" hide-details />
     </v-col>
-    <v-col cols="2">
+    <v-col cols="4">
         <v-btn
         density="comfortable"
         variant="tonal"
@@ -18,6 +18,7 @@
         color="info"
         icon='mdi-cancel'
         @click="cancel"
+        @keydown.enter="save"
       ></v-btn>
       <!-- <v-btn @click="save">Save</v-btn>
       <v-btn @click="cancel">Cancel</v-btn> -->
@@ -25,10 +26,10 @@
   </v-row>
   <v-row v-else align="center" class="mb-2">
     <v-col>
-      <v-text-field v-model="model" disabled=true />
+      <v-text-field v-model="model" :label="label" disabled=true hide-details />
       <!-- <span>{{ model }}</span> -->
     </v-col> 
-    <v-col cols="2">
+    <v-col cols="4">
     <v-btn
         density="comfortable"
         variant="tonal"
@@ -78,6 +79,10 @@ const model = defineModel()  // this is the v-model binding
 
 const props = defineProps({  // This is for extra props
   type: {
+    type: String,
+    default: 'text'
+  },
+  label: {
     type: String,
     default: 'text'
   }
