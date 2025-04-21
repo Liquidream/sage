@@ -26,6 +26,7 @@
     >
 
     <IdTextEdit label="ID" type="scene" v-model="model.id" />
+    <v-text-field label="Id" v-model="model.id"></v-text-field>
     <!-- <v-text-field
       label="ID"
       :value="model.id"
@@ -194,6 +195,7 @@
   const backToWorldClicked = () => {
     worldStore.currPropId = ""
     worldStore.currSceneId = ""
+    worldStore.currSequenceId = ""
     // Force scroll to top of nav panel
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }

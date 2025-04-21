@@ -21,6 +21,34 @@
       hint="Unique reference for data storage"
     ></v-text-field>
 
+
+
+    <v-divider />
+    <v-list-subheader
+      ><v-icon icon="mdi-link"></v-icon> Sequences</v-list-subheader
+    >
+    <!-- on click, replace panel with properties of Scene -->
+    <v-list class="pt-0">
+      <v-list-item
+        @click="onClickSequence(sequence)"
+        v-for="sequence in worldStore.getSequences"
+        :key="sequence.id"
+      >
+        <v-row align="center">
+          <v-col cols="3">
+            <!-- <v-img :src="(sequence.thumbnail != '' && sequence.thumbnail !== undefined) ? sequence.thumbnail : sequence.image" :aspect-ratio="16 / 9" cover /> -->
+
+          </v-col>
+          <v-col>
+            <span class="text-no-wrap">{{ sequence.name }}</span>
+          </v-col>
+        </v-row>
+      </v-list-item>
+    </v-list>
+
+
+
+
     <v-divider />
     <v-list-subheader
       ><v-icon icon="mdi-filmstrip-box"></v-icon> Scenes</v-list-subheader
@@ -104,10 +132,18 @@
   import AceEditor from "./AceEditor.vue"
 
   import type { ActorModel } from "@/models/ActorModel"
-import { ref } from "vue"
+  import { ref } from "vue"
+  import type { SequenceModel } from "@/models/SequenceModel"
 
   console.log("start WordProperties.vue...")
   const worldStore = useWorldStore()
+
+  const onClickSequence = (sequence: SequenceModel) => {
+    SAGEdit.debugLog("onClickSequence()...")
+    SAGEdit.debugLog(sequence.name)
+
+    worldStore.currSequenceId = sequence.id
+  }
 
   const onClickScene = (scene: SceneModel) => {
     SAGEdit.debugLog("onClickScene()...")

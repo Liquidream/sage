@@ -23,8 +23,10 @@
 </template>
 
 <script setup lang="ts">
+  console.log(">>> Creating IdTextEdit...")
+  
   import { SAGEdit } from "@/pixi-sagedit/SAGEdit";
-import { useSceneStore } from "@/stores/SceneStore";
+//import { useSceneStore } from "@/stores/SceneStore";
 import { useWorldStore } from "@/stores/WorldStore"
   import { ref } from "vue"
 
@@ -57,6 +59,13 @@ import { useWorldStore } from "@/stores/WorldStore"
 
       // Maintain current selection by keeping curr ID in sync
       switch (props.type) {
+        case "sequence": {
+          // Realign "orphaned" child objects in scene
+          // (now sequence id has been renamed)
+          SAGEdit.Events.emit("sequenceIdRenamed", oldValue, wipModel.value)
+          useWorldStore().currSequenceId = wipModel.value
+          break
+        }
         case "scene": {
           // Realign "orphaned" child objects in scene
           // (now scene id has been renamed)

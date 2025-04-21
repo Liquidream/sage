@@ -9,6 +9,7 @@ import { usePropStore } from "@/stores/PropStore"
 import { PropLocationType } from "@/models/PropModel"
 import { useActorStore } from "@/stores/ActorStore"
 import { InkManager } from "@/utils/InkManager"
+import type { SequenceModel } from "@/models/SequenceModel"
 
 export class World implements IWorldData {
   //}, Serialization<World> {
@@ -42,6 +43,10 @@ export class World implements IWorldData {
   public currentScene!: Scene.Scene
 
   public player!: Player.Player
+
+  public get sequences(): SequenceModel[] {
+    return this.worldStore.getSequences
+  }
 
   public initialize() {
     //data: IWorldData): void {

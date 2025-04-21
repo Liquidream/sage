@@ -13,4 +13,6 @@ export interface SceneModel {
   // Poss. event actions
   on_enter?: string
   on_exit?: string
+
+  sequence_id: string // grouping scenes together (mainly for Asset bundling)
 }

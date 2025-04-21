@@ -6,7 +6,9 @@ import { defineStore } from "pinia"
 import { useDoorStore } from "./DoorStore"
 import { usePropStore } from "./PropStore"
 import { useActorStore } from "./ActorStore"
+import { useSequenceStore } from "./SequenceStore"
 import type { ActorModel } from "@/models/ActorModel"
+import type { SequenceModel } from "@/models/SequenceModel"
 
 export interface WorldState {
   id: string
@@ -15,6 +17,7 @@ export interface WorldState {
   //on_start: string
   script_functions: string
   script_on_start: string
+  currSequenceId: string
   currSceneId: string
   currPropId: string
   currDoorId: string
@@ -35,6 +38,7 @@ export const useWorldStore = defineStore("worldStore", {
     //on_start: "",
     script_functions: "",
     script_on_start: "",
+    currSequenceId: "",
     currSceneId: "",
     currPropId: "",
     currDoorId: "",
@@ -71,9 +75,52 @@ export const useWorldStore = defineStore("worldStore", {
       const actorStore = useActorStore()
       return actorStore.actors.find((item) => item.id === state.currActorId)
     },
+
+    getSequences(): SequenceModel[] {
+      const sequenceStore = useSequenceStore()
+      return sequenceStore.sequences
+    },
+
+    getCurrentSequence(state): SequenceModel | undefined {
+      const sequenceStore = useSequenceStore()
+      return sequenceStore.sequences.find((item) => item.id === state.currSequenceId)
+    },
   },
 
   actions: {
+    /* ----------------------------------------------------------
+     * Sequences
+     */
+    createSequence(sequence: SequenceModel) {
+      const sequenceStore = useSequenceStore()
+      sequenceStore.sequences.push(sequence)
+    },
+
+    updateSequence(id: string, payload: SceneModel) {
+      if (!id || !payload) return
+      const index = this.findSequenceIndexById(id)
+      if (index !== -1) {
+        const sequenceStore = useSequenceStore()
+        sequenceStore.sequences[index] = payload
+      }
+    },
+
+    deleteSequence(id: string) {
+      const index = this.findSequenceIndexById(id)
+      if (index === -1) return
+      const sequenceStore = useSequenceStore()
+      sequenceStore.sequences.splice(index, 1)
+      // Clear selection (if applicable)
+      if (this.currSceneId === id) {
+        this.currSceneId = ""
+      }
+    },
+
+    findSequenceIndexById(id: string): number {
+      const sequenceStore = useSequenceStore()
+      return sequenceStore.sequences.findIndex((item) => item.id === id)
+    },
+
     /* ----------------------------------------------------------
      * Scenes
      */
@@ -84,7 +131,7 @@ export const useWorldStore = defineStore("worldStore", {
 
     updateScene(id: string, payload: SceneModel) {
       if (!id || !payload) return
-      const index = this.findIndexById(id)
+      const index = this.findSceneIndexById(id)
       if (index !== -1) {
         const sceneStore = useSceneStore()
         sceneStore.scenes[index] = payload
@@ -92,7 +139,7 @@ export const useWorldStore = defineStore("worldStore", {
     },
 
     deleteScene(id: string) {
-      const index = this.findIndexById(id)
+      const index = this.findSceneIndexById(id)
       if (index === -1) return
       const sceneStore = useSceneStore()
       sceneStore.scenes.splice(index, 1)
@@ -102,7 +149,7 @@ export const useWorldStore = defineStore("worldStore", {
       }
     },
 
-    findIndexById(id: string): number {
+    findSceneIndexById(id: string): number {
       const sceneStore = useSceneStore()
       return sceneStore.scenes.findIndex((item) => item.id === id)
     },

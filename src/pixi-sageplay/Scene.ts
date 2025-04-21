@@ -83,6 +83,10 @@ export class Scene implements SceneModel {
     return actorStore.findActorBySceneId(this.id)
   }
 
+  public get sequence_id(): string {
+    return this.sceneModel.sequence_id
+  }
+
   public setDepthOfField(isEnabled: boolean) {
     this.screen.setDepthOfField(isEnabled)
   }
