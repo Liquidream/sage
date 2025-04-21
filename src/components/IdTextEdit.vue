@@ -1,18 +1,44 @@
 <template>
   <!-- V2  -->
-  <v-row align="center" class="mb-2">
+  <v-row v-if="isEditing" align="center" class="mb-2">
     <v-col>
-    <div v-if="isEditing">
       <v-text-field v-model="localValue" />
-      <v-btn @click="save">Save</v-btn>
-      <v-btn @click="cancel">Cancel</v-btn>
-    </div>
-    <div v-else>
-      <span>{{ model }}</span>
-      <v-btn @click="startEditing">Edit</v-btn>
-    </div>
-  </v-col>
-</v-row>
+    </v-col>
+    <v-col cols="2">
+        <v-btn
+        density="comfortable"
+        variant="tonal"
+        color="info"
+        icon='mdi-floppy'
+        @click="save"
+      ></v-btn>
+      <v-btn
+        density="comfortable"
+        variant="tonal"
+        color="info"
+        icon='mdi-cancel'
+        @click="cancel"
+      ></v-btn>
+      <!-- <v-btn @click="save">Save</v-btn>
+      <v-btn @click="cancel">Cancel</v-btn> -->
+    </v-col>
+  </v-row>
+  <v-row v-else align="center" class="mb-2">
+    <v-col>
+      <v-text-field v-model="model" disabled=true />
+      <!-- <span>{{ model }}</span> -->
+    </v-col> 
+    <v-col cols="2">
+    <v-btn
+        density="comfortable"
+        variant="tonal"
+        color="info"
+        icon='mdi-rename'
+        @click="startEditing"
+      ></v-btn>
+      <!-- <v-btn @click="startEditing">Edit</v-btn> -->
+    </v-col>
+  </v-row>
 
   <!-- V1  -->
   <!-- <v-row align="center" class="mb-2">
