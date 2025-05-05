@@ -2,7 +2,11 @@
   <!-- V2  -->
   <v-row v-if="isEditing" align="center" class="mb-2">
     <v-col>
-      <v-text-field v-model="localValue" :label="label" hide-details />
+      <v-text-field 
+        v-model="localValue" 
+        :label="label" 
+        hide-details 
+        @keydown.enter="save" />
     </v-col>
     <v-col cols="4">
         <v-btn
@@ -26,7 +30,12 @@
   </v-row>
   <v-row v-else align="center" class="mb-2">
     <v-col>
-      <v-text-field v-model="model" :label="label" disabled=true hide-details />
+      <v-text-field 
+        v-model="model" 
+        :label="label" 
+        disabled=true 
+        hide-details 
+        @keydown.enter="save" />
       <!-- <span>{{ model }}</span> -->
     </v-col> 
     <v-col cols="4">

@@ -32,7 +32,7 @@
       @input="idUpdated"
       dirty
     ></v-text-field> -->
-    <v-text-field label="Id" v-model="model.id"></v-text-field>
+    <!-- <v-text-field label="Id" v-model="model.id"></v-text-field> -->
 
     <v-text-field label="Name" v-model="model.name"></v-text-field>
 
