@@ -168,11 +168,7 @@ export class FileUtils {
     playData.worldData = JSON.stringify(useWorldStore().$state)
     // Scenes
     const sceneState = FileUtils.cloneState(useSceneStore()) as SceneState
-    playData.sceneData = FileUtils.exportSceneData(
-      sceneState,
-      assetsManifest,
-      zip
-    )
+    playData.sceneData = FileUtils.exportSceneData(sceneState, assetsManifest, zip)
     // Props
     const propState = FileUtils.cloneState(usePropStore()) as PropState
     playData.propData = FileUtils.exportPropData(propState, assetsManifest, zip)
