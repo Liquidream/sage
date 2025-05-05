@@ -51,7 +51,7 @@
     <v-list class="pt-0">
       <v-list-item
         @click="onClickScene(scene)"
-        v-for="scene in worldStore.getScenes"
+        v-for="scene in sceneStore.findSceneBySequenceId(model.id)"
         :key="scene.id"
       >
         <v-row align="center">
@@ -80,11 +80,13 @@
   import { SAGEdit } from "../pixi-sagedit/SAGEdit"
   import { useWorldStore } from "../stores/WorldStore"
   import { storeToRefs } from "pinia"
+  import { useSceneStore } from "@/stores/SceneStore" 
 
   import IdTextEdit from "./IdTextEdit.vue"
 
   const worldStore = useWorldStore()
   const worldRefs = storeToRefs(worldStore)
+  const sceneStore = useSceneStore()
 
   const model = worldRefs.getCurrentSequence
   //const model = worldStore.getCurrentScene || ({} as SceneModel)

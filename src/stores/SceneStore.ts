@@ -21,21 +21,15 @@ export const useSceneStore = defineStore({
     // },
   },
 
-  // actions: {
-  //   // TODO: Think a publish/subscribe approach would be "better" here
-  //   //       (let stores clean up their own data) but need this all to happen NOW!
-  //   //       ..or else screen will re-initialise with half-baked edits
-  //   realignChildObjects(oldSceneId: string, newSceneId: string) {
-  //     console.log(`sceneStore::realignChildObjects (Old id = ${oldSceneId}, New id = ${newSceneId})`)
-  //     // Actors
-  //     const sceneActorModels = useActorStore().findActorBySceneId(oldSceneId)
-  //     if (sceneActorModels.length > 0) {
-  //       for (const actorModel of sceneActorModels) {
-  //         actorModel.location_id = newSceneId
-  //       }
-  //     }
-  //   },
-  // },
+   actions: {
+
+    findSceneBySequenceId(sequence_id: string) {
+      return this.scenes.filter((scene) => scene.sequence_id === sequence_id)
+    },
+
+  },
+
+  
 
   //persist: true, // Save to localStorage
 })
