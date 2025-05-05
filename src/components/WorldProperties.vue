@@ -27,7 +27,7 @@
     <v-list-subheader
       ><v-icon icon="mdi-link"></v-icon> Sequences</v-list-subheader
     >
-    <!-- on click, replace panel with properties of Scene -->
+    <!-- on click, replace panel with properties of Sequence -->
     <v-list class="pt-0">
       <v-list-item
         @click="onClickSequence(sequence)"
@@ -49,11 +49,10 @@
 
 
 
-    <v-divider />
+    <!-- <v-divider />
     <v-list-subheader
       ><v-icon icon="mdi-filmstrip-box"></v-icon> Scenes</v-list-subheader
     >
-    <!-- on click, replace panel with properties of Scene -->
     <v-list class="pt-0">
       <v-list-item
         @click="onClickScene(scene)"
@@ -70,7 +69,8 @@
           </v-col>
         </v-row>
       </v-list-item>
-    </v-list>
+    </v-list> 
+    -->
 
     <scene-select label="Starting Scene" v-model="worldStore.startingSceneId" />
 
@@ -145,12 +145,12 @@
     worldStore.currSequenceId = sequence.id
   }
 
-  const onClickScene = (scene: SceneModel) => {
-    SAGEdit.debugLog("onClickScene()...")
-    SAGEdit.debugLog(scene.name)
+  // const onClickScene = (scene: SceneModel) => {
+  //   SAGEdit.debugLog("onClickScene()...")
+  //   SAGEdit.debugLog(scene.name)
 
-    worldStore.currSceneId = scene.id
-  }
+  //   worldStore.currSceneId = scene.id
+  // }
 
   const onClickActor = (actor: ActorModel) => {
     SAGEdit.debugLog("onClickActor()...")

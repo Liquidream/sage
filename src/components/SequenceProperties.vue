@@ -43,6 +43,28 @@
       <v-col class="text-medium-emphasis">Backdrop image/video</v-col>
     </v-row> -->
 
+    <v-divider />
+    <v-list-subheader
+      ><v-icon icon="mdi-filmstrip-box"></v-icon> Scenes</v-list-subheader
+    >
+    <!-- on click, replace panel with properties of Scene -->
+    <v-list class="pt-0">
+      <v-list-item
+        @click="onClickScene(scene)"
+        v-for="scene in worldStore.getScenes"
+        :key="scene.id"
+      >
+        <v-row align="center">
+          <v-col cols="3">
+            <v-img :src="(scene.thumbnail != '' && scene.thumbnail !== undefined) ? scene.thumbnail : scene.image" :aspect-ratio="16 / 9" cover />
+
+          </v-col>
+          <v-col>
+            <span class="text-no-wrap">{{ scene.name }}</span>
+          </v-col>
+        </v-row>
+      </v-list-item>
+    </v-list>
     
     <v-divider />
 
@@ -55,6 +77,7 @@
 <script setup lang="ts">
   import type { Ref } from "vue"
   import { ref } from "vue"
+  import { SAGEdit } from "../pixi-sagedit/SAGEdit"
   import { useWorldStore } from "../stores/WorldStore"
   import { storeToRefs } from "pinia"
 
@@ -73,6 +96,13 @@
     worldStore.currSequenceId = ""
     // Force scroll to top of nav panel
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
+  }
+
+  const onClickScene = (scene: SceneModel) => {
+    SAGEdit.debugLog("onClickScene()...")
+    SAGEdit.debugLog(scene.name)
+
+    worldStore.currSceneId = scene.id
   }
 
   // const idUpdated = (evt) => {
