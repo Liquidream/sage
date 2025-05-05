@@ -99,6 +99,10 @@
       @click:select="doorSelected"
     ></v-list>
 
+
+    <v-divider />
+    <sequence-select label="In Sequence" v-model="model.sequence_id" />
+
     <v-divider />
 
     <v-list-subheader
@@ -141,6 +145,7 @@
   import { storeToRefs } from "pinia"
   import ImageFileInputBtn from "./ImageFileInputBtn.vue"
   import FileInputAudio from "./FileInputAudio.vue"
+  import SequenceSelect from "./SequenceSelect.vue"
 
   // import { VAceEditor } from "vue3-ace-editor"
   // import "../assets/acesrc/mode-ink"

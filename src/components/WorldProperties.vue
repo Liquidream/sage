@@ -35,10 +35,10 @@
         :key="sequence.id"
       >
         <v-row align="center">
-          <v-col cols="3">
-            <!-- <v-img :src="(sequence.thumbnail != '' && sequence.thumbnail !== undefined) ? sequence.thumbnail : sequence.image" :aspect-ratio="16 / 9" cover /> -->
+          <!-- <v-col cols="3">
+            <v-img :src="(sequence.thumbnail != '' && sequence.thumbnail !== undefined) ? sequence.thumbnail : sequence.image" :aspect-ratio="16 / 9" cover />
 
-          </v-col>
+          </v-col> -->
           <v-col>
             <span class="text-no-wrap">{{ sequence.name }}</span>
           </v-col>
