@@ -8,13 +8,14 @@ import { useDoorStore, type DoorState } from "@/stores/DoorStore"
 import { usePropStore, type PropState } from "@/stores/PropStore"
 import { useWorldStore } from "@/stores/WorldStore"
 import type { SceneState } from "@/stores/SceneStore"
-import type { AssetsManifest } from "pixi.js"
+import type { AssetsBundle, AssetsManifest } from "pixi.js"
 import { playAssets } from "@/pixi-sageplay/playAssets"
 // @ts-ignore
 import JSZipUtils from "jszip-utils"
 import { useGameStateStore } from "@/stores/GameStateStore"
 import { getActivePinia } from "pinia"
 import { InkManager } from "./InkManager"
+import { useSequenceStore } from "@/stores/SequenceStore"
 
 // import * as fs from "fs"
 // import * as path from "path"
@@ -89,12 +90,14 @@ export class FileUtils {
         const sageEditData = JSON.parse(jsonContent)
         // Populate state
         const worldStore = useWorldStore()
+        const sequenceStore = useSequenceStore()
         const propStore = usePropStore()
         const sceneStore = useSceneStore()
         const doorStore = useDoorStore()
         const actorStore = useActorStore()
         const playerStore = useGameStateStore()
         worldStore.$state = sageEditData.worldData
+        sequenceStore.$state = sageEditData.sequenceData
         sceneStore.$state = sageEditData.sceneData
         propStore.$state = sageEditData.propData
         doorStore.$state = sageEditData.doorData
@@ -107,6 +110,7 @@ export class FileUtils {
         // (TODO: potentially skip if no curr scene???)
         await Promise.all([
           worldStore.$persistedState.isReady(),
+          sequenceStore.$persistedState.isReady(),
           sceneStore.$persistedState.isReady(),
           propStore.$persistedState.isReady(),
           doorStore.$persistedState.isReady(),
@@ -130,6 +134,7 @@ export class FileUtils {
     // TODO: This needs to be pulled somewhere from storage (prob playData store?)
     sageEditData.id = useWorldStore().id
     sageEditData.worldData = useWorldStore().$state
+    sageEditData.sequenceData = useSequenceStore().$state
     sageEditData.sceneData = useSceneStore().$state
     sageEditData.propData = usePropStore().$state
     sageEditData.doorData = useDoorStore().$state
@@ -166,19 +171,25 @@ export class FileUtils {
     playData.id = useWorldStore().id
     // World
     playData.worldData = JSON.stringify(useWorldStore().$state)
-    // Scenes
-    const sceneState = FileUtils.cloneState(useSceneStore()) as SceneState
-    playData.sceneData = FileUtils.exportSceneData(sceneState, assetsManifest, zip)
-    // Props
-    const propState = FileUtils.cloneState(usePropStore()) as PropState
-    playData.propData = FileUtils.exportPropData(propState, assetsManifest, zip)
-    // Doors
-    const doorState = FileUtils.cloneState(useDoorStore()) as DoorState
-    playData.doorData = FileUtils.exportDoorData(doorState, assetsManifest, zip)
-    // Actors
-    const actorState = FileUtils.cloneState(useActorStore()) as ActorState
-    playData.actorData = FileUtils.exportActorData(actorState, assetsManifest, zip)
-    //playData.actorData = JSON.stringify(useActorStore().$state)
+
+    // TODO: Specify separate Asset "Bundle" for each Sequence
+    for (const sequence of useWorldStore().getSequences) {
+      let bundleName = sequence.name
+      // Scenes
+      const sceneState = FileUtils.cloneState(useSceneStore()) as SceneState
+      playData.sceneData = FileUtils.exportSceneData(sceneState, assetsManifest, bundleName, zip)
+      // Props
+      const propState = FileUtils.cloneState(usePropStore()) as PropState
+      playData.propData = FileUtils.exportPropData(propState, assetsManifest, bundleName, zip)
+      // Doors
+      const doorState = FileUtils.cloneState(useDoorStore()) as DoorState
+      playData.doorData = FileUtils.exportDoorData(doorState, assetsManifest, bundleName, zip)
+      // Actors
+      const actorState = FileUtils.cloneState(useActorStore()) as ActorState
+      playData.actorData = FileUtils.exportActorData(actorState, assetsManifest, bundleName, zip)
+    }
+
+    // Game State
     playData.gameStateData = JSON.stringify(useGameStateStore().$state)
 
     const playDataJSON = JSON.stringify(playData, null, 4)
@@ -245,70 +256,6 @@ export class FileUtils {
     }
     FileUtils.addFolderFilesRecursively(foldersAndFilesToZip, zip)
 
-    // GFX files
-    //FileUtils.buildZipFromDirectory("images", zip, "images")
-    // zip
-    //   .folder("images")
-    //   .file("debug.png", FileUtils.urlToPromise("images/debug.png"), {
-    //     binary: true,
-    //   })
-    // zip
-    //   .folder("images")
-    //   .folder("ui")
-    //   .file("shine.png", FileUtils.urlToPromise("images/ui/shine.png"), {
-    //     binary: true,
-    //   })
-    // zip
-    //   .folder("images")
-    //   .folder("ui")
-    //   .file("settings.png", FileUtils.urlToPromise("images/ui/settings.png"), {
-    //     binary: true,
-    //   })
-    // zip
-    //   .folder("images")
-    //   .folder("ui")
-    //   .file(
-    //     "inventory.png",
-    //     FileUtils.urlToPromise("images/ui/inventory.png"),
-    //     { binary: true }
-    //   )
-
-    // SFX files
-    // zip
-    //   .folder("sfx")
-    //   .file("pick-up.mp3", FileUtils.urlToPromise("sfx/pick-up.mp3"), {
-    //     binary: true,
-    //   })
-    // zip
-    //   .folder("sfx")
-    //   .file("door-locked.mp3", FileUtils.urlToPromise("sfx/door-locked.mp3"), {
-    //     binary: true,
-    //   })
-    // zip
-    //   .folder("sfx")
-    //   .file("door-unlock.mp3", FileUtils.urlToPromise("sfx/door-unlock.mp3"), {
-    //     binary: true,
-    //   })
-    // zip
-    //   .folder("sfx")
-    //   .file("game-won.mp3", FileUtils.urlToPromise("sfx/game-won.mp3"), {
-    //     binary: true,
-    //   })
-    // zip
-    //   .folder("sfx")
-    //   .file("game-lost.mp3", FileUtils.urlToPromise("sfx/game-lost.mp3"), {
-    //     binary: true,
-    //   })
-
-    // Assets folder
-    // zip
-    //   .folder("assets")
-    //   .file(
-    //     "webfontloader.js",
-    //     FileUtils.urlToPromise("assets/webfontloader.js"),
-    //     { binary: true }
-    //   )
-
     // Other assets
     zip.file("favicon.ico", FileUtils.urlToPromise("favicon.ico"), {
       binary: true,
@@ -326,6 +273,7 @@ export class FileUtils {
   public static exportSceneData(
     sceneState: SceneState,
     assets: AssetsManifest,
+    bundleName: string,
     zip: JSZip
   ): string {
     console.log("Exporting scenes to zip...")
@@ -339,14 +287,14 @@ export class FileUtils {
       // Scene.Image
       const imgAssetName = `${scene.id}-image`
       const imgDataUri = scene.image || ""
-      FileUtils.exportData(imgAssetName, imgDataUri, assets, imgFolder)
+      FileUtils.exportData(imgAssetName, imgDataUri, assets, bundleName, imgFolder)
       scene.image = imgAssetName
 
       // Scene.Sound
       if (scene.sound) {
         const sfxAssetName = `${scene.id}-sound`
         const soundDataUri = scene.sound || ""
-        FileUtils.exportData(sfxAssetName, soundDataUri, assets, sfxFolder)
+        FileUtils.exportData(sfxAssetName, soundDataUri, assets, bundleName, sfxFolder)
         scene.sound = sfxAssetName
       }
     }
@@ -357,6 +305,7 @@ export class FileUtils {
   public static exportPropData(
     propState: PropState,
     assets: AssetsManifest,
+    bundleName: string,
     zip: JSZip
   ): string {
     console.log("Exporting props to zip...")
@@ -371,7 +320,7 @@ export class FileUtils {
       if (prop.image) {
         const imgAssetName = `${prop.id}-image`
         const imgDataUri = prop.image || ""
-        FileUtils.exportData(imgAssetName, imgDataUri, assets, imgFolder)
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, bundleName, imgFolder)
         prop.image = imgAssetName
       }
 
@@ -379,7 +328,7 @@ export class FileUtils {
       if (prop.image_closeup) {
         const imgAssetName = `${prop.id}-image_closeup`
         const imgDataUri = prop.image_closeup || ""
-        FileUtils.exportData(imgAssetName, imgDataUri, assets, imgFolder)
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, bundleName, imgFolder)
         prop.image_closeup = imgAssetName
       }
     }
@@ -390,6 +339,7 @@ export class FileUtils {
   public static exportDoorData(
     propState: DoorState,
     assets: AssetsManifest,
+    bundleName: string,
     zip: JSZip
   ): string {
     console.log("Exporting doors to zip...")
@@ -404,7 +354,7 @@ export class FileUtils {
       if (door.image) {
         const imgAssetName = `${door.id}-image`
         const imgDataUri = door.image || ""
-        FileUtils.exportData(imgAssetName, imgDataUri, assets, imgFolder)
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, bundleName, imgFolder)
         door.image = imgAssetName
       }
     }
@@ -415,6 +365,7 @@ export class FileUtils {
   public static exportActorData(
     actorState: ActorState,
     assets: AssetsManifest,
+    bundleName: string,
     zip: JSZip
   ): string {
     console.log("Exporting actors to zip...")
@@ -429,7 +380,7 @@ export class FileUtils {
       if (actor.image) {
         const imgAssetName = `${actor.id}-image`
         const imgDataUri = actor.image || ""
-        FileUtils.exportData(imgAssetName, imgDataUri, assets, imgFolder)
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, bundleName, imgFolder)
         actor.image = imgAssetName
       }
 
@@ -437,7 +388,7 @@ export class FileUtils {
       if (actor.image_closeup) {
         const imgAssetName = `${actor.id}-image_closeup`
         const imgDataUri = actor.image_closeup || ""
-        FileUtils.exportData(imgAssetName, imgDataUri, assets, imgFolder)
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, bundleName, imgFolder)
         actor.image_closeup = imgAssetName
       }
     }
@@ -461,6 +412,7 @@ export class FileUtils {
     assetName: string,
     dataUri: string,
     assets: AssetsManifest,
+    bundleName: string,
     zipFolder: JSZip | null
   ) {
     // Find the offset to start of data
@@ -472,8 +424,16 @@ export class FileUtils {
     // TODO: Need to preserve original extensions
     zipFolder?.file(filename, data, { base64: true })
 
-    // Add to assets list
-    assets.bundles[0].assets.push({
+    debugger
+
+    // Add to assets list, within correct bundle...
+    let index = assets.bundles.findIndex((item) => item.name === bundleName)
+    if (index <=0) {
+      // ...(or create bundle if doesn't exist)
+      index = assets.bundles.push({ name: bundleName, assets: [] } as AssetsBundle) - 1
+    }
+    assets.bundles[index].assets.push({
+    //assets.bundles[0].assets.push({
       alias: assetName,
       src: `${zipFolder?.root}${filename}`,
     })
