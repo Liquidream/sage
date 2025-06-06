@@ -174,19 +174,18 @@ export class FileUtils {
 
     // TODO: Specify separate Asset "Bundle" for each Sequence
     for (const sequence of useWorldStore().getSequences) {
-      let bundleName = sequence.name
       // Scenes
       const sceneState = FileUtils.cloneState(useSceneStore()) as SceneState
-      playData.sceneData = FileUtils.exportSceneData(sceneState, assetsManifest, bundleName, zip)
+      playData.sceneData = FileUtils.exportSceneData(sceneState, assetsManifest, sequence.name, zip)
       // Props
       const propState = FileUtils.cloneState(usePropStore()) as PropState
-      playData.propData = FileUtils.exportPropData(propState, assetsManifest, bundleName, zip)
+      playData.propData = FileUtils.exportPropData(propState, assetsManifest, sequence.id, sequence.name, zip)
       // Doors
       const doorState = FileUtils.cloneState(useDoorStore()) as DoorState
-      playData.doorData = FileUtils.exportDoorData(doorState, assetsManifest, bundleName, zip)
+      playData.doorData = FileUtils.exportDoorData(doorState, assetsManifest, sequence.id, sequence.name, zip)
       // Actors
       const actorState = FileUtils.cloneState(useActorStore()) as ActorState
-      playData.actorData = FileUtils.exportActorData(actorState, assetsManifest, bundleName, zip)
+      playData.actorData = FileUtils.exportActorData(actorState, assetsManifest, sequence.id, sequence.name, zip)
     }
 
     // Game State
@@ -273,7 +272,7 @@ export class FileUtils {
   public static exportSceneData(
     sceneState: SceneState,
     assets: AssetsManifest,
-    bundleName: string,
+    sequenceName: string,
     zip: JSZip
   ): string {
     console.log("Exporting scenes to zip...")
@@ -281,20 +280,24 @@ export class FileUtils {
     const imgFolder = zip.folder("images")
     const sfxFolder = zip.folder("sfx")
 
-    for (const scene of sceneState.scenes) {
+    const filteredScenes = sceneState.scenes.filter(
+                              (scene) => scene.name === sequenceName)
+
+    for (const scene of filteredScenes) {
+    //for (const scene of sceneState.scenes) {
       // Export image to zip & replace state data with new filename
 
       // Scene.Image
       const imgAssetName = `${scene.id}-image`
       const imgDataUri = scene.image || ""
-      FileUtils.exportData(imgAssetName, imgDataUri, assets, bundleName, imgFolder)
+      FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceName, imgFolder)
       scene.image = imgAssetName
 
       // Scene.Sound
       if (scene.sound) {
         const sfxAssetName = `${scene.id}-sound`
         const soundDataUri = scene.sound || ""
-        FileUtils.exportData(sfxAssetName, soundDataUri, assets, bundleName, sfxFolder)
+        FileUtils.exportData(sfxAssetName, soundDataUri, assets, sequenceName, sfxFolder)
         scene.sound = sfxAssetName
       }
     }
@@ -305,7 +308,8 @@ export class FileUtils {
   public static exportPropData(
     propState: PropState,
     assets: AssetsManifest,
-    bundleName: string,
+    sequenceId: string,
+    sequenceName: string,
     zip: JSZip
   ): string {
     console.log("Exporting props to zip...")
@@ -313,14 +317,22 @@ export class FileUtils {
     const imgFolder = zip.folder("images")
     // const sfxFolder = zip.folder("sfx")
 
-    for (const prop of propState.props) {
+    const filteredProps = propState.props.filter((prop) => {
+                            //debugger
+                            return useSceneStore().scenes.some((s) => {
+                              return prop.location_id === s.id && s.sequence_id === sequenceId
+                            })
+                          })
+
+    for (const prop of filteredProps) {
+    //for (const prop of propState.props) {
       // Export image to zip & replace state data with new filename
 
       // Prop.Image
       if (prop.image) {
         const imgAssetName = `${prop.id}-image`
         const imgDataUri = prop.image || ""
-        FileUtils.exportData(imgAssetName, imgDataUri, assets, bundleName, imgFolder)
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceName, imgFolder)
         prop.image = imgAssetName
       }
 
@@ -328,7 +340,7 @@ export class FileUtils {
       if (prop.image_closeup) {
         const imgAssetName = `${prop.id}-image_closeup`
         const imgDataUri = prop.image_closeup || ""
-        FileUtils.exportData(imgAssetName, imgDataUri, assets, bundleName, imgFolder)
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceName, imgFolder)
         prop.image_closeup = imgAssetName
       }
     }
@@ -337,9 +349,10 @@ export class FileUtils {
   }
 
   public static exportDoorData(
-    propState: DoorState,
+    doorState: DoorState,
     assets: AssetsManifest,
-    bundleName: string,
+    sequenceId: string,
+    sequenceName: string,
     zip: JSZip
   ): string {
     console.log("Exporting doors to zip...")
@@ -347,25 +360,26 @@ export class FileUtils {
     const imgFolder = zip.folder("images")
     // const sfxFolder = zip.folder("sfx")
 
-    for (const door of propState.doors) {
+    for (const door of doorState.doors) {
       // Export image to zip & replace state data with new filename
 
       // Door.Image
       if (door.image) {
         const imgAssetName = `${door.id}-image`
         const imgDataUri = door.image || ""
-        FileUtils.exportData(imgAssetName, imgDataUri, assets, bundleName, imgFolder)
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceName, imgFolder)
         door.image = imgAssetName
       }
     }
 
-    return JSON.stringify(propState)
+    return JSON.stringify(doorState)
   }
 
   public static exportActorData(
     actorState: ActorState,
     assets: AssetsManifest,
-    bundleName: string,
+    sequenceId: string,
+    sequenceName: string,
     zip: JSZip
   ): string {
     console.log("Exporting actors to zip...")
@@ -373,14 +387,22 @@ export class FileUtils {
     const imgFolder = zip.folder("images")
     // const sfxFolder = zip.folder("sfx")
 
-    for (const actor of actorState.actors) {
+    const filteredActors = actorState.actors.filter((actor) => {
+                            //debugger
+                            return useSceneStore().scenes.some((s) => {
+                              return actor.location_id === s.id && s.sequence_id === sequenceId
+                            })
+                          })
+
+    for (const actor of filteredActors) {
+    //for (const actor of actorState.actors) {
       // Export image to zip & replace state data with new filename
 
       // Actor.Image
       if (actor.image) {
         const imgAssetName = `${actor.id}-image`
         const imgDataUri = actor.image || ""
-        FileUtils.exportData(imgAssetName, imgDataUri, assets, bundleName, imgFolder)
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceName, imgFolder)
         actor.image = imgAssetName
       }
 
@@ -388,7 +410,7 @@ export class FileUtils {
       if (actor.image_closeup) {
         const imgAssetName = `${actor.id}-image_closeup`
         const imgDataUri = actor.image_closeup || ""
-        FileUtils.exportData(imgAssetName, imgDataUri, assets, bundleName, imgFolder)
+        FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceName, imgFolder)
         actor.image_closeup = imgAssetName
       }
     }
@@ -412,7 +434,7 @@ export class FileUtils {
     assetName: string,
     dataUri: string,
     assets: AssetsManifest,
-    bundleName: string,
+    sequenceName: string,
     zipFolder: JSZip | null
   ) {
     // Find the offset to start of data
@@ -424,13 +446,13 @@ export class FileUtils {
     // TODO: Need to preserve original extensions
     zipFolder?.file(filename, data, { base64: true })
 
-    debugger
+    //debugger
 
     // Add to assets list, within correct bundle...
-    let index = assets.bundles.findIndex((item) => item.name === bundleName)
+    let index = assets.bundles.findIndex((item) => item.name === sequenceName)
     if (index <=0) {
       // ...(or create bundle if doesn't exist)
-      index = assets.bundles.push({ name: bundleName, assets: [] } as AssetsBundle) - 1
+      index = assets.bundles.push({ name: sequenceName, assets: [] } as AssetsBundle) - 1
     }
     assets.bundles[index].assets.push({
     //assets.bundles[0].assets.push({
