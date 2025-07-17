@@ -47,6 +47,8 @@ export class SceneScreen extends Container implements IScreen {
 
   private mode!: string | null
 
+  private lastSequenceId: string
+
   constructor(scene: Scene) {
     super()
 
@@ -63,6 +65,9 @@ export class SceneScreen extends Container implements IScreen {
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
     this.mode = urlParams.get("mode")
+
+    // Load assets (if necessary)
+    this.loadAssets()
 
     // Construct scene from data
     this.buildBackdrop()
@@ -86,6 +91,18 @@ export class SceneScreen extends Container implements IScreen {
     SAGE.app.stage.on("pointermove", this.onPointerMove, this)
     SAGE.app.stage.on("pointerup", this.onPointerUp, this)
     SAGE.app.stage.on("touchmove", this.onTouchMove, this)
+  }
+
+  async loadAssets() {
+    //debugger
+    // If sequence changed
+    if (this.scene.sequence_id != this.lastSequenceId) {
+      console.info("Sequence changed - loading assets...")
+      // ...then load assets for new sequence
+      await Assets.loadBundle(this.scene.sequence_id)
+      // Now remember new sequence
+      this.lastSequenceId = this.scene.sequence_id
+    }
   }
 
   public update() {
@@ -362,6 +379,10 @@ export class SceneScreen extends Container implements IScreen {
    
 
     if (this.scene.image) {
+      
+      // NOTE: Ideally, to be able to test asset loading in edit mode
+      //       (but it's all in data:... format, which asset loader doesn't support?)
+      
       if (this.mode == "play") {
         // When in PLAY/test mode - need to handle non-preloaded images
         const base = await Assets.load(this.scene.image)
@@ -379,7 +400,9 @@ export class SceneScreen extends Container implements IScreen {
           sprite.height = SAGE.height
           sprite.width = sprite.height * imageRatio
         }
+
       } else {
+
         // When in "RELEASE" mode,
         // all images should've been preloaded, so go ahead
         // create a video texture from a path
@@ -395,7 +418,8 @@ export class SceneScreen extends Container implements IScreen {
         }
         // if (sprite.texture.source.resource.loop !== undefined) {
         //   sprite.texture.source.resource.loop = true
-        // }
+       
+        }
 
         const viewRatio = SAGE.width / SAGE.height //1.77
         const imageRatio = sprite.width / sprite.height
@@ -407,7 +431,7 @@ export class SceneScreen extends Container implements IScreen {
           sprite.width = sprite.height * imageRatio
         }
       }
-    }
+    //}
     sprite.anchor.set(0.5)
     sprite.x = SAGE.width / 2
     sprite.y = SAGE.height / 2
