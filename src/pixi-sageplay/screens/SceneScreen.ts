@@ -8,10 +8,10 @@ import {
   Texture,
   FederatedPointerEvent,
   Point,
-  VideoSource, //VideoResource,
+  VideoSource,
   BlurFilter,
   Assets,
-} from "pixi.js" //filters
+} from "pixi.js"
 
 import { SAGE, type IScreen } from "../SAGEPlay"
 import type { Scene } from "../Scene"
@@ -77,9 +77,6 @@ export class SceneScreen extends Container implements IScreen {
 
     // Reference filters
     this.blurFilter = SAGE.backLayer.filters[0] as BlurFilter
-    //this.blurFilter = SAGE.backLayer.filters[1] as BlurFilter
-    //this.blurFilter = new BlurFilter({ strength: 0 }) // default to NO blur
-    //SAGE.backLayer.filters = [this.blurFilter]
 
     // Fade in scene music
     if (this.scene.sound) {
@@ -93,17 +90,6 @@ export class SceneScreen extends Container implements IScreen {
     SAGE.app.stage.on("touchmove", this.onTouchMove, this)
   }
 
-  async loadAssets() {
-    //debugger
-    // If sequence changed
-    if (this.scene.sequence_id != this.lastSequenceId) {
-      console.info("Sequence changed - loading assets...")
-      // ...then load assets for new sequence
-      await Assets.loadBundle(this.scene.sequence_id)
-      // Now remember new sequence
-      this.lastSequenceId = this.scene.sequence_id
-    }
-  }
 
   public update() {
     //{(_framesPassed: number): void {
@@ -338,8 +324,6 @@ export class SceneScreen extends Container implements IScreen {
           fontSize: 48,
           padding: 4,
           stroke: { width: 10, color: "black", join: "round" },
-          // lineJoin: "round",
-          // strokeThickness: 10,
           trim: true,
         })
         const text = new Text(actionMessage, style)
@@ -355,8 +339,6 @@ export class SceneScreen extends Container implements IScreen {
       fontSize: 120,
       padding: 4,
       stroke: { width: 10, color: "black", join: "round" },
-      // lineJoin: "round",
-      // strokeThickness: 10,
       trim: true,
     })
     const text = new Text(message, style)
@@ -372,17 +354,29 @@ export class SceneScreen extends Container implements IScreen {
     SAGE.restartGame()
   }
 
+  
+  async loadAssets() {
+    //debugger
+    // If sequence changed
+    if (this.scene.sequence_id != this.lastSequenceId) {
+      console.info("Sequence changed - loading assets...")
+      // ...then load assets for new sequence
+      await Assets.loadBundle(this.scene.sequence_id)
+      // Now remember new sequence
+      this.lastSequenceId = this.scene.sequence_id
+    }
+  }
+  
+
   private async buildBackdrop() {
     // Backdrop
     let sprite = new Sprite(Texture.EMPTY)
 
-   
-
     if (this.scene.image) {
       
-      // NOTE: Ideally, to be able to test asset loading in edit mode
+      // TODO: Ideally, to be able to test asset loading in edit mode
       //       (but it's all in data:... format, which asset loader doesn't support?)
-      
+
       if (this.mode == "play") {
         // When in PLAY/test mode - need to handle non-preloaded images
         const base = await Assets.load(this.scene.image)
@@ -407,39 +401,30 @@ export class SceneScreen extends Container implements IScreen {
         // all images should've been preloaded, so go ahead
         // create a video texture from a path
         sprite = Sprite.from(this.scene.image)
-        //const texture = Texture.from({ id: this.scene.image })
-        // create a new Sprite using the video texture (yes it's that easy)
-        //sprite = new Sprite(texture)
 
         // Video?
-        //debugger
         if (sprite.texture.source.resource.play !== undefined) {
           sprite.texture.source.resource.play()
         }
-        // if (sprite.texture.source.resource.loop !== undefined) {
-        //   sprite.texture.source.resource.loop = true
-       
-        }
-
-        const viewRatio = SAGE.width / SAGE.height //1.77
-        const imageRatio = sprite.width / sprite.height
-        if (imageRatio < viewRatio) {
-          sprite.width = SAGE.width
-          sprite.height = sprite.width / imageRatio
-        } else {
-          sprite.height = SAGE.height
-          sprite.width = sprite.height * imageRatio
-        }
       }
-    //}
+
+      const viewRatio = SAGE.width / SAGE.height //1.77
+      const imageRatio = sprite.width / sprite.height
+      if (imageRatio < viewRatio) {
+        sprite.width = SAGE.width
+        sprite.height = sprite.width / imageRatio
+      } else {
+        sprite.height = SAGE.height
+        sprite.width = sprite.height * imageRatio
+      }
+    }
+
     sprite.anchor.set(0.5)
     sprite.x = SAGE.width / 2
     sprite.y = SAGE.height / 2
 
     this.addChildAt(sprite, 0) // Ensure backdrop at bottom/first rendered
                                // (async above can mean others get added first)
-    //this.addChild(sprite)
-
     this.backdrop = sprite
 
     // Events
@@ -463,7 +448,6 @@ export class SceneScreen extends Container implements IScreen {
     const prop = new Prop(model)
     await prop.initialize()
     this.addChildAt(prop.sprite, this.children.length) // Ensure added to "top"
-    //this.addChild(prop.sprite)
     this.props.push(prop)
     // Don't add to scene.propdata here, as it likely already came from it?
 
@@ -539,8 +523,6 @@ export class SceneScreen extends Container implements IScreen {
         const door = new Door(doorData)
         this.addChildAt(door.sprite, this.children.length) // Ensure added to "top"
         this.addChildAt(door.graphics, this.children.length) // Ensure added to "top"
-        //this.addChild(door.sprite)
-        //this.addChild(door.graphics)
         this.doors.push(door)
       }
     }
@@ -562,7 +544,6 @@ export class SceneScreen extends Container implements IScreen {
     const actor = new Actor(model)
     await actor.initialize()
     this.addChildAt(actor.sprite, this.children.length) // Ensure added to "top"
-    //this.addChild(actor.sprite)
     this.actors.push(actor)
     // Don't add to scene.propdata here, as it likely already came from it?
 
@@ -642,7 +623,6 @@ export class SceneScreen extends Container implements IScreen {
     // Fade in?
     if (fadeIn) {
       actor.sprite_closeup.alpha = 0
-      //const blurTween = new Tween(this.blurFilter).to({ blur: 8 }, 500).start()
       new Tween(actor.sprite).to({ alpha: 0 }, 500).start()
       new Tween(actor.sprite_closeup).to({ alpha: 1 }, 500).start()
     }
@@ -721,13 +701,11 @@ export class SceneScreen extends Container implements IScreen {
   }
 
   private onPrimaryAction() {
-    //_e: InteractionEvent
     SAGE.debugLog("Backdrop was clicked/tapped")
     SAGE.Events.emit("sceneinteract")
   }
 
   private onSecondaryAction() {
-    //_e: InteractionEvent
     // Make all interactive objects flash (by raising 'global' event)");
     SAGE.Events.emit("scenehint")
   }
