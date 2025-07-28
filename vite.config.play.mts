@@ -78,6 +78,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
       https: true,
     },
     build: {
+      minify: false, // disable minify when debugging
       rollupOptions: {
         input: {
           "index-play": "./index-release.html",

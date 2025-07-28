@@ -172,21 +172,35 @@ export class FileUtils {
     // World
     playData.worldData = JSON.stringify(useWorldStore().$state)
 
-    // TODO: Specify separate Asset "Bundle" for each Sequence
+    // Clone data once (as will replace "data:"" for asset refs)
+    const sceneState = FileUtils.cloneState(useSceneStore()) as SceneState
+    const propState = FileUtils.cloneState(usePropStore()) as PropState
+    const doorState = FileUtils.cloneState(useDoorStore()) as DoorState
+    const actorState = FileUtils.cloneState(useActorStore()) as ActorState
+
+    // Specify separate Asset "Bundle" for each Sequence
+    // (needs to done per sequence so assets are nested accordingly)
     for (const sequence of useWorldStore().getSequences) {
       // Scenes
-      const sceneState = FileUtils.cloneState(useSceneStore()) as SceneState
-      playData.sceneData = FileUtils.exportSceneData(sceneState, assetsManifest, sequence.name, zip)
+      //const sceneState = FileUtils.cloneState(useSceneStore()) as SceneState
+      FileUtils.exportSceneData(sceneState, assetsManifest, sequence.name, zip)
       // Props
-      const propState = FileUtils.cloneState(usePropStore()) as PropState
-      playData.propData = FileUtils.exportPropData(propState, assetsManifest, sequence.id, sequence.name, zip)
+      //const propState = FileUtils.cloneState(usePropStore()) as PropState
+      FileUtils.exportPropData(propState, assetsManifest, sequence.id, sequence.name, zip)
       // Doors
-      const doorState = FileUtils.cloneState(useDoorStore()) as DoorState
-      playData.doorData = FileUtils.exportDoorData(doorState, assetsManifest, sequence.id, sequence.name, zip)
+      //const doorState = FileUtils.cloneState(useDoorStore()) as DoorState
+      FileUtils.exportDoorData(doorState, assetsManifest, sequence.id, sequence.name, zip)
       // Actors
-      const actorState = FileUtils.cloneState(useActorStore()) as ActorState
-      playData.actorData = FileUtils.exportActorData(actorState, assetsManifest, sequence.id, sequence.name, zip)
+      //const actorState = FileUtils.cloneState(useActorStore()) as ActorState
+      FileUtils.exportActorData(actorState, assetsManifest, sequence.id, sequence.name, zip)
     }
+
+    // Now store all the data in one go
+    // (assets need to be nested above, but data should be in one block)
+    playData.sceneData = JSON.stringify(sceneState)
+    playData.propData = JSON.stringify(propState)
+    playData.doorData = JSON.stringify(doorState)
+    playData.actorData = JSON.stringify(actorState)
 
     // Game State
     playData.gameStateData = JSON.stringify(useGameStateStore().$state)
@@ -241,14 +255,14 @@ export class FileUtils {
         "pick-up.mp3",
       ],
       assets: [
-        "browserAll-Buw1Du-H.js",
-        "colorToUniform-B9L1V9HB.js",
-        "getBatchSamplersUniformGroup-Cam96G_Z.js",
-        "SharedSystems-_ZYLxQOU.js",
-        "webfontloader-BqVzmtkE.js",
+        "browserAll-BHj6XVe3.js",
+        "colorToUniform-mf4E1aij.js",
+        "getBatchSamplersUniformGroup-DlrEnN99.js",
+        "SharedSystems-ZPUl18BM.js",
+        "webfontloader-mbYWyneR.js",
         "WebGLRenderer-BaHCsPu0.js",
-        "WebGPURenderer-Ba3hV3td.js",
-        "webworkerAll-B9s1-jYc.js",
+        "WebGLRenderer-Cx739jvf.js",
+        "webworkerAll-M8pMem3J.js",
       ],
     }
     FileUtils.addFolderFilesRecursively(foldersAndFilesToZip, zip)
@@ -293,6 +307,9 @@ export class FileUtils {
       FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceName, imgFolder)
       scene.image = imgAssetName
 
+      // Delete thumbnail
+      scene.thumbnail = ""
+
       // Scene.Sound 
       if (scene.sound) {
         const sfxAssetName = `${scene.id}-sound`
@@ -302,7 +319,7 @@ export class FileUtils {
       }
     }
 
-    return JSON.stringify(filteredScenes)
+    return JSON.stringify(sceneState)
   }
 
   public static exportPropData(

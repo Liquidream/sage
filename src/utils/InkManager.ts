@@ -320,6 +320,9 @@ export class InkManager {
         if (InkManager.inkStory.currentTags?.length > 0) {
           const tags = InkManager.inkStory.currentTags
           console.debug(tags)
+
+          debugger
+          
           //tags.forEach(async (tag, index) => {
           for (let tag of tags) {
             // -------------------------------------------
