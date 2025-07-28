@@ -285,13 +285,15 @@ export class FileUtils {
     //for (const scene of sceneState.scenes) {
       // Export image to zip & replace state data with new filename
 
+      debugger 
+
       // Scene.Image
       const imgAssetName = `${scene.id}-image`
       const imgDataUri = scene.image || ""
       FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceName, imgFolder)
       scene.image = imgAssetName
 
-      // Scene.Sound
+      // Scene.Sound 
       if (scene.sound) {
         const sfxAssetName = `${scene.id}-sound`
         const soundDataUri = scene.sound || ""
@@ -300,7 +302,7 @@ export class FileUtils {
       }
     }
 
-    return JSON.stringify(sceneState)
+    return JSON.stringify(filteredScenes)
   }
 
   public static exportPropData(

@@ -360,6 +360,7 @@ export class SceneScreen extends Container implements IScreen {
     // If sequence changed
     if (this.scene.sequence_id != this.lastSequenceId) {
       console.info("Sequence changed - loading assets...")
+      debugger
       // ...then load assets for new sequence
       await Assets.loadBundle(this.scene.sequence_id)
       // Now remember new sequence
