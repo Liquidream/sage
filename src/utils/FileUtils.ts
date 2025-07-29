@@ -292,14 +292,16 @@ export class FileUtils {
     const imgFolder = zip.folder("images")
     const sfxFolder = zip.folder("sfx")
 
+    debugger
+
     const filteredScenes = sceneState.scenes.filter(
-                              (scene) => scene.id === sequenceId)
+                              (scene) => scene.sequence_id === sequenceId)
 
     for (const scene of filteredScenes) {
     //for (const scene of sceneState.scenes) {
       // Export image to zip & replace state data with new filename
 
-      debugger 
+       
 
       // Scene.Image
       const imgAssetName = `${scene.id}-image`

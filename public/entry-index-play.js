@@ -37325,6 +37325,7 @@ class SceneScreen extends Container {
       console.info("Sequence changed - loading assets...");
       debugger;
       await Assets.loadBundle(this.scene.sequence_id);
+      console.log(`Check cache - result = ${Assets.cache.has("scn_mainmenu-image")}`);
       this.lastSequenceId = this.scene.sequence_id;
     }
   }

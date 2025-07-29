@@ -363,6 +363,9 @@ export class SceneScreen extends Container implements IScreen {
       debugger
       // ...then load assets for new sequence
       await Assets.loadBundle(this.scene.sequence_id)
+
+      console.log(`Check cache - result = ${Assets.cache.has("scn_mainmenu-image")}`)
+
       // Now remember new sequence
       this.lastSequenceId = this.scene.sequence_id
     }
