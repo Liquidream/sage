@@ -292,7 +292,7 @@ export class FileUtils {
     const imgFolder = zip.folder("images")
     const sfxFolder = zip.folder("sfx")
 
-    debugger
+    //debugger
 
     const filteredScenes = sceneState.scenes.filter(
                               (scene) => scene.sequence_id === sequenceId)

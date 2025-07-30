@@ -49,8 +49,6 @@ export class SceneScreen extends Container implements IScreen {
 
   private lastSequenceId: string
 
-  private screenAssets: null
-
   constructor(scene: Scene) {
     super()
 
@@ -362,11 +360,11 @@ export class SceneScreen extends Container implements IScreen {
     // If sequence changed
     if (this.scene.sequence_id != this.lastSequenceId) {
       console.info("Sequence changed - loading assets...")
-      debugger
+      //debugger
       // ...then load assets for new sequence
-      this.screenAssets = await Assets.loadBundle(this.scene.sequence_id)
+      await Assets.loadBundle(this.scene.sequence_id)
 
-      console.log(`Check cache - result = ${Assets.cache.has("scn_mainmenu_image")}`)
+      //console.log(`Check cache - result = ${Assets.cache.has("scn_mainmenu_image")}`)
 
       // Now remember new sequence
       this.lastSequenceId = this.scene.sequence_id

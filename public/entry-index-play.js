@@ -37116,7 +37116,6 @@ class SceneScreen extends Container {
     __publicField(this, "blurFilter");
     __publicField(this, "mode");
     __publicField(this, "lastSequenceId");
-    __publicField(this, "screenAssets");
     this.scene = scene;
     this.setup();
   }
@@ -37324,9 +37323,7 @@ class SceneScreen extends Container {
   async loadAssets() {
     if (this.scene.sequence_id != this.lastSequenceId) {
       console.info("Sequence changed - loading assets...");
-      debugger;
-      this.screenAssets = await Assets.loadBundle(this.scene.sequence_id);
-      console.log(`Check cache - result = ${Assets.cache.has("scn_mainmenu_image")}`);
+      await Assets.loadBundle(this.scene.sequence_id);
       this.lastSequenceId = this.scene.sequence_id;
     }
   }
@@ -45238,7 +45235,6 @@ ${door.script}`;
         if (((_a = _InkManager.inkStory.currentTags) == null ? void 0 : _a.length) > 0) {
           const tags = _InkManager.inkStory.currentTags;
           console.debug(tags);
-          debugger;
           for (let tag of tags) {
             if (tag.toUpperCase().startsWith("SCENE")) {
               let target_scene_id = tag.split(":")[1].trim();

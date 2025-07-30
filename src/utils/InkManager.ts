@@ -321,8 +321,8 @@ export class InkManager {
           const tags = InkManager.inkStory.currentTags
           console.debug(tags)
 
-          debugger
-          
+          //debugger
+
           //tags.forEach(async (tag, index) => {
           for (let tag of tags) {
             // -------------------------------------------
