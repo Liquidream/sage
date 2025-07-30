@@ -49,6 +49,8 @@ export class SceneScreen extends Container implements IScreen {
 
   private lastSequenceId: string
 
+  private screenAssets: null
+
   constructor(scene: Scene) {
     super()
 
@@ -59,7 +61,7 @@ export class SceneScreen extends Container implements IScreen {
     this.setup()
   }
 
-  private setup() {
+  private async setup() {
     SAGE.debugLog("SceneScreen : setup()...")
 
     const queryString = window.location.search
@@ -67,7 +69,7 @@ export class SceneScreen extends Container implements IScreen {
     this.mode = urlParams.get("mode")
 
     // Load assets (if necessary)
-    this.loadAssets()
+    await this.loadAssets()
 
     // Construct scene from data
     this.buildBackdrop()
@@ -362,9 +364,9 @@ export class SceneScreen extends Container implements IScreen {
       console.info("Sequence changed - loading assets...")
       debugger
       // ...then load assets for new sequence
-      await Assets.loadBundle(this.scene.sequence_id)
+      this.screenAssets = await Assets.loadBundle(this.scene.sequence_id)
 
-      console.log(`Check cache - result = ${Assets.cache.has("scn_mainmenu-image")}`)
+      console.log(`Check cache - result = ${Assets.cache.has("scn_mainmenu_image")}`)
 
       // Now remember new sequence
       this.lastSequenceId = this.scene.sequence_id

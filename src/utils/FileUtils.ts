@@ -304,7 +304,7 @@ export class FileUtils {
        
 
       // Scene.Image
-      const imgAssetName = `${scene.id}-image`
+      const imgAssetName = `${scene.id}_image`
       const imgDataUri = scene.image || ""
       FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceId, imgFolder)
       scene.image = imgAssetName
@@ -314,7 +314,7 @@ export class FileUtils {
 
       // Scene.Sound 
       if (scene.sound) {
-        const sfxAssetName = `${scene.id}-sound`
+        const sfxAssetName = `${scene.id}_sound`
         const soundDataUri = scene.sound || ""
         FileUtils.exportData(sfxAssetName, soundDataUri, assets, sequenceId, sfxFolder)
         scene.sound = sfxAssetName
@@ -349,7 +349,7 @@ export class FileUtils {
 
       // Prop.Image
       if (prop.image) {
-        const imgAssetName = `${prop.id}-image`
+        const imgAssetName = `${prop.id}_image`
         const imgDataUri = prop.image || ""
         FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceId, imgFolder)
         prop.image = imgAssetName
@@ -357,7 +357,7 @@ export class FileUtils {
 
       // Prop.ImageCloseup
       if (prop.image_closeup) {
-        const imgAssetName = `${prop.id}-image_closeup`
+        const imgAssetName = `${prop.id}_imagecloseup`
         const imgDataUri = prop.image_closeup || ""
         FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceId, imgFolder)
         prop.image_closeup = imgAssetName
@@ -384,7 +384,7 @@ export class FileUtils {
 
       // Door.Image
       if (door.image) {
-        const imgAssetName = `${door.id}-image`
+        const imgAssetName = `${door.id}_image`
         const imgDataUri = door.image || ""
         FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceId, imgFolder)
         door.image = imgAssetName
@@ -419,7 +419,7 @@ export class FileUtils {
 
       // Actor.Image
       if (actor.image) {
-        const imgAssetName = `${actor.id}-image`
+        const imgAssetName = `${actor.id}_image`
         const imgDataUri = actor.image || ""
         FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceId, imgFolder)
         actor.image = imgAssetName
@@ -427,7 +427,7 @@ export class FileUtils {
 
       // Actor.ImageCloseup
       if (actor.image_closeup) {
-        const imgAssetName = `${actor.id}-image_closeup`
+        const imgAssetName = `${actor.id}_imagecloseup`
         const imgDataUri = actor.image_closeup || ""
         FileUtils.exportData(imgAssetName, imgDataUri, assets, sequenceId, imgFolder)
         actor.image_closeup = imgAssetName

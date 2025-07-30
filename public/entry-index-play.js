@@ -37116,15 +37116,16 @@ class SceneScreen extends Container {
     __publicField(this, "blurFilter");
     __publicField(this, "mode");
     __publicField(this, "lastSequenceId");
+    __publicField(this, "screenAssets");
     this.scene = scene;
     this.setup();
   }
-  setup() {
+  async setup() {
     SAGE.debugLog("SceneScreen : setup()...");
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     this.mode = urlParams.get("mode");
-    this.loadAssets();
+    await this.loadAssets();
     this.buildBackdrop();
     this.buildDoorways();
     this.buildProps();
@@ -37324,8 +37325,8 @@ class SceneScreen extends Container {
     if (this.scene.sequence_id != this.lastSequenceId) {
       console.info("Sequence changed - loading assets...");
       debugger;
-      await Assets.loadBundle(this.scene.sequence_id);
-      console.log(`Check cache - result = ${Assets.cache.has("scn_mainmenu-image")}`);
+      this.screenAssets = await Assets.loadBundle(this.scene.sequence_id);
+      console.log(`Check cache - result = ${Assets.cache.has("scn_mainmenu_image")}`);
       this.lastSequenceId = this.scene.sequence_id;
     }
   }
