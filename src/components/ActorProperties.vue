@@ -1,28 +1,37 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn
-    variant="plain"
-    size="small"
-    prepend-icon="mdi-earth"
-    @click="backToWorldClicked"
-    >World</v-btn
-  >
-  <v-icon
-    v-if="worldRefs.currSceneId.value !== ''"
-    icon="mdi-chevron-right"
-  ></v-icon>
-  <v-btn
-    v-if="worldRefs.currSceneId.value !== ''"
-    variant="plain"
-    size="small"
-    prepend-icon="mdi-filmstrip-box"
-    @click="backToSceneClicked"
-    >Scene</v-btn
-  >
-  <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn variant="plain" size="small" prepend-icon="mdi-account" disabled
-    >Actor</v-btn
-  >
+  <v-btn-group size="small" density="default" divided="true" variant="elevated" class="d-flex w-100">
+    <v-btn
+        size="small"
+        class="flex-grow-1"
+        prepend-icon="mdi-earth"
+        @click="backToWorldClicked"
+        >World</v-btn
+      >
+    <v-btn
+      v-if="worldRefs.currSequenceId.value !== ''"
+      size="small"
+      class="flex-grow-1"
+      prepend-icon="mdi-link"
+      @click="backToSequenceClicked"
+      >Seq</v-btn
+    >
+    <v-btn
+      v-if="worldRefs.currSceneId.value !== ''"
+      size="small"
+      class="flex-grow-1"
+      prepend-icon="mdi-filmstrip-box"
+      @click="backToSceneClicked"
+      >Scene</v-btn
+    >
+    <v-btn 
+      size="small" 
+      class="flex-grow-1"
+      prepend-icon="mdi-account" 
+      disabled      
+      >Actor</v-btn
+    >
+  </v-btn-group>
 
   <v-form v-if="model">
     <div class="header pa-3">
@@ -332,6 +341,8 @@
   }
 
   const backToWorldClicked = () => {
+    worldStore.currPropId = ""    
+    worldStore.currDoorId = ""
     worldStore.currActorId = ""
     worldStore.currSceneId = ""
     worldStore.currSequenceId = ""
@@ -339,8 +350,17 @@
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }
 
+  const backToSequenceClicked = () => {
+    worldStore.currPropId = ""
+    worldStore.currDoorId = ""
+    worldStore.currSceneId = ""
+    // Force scroll to top of nav panel
+    document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
+  }
+
   const backToSceneClicked = () => {
-    worldStore.currActorId = ""
+    worldStore.currPropId = ""
+    worldStore.currDoorId = ""
     // Force scroll to top of nav panel
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }

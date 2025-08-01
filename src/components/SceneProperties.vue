@@ -215,6 +215,7 @@
   const backToWorldClicked = () => {
     worldStore.currPropId = ""
     worldStore.currDoorId = ""
+    worldStore.currActorId = ""
     worldStore.currSceneId = ""
     worldStore.currSequenceId = ""
     // Force scroll to top of nav panel
