@@ -8,6 +8,14 @@
     >World</v-btn
   >
   <v-icon icon="mdi-chevron-right"></v-icon>
+  <v-btn
+    variant="plain"
+    size="small"
+    prepend-icon="mdi-link"
+    @click="backToSequenceClicked"
+    >Seq</v-btn
+  >
+  <v-icon icon="mdi-chevron-right"></v-icon>
   <v-btn variant="plain" size="small" prepend-icon="mdi-filmstrip-box" disabled
     >Scene</v-btn
   >
@@ -201,8 +209,17 @@
   
   const backToWorldClicked = () => {
     worldStore.currPropId = ""
+    worldStore.currDoorId = ""
     worldStore.currSceneId = ""
     worldStore.currSequenceId = ""
+    // Force scroll to top of nav panel
+    document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
+  }
+
+  const backToSequenceClicked = () => {
+    worldStore.currPropId = ""
+    worldStore.currDoorId = ""
+    worldStore.currSceneId = ""
     // Force scroll to top of nav panel
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }

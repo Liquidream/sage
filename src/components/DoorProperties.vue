@@ -1,24 +1,42 @@
 <template>
   <!-- Breadcrumbs -->
+  <v-container class="pa-0">
   <v-btn
     variant="plain"
     size="small"
     prepend-icon="mdi-earth"
+    stacked 
     @click="backToWorldClicked"
     >World</v-btn
   >
   <v-icon icon="mdi-chevron-right"></v-icon>
   <v-btn
     variant="plain"
-    size="small"
+    size="x-small"
+    prepend-icon="mdi-link"
+    stacked 
+    @click="backToSequenceClicked"
+    >Seq</v-btn
+  >
+  <v-icon icon="mdi-chevron-right"></v-icon>
+  <v-btn
+    variant="plain"
+    size="x-small"
     prepend-icon="mdi-filmstrip-box"
+    stacked 
     @click="backToSceneClicked"
     >Scene</v-btn
   >
   <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn variant="plain" size="small" prepend-icon="mdi-door" disabled
+  <v-btn 
+    variant="plain" 
+    size="x-small" 
+    prepend-icon="mdi-door" 
+    stacked
+    disabled
     >Door</v-btn
   >
+  </v-container>
 
   <v-form v-if="model">
     <div class="header pa-3">
@@ -296,9 +314,17 @@
   }
 
   const backToWorldClicked = () => {
-    worldStore.currDoorId = ""
+    worldStore.currPropId = ""
     worldStore.currSceneId = ""
     worldStore.currSequenceId = ""
+    // Force scroll to top of nav panel
+    document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
+  }
+
+  const backToSequenceClicked = () => {
+    worldStore.currPropId = ""
+    worldStore.currDoorId = ""
+    worldStore.currSceneId = ""
     // Force scroll to top of nav panel
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }
