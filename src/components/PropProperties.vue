@@ -1,42 +1,38 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-container class="pa-0">
-  <v-btn
-    variant="plain"
-    size="x-small"
-    prepend-icon="mdi-earth"
-    stacked 
-    @click="backToWorldClicked"
-    >World</v-btn
-  >
-  <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn
-    variant="plain"
-    size="x-small"
-    prepend-icon="mdi-link"
-    stacked 
-    @click="backToSequenceClicked"
-    >Seq</v-btn
-  >
-  <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn
-    variant="plain"
-    size="x-small"
-    prepend-icon="mdi-filmstrip-box"
-    stacked 
-    @click="backToSceneClicked"
-    >Scene</v-btn
-  >
-  <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn 
-    variant="plain" 
-    size="x-small" 
-    prepend-icon="mdi-trophy" 
-    stacked 
-    disabled
-    >Prop</v-btn
-  >
-  </v-container>
+  <v-btn-group size="small" density="default" divided="true" variant="elevated" class="d-flex w-100">
+    <v-btn
+      size="small"
+      class="flex-grow-1"
+      prepend-icon="mdi-earth"
+      @click="backToWorldClicked"
+      >World</v-btn
+    >
+    <!-- <v-icon icon="mdi-chevron-right"></v-icon> -->
+    <v-btn
+      size="small"
+      class="flex-grow-1"
+      prepend-icon="mdi-link"
+      @click="backToSequenceClicked"
+      >Seq</v-btn
+    >
+    <!-- <v-icon icon="mdi-chevron-right"></v-icon> -->
+    <v-btn
+      size="small"
+      class="flex-grow-1"
+      prepend-icon="mdi-filmstrip-box"
+      
+      @click="backToSceneClicked"
+      >Scene</v-btn
+    >
+    <v-btn
+      size="small" 
+      class="flex-grow-1"
+      prepend-icon="mdi-trophy" 
+      disabled
+      >Prop</v-btn
+    >
+  </v-btn-group>
 
   <v-form v-if="model">
     <div class="header pa-3">

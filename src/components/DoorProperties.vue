@@ -1,6 +1,6 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn-group density="default" divided="true" variant="elevated" class="d-flex w-100">
+  <v-btn-group size="small" density="default" divided="true" variant="elevated" class="d-flex w-100">
     <v-btn
       size="small"
       class="flex-grow-1"
@@ -8,7 +8,6 @@
       @click="backToWorldClicked"
       >World</v-btn
     >
-    <!-- <v-icon icon="mdi-chevron-right"></v-icon> -->
     <v-btn
       size="small"
       class="flex-grow-1"
@@ -16,7 +15,6 @@
       @click="backToSequenceClicked"
       >Seq</v-btn
     >
-    <!-- <v-icon icon="mdi-chevron-right"></v-icon> -->
     <v-btn
       size="small"
       class="flex-grow-1"
@@ -25,7 +23,6 @@
       @click="backToSceneClicked"
       >Scene</v-btn
     >
-    <!-- <v-icon icon="mdi-chevron-right"></v-icon> -->
     <v-btn 
       size="small" 
       class="flex-grow-1"

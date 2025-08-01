@@ -1,25 +1,30 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn
-    variant="plain"
-    size="small"
-    prepend-icon="mdi-earth"
-    @click="backToWorldClicked"
-    >World</v-btn
-  >
-  <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn
-    variant="plain"
-    size="small"
-    prepend-icon="mdi-link"
-    @click="backToSequenceClicked"
-    >Seq</v-btn
-  >
-  <v-icon icon="mdi-chevron-right"></v-icon>
-  <v-btn variant="plain" size="small" prepend-icon="mdi-filmstrip-box" disabled
-    >Scene</v-btn
-  >
-
+  <v-btn-group size="small" density="default" divided="true" variant="elevated">
+    <v-btn
+      size="small"
+      class="flex-grow-1"
+      prepend-icon="mdi-earth"
+      @click="backToWorldClicked"
+      >World</v-btn
+    >
+    <v-btn
+      size="small"
+      class="flex-grow-1"
+      prepend-icon="mdi-link"
+      @click="backToSequenceClicked"
+      >Sequence</v-btn
+    >
+    <v-btn 
+      size="small" 
+      class="flex-grow-1"
+      prepend-icon="mdi-filmstrip-box" 
+      disabled
+      
+      >Scene</v-btn
+    >
+  </v-btn-group>
+  
   <v-form v-if="model">
     <div class="header pa-3">
       <div class="mt-2 text-h5">
