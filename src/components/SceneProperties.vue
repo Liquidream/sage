@@ -1,6 +1,6 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn-group size="small" density="default" divided="true" variant="elevated">
+  <v-btn-group size="small" density="default" :divided=true variant="elevated">
     <v-btn
       size="small"
       class="flex-grow-1"
@@ -19,8 +19,7 @@
       size="small" 
       class="flex-grow-1"
       prepend-icon="mdi-filmstrip-box" 
-      disabled
-      
+      :disabled=true
       >Scene</v-btn
     >
   </v-btn-group>

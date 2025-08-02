@@ -33,7 +33,7 @@
       <v-text-field 
         v-model="model" 
         :label="label" 
-        disabled=true 
+        :disabled=true 
         hide-details 
         @keydown.enter="save" />
       <!-- <span>{{ model }}</span> -->

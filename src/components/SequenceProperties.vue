@@ -1,6 +1,6 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn-group size="small" density="default" divided="true" variant="elevated">
+  <v-btn-group size="small" density="default" :divided=true variant="elevated">
   <v-btn
       size="small"
       class="flex-grow-1"
@@ -12,12 +12,11 @@
       size="small" 
       class="flex-grow-1"
       prepend-icon="mdi-link" 
-      disabled
-      
+      :disabled=true
       >Sequence</v-btn
     >
   </v-btn-group>
-  
+
   <v-form v-if="model">
     <div class="header pa-3">
       <div class="mt-2 text-h5">

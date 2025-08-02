@@ -1,12 +1,11 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn-group size="small" density="default" divided="true" variant="elevated">
+  <v-btn-group size="small" density="default" :divided=true variant="elevated">
   <v-btn 
       size="small" 
       class="flex-grow-1"
       prepend-icon="mdi-earth" 
-      disabled
-      
+      :disabled=true
       >World</v-btn
     >
   </v-btn-group>

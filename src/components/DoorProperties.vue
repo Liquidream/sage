@@ -1,6 +1,6 @@
 <template>
   <!-- Breadcrumbs -->
-  <v-btn-group size="small" density="default" divided="true" variant="elevated" class="d-flex w-100">
+  <v-btn-group size="small" density="default" :divided=true variant="elevated" class="d-flex w-100">
     <v-btn
       size="small"
       class="flex-grow-1"
@@ -27,7 +27,7 @@
       size="small" 
       class="flex-grow-1"
       prepend-icon="mdi-door" 
-      disabled      
+      :disabled=true      
       >Door</v-btn
     >
   </v-btn-group>
