@@ -1,5 +1,6 @@
 import type { SequenceModel } from "@/models/SequenceModel"
 import { defineStore } from "pinia"
+import { useSceneStore } from "./SceneStore"
 
 export interface SequenceState {
   sequences: SequenceModel[]
@@ -20,21 +21,18 @@ export const useSequenceStore = defineStore({
     // },
   },
 
-  // actions: {
-  //   // TODO: Think a publish/subscribe approach would be "better" here
-  //   //       (let stores clean up their own data) but need this all to happen NOW!
-  //   //       ..or else screen will re-initialise with half-baked edits
-  //   realignChildObjects(oldSceneId: string, newSceneId: string) {
-  //     console.log(`sceneStore::realignChildObjects (Old id = ${oldSceneId}, New id = ${newSceneId})`)
-  //     // Actors
-  //     const sceneActorModels = useActorStore().findActorBySceneId(oldSceneId)
-  //     if (sceneActorModels.length > 0) {
-  //       for (const actorModel of sceneActorModels) {
-  //         actorModel.location_id = newSceneId
-  //       }
-  //     }
-  //   },
-  // },
+  actions: {
+
+    findSequenceBySceneId(scene_id: string) {
+      //debugger
+      const scene = useSceneStore().scenes.find((scene) => scene.id === scene_id)
+      if (scene) {
+        const sequence = this.sequences.find((seq) => seq.id === scene.sequence_id)
+        return sequence 
+      }
+    },
+
+  },
 
   //persist: true, // Save to localStorage
 })

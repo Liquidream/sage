@@ -137,9 +137,10 @@
 
   import AceEditor from "./AceEditor.vue"
 
-  import type { ActorModel } from "@/models/ActorModel"
+  import { ActorLocationType, type ActorModel } from "@/models/ActorModel"
   import { ref } from "vue"
   import type { SequenceModel } from "@/models/SequenceModel"
+import { useSequenceStore } from "@/stores/SequenceStore"
 
   console.log("start WordProperties.vue...")
   const worldStore = useWorldStore()
@@ -162,8 +163,19 @@
     SAGEdit.debugLog("onClickActor()...")
     SAGEdit.debugLog(actor.name)
 
-    // TODO: Need to have a way to edit actor WITHOUT being in a scene
-    worldStore.currActorId = actor.id
+      // If setting scene, then also need to set sequence
+      worldStore.currSequenceId = useSequenceStore().findSequenceBySceneId(actor.location_id).id
+      
+      // Also jump to the scene where actor is located
+      // (helps keep things working properly, and if not in scene, should still work?)
+      //debugger
+      if (actor.location_type === ActorLocationType.Scene
+      && actor.location_id) {
+        worldStore.currSceneId = actor.location_id
+        
+        // TODO: Need to have a way to edit actor WITHOUT being in a scene
+        worldStore.currActorId = actor.id
+    }
   }
 
   const loading = ref(false)

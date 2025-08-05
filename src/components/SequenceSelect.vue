@@ -56,5 +56,6 @@
     },
   })
 
-  const worldStore = useWorldStore()
+  //Important this is last, else causes a feedback loop?
+  const worldStore = useWorldStore() 
 </script>

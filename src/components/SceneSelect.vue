@@ -53,6 +53,12 @@
     },
     set(value) {
       emit("update:modelValue", value)
+
+      //worldStore.currSceneId = value
+      // Clear others as scene changed
+      worldStore.currPropId = ""
+      worldStore.currDoorId = ""
+      worldStore.currActorId = ""
     },
   })
 

@@ -3,7 +3,7 @@
   <v-sheet class="mx-auto" max-width="100%">
     <v-slide-group v-model="value" mandatory center-active show-arrows>
       <v-slide-group-item
-        v-for="(scene, index) in scenes"
+        v-for="(scene, index) in seq_scenes"
         :key="scene.id"
         :value="scene.id"
         v-slot="{ isSelected, toggle }"
@@ -47,8 +47,11 @@
 
   const worldStore = useWorldStore()
   const worldRefs = storeToRefs(worldStore)
-  const scenes = worldRefs.getScenes
+  
+  //const scenes = worldRefs.getScenes
 
+  const seq_scenes = worldRefs.getScenes.value.filter((scene) => scene.sequence_id === worldStore.currSequenceId)
+  
   const props = defineProps(["modelValue", "show"])
   const emit = defineEmits(["update:modelValue"])
 
@@ -58,6 +61,15 @@
     },
     set(value) {
       emit("update:modelValue", value)
+
+      worldStore.currSceneId = value
+      // Clear others as scene changed
+      worldStore.currPropId = ""
+      worldStore.currDoorId = ""
+      worldStore.currActorId = ""
     },
   })
+
+
+
 </script>
