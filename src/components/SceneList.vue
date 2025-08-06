@@ -46,12 +46,14 @@
   import { storeToRefs } from "pinia"
 
   const worldStore = useWorldStore()
-  const worldRefs = storeToRefs(worldStore)
-  
+  //const worldRefs = storeToRefs(worldStore)
   
   const seq_scenes = computed(() => {
-    return worldRefs.getScenes.value.filter((scene) => scene.sequence_id === worldRefs.currSequenceId.value)
+    return worldStore.getScenes.filter((scene) => scene.sequence_id === worldStore.currSequenceId)
   })
+  // const seq_scenes = computed(() => {
+  //   return worldRefs.getScenes.value.filter((scene) => scene.sequence_id === worldRefs.currSequenceId.value)
+  // })
   //const seq_scenes = worldRefs.getScenes.value.filter((scene) => scene.sequence_id === worldRefs.currSequenceId.value)
   //const scenes = worldRefs.getScenes
 
