@@ -49,7 +49,6 @@
   const worldRefs = storeToRefs(worldStore)
   
   //const scenes = worldRefs.getScenes
-
   const seq_scenes = worldRefs.getScenes.value.filter((scene) => scene.sequence_id === worldStore.currSequenceId)
   
   const props = defineProps(["modelValue", "show"])
@@ -62,7 +61,7 @@
     set(value) {
       emit("update:modelValue", value)
 
-      worldStore.currSceneId = value
+      worldStore.currSceneId = value 
       // Clear others as scene changed
       worldStore.currPropId = ""
       worldStore.currDoorId = ""

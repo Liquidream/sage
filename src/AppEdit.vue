@@ -19,7 +19,7 @@
     </v-main>
 
     <v-app-bar v-if="!isPortrait" flat height="75" location="bottom" order="1">
-      <SceneList v-model="selectedModelID" />
+      <SceneList v-model="worldRefs.currSceneId.value" />
     </v-app-bar>
 
     <v-app-bar :elevation="2" :density="!isPortrait ? 'default' : 'compact'">
@@ -125,7 +125,7 @@
 
     <v-container v-if="isPortrait" style="overflow-y: scroll" class="pa-0">
       <v-container class="pa-0">
-        <SceneList v-model="selectedModelID" />
+        <SceneList v-model="worldRefs.currSceneId.value" />
       </v-container>
       <v-container class="pa-4">
         <ActorProperties v-if="worldRefs.currActorId.value != ''" />
