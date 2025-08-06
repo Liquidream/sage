@@ -64,6 +64,9 @@ export class SAGEdit {
     SAGEdit._width = width
     SAGEdit._height = height
 
+    // (Moved up, as Vuetify components now subscribing also)
+    SAGEdit.Events = new EventsEdit()
+
     const canvasElem = document.getElementById("pixi-canvas") as HTMLCanvasElement
     SAGEdit._app = new Application()
     console.log("Before _app.init...")
@@ -107,8 +110,8 @@ export class SAGEdit {
     // initialise stage "layers"
     SAGEdit.createLayers()
 
-    // ...and events
-    SAGEdit.Events = new EventsEdit()
+    // // ...and events
+    // SAGEdit.Events = new EventsEdit()
 
     // ...and dialog
     // (currently using it to display selected item name - not essential!)

@@ -56,9 +56,19 @@ export const useWorldStore = defineStore("worldStore", {
       return sceneStore.scenes.find((item) => item.id === state.currSceneId)
     },
 
+    getProps(): PropModel[] {
+      const propStore = usePropStore()
+      return propStore.props
+    },
+
     getCurrentProp(state): PropModel | undefined {
       const propStore = usePropStore()
       return propStore.props.find((item) => item.id === state.currPropId)
+    },
+
+    getDoors(): PropModel[] {
+      const doorStore = useDoorStore()
+      return doorStore.doors
     },
 
     getCurrentDoor(state): DoorModel | undefined {
