@@ -82,6 +82,16 @@
   import { ref } from "vue"
 
 
+  // Listen for selection changes
+  SAGEdit.Events.on("selectionChanged", (selectedId: string) => {
+      //debugger
+      // Cancel any ID edits, as likely lost focus for item we were editing
+      cancel()
+    },
+    this
+  )
+
+
 // - v2 ----------------------------------------------------------------
 
 const model = defineModel()  // this is the v-model binding
