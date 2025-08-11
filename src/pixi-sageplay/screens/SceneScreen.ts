@@ -122,7 +122,7 @@ export class SceneScreen extends Container implements IScreen {
     }
 
     // Stop video playing while not being shown
-    if (this.scene.image) {
+    if (this.scene.image && this.backdrop) {
       if (this.backdrop.texture.source.resource.pause) {
         this.backdrop.texture.source.resource.pause()
       }

@@ -25,6 +25,7 @@ export class InkManager {
   
   private static inkStory: InstanceType<typeof Story>
 
+  public static inkHeaderFunctions: string
   public static inkHeaderWorld: string
   public static inkHeaderScene: string
   public static inkHeaderActor: string
@@ -112,6 +113,7 @@ export class InkManager {
   }
 
   private static initInkScriptHeaders() {
+    InkManager.inkHeaderFunctions = "// Functions"
     InkManager.inkHeaderWorld = "=== _world ==="
     InkManager.inkHeaderScene = "=== ${id} ===\n # SCENE: ${id}\n {! }"
     InkManager.inkHeaderActor =
@@ -139,7 +141,16 @@ export class InkManager {
     // Functions
     //
     let inkName = `_functions.ink`
-    let inkScript = ""
+    let inkScript = InkManager.inkHeaderFunctions
+    // -- Inventory ---
+    //debugger
+    let propsList = ""
+    for (const prop of usePropStore().props) {
+      if (propsList.length > 0) propsList += ", "
+      propsList += `prp_${prop.id}`
+    }
+    inkScript += `\nLIST Props = ${propsList}`
+    // Rest of function scripts
     if (worldStore.script_functions) {
       inkScript += `\n${worldStore.script_functions}`
     }
@@ -168,10 +179,6 @@ export class InkManager {
       let inkScript = StringUtils.inject(InkManager.inkHeaderScene, {
         id: scene.id,
       })
-  //       let inkScript = `
-  // === ${scene.id} ===
-  // # SCENE: ${scene.id}
-  // {! }`
       if (scene.script) {
         inkScript += `\n${scene.script}`
       }
@@ -188,14 +195,6 @@ export class InkManager {
       let inkScript = StringUtils.inject(InkManager.inkHeaderActor, {
         id: actor.id,
       })
-  //       let inkScript = `
-  // === ${actor.id} ===
-
-  // = init
-  // // TODO: setup stuff here?
-  // -> DONE
-
-  // = start`
       if (actor.script) {
         inkScript += `\n${actor.script}`
       }
@@ -211,14 +210,6 @@ export class InkManager {
       let inkScript = StringUtils.inject(InkManager.inkHeaderProp, {
         id: prop.id,
       })
-  //       let inkScript = `
-  // === ${prop.id} ===
-
-  // = init
-  // // TODO: setup stuff here?
-  // -> DONE
-
-  // = start`
       if (prop.script) {
         inkScript += `\n${prop.script}`
       }
@@ -234,14 +225,6 @@ export class InkManager {
       let inkScript = StringUtils.inject(InkManager.inkHeaderDoor, {
         id: door.id,
       })
-  //       let inkScript = `
-  // === ${door.id} ===
-
-  // = init
-  // // TODO: setup stuff here?
-  // -> DONE
-
-  // = start`
       if (door.script) {
         inkScript += `\n${door.script}`
       }
