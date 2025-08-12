@@ -16,6 +16,8 @@ import { useDoorStore } from "@/stores/DoorStore"
 import { usePropStore } from "@/stores/PropStore"
 import type { Prop } from "@/pixi-sageplay/Prop"
 
+import inkFunctionsSnippet from "./InkFunctions.ink?raw"
+
 export class InkManager {
   private constructor() {
     /*this class is purely static. No constructor to see here*/
@@ -150,7 +152,11 @@ export class InkManager {
       propsList += `prp_${prop.id}`
     }
     inkScript += `\nLIST Props = ${propsList}`
-    // Rest of function scripts
+//debugger
+    // Hard-coded global functions needed for SAGE to function
+    inkScript += `\n${inkFunctionsSnippet}`
+
+    // Rest of function scripts created within game...
     if (worldStore.script_functions) {
       inkScript += `\n${worldStore.script_functions}`
     }
