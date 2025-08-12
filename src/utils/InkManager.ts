@@ -143,7 +143,7 @@ export class InkManager {
     let inkName = `_functions.ink`
     let inkScript = InkManager.inkHeaderFunctions
     // -- Inventory ---
-    //debugger
+    inkScript += "\nVAR Inventory = ( )"
     let propsList = ""
     for (const prop of usePropStore().props) {
       if (propsList.length > 0) propsList += ", "
