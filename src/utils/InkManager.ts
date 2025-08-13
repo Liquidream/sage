@@ -149,7 +149,7 @@ export class InkManager {
     let propsList = ""
     for (const prop of usePropStore().props) {
       if (propsList.length > 0) propsList += ", "
-      propsList += `prp_${prop.id}`
+      propsList += `${prop.id}`
     }
     inkScript += `\nLIST Props = ${propsList}`
 //debugger
@@ -211,10 +211,11 @@ export class InkManager {
     // Props
     //
     for (const prop of usePropStore().props) {
-      const inkName = `${prop.id}.ink`
+      const prefixedPropId = `prp_${prop.id}`
+      const inkName = `${prefixedPropId}.ink`
       mainInkWithIncludes += `INCLUDE ${inkName}\n`
       let inkScript = StringUtils.inject(InkManager.inkHeaderProp, {
-        id: prop.id,
+        id: prefixedPropId,
       })
       if (prop.script) {
         inkScript += `\n${prop.script}`

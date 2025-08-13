@@ -54,7 +54,7 @@ export class Player implements IPlayerData {
     propData.location_id = ""
     SAGE.World.player.inventory.push(propData)
     // Update ink story state
-    const listItem = `prp_${propData.id}`
+    const listItem = `${propData.id}`
     InkManager.inkStory.EvaluateFunction("pickup_item", [listItem])
     // Now animate it (but at least data state in sync)
     const prop = new Prop(propData)

@@ -201,7 +201,7 @@ export class Prop {
     // }
     // v2 - ink method
     if (this.model.script) {
-      InkManager.chooseStoryPath(this.model.id + ".start")
+      InkManager.chooseStoryPath(`prp_${this.model.id}.start`)
       return
     }
 
