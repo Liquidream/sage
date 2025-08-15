@@ -73,7 +73,7 @@
     
     <v-divider />
 
-    <v-btn @click="worldStore.deleteSequence(model.id)" color="error" class="mt-2"
+    <v-btn @click="handleConfirm" color="error" class="mt-2"
       >Remove Sequence</v-btn
     >
   </v-form>
@@ -89,6 +89,8 @@
 
   import IdTextEdit from "./IdTextEdit.vue"
 
+  import { useConfirm, useSnackbar } from 'vuetify-use-dialog'
+
   const worldStore = useWorldStore()
   const worldRefs = storeToRefs(worldStore)
   const sceneStore = useSceneStore()
@@ -96,11 +98,29 @@
   const model = worldRefs.getCurrentSequence
   //const model = worldStore.getCurrentScene || ({} as SceneModel)
 
+  const confirm = useConfirm()
+  const toast = useSnackbar()
+
+  async function handleConfirm() {
+    const modelId = model.value?.id
+    const isConfirmed = await confirm({ 
+      title: "Confirm Remove",
+      content: `Are you sure you want to remove Sequence "${modelId}"?`,
+      dialogProps: { width: 400, },
+    })
+
+    if (isConfirmed)
+    {
+      worldStore.deleteSequence(model.value.id)
+      worldStore.currSequenceId = ""
+      toast({ text: `Sequence "${modelId}" removed` })
+    }
+  }
+
   const backToWorldClicked = () => {
     worldStore.currPropId = ""
     worldStore.currSequenceId = ""
     worldStore.currSceneId = ""
-    worldStore.currSequenceId = ""
     // Force scroll to top of nav panel
     document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }

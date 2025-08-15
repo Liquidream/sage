@@ -141,7 +141,7 @@
 
     <v-divider />
 
-    <v-btn @click="worldStore.deleteScene(model.id)" color="error" class="mt-2"
+    <v-btn @click="handleConfirm" color="error" class="mt-2"
       >Remove Scene</v-btn
     >
   </v-form>
@@ -167,8 +167,7 @@
   import AceEditor from "./AceEditor.vue"
   import IdTextEdit from "./IdTextEdit.vue"
 
-  //import "ace-builds/src-noconflict/mode-javascript"    // Load the language definition file used below
-  //import "ace-builds/src-noconflict/theme-monokai" // Load the theme definition file used below
+  import { useConfirm, useSnackbar } from 'vuetify-use-dialog'
 
   const worldStore = useWorldStore()
   const worldRefs = storeToRefs(worldStore)
@@ -177,6 +176,24 @@
 
   const model = worldRefs.getCurrentScene
   //const model = worldStore.getCurrentScene || ({} as SceneModel)
+
+  const confirm = useConfirm()
+  const toast = useSnackbar()
+
+  async function handleConfirm() {
+    const modelId = model.value?.id
+    const isConfirmed = await confirm({ 
+      title: "Confirm Remove",
+      content: `Are you sure you want to remove Scene "${modelId}"?`,
+      dialogProps: { width: 400, },
+    })
+
+    if (isConfirmed)
+    {
+      worldStore.deleteScene(model.value?.id)
+      toast({ text: `Scene "${modelId}" removed` })
+    }
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any

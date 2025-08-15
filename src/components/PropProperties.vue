@@ -195,7 +195,7 @@
 
     <v-divider />
 
-    <v-btn @click="removePropClicked" color="error" class="mt-2"
+    <v-btn @click="handleConfirm" color="error" class="mt-2"
       >Remove Prop</v-btn
     >
   </v-form>
@@ -216,11 +216,16 @@
   import AceEditor from "./AceEditor.vue"
   import IdTextEdit from "./IdTextEdit.vue"
 
+  import { useConfirm, useSnackbar } from 'vuetify-use-dialog'
+
   const worldStore = useWorldStore()
   const propStore = usePropStore()
   // Make prop info react when selection changes
   const worldRefs = storeToRefs(worldStore)
   const model = worldRefs.getCurrentProp || ({} as PropModel)
+
+  const confirm = useConfirm()
+  const toast = useSnackbar()
 
   watch(
     () => model.value,
@@ -238,6 +243,21 @@
     },
     { deep: true }
   )
+
+  async function handleConfirm() {
+    const modelId = model.value?.id
+    const isConfirmed = await confirm({ 
+      title: "Confirm Remove",
+      content: `Are you sure you want to remove Prop "${modelId}"?`,
+      dialogProps: { width: 400, },
+    })
+
+    if (isConfirmed)
+    {
+      removePropClicked()
+      toast({ text: `Prop "${modelId}" removed` })
+    }
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chosenFile: any

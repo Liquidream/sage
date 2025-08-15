@@ -205,7 +205,7 @@
 
     <v-divider />
 
-    <v-btn @click="removeActorClicked" color="error" class="mt-2">
+    <v-btn @click="handleConfirm" color="error" class="mt-2">
       <span v-if="worldRefs.currSceneId.value !== ''">
         Remove Actor From Scene
       </span>
@@ -235,6 +235,11 @@
   const worldRefs = storeToRefs(worldStore)
   const model = worldRefs.getCurrentActor || ({} as ActorModel)
 
+  import { useConfirm, useSnackbar } from 'vuetify-use-dialog'
+
+  const confirm = useConfirm()
+  const toast = useSnackbar()
+
   watch(
     () => model.value,
     () => {
@@ -251,6 +256,21 @@
     },
     { deep: true }
   )
+
+  async function handleConfirm() {
+    const modelId = model.value?.id
+    const isConfirmed = await confirm({ 
+      title: "Confirm Remove",
+      content: `Are you sure you want to remove Actor "${modelId}"?`,
+      dialogProps: { width: 400, },
+    })
+
+    if (isConfirmed)
+    {
+      removeActorClicked()
+      toast({ text: `Actor "${modelId}" removed` })
+    }
+  }
 
   const swatches = [
     ["#FFFFFF"],

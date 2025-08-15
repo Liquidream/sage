@@ -15,6 +15,7 @@ import { SAGE } from "./pixi-sageplay/SAGEPlay"
 import { useGameStateStore, type GameState } from "./stores/GameStateStore"
 import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
 import { InkManager } from "./utils/InkManager"
+import { registerPlugins } from "./plugins"
 
 let app: App
 
@@ -159,7 +160,11 @@ if (mode == "play") {
       },
     })
   )
-  app = createApp(AppPlay).use(vuetify).use(pinia)
+  // Now use the registerPlugins class (as prev was doing all in-line)
+  app = createApp(AppPlay)
+  registerPlugins(app)
+  app.use(pinia)
+  //app = createApp(AppPlay).use(vuetify).use(pinia)
 } else {
   // ------------------------------
   // Edit Mode
@@ -188,7 +193,12 @@ if (mode == "play") {
       },
     })
   )
-  app = createApp(AppEdit).use(vuetify).use(pinia)
+  
+  // Now use the registerPlugins class (as prev was doing all in-line)
+  app = createApp(AppEdit)
+  registerPlugins(app)
+  app.use(pinia)
+  //app = createApp(AppEdit).use(vuetify).use(pinia)
 }
 
 // createApp(App).use(vuetify).use(pinia).mount("#app")
@@ -252,7 +262,7 @@ Promise.all([
 
   console.log(">>> (finished loading data)")
 
-  loadFonts()
+  //loadFonts()
 
   // Finally, mount the app
   console.log(">>> Mounting #app...")

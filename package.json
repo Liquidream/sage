@@ -35,6 +35,7 @@
     "vue": "^3.4.27",
     "vue3-ace-editor": "^2.2.4",
     "vuetify": "^3.6.8",
+    "vuetify-use-dialog": "^0.6.11",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {

@@ -205,7 +205,7 @@
 
     <v-divider />
 
-    <v-btn @click="removeDoorClicked" color="error" class="mt-2"
+    <v-btn @click="handleConfirm" color="error" class="mt-2"
       >Remove Door</v-btn
     >
   </v-form>
@@ -226,10 +226,15 @@
   import AceEditor from "./AceEditor.vue"
   import IdTextEdit from "./IdTextEdit.vue"
 
+  import { useConfirm, useSnackbar } from 'vuetify-use-dialog'
+
   const worldStore = useWorldStore()
   const doorStore = useDoorStore()
   const worldRefs = storeToRefs(worldStore)
   const model = worldRefs.getCurrentDoor || ({} as DoorModel)
+
+  const confirm = useConfirm()
+  const toast = useSnackbar()
 
   watch(
     () => model.value,
@@ -247,6 +252,21 @@
     },
     { deep: true }
   )
+
+  async function handleConfirm() {
+    const modelId = model.value?.id
+    const isConfirmed = await confirm({ 
+      title: "Confirm Remove",
+      content: `Are you sure you want to remove Door "${modelId}"?`,
+      dialogProps: { width: 400, },
+    })
+
+    if (isConfirmed)
+    {
+      removeDoorClicked()
+      toast({ text: `Door "${modelId}" removed` })
+    }
+  }
 
   //const model = worldStore.getCurrentDoor || ({} as DoorModel)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
