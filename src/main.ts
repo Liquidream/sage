@@ -1,11 +1,11 @@
 import { createApp, type App } from "vue"
-import { createPinia } from "pinia"
-import { createPersistedStatePlugin } from "pinia-plugin-persistedstate-2"
-import localforage from "localforage"
+// import { createPinia } from "pinia"
+// import { createPersistedStatePlugin } from "pinia-plugin-persistedstate-2"
+// import localforage from "localforage"
 import AppEdit from "./AppEdit.vue"
 import AppPlay from "./AppPlay.vue"
-import vuetify from "./plugins/vuetify"
-import { loadFonts } from "./plugins/webfontloader"
+// import vuetify from "./plugins/vuetify"
+// import { loadFonts } from "./plugins/webfontloader"
 import { useWorldStore, type WorldState } from "./stores/WorldStore"
 import { useSceneStore, type SceneState } from "./stores/SceneStore"
 import { usePropStore, type PropState } from "./stores/PropStore"
@@ -138,32 +138,32 @@ if (mode == "play") {
   window.SAGE = SAGE
 
   AppPlay.name = "SAGE-Play"
+
   // This force IndexedDB as the driver
-  localforage.config({
-    driver: localforage.INDEXEDDB,
-    name: "sagePlay",
-  })
-  // Create pinia with persisted (indexedDB) storage
-  const pinia = createPinia()
-  pinia.use(
-    createPersistedStatePlugin({
-      storage: {
-        getItem: async (key) => {
-          return localforage.getItem(key)
-        },
-        setItem: async (key, value) => {
-          return localforage.setItem(key, value)
-        },
-        removeItem: async (key) => {
-          return localforage.removeItem(key)
-        },
-      },
-    })
-  )
+  // localforage.config({
+  //   driver: localforage.INDEXEDDB,
+  //   name: "sagePlay",
+  // })
+  // // Create pinia with persisted (indexedDB) storage
+  // const pinia = createPinia()
+  // pinia.use(
+  //   createPersistedStatePlugin({
+  //     storage: {
+  //       getItem: async (key) => {
+  //         return localforage.getItem(key)
+  //       },
+  //       setItem: async (key, value) => {
+  //         return localforage.setItem(key, value)
+  //       },
+  //       removeItem: async (key) => {
+  //         return localforage.removeItem(key)
+  //       },
+  //     },
+  //   })
+  // )
   // Now use the registerPlugins class (as prev was doing all in-line)
   app = createApp(AppPlay)
-  registerPlugins(app)
-  app.use(pinia)
+  registerPlugins(app, "sagePlay")
   //app = createApp(AppPlay).use(vuetify).use(pinia)
 } else {
   // ------------------------------
@@ -171,33 +171,33 @@ if (mode == "play") {
   // ------------------------------
   console.log(">>> Editor mode!")
   AppEdit.name = "SAGE-Edit"
-  // This force IndexedDB as the driver
-  localforage.config({
-    driver: localforage.INDEXEDDB,
-    name: "sageEdit",
-  })
-  // Create pinia with persisted (indexedDB) storage
-  const pinia = createPinia()
-  pinia.use(
-    createPersistedStatePlugin({
-      storage: {
-        getItem: async (key) => {
-          return localforage.getItem(key)
-        },
-        setItem: async (key, value) => {
-          return localforage.setItem(key, value)
-        },
-        removeItem: async (key) => {
-          return localforage.removeItem(key)
-        },
-      },
-    })
-  )
+  
+  // // This force IndexedDB as the driver
+  // localforage.config({
+  //   driver: localforage.INDEXEDDB,
+  //   name: "sageEdit",
+  // })
+  // // Create pinia with persisted (indexedDB) storage
+  // const pinia = createPinia()
+  // pinia.use(
+  //   createPersistedStatePlugin({
+  //     storage: {
+  //       getItem: async (key) => {
+  //         return localforage.getItem(key)
+  //       },
+  //       setItem: async (key, value) => {
+  //         return localforage.setItem(key, value)
+  //       },
+  //       removeItem: async (key) => {
+  //         return localforage.removeItem(key)
+  //       },
+  //     },
+  //   })
+  // )
   
   // Now use the registerPlugins class (as prev was doing all in-line)
   app = createApp(AppEdit)
-  registerPlugins(app)
-  app.use(pinia)
+  registerPlugins(app, "sageEdit")
   //app = createApp(AppEdit).use(vuetify).use(pinia)
 }
 
