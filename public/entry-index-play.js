@@ -30947,22 +30947,16 @@ const useSequenceStore = defineStore({
     //   return propStore.props.find((item) => item.location_id === scene_id)
     //   //return state.scenes.find((item) => item.id === state.currSceneId)
     // },
+  },
+  actions: {
+    findSequenceBySceneId(scene_id) {
+      const scene = useSceneStore().scenes.find((scene2) => scene2.id === scene_id);
+      if (scene) {
+        const sequence = this.sequences.find((seq) => seq.id === scene.sequence_id);
+        return sequence;
+      }
+    }
   }
-  // actions: {
-  //   // TODO: Think a publish/subscribe approach would be "better" here
-  //   //       (let stores clean up their own data) but need this all to happen NOW!
-  //   //       ..or else screen will re-initialise with half-baked edits
-  //   realignChildObjects(oldSceneId: string, newSceneId: string) {
-  //     console.log(`sceneStore::realignChildObjects (Old id = ${oldSceneId}, New id = ${newSceneId})`)
-  //     // Actors
-  //     const sceneActorModels = useActorStore().findActorBySceneId(oldSceneId)
-  //     if (sceneActorModels.length > 0) {
-  //       for (const actorModel of sceneActorModels) {
-  //         actorModel.location_id = newSceneId
-  //       }
-  //     }
-  //   },
-  // },
   //persist: true, // Save to localStorage
 });
 const useWorldStore = defineStore("worldStore", {
@@ -30992,9 +30986,17 @@ const useWorldStore = defineStore("worldStore", {
       const sceneStore2 = useSceneStore();
       return sceneStore2.scenes.find((item) => item.id === state.currSceneId);
     },
+    getProps() {
+      const propStore2 = usePropStore();
+      return propStore2.props;
+    },
     getCurrentProp(state) {
       const propStore2 = usePropStore();
       return propStore2.props.find((item) => item.id === state.currPropId);
+    },
+    getDoors() {
+      const doorStore2 = useDoorStore();
+      return doorStore2.doors;
     },
     getCurrentDoor(state) {
       const doorStore2 = useDoorStore();
@@ -37158,7 +37160,7 @@ class SceneScreen extends Container {
     if (this.scene.sound) {
       SAGE.Sound.stop(this.scene.sound, !restartGame);
     }
-    if (this.scene.image) {
+    if (this.scene.image && this.backdrop) {
       if (this.backdrop.texture.source.resource.pause) {
         this.backdrop.texture.source.resource.pause();
       }
@@ -45030,6 +45032,65 @@ const useGameStateStore = defineStore({
     //inventory: [],
   })
 });
+const inkFunctionsSnippet = `// External functions list\r
+EXTERNAL get_time()\r
+EXTERNAL ext_pickup_prop(prop_id)\r
+\r
+=== function ext_pickup_prop(prop_id) ===\r
+~ return "(no external function found)"\r
+\r
+=== function get_time() ===\r
+~ return "(no external function found)"\r
+\r
+=== function test()\r
+Testing!!!\r
+\r
+=== function pickup_item(strItem)\r
+PICKUP!!!\r
+~ temp item = string_to_list(strItem, Props)\r
+~   Inventory += item\r
+\r
+=== function drop_item(strItem)\r
+~ temp item = string_to_list(strItem, Props)\r
+~   Inventory -= item\r
+\r
+/*\r
+	Converts a string to the corresponding list element from a particular list. Note the element doesn't need to be in the list variable at that moment in time! \r
+\r
+	Useful for sending parameters into the ink from the game: the game can store and pass in the string ID of the list element as a parameter.\r
+\r
+	Returns the empty list () if the element isn't found.\r
+\r
+	Usage: \r
+\r
+	LIST capitalCities = Paris, London, NewYork\r
+\r
+	~ temp thisCity = string_to_list("Paris", capitalCities)\r
+	~ capitalCities += thisCity\r
+	I've now visited {thisCity}.\r
+\r
+    UPDATE: Tweaked from snippet - as not using the external portion\r
+*/\r
+\r
+=== function string_to_list(stringElement, listSource)\r
+    //~ temp retVal = STRING_TO_LIST(stringElement) \r
+    //{ USED_STRING_TO_LIST_FALLBACK:\r
+    	~ temp retVal = stringAsPickedFromList(stringElement, LIST_ALL(listSource) ) \r
+    //}\r
+     ~ return retVal\r
+\r
+// fallback system: recurse through the listToTry, trying to string match the element name\r
+=== function stringAsPickedFromList(stringElement, listToTry)\r
+    ~ temp minElement = LIST_MIN(listToTry) \r
+    {minElement:\r
+        { stringElement == "{minElement}":\r
+            ~ return minElement\r
+        }\r
+        ~ return stringAsPickedFromList(stringElement, listToTry - minElement)\r
+    }       \r
+    ~ return () \r
+\r
+`;
 const _InkManager = class _InkManager {
   constructor() {
   }
@@ -45098,6 +45159,7 @@ const _InkManager = class _InkManager {
     return inkStoryJson;
   }
   static initInkScriptHeaders() {
+    _InkManager.inkHeaderFunctions = "// Functions";
     _InkManager.inkHeaderWorld = "=== _world ===";
     _InkManager.inkHeaderScene = "=== ${id} ===\n # SCENE: ${id}\n {! }";
     _InkManager.inkHeaderActor = "=== ${id} ===\n\n = init\n // TODO: setup stuff here?\n -> DONE\n\n= start";
@@ -45111,7 +45173,18 @@ const _InkManager = class _InkManager {
     let mainInkWithIncludes = "";
     const worldStore2 = useWorldStore();
     let inkName = `_functions.ink`;
-    let inkScript = "";
+    let inkScript = _InkManager.inkHeaderFunctions;
+    inkScript += "\nVAR Inventory = ( )";
+    let propsList = "";
+    for (const prop of usePropStore().props) {
+      if (propsList.length > 0)
+        propsList += ", ";
+      propsList += `${prop.id}`;
+    }
+    inkScript += `
+LIST Props = ${propsList}`;
+    inkScript += `
+${inkFunctionsSnippet}`;
     if (worldStore2.script_functions) {
       inkScript += `
 ${worldStore2.script_functions}`;
@@ -45158,11 +45231,12 @@ ${actor.script}`;
       inkPackage[inkName2] = inkScript2;
     }
     for (const prop of usePropStore().props) {
-      const inkName2 = `${prop.id}.ink`;
+      const prefixedPropId = `prp_${prop.id}`;
+      const inkName2 = `${prefixedPropId}.ink`;
       mainInkWithIncludes += `INCLUDE ${inkName2}
 `;
       let inkScript2 = StringUtils.inject(_InkManager.inkHeaderProp, {
-        id: prop.id
+        id: prefixedPropId
       });
       if (prop.script) {
         inkScript2 += `
@@ -45317,6 +45391,7 @@ ${door.script}`;
 };
 __publicField(_InkManager, "inkJsonString");
 __publicField(_InkManager, "inkStory");
+__publicField(_InkManager, "inkHeaderFunctions");
 __publicField(_InkManager, "inkHeaderWorld");
 __publicField(_InkManager, "inkHeaderScene");
 __publicField(_InkManager, "inkHeaderActor");
@@ -45451,7 +45526,7 @@ class Prop {
   onPrimaryAction() {
     SAGE.debugLog(`You interacted with a prop! (${this.model.name})`);
     if (this.model.script) {
-      InkManager.chooseStoryPath(this.model.id + ".start");
+      InkManager.chooseStoryPath(`prp_${this.model.id}.start`);
       return;
     }
     if (this.model.pickupable && !this.inInventory) {
@@ -45518,7 +45593,7 @@ class Player {
     propData.location_type = PropLocationType.Inventory;
     propData.location_id = "";
     SAGE.World.player.inventory.push(propData);
-    const listItem = `prp_${propData.id}`;
+    const listItem = `${propData.id}`;
     InkManager.inkStory.EvaluateFunction("pickup_item", [listItem]);
     const prop = new Prop(propData);
     await prop.initialize();
