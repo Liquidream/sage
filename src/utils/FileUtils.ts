@@ -255,14 +255,14 @@ export class FileUtils {
         "pick-up.mp3",
       ],
       assets: [
-        "browserAll-BHj6XVe3.js",
-        "colorToUniform-mf4E1aij.js",
+        "browserAll-CT-gPYEe.js",
+        "colorToUniform-B2b8-1Ah.js",
         "getBatchSamplersUniformGroup-DlrEnN99.js",
-        "SharedSystems-ZPUl18BM.js",
-        "webfontloader-mbYWyneR.js",
-        "WebGLRenderer-BaHCsPu0.js",
-        "WebGLRenderer-Cx739jvf.js",
-        "webworkerAll-M8pMem3J.js",
+        "SharedSystems-B8Y9nOUi.js",
+        "webfontloader-DX6Ux-lq.js",
+        "WebGLRenderer-Ci3EOhOF.js",
+        "webworkerAll-C-SaHQf1.js",
+        "WebGPURenderer-D3licAMH.js"
       ],
     }
     FileUtils.addFolderFilesRecursively(foldersAndFilesToZip, zip)
