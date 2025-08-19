@@ -1,6 +1,7 @@
 import { Scene } from "@/pixi-sageplay/Scene"
-import { Compiler, Story } from "inkjs"
-//import { CompilerOptions } from "inkjs/compiler/CompilerOptions"
+import { Story } from "inkjs/engine/Story"
+import { Compiler } from "inkjs/compiler/Compiler"
+//import { Compiler, Story } from "inkjs"
 import { ErrorType } from "inkjs/engine/Error"
 import { JsonFileHandler } from "inkjs/compiler/FileHandler/JsonFileHandler"
 

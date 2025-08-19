@@ -58,7 +58,7 @@
   onMounted(() => {
     //debugger
     // Listen for selection changes
-    SAGEdit.Events.on("selectionChanged", (selectedId: string) => {
+    SAGEdit?.Events?.on("selectionChanged", (selectedId: string) => {
         // Cancel any ID edits, as likely lost focus for item we were editing
         cancel()
       },

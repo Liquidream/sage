@@ -163,19 +163,22 @@ import { useSequenceStore } from "@/stores/SequenceStore"
     SAGEdit.debugLog("onClickActor()...")
     SAGEdit.debugLog(actor.name)
 
-      // If setting scene, then also need to set sequence
-      worldStore.currSequenceId = useSequenceStore().findSequenceBySceneId(actor.location_id).id
-      
-      // Also jump to the scene where actor is located
-      // (helps keep things working properly, and if not in scene, should still work?)
-      //debugger
-      if (actor.location_type === ActorLocationType.Scene
-      && actor.location_id) {
-        worldStore.currSceneId = actor.location_id
+      // If setting scene, then also need to set sequence 
+      // (unless actor not current in a scene)
+      if (actor.location_id != "") {
+        worldStore.currSequenceId = useSequenceStore().findSequenceBySceneId(actor.location_id).id
         
-        // TODO: Need to have a way to edit actor WITHOUT being in a scene
-        worldStore.currActorId = actor.id
+        // Also jump to the scene where actor is located
+        // (helps keep things working properly, and if not in scene, should still work?)
+        //debugger
+        if (actor.location_type === ActorLocationType.Scene
+        && actor.location_id) {
+            worldStore.currSceneId = actor.location_id
+        }  
     }
+    
+    // Select the actor (regardless of whether in a scene or not)
+    worldStore.currActorId = actor.id
   }
 
   const loading = ref(false)
