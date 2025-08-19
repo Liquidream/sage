@@ -24,24 +24,23 @@ export function registerPlugins (app: App, localforageName: string) {
   })
   // Create pinia with persisted (indexedDB) storage
   const pinia = createPinia()
-  pinia.use(
-    createPersistedStatePlugin({
-      storage: {
-        getItem: async (key) => {
-          return localforage.getItem(key)
-        },
-        setItem: async (key, value) => {
-          return localforage.setItem(key, value)
-        },
-        removeItem: async (key) => {
-          return localforage.removeItem(key)
-        },
+  const persistedStatePlugin = createPersistedStatePlugin({
+    storage: {
+      getItem: async (key) => {
+        return localforage.getItem(key)
       },
-    })
-  )
+      setItem: async (key, value) => {
+        return localforage.setItem(key, value)
+      },
+      removeItem: async (key) => {
+        return localforage.removeItem(key)
+      },
+    },
+  })
+  pinia.use(persistedStatePlugin)
 
+  app.use(pinia)
   app.use(vuetify)
   app.use(VuetifyUseDialog)
-  app.use(pinia)
   loadFonts()
 }

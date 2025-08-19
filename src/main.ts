@@ -16,6 +16,7 @@ import { useGameStateStore, type GameState } from "./stores/GameStateStore"
 import type { SagePlayData } from "./pixi-sageplay/SagePlayData"
 import { InkManager } from "./utils/InkManager"
 import { registerPlugins } from "./plugins"
+import { useSequenceStore } from "./stores/SequenceStore"
 
 let app: App
 
@@ -209,16 +210,18 @@ const sceneStore = useSceneStore()
 const doorStore = useDoorStore()
 const actorStore = useActorStore()
 const gameStateStore = useGameStateStore()
+const sequenceStore = useSequenceStore()
 
 // Only proceed once ALL stores have fully loaded
 // (takes longer with IndexedDB)
 Promise.all([
   worldStore.$persistedState.isReady(),
-  sceneStore.$persistedState.isReady(),
   propStore.$persistedState.isReady(),
+  sceneStore.$persistedState.isReady(),
   doorStore.$persistedState.isReady(),
   actorStore.$persistedState.isReady(),
   gameStateStore.$persistedState.isReady(),
+  sequenceStore.$persistedState.isReady(),
 ]).then(() => {
   //Restore play data?
   if (mode == "play") {

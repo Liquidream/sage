@@ -8,9 +8,8 @@ export interface GameState {
   saveState: SaveStateModel // 
 }
 
-export const useGameStateStore = defineStore({
-  id: "gameStateStore",
-
+export const useGameStateStore = defineStore("gameStateStore", {
+  
   state: (): GameState => ({
     //storyState: "",
     saveState: { piniaStates: "", inkStoryState: "" },

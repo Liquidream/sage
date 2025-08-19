@@ -6,8 +6,7 @@ export interface SequenceState {
   sequences: SequenceModel[]
 }
 
-export const useSequenceStore = defineStore({
-  id: "sequenceStore",
+export const useSequenceStore = defineStore("sequenceStore", {
 
   state: (): SequenceState => ({
     sequences: [],

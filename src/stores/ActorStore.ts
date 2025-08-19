@@ -6,9 +6,8 @@ export interface ActorState {
   actors: ActorModel[]
 }
 
-export const useActorStore = defineStore({
-  id: "actorStore",
-
+export const useActorStore = defineStore("actorStore", {
+  
   state: (): ActorState => ({
     actors: [],
   }),

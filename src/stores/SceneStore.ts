@@ -6,8 +6,7 @@ export interface SceneState {
   scenes: SceneModel[]
 }
 
-export const useSceneStore = defineStore({
-  id: "sceneStore",
+export const useSceneStore = defineStore("sceneStore", {
 
   state: (): SceneState => ({
     scenes: [],

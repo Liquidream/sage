@@ -12,9 +12,8 @@ export interface SageEditState {
   // actorData: string
 }
 
-export const useSageEditStore = defineStore({
-  id: "sageEditStore",
-
+export const useSageEditStore = defineStore("sageEditStore", {
+  
   state: (): SageEditState => ({
     version: Constants.APP_VERSION,
     gameId: "kingsRansom",

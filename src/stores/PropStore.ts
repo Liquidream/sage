@@ -6,9 +6,8 @@ export interface PropState {
   props: PropModel[]
 }
 
-export const usePropStore = defineStore({
-  id: "propStore",
-
+export const usePropStore = defineStore("propStore", {
+  
   state: (): PropState => ({
     props: [],
   }),

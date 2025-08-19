@@ -6,9 +6,8 @@ export interface DoorState {
   doors: DoorModel[]
 }
 
-export const useDoorStore = defineStore({
-  id: "doorStore",
-
+export const useDoorStore = defineStore("doorStore", {
+  
   state: (): DoorState => ({
     doors: [],
   }),
