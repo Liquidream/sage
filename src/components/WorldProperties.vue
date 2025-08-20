@@ -105,6 +105,28 @@
 
     <v-divider />
     <v-list-subheader
+      ><v-icon icon="mdi-trophy"></v-icon> Props</v-list-subheader
+    >
+    <!-- on click, replace panel with properties of Prop + select it in scene -->
+    <v-list>
+      <v-list-item
+        @click="onClickProp(prop)"
+        v-for="prop in propStore.getProps"
+        :key="prop.id"
+      >
+        <v-row align="center">
+          <v-col cols="3">
+            <v-img :src="prop.image" max-height="50" />
+          </v-col>
+          <v-col>
+            <span class="text-no-wrap">{{ prop.name }}</span>
+          </v-col>
+        </v-row>
+      </v-list-item>
+    </v-list>
+
+    <v-divider />
+    <v-list-subheader
       ><v-icon icon="mdi-lightning-bolt"></v-icon> Events</v-list-subheader
     >
 
@@ -114,7 +136,7 @@
 
     <v-divider />
 
-    <v-btn :loading="loading" @click="resetDataClicked" color="info" class="mt-2"
+    <v-btn :loading="loading" @click="handleConfirm" color="info" class="mt-2"
       >Reset Data</v-btn
     >
     <!-- &nbsp;
@@ -140,10 +162,32 @@
   import { ActorLocationType, type ActorModel } from "@/models/ActorModel"
   import { ref } from "vue"
   import type { SequenceModel } from "@/models/SequenceModel"
-import { useSequenceStore } from "@/stores/SequenceStore"
+  import { useSequenceStore } from "@/stores/SequenceStore"
+  import { usePropStore } from "@/stores/PropStore"
+  import { PropLocationType, type PropModel } from "@/models/PropModel"
+
+  import { useConfirm, useSnackbar } from 'vuetify-use-dialog'
 
   console.log("start WordProperties.vue...")
+  
   const worldStore = useWorldStore()
+  const propStore = usePropStore()
+
+  const confirm = useConfirm()
+  const toast = useSnackbar()
+
+  async function handleConfirm() {
+    const isConfirmed = await confirm({ 
+      title: "Confirm Reset",
+      content: `Are you sure you want to reset ALL data to the sample game?`,
+      dialogProps: { width: 400, },
+    })
+
+    if (isConfirmed)
+    {
+      resetDataClicked()
+    }
+  }
 
   const onClickSequence = (sequence: SequenceModel) => {
     SAGEdit.debugLog("onClickSequence()...")
@@ -164,7 +208,7 @@ import { useSequenceStore } from "@/stores/SequenceStore"
     SAGEdit.debugLog(actor.name)
 
       // If setting scene, then also need to set sequence 
-      // (unless actor not current in a scene)
+      // (unless actor not currenty within a scene)
       if (actor.location_id != "") {
         worldStore.currSequenceId = useSequenceStore().findSequenceBySceneId(actor.location_id).id
         
@@ -179,6 +223,34 @@ import { useSequenceStore } from "@/stores/SequenceStore"
     
     // Select the actor (regardless of whether in a scene or not)
     worldStore.currActorId = actor.id
+  }
+
+  const onClickProp = (prop: PropModel) => {
+    
+    
+    SAGEdit.debugLog("onClickProp()...")
+    SAGEdit.debugLog(prop.name)
+
+      // If setting scene, then also need to set sequence 
+      // (unless prop not currently within a scene)
+      if (prop.location_id != "") {
+        worldStore.currSequenceId = useSequenceStore().findSequenceBySceneId(prop.location_id).id
+        
+        // Also jump to the scene where actor is located
+        // (helps keep things working properly, and if not in scene, should still work?)
+        //debugger
+        if (prop.location_type === PropLocationType.Scene
+        && prop.location_id) {
+            worldStore.currSceneId = prop.location_id
+        }  
+    }
+    
+    // Select the prop (regardless of whether in a scene or not)
+    worldStore.currPropId = prop.id
+    
+    
+    // Force scroll to top of nav panel
+    //document.getElementById("mainContainer")?.parentElement?.scrollTo(0, 0)
   }
 
   const loading = ref(false)

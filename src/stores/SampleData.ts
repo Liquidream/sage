@@ -12,7 +12,7 @@ export class SampleData {
   }
 
   public static async resetToDemoData() {
-    const response = await fetch("https://raw.githubusercontent.com/Liquidream/sage/dev/sample_games/demoData-found.json")
+    const response = await fetch("https://raw.githubusercontent.com/Liquidream/sage/refs/heads/dev/sample_games/found-sageData.json")
     // const response = await fetch("https://raw.githubusercontent.com/Liquidream/sage/dev/sample_games/demoData-ransom.json")
 
     const sageEditData = await response.json()
