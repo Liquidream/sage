@@ -2,6 +2,9 @@
   <v-app style="height: 100vh">
     <!-- Added to force bottom container to show scrollbar? -->
 
+    <!-- the dialog lives here globally -->
+    <PromptDialog ref="promptRef" />
+
     <!-- Progress indicator for load/save/exports -->
     <v-overlay :model-value="waitOverlay" class="align-center justify-center">
       <v-progress-circular
@@ -175,6 +178,9 @@
   import SceneList from "@/components/SceneList.vue"
   import { ActorLocationType, type ActorModel } from "./models/ActorModel"
 
+  import PromptDialog from "@/components/IdTextAddDialog.vue";
+  const promptRef = ref(null)
+
   const waitOverlay = ref(false)
 
   // replaced dyanmicaly
@@ -232,10 +238,22 @@
     FileUtils.performExport()
   }
 
-  const addSequence = () => {
+  const addSequence = async () => {
     console.log(">> Add sequence")
+
+    let new_id = ""
+    try {
+      new_id = await promptRef.value.promptDialog({
+        t: "Enter your name",
+        l: "Name",
+      });
+      console.log("User entered:", name);
+    } catch {
+      console.log("User cancelled");
+    }
+    
     const newSequence: SequenceModel = {
-      id: "seq_",
+      id: new_id,
       name: "New Sequence",
       // Using the image file caused flicker (prob coz not using Assets?)
       //image:
