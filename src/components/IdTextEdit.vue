@@ -5,9 +5,10 @@
       <v-text-field 
         id="txtId"
         v-model="localValue" 
-        :rules="[rules.required, rules.unique]"
+        :rules="[rules.required, rules.unique, rules.noSpaces]"
         :label="label"
-        @keydown.enter="save" />
+        @keydown.enter="save" 
+        @keydown.esc="cancel" />
     </v-col>
     <v-col cols="4">
         <v-btn
@@ -95,6 +96,7 @@
       countOfSameId += useWorldStore().getActors.filter(actor => actor.id === value).length
       return countOfSameId == 0 || 'ID must be unique'
     },
+    noSpaces: value => !/\s/.test(value) || 'ID cannot contain spaces',
   }
 
   // Start editing
