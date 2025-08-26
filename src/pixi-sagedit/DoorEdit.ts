@@ -41,7 +41,7 @@ export class DoorEdit extends AdjustableDataObject {
 
     // Events
     this.inputEvents = new InputEventEmitter(this.graphics)
-    this.graphics.on("primaryaction", this.onPrimaryAction, this)
+    //this.graphics.on("primaryaction", this.onPrimaryAction, this)
     // graphics.on("secondaryaction", this.onSecondaryAction, this)
     // Hover (info)
     this.graphics.on("pointerover", this.onPointerOver, this)
@@ -188,29 +188,44 @@ export class DoorEdit extends AdjustableDataObject {
   private onPointerDown() {
     // Select clicked door
     const worldStore = useWorldStore()
-    if (worldStore.currDoorId == this.data.id) {
-      // Start of drag...
-      this.dragging = true
-      //debugger
-      SAGEdit.currentScreen.draggedDoor = this
-      this.graphics.alpha = this.DRAG_ALPHA
-    }
-  }
-
-  private onPrimaryAction() {
-    if (SAGEdit.debugMode)
-      console.log(
-        `door > target_scene_id: ${this.data.target_scene_id}, state:${this.data.state}`
-      )
-
-    // Select clicked door
-    const worldStore = useWorldStore()
     if (worldStore.currDoorId != this.data.id) {
       worldStore.currDoorId = this.data.id
       worldStore.currPropId = ""
       worldStore.currActorId = ""
     } else {
-      //
+      /// Start of drag...
+      this.dragging = true
+      //debugger
+      SAGEdit.currentScreen.draggedDoor = this
+      this.graphics.alpha = this.DRAG_ALPHA
     }
+    
+    // // Select clicked door
+    // const worldStore = useWorldStore()
+    // if (worldStore.currDoorId == this.data.id) {
+    //   // Start of drag...
+    //   this.dragging = true
+    //   //debugger
+    //   SAGEdit.currentScreen.draggedDoor = this
+    //   this.graphics.alpha = this.DRAG_ALPHA
+    // }
   }
+
+//   private onPrimaryAction() {
+//     if (SAGEdit.debugMode)
+//       console.log(
+//         `door > target_scene_id: ${this.data.target_scene_id}, state:${this.data.state}`
+//       )
+
+//     // Select clicked door
+//     const worldStore = useWorldStore()
+//     if (worldStore.currDoorId != this.data.id) {
+//       worldStore.currDoorId = this.data.id
+//       worldStore.currPropId = ""
+//       worldStore.currActorId = ""
+//     } else {
+//       //
+//     }
+//   }
+
 }
