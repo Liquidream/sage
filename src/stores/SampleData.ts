@@ -5,6 +5,7 @@ import { useSceneStore } from "./SceneStore"
 import { useWorldStore } from "./WorldStore"
 import { useActorStore } from "./ActorStore"
 import { SAGEdit } from "@/pixi-sagedit/SAGEdit"
+import { useSequenceStore } from "./SequenceStore"
 
 export class SampleData {
   private constructor() {
@@ -18,12 +19,14 @@ export class SampleData {
     const sageEditData = await response.json()
 
     const worldStore = useWorldStore()
+    const sequenceStore = useSequenceStore()
     const propStore = usePropStore()
     const sceneStore = useSceneStore()
     const doorStore = useDoorStore()
     const actorStore = useActorStore()
     // Populate state
     worldStore.$state = sageEditData.worldData
+    sequenceStore.$state = sageEditData.sequenceData
     sceneStore.$state = sageEditData.sceneData
     propStore.$state = sageEditData.propData
     doorStore.$state = sageEditData.doorData
@@ -36,6 +39,7 @@ export class SampleData {
     // (TODO: potentially skip if no curr scene???)
     Promise.all([
       worldStore.$persistedState.isReady(),
+      sequenceStore.$persistedState.isReady(),
       sceneStore.$persistedState.isReady(),
       propStore.$persistedState.isReady(),
       doorStore.$persistedState.isReady(),
